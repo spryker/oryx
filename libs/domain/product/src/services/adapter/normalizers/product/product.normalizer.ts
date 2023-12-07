@@ -1,15 +1,13 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { ApiMerchantModel } from 'libs/domain/product/src/merchant/merchant.model.api';
-import { Observable, combineLatest, map, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { CategoryNormalizer } from '../../../category';
 import { AvailabilityNormalizer } from '../availability';
 import { CategoryIdNormalizer } from '../category-id';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
-import { OfferNormalizer } from '../offer/offer.normalizer';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -121,31 +119,7 @@ export function productCategoryNormalizer(
   return transformer.transform(node, CategoryNormalizer);
 }
 
-export function productOfferNormalizer(
-  data: DeserializedProduct, // source
-  transformer: TransformerService
-): Observable<Partial<Product>> {
-  const offers = data.productOffers as any as ApiMerchantModel.ProductOffer[];
-
-  if (!offers?.length) return of({});
-
-  return combineLatest(
-    offers.map((offer) => transformer.transform(offer, OfferNormalizer))
-  ).pipe(
-    map((offers) => {
-      const defaultOffer = offers.find((offer) => offer.isDefault);
-      const price = defaultOffer?.price;
-      return { offers, ...(price ? { price } : {}) };
-    })
-  );
-}
-
 export const productNormalizer: Provider[] = [
-  /** TODO: This one should not have to be first, but last :/ **/
-  {
-    provide: ProductNormalizer,
-    useValue: productOfferNormalizer,
-  },
   {
     provide: ProductNormalizer,
     useValue: productAttributeNormalizer,

@@ -1,5 +1,4 @@
 import { Include, JsonApiModel } from '@spryker-oryx/utilities';
-import { Merchant } from '../merchant/merchant.model';
 import { ProductOffer } from './product.model';
 
 export module ApiProductModel {
@@ -26,6 +25,7 @@ export module ApiProductModel {
 
   export interface Abstract extends Attributes {
     attributeMap?: string[][];
+    // TODO: Fix by augmentation
     merchantReference?: string;
     superAttributes?: string[];
   }
@@ -108,6 +108,7 @@ export module ApiProductModel {
     ProductOffers = 'product-offers',
     ProductOfferPrices = 'product-offer-prices',
     ProductOfferAvailabilities = 'product-offer-availabilities',
+    // TODO: Fix by augmentation ?? or other way around
     Merchants = 'merchants',
   }
 
@@ -131,7 +132,8 @@ export module ApiProductModel {
     | Include<Includes.ProductOffers, ProductOffer>
     | Include<Includes.ProductOfferPrices, ProductOffer>
     | Include<Includes.ProductOfferAvailabilities, ProductAvailability>
-    | Include<Includes.Merchants, Merchant>;
+    // TODO: Fix by augmentation
+    | Include<Includes.Merchants, any>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;
 }

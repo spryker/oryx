@@ -1,7 +1,6 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { merchantProviders } from '../merchant/providers';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -33,13 +32,6 @@ import {
   ProductLabelsNormalizer,
   productLabelNormalizer,
 } from './adapter/normalizers/labels/labels.normalizer';
-import {
-  OfferNormalizer,
-  offerAvailabilityNormalizer,
-  offerMerchantNormalizer,
-  offerNormalizer,
-  offerPriceNormalizer,
-} from './adapter/normalizers/offer/offer.normalizer';
 import {
   PaginationNormalizer,
   paginationNormalizer,
@@ -128,22 +120,6 @@ export const productProviders: Provider[] = [
   {
     provide: PriceNormalizer,
     useValue: priceNormalizer,
-  },
-  {
-    provide: OfferNormalizer,
-    useValue: offerNormalizer,
-  },
-  {
-    provide: OfferNormalizer,
-    useValue: offerPriceNormalizer,
-  },
-  {
-    provide: OfferNormalizer,
-    useValue: offerAvailabilityNormalizer,
-  },
-  {
-    provide: OfferNormalizer,
-    useValue: offerMerchantNormalizer,
   },
   {
     provide: FacetNormalizer,
@@ -248,5 +224,4 @@ export const productProviders: Provider[] = [
   ProductDetailsBreadcrumb,
   ...categoryQueries,
   ...provideLitRoutes({ routes: productRoutes }),
-  ...merchantProviders,
 ];
