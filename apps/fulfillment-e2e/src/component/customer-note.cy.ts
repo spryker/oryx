@@ -11,8 +11,7 @@ xdescribe('Customer note suite', () => {
     cy.login();
   });
 
-  // TODO: ????
-  // test requires order with customer note
+  // TODO: test requires an order with customer note which is not supported by Glue
   it('should show and hide the customer note modal', () => {
     // open
     listsFragment.getCustomerNoteButtons().click();

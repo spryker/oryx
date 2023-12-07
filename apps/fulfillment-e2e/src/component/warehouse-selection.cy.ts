@@ -13,7 +13,7 @@ xdescribe('Warehouse selection suite', () => {
     whSelectionPage.visit();
   });
 
-  // this check is covered already in Auth flows, we don't need to have it in E2Es
+  // TODO: this check is covered already in Auth flows, we don't need to have it in E2Es
   // but we can have it in component tests
   it('should navigate to picking lists after warehouse selection', () => {
     verifyWarehouseListVisibility();

@@ -1,4 +1,4 @@
-// Turned off because there are errors in imports
+// TODO: Turned off because there are errors in imports
 // In any case - the whole file should be rewritten
 
 // import { ListsHeaderFragment } from '../support/page_fragments/lists-header.fragment';
@@ -14,7 +14,6 @@
 // const listsHeaderFragment = new ListsHeaderFragment();
 
 // // TODO: this is not E2E, these are component tests
-// // TODO: this suite is a mess
 // xdescribe('When a user opens the user profile modal', () => {
 //   beforeEach(() => {
 //     cy.clearIndexedDB();
