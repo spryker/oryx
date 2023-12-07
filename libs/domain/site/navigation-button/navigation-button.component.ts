@@ -1,7 +1,7 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
@@ -33,9 +33,9 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
         ${when(
           this.text,
           () =>
-            html`<oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}
-              >${this.text}</oryx-heading
-            >`
+            html`<oryx-heading .tag=${HeadingTag.Subtitle} .maxLines=${1}>
+              ${this.text}
+            </oryx-heading>`
         )}
         ${when(this.badge, () => html`<mark>${this.badge}</mark>`)}
       </oryx-button>

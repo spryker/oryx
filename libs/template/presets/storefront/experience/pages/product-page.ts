@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
@@ -85,7 +86,12 @@ export const productPage: ExperienceComponent = {
               components: [
                 {
                   type: 'oryx-product-title',
-                  options: { tag: 'h1' },
+                  options: {
+                    tag: 'h1',
+                    ...(featureVersion >= '1.4'
+                      ? { tag: HeadingTag.H1, typography: HeadingTag.H3 }
+                      : {}),
+                  },
                 },
                 {
                   type: 'oryx-product-brand',

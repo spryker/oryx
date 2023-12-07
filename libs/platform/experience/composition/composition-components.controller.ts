@@ -46,17 +46,54 @@ export class CompositionComponentsController implements ReactiveController {
   }
 
   protected components(): Observable<Component[] | null> {
-    return this.observe
-      .get('uid')
-      .pipe(
-        switchMap((uid) =>
-          uid
-            ? this.experienceService
-                .getComponent({ uid })
-                .pipe(map((component) => component.components ?? null))
-            : of(null)
-        )
-      );
+    return this.observe.get('uid').pipe(
+      switchMap((uid) =>
+        uid
+          ? this.experienceService.getComponent({ uid }).pipe(
+              switchMap((component) => {
+                const components = component?.components;
+
+                if (!components) {
+                  return of(null);
+                }
+
+                const stack: Record<string, boolean> = {};
+                const refs = components.reduce((acc, component) => {
+                  const { ref } = component;
+
+                  if (ref && !stack[ref]) {
+                    acc.push(
+                      this.experienceService
+                        .getComponent({
+                          uid: ref,
+                        })
+                        .pipe(map((value) => ({ [ref]: value })))
+                    );
+                    stack[ref] = true;
+                  }
+
+                  return acc;
+                }, [] as Observable<Record<string, Component>>[]);
+
+                return !refs.length
+                  ? of(components)
+                  : combineLatest(refs).pipe(
+                      map((refs) => {
+                        const stack = refs.reduce(
+                          (acc, value) => ({ ...acc, ...value }),
+                          {}
+                        );
+
+                        return components.map((component) =>
+                          component.ref ? stack[component.ref] : component
+                        );
+                      })
+                    );
+              })
+            )
+          : of(null)
+      )
+    );
   }
 
   protected filterHiddenComponents(
