@@ -1,7 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { catchError, combineLatest, map, Observable, of } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, tap } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
@@ -20,10 +20,17 @@ export class DefaultContentService implements ContentService {
   protected contentQuery = createQuery<Content | null, ContentQualifier>({
     loader: (q: ContentQualifier) => {
       const adapters = this.getAdapters(q);
+      console.log(q, ' contentQuery');
       return adapters.length
         ? combineLatest(
             adapters.map((adapter) =>
-              adapter.get(q).pipe(catchError(() => of(null)))
+              adapter.get(q).pipe(
+                tap((data) => console.log(data, 'data')),
+                catchError((e) => {
+                  console.log(e, 'asjfaksfn');
+                  return of(null);
+                })
+              )
             )
           ).pipe(
             map((contents) =>
@@ -45,7 +52,13 @@ export class DefaultContentService implements ContentService {
       return adapters.length
         ? combineLatest(
             adapters.map((adapter) =>
-              adapter.getAll(q).pipe(catchError(() => of(null)))
+              adapter.getAll(q).pipe(
+                tap((data) => console.log(data, 'ALL data')),
+                catchError((e) => {
+                  console.log(e, 'ALL asjfaksfn');
+                  return of(null);
+                })
+              )
             )
           ).pipe(
             map((contents) => {
