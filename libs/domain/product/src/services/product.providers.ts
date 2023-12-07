@@ -24,6 +24,7 @@ import {
   mediaNormalizer,
   mediaSetNormalizer,
   priceNormalizer,
+  productIncludes,
   productListNormalizer,
   productNormalizer,
 } from './adapter';
@@ -68,7 +69,11 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
-import { productContextProviders } from './product-context';
+import { productListIncludes } from './list/adapter/product-list-includes';
+import {
+  ProductContextFallback,
+  productContextProviders,
+} from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
@@ -175,6 +180,9 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
+  ...productIncludes,
+  ...productListIncludes,
+  ProductContextFallback,
   ...productContextProviders,
   {
     provide: PageMetaResolver,

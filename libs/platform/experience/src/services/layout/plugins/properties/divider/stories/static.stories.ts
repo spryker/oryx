@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../../../.constants';
 import { items } from './util';
 
 export default {
-  title: `${storybookPrefix}/Layout/Divider/Demo`,
+  title: `${storybookPrefix}/Layout/Divider`,
 } as Meta;
 
 const Template: Story<LayoutProperty> = (
