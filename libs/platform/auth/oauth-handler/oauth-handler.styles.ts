@@ -6,6 +6,7 @@ export const styles = css`
     flex-direction: column;
     background-color: var(--oryx-color-primary-9);
     justify-content: center;
+    align-items: center;
     height: 100vh;
     color: var(--oryx-color-neutral-1);
     --oryx-icon-size: 32px;

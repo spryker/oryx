@@ -1,5 +1,4 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { featureVersion } from '@spryker-oryx/utilities';
 
 export const fulfillmentLoginPage: ExperienceComponent = {
   id: 'fulfillment-login-page',
@@ -13,9 +12,8 @@ export const fulfillmentLoginPage: ExperienceComponent = {
     rules: [
       {
         layout: {
-          ...(featureVersion >= '1.4'
-            ? { type: 'list' }
-            : { type: 'flex', vertical: true }),
+          type: 'flex',
+          vertical: true,
         },
         gap: '30px',
         height: '100vh',
