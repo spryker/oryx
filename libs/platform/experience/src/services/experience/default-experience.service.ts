@@ -28,6 +28,9 @@ export class DefaultExperienceService implements ExperienceService {
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
+    /**
+     * @deprecated Since version 1.1. Use provided `ExperienceAdapter` instead.
+     */
     protected http = inject(HttpService),
     protected experienceDataService = inject(ExperienceDataService),
     protected experienceAdapter = inject(ExperienceAdapter, null)
@@ -154,9 +157,6 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponentByRoute(route: string): void {
-    /**
-     * @deprecated Since version 1.1. Use provided `ExperienceAdapter.get` method.
-     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;
