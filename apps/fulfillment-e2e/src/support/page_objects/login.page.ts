@@ -7,7 +7,7 @@ export class LoginPage extends AFAPage {
 
   loginForm = new LoginFragment();
 
-  getWrapper = () => cy.get('oryx-picking-login');
+  getWrapper = () => cy.get('oryx-auth-login');
   getLogo = () => this.getWrapper().find('oryx-image[resource="logo"]');
   getTitle = () => this.getWrapper().find('oryx-heading');
   getErrorNotification = () =>

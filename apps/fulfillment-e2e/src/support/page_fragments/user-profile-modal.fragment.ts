@@ -1,5 +1,5 @@
 export class UserProfileModal {
-  getWrapper = () => cy.get('oryx-site-navigation-item[uid="user-profile"]');
+  getWrapper = () => cy.get('oryx-picking-user-profile');
 
   getNotification = () => this.getWrapper().find('oryx-notification');
   getLogOutButton = () => this.getWrapper().find('.logout-button');
