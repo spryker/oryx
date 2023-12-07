@@ -16,6 +16,7 @@ export interface Component<
   id: string;
   name?: string;
   type: string;
+  ref?: string;
   meta?: {
     route?: string;
     title?: string;
