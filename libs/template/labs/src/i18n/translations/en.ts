@@ -20,7 +20,8 @@ const cart = {
   'cart.confirm-removed': 'Item is successfully removed',
   'oauth.logging-you-in': 'Logging you in...',
   'cart.edit.note': 'You can create multiple carts to organize your running orders',
-  'cart.edit.name.placeholder': 'The name of the shopping cart'
+  'cart.edit.name.placeholder': 'The name of the shopping cart',
+  'cart.edit.set-default': 'Make this cart my current cart'
 };
 
 const coupon = {

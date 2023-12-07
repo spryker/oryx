@@ -1,5 +1,5 @@
 export * from '../add/src/add.def';
-export * from '../cart-edit/cart-edit.def';
+export * from '../edit/edit.def';
 export * from '../coupon/coupon.def';
 export * from '../entries/src/entries.def';
 export * from '../entry/src/entry.def';

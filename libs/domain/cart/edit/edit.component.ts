@@ -1,19 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { FormMixin, FormRenderer } from '@spryker-oryx/form';
 import {
   CurrencyService,
-  PriceModeService,
-  PriceModes,
 } from '@spryker-oryx/site';
-import { I18nTranslationValue, computed, signal } from '@spryker-oryx/utilities';
+import { computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { query, state } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js';
-import { styles } from './cart-edit.styles';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { fields, priceModes } from './cart-edit.model';
+import { styles } from './edit.styles';
+import { fields, priceModes } from './edit.model';
 
+@defaultOptions({})
 export class CartEditComponent extends FormMixin(ContentMixin(LitElement)) {
   static styles = styles;
 
@@ -41,13 +37,23 @@ export class CartEditComponent extends FormMixin(ContentMixin(LitElement)) {
     return fields(this.i18n, this.$currencyOptions(), priceModeOptions);
   });
 
+  protected $values = computed(() => {
+    const priceModeOptions = priceModes.map((priceMode) => ({
+      value: priceMode,
+      text: this.i18n('cart.mode.<mode>', {
+        mode: priceMode.split('_')[0].toLowerCase(),
+      })
+    }));
+    return fields(this.i18n, this.$currencyOptions(), priceModeOptions);
+  });
+
   protected override render(): TemplateResult {
     const fields = this.$fields();
 
     return html`<form @submit=${this.onSubmit}>
       <oryx-layout
         layout="grid"
-        style="--oryx-column-count:2;--column-gap: 20px;"
+        style="--column-gap: 20px;"
       >
         ${this.fieldRenderer.buildForm(fields)}
       </oryx-layout>

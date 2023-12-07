@@ -4,6 +4,13 @@ import { i18n } from '@spryker-oryx/utilities';
 
 export const priceModes: PriceModes[] = [PriceModes.GrossMode, PriceModes.NetMode];
 
+export interface CartEditComponentOptions {
+  /**
+   * Defines if the submit button should have outlined appearance by default
+   */
+  isDefault?: boolean;
+} 
+
 export const fields = (
     _i18n: typeof i18n,
     currencyOptions: FormFieldOption[] = [],
@@ -22,13 +29,18 @@ export const fields = (
     type: FormFieldType.Select,
     label: _i18n('currency'),
     required: true,
-    options: currencyOptions
+    options: currencyOptions,
   },
   {
     id: 'priceMode',
     type: FormFieldType.Select,
-    label: _i18n('card-edit.price-mode'),
+    label: _i18n('cart.edit.price-mode'),
     required: true,
-    options: priceModeOptions
+    options: priceModeOptions,
+  },
+  {
+    id: 'isDefault',
+    type: FormFieldType.Boolean,
+    label: _i18n('cart.edit.set-default'),
   },
 ]);

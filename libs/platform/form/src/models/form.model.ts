@@ -21,6 +21,7 @@ export const enum FormFieldType {
   Color = 'color',
   RadioList = 'radio-list',
   Password = 'password',
+  Hidden = 'hidden',
 }
 
 export interface FormFieldDefinition<K = string>
