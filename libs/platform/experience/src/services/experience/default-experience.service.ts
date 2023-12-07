@@ -107,9 +107,6 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponent(uid: string): void {
-    /**
-     * @deprecated Since version 1.4. Use provided `ExperienceAdapter.get` method.
-     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/${encodeURIComponent(uid)}`;
