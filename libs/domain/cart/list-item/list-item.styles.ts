@@ -1,21 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const cartListStyles = css`
-  :host {
-    display: grid;
-    gap: 10px;
-  }
-
-  .heading {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  h1 {
-    ${headingUtil(HeadingTag.H3)}
-  }
-
+export const cartListItemStyles = css`
   oryx-site-price {
     ${headingUtil(HeadingTag.H6)}
 
@@ -55,7 +41,7 @@ export const cartListStyles = css`
 
   oryx-cart-entries {
     max-height: 500px;
-    overflow: scroll;
+    overflow-y: auto;
     display: block;
   }
 `;

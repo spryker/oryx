@@ -9,10 +9,12 @@ const product = {
 };
 
 const carts = {
+  'carts.totals.<count>-carts':
+    'My carts ({count, plural, one {1 cart} other {{count} carts}})',
   'carts.totals.<count>-items':
-    'My carts ({count, plural, one {one cart} other {{count} carts}})',
-  'carts.cart.totals.<count>-items':
-    '({count, plural, 0 {empty} one {one item} other {{count} items}})',
+    '({count, plural, 0 {empty} one {1 item} other {{count} items}})',
+  'carts.list.no-cart-entries':
+    'There are no cart entries for this cart available.',
 };
 
 const cart = {

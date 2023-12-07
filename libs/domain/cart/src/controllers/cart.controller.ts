@@ -29,14 +29,15 @@ export class CartController {
   }
 
   protected get cartQualifier(): Observable<CartQualifier | undefined> {
-    return this.observe.get('cartId').pipe(
-      switchMap((cartId) =>
-        cartId
-          ? of(cartId)
-          : this.contextController.get<string>(CartContext.CartID)
-      ),
-      map((cartId) => (cartId ? { cartId } : undefined))
-    );
+    return this.observe
+      .get('cartId')
+      .pipe(
+        switchMap((cartId) =>
+          cartId
+            ? of({ cartId })
+            : this.contextController.get<CartQualifier>(CartContext.CartID)
+        )
+      );
   }
 
   isEmpty(): Observable<boolean> {

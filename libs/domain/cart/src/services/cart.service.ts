@@ -24,7 +24,6 @@ export interface CartService {
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
   deleteEntry(data: CartEntryQualifier): Observable<unknown>;
   updateCart(data: UpdateCartQualifier): Observable<unknown>;
-  setActiveCart(data: UpdateCartQualifier): Observable<unknown>;
   createCart(data: CreateCartQualifier): Observable<unknown>;
   deleteCart(data: CartQualifier): Observable<unknown>;
 
