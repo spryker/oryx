@@ -28,6 +28,9 @@ export class DefaultExperienceService implements ExperienceService {
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
+    /**
+     * @deprecated Since version 1.1. Use provided `ExperienceAdapter` instead.
+     */
     protected http = inject(HttpService),
     protected experienceDataService = inject(ExperienceDataService),
     protected experienceAdapter = inject(ExperienceAdapter, null)
@@ -103,30 +106,16 @@ export class DefaultExperienceService implements ExperienceService {
     });
   }
 
-  private getComponentFromExperienceAdapter(id: string): Observable<Component> {
-    return (
-      this.experienceAdapter
-        ?.get({ id })
-        .pipe(map((result) => result ?? ({} as Component))) ??
-      of({} as Component)
-    );
-  }
-
-  /**
-   * @deprecated Since version 1.4. Use provided `ExperienceAdapter.get` method.
-   */
-  private getComponentDirectlyFromBackend(id: string): Observable<Component> {
+  protected reloadComponent(uid: string): void {
     const componentsUrl = `${
       this.contentBackendUrl
-    }/components/${encodeURIComponent(id)}`;
+    }/components/${encodeURIComponent(uid)}`;
 
-    return this.http.get<Component>(componentsUrl);
-  }
-
-  protected reloadComponent(uid: string): void {
     const adapter = this.experienceAdapter
-      ? this.getComponentFromExperienceAdapter(uid)
-      : this.getComponentDirectlyFromBackend(uid);
+      ? this.experienceAdapter
+          .get({ id: uid })
+          .pipe(map((result) => result ?? ({} as Component)))
+      : this.http.get<Component>(componentsUrl);
 
     adapter
       .pipe(
@@ -164,31 +153,16 @@ export class DefaultExperienceService implements ExperienceService {
     );
   }
 
-  private getComponentByRouteFromExperienceData(
-    route: string
-  ): Observable<Component | null> {
-    return this.experienceAdapter?.get({ route }) ?? of({} as Component);
-  }
-
-  /**
-   * @deprecated Since version 1.1. Use provided `ExperienceAdapter.get` method.
-   */
-  private getComponentByRouteDirectlyFromBackend(
-    route: string
-  ): Observable<Component | null> {
+  protected reloadComponentByRoute(route: string): void {
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;
 
-    return this.http
-      .get<Component[]>(componentsUrl)
-      .pipe(map((result) => result[0]));
-  }
-
-  protected reloadComponentByRoute(route: string): void {
     const adapter = this.experienceAdapter
-      ? this.getComponentByRouteFromExperienceData(route)
-      : this.getComponentByRouteDirectlyFromBackend(route);
+      ? this.experienceAdapter.get({ route })
+      : this.http
+          .get<Component[]>(componentsUrl)
+          .pipe(map((result) => result[0]));
 
     adapter
       .pipe(
