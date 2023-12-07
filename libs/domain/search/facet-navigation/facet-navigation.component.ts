@@ -4,17 +4,16 @@ import {
   defaultOptions,
   LayoutMixin,
 } from '@spryker-oryx/experience';
-import { FacetType, RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
+import { FacetType, RangeFacet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,
   FacetListService,
-} from '@spryker-oryx/search';
-import {
   SelectFacetEventDetail,
   SelectFacetValue,
   SelectRangeFacetValue,
-} from '@spryker-oryx/search/facet';
+  SelectRangeFacetValues,
+} from '@spryker-oryx/search';
 import {
   computed,
   featureVersion,
@@ -140,9 +139,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
 
   protected navigateRange(
     facet: RangeFacet,
-    selectedValues?: RangeFacetValue
+    selectedValues?: SelectRangeFacetValues
   ): void {
-    const rangeParams = ['min', 'max'] as (keyof RangeFacetValue)[];
+    const rangeParams = ['min', 'max'] as (keyof SelectRangeFacetValues)[];
     const queryParams = rangeParams.reduce((acc, key) => {
       const selected = selectedValues?.[key];
       const facetValue = facet.values?.[key];

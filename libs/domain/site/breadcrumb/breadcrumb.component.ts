@@ -16,7 +16,7 @@ import { when } from 'lit/directives/when.js';
 import { SiteBreadcrumbOptions } from './breadcrumb.model';
 import { siteBreadcrumbStyles } from './breadcrumb.styles';
 
-@hydrate({ event: 'window:load' })
+@hydrate()
 @signalAware()
 @defaultOptions({ divider: IconTypes.Forward })
 export class SiteBreadcrumbComponent extends I18nMixin(

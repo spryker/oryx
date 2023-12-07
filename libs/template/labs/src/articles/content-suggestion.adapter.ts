@@ -9,6 +9,12 @@ import {
 import { Observable, map } from 'rxjs';
 import { ArticleContent } from './article.model';
 
+declare global {
+  interface DynamicContentFields {
+    [SuggestionField.Contents]: undefined;
+  }
+}
+
 export class ContentSuggestionAdapter implements SuggestionAdapter {
   constructor(protected content = inject(ContentService)) {}
 

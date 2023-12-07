@@ -1,7 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceAdapter } from '@spryker-oryx/experience';
 import { lastValueFrom, of } from 'rxjs';
-import { ContentFields } from '../../models';
 import { ContentService } from '../content.service';
 import { ContentExperienceAdapter } from './content-experience.adapter';
 
@@ -45,8 +44,8 @@ describe('ContentExperienceAdapter', () => {
 
     expect(result).toEqual(components);
     expect(mockContentService.getAll).toHaveBeenCalledWith({
-      type: ContentFields.Component,
-      entities: [ContentFields.Component],
+      type: 'component',
+      entities: ['component'],
     });
   });
 
@@ -62,8 +61,8 @@ describe('ContentExperienceAdapter', () => {
     const result = await lastValueFrom(adapter.getAll());
     expect(result).toEqual(components);
     expect(contentService.getAll).toHaveBeenCalledWith({
-      type: ContentFields.Component,
-      entities: [ContentFields.Component],
+      type: 'component',
+      entities: ['component'],
     });
   });
 

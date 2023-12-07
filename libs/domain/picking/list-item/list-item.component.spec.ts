@@ -1,8 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { PickingListError, PickingListService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import {
+  PickingListError,
+  PickingListService,
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -15,7 +18,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
@@ -132,7 +135,7 @@ describe('PickingListItemComponent', () => {
 
   describe('when cart note is not provided', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.getList = vi.fn().mockReturnValue(of(mockPickingListData[1]));
       service.startPicking = vi
         .fn()
         .mockReturnValue(of(mockPickingListData[1]));

@@ -1,16 +1,23 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
   content: { data: { graphic, alt: graphic } },
 });
 
-const heading = (text: string, rule = {}) => ({
+const heading = (content: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { data: { text: `<b>${text}</b>` } },
+  content: { data: { text: text(content) } },
   options: { rules: [rule] },
 });
+
+const text = (text: string): string => {
+  return featureVersion >= '1.4'
+    ? `<strong>${text}</strong>`
+    : `<b>${text}</b>`;
+};
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
@@ -18,7 +25,7 @@ const link = (text: string, url = '/', icon?: string) => ({
   content: { data: { text } },
 });
 
-const legalLinks = {
+const legalLinks: ExperienceComponent = {
   type: 'oryx-composition',
   name: 'legal links',
   id: 'legal-links',
@@ -35,7 +42,19 @@ const legalLinks = {
   ],
   options: {
     rules: [
-      { layout: 'flex', divider: true, gap: '0 20px', padding: '20px 0 0' },
+      {
+        layout:
+          featureVersion >= '1.2'
+            ? {
+                type: 'flex',
+                divider: true,
+              }
+            : 'flex',
+        ...(featureVersion >= '1.4'
+          ? { gap: '40px 20px' }
+          : { gap: '0 20px', padding: '20px 0 0' }),
+        ...(featureVersion >= '1.2' ? {} : { divider: true }),
+      },
     ],
   },
 };
@@ -45,7 +64,7 @@ const customerSupport = {
   id: 'customer-support',
   content: {
     data: {
-      text: `<b>Customer Support</b><br/>
+      text: `${text('Customer Support')}<br/>
         <a href="/contact">Contact us</a><br/>
         <a href="/">Help center</a><br/>
         <a href="/">Payment</a><br/>
@@ -56,7 +75,7 @@ const customerSupport = {
   },
 };
 
-const promises = {
+const promises: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'corporate-promises',
   options: { rules: [{ layout: 'list', gap: '0' }] },
@@ -73,7 +92,7 @@ const aboutUs = {
   id: 'corporate-info',
   content: {
     data: {
-      text: `<b>About us</b><br/>
+      text: `${text('About us')}<br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -85,7 +104,7 @@ const aboutUs = {
   },
 };
 
-const selfService = {
+const selfService: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'self-service',
   name: 'Self service',
@@ -99,7 +118,7 @@ const selfService = {
   components: [customerSupport, promises, aboutUs],
 };
 
-const paymentLinks = {
+const paymentLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
@@ -133,7 +152,7 @@ const paymentLinks = {
   ],
 };
 
-const shippingLinks = {
+const shippingLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'shipping',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
@@ -161,7 +180,7 @@ const shippingLinks = {
   ],
 };
 
-const mobileAppsLinks = {
+const mobileAppsLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'apps',
   options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
@@ -178,7 +197,7 @@ const mobileAppsLinks = {
   ],
 };
 
-const socialLinks = {
+const socialLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'social',
   options: {
@@ -202,7 +221,7 @@ const socialLinks = {
   ],
 };
 
-const externalLinks = {
+const externalLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'external-links',
   options: { rules: [{ layout: 'list' }] },
@@ -220,7 +239,7 @@ const externalLinks = {
   ],
 };
 
-const siteLinks = {
+const siteLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'site-links',
   options: { rules: [{ layout: 'split', gap: '10px' }] },
@@ -228,9 +247,8 @@ const siteLinks = {
 };
 
 export const FooterTemplate: ExperienceComponent = {
+  type: 'oryx-composition',
   id: 'footer',
-  type: 'Page',
-  meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'oryx-composition',
@@ -243,10 +261,18 @@ export const FooterTemplate: ExperienceComponent = {
           options: {
             rules: [
               {
-                layout: 'flex',
-                vertical: true,
-                divider: true,
+                layout:
+                  featureVersion >= '1.2'
+                    ? {
+                        type: 'flex',
+                        vertical: true,
+                        divider: true,
+                      }
+                    : 'flex',
                 gap: '40px 18px',
+                ...(featureVersion >= '1.2'
+                  ? {}
+                  : { divider: true, vertical: true }),
               },
             ],
           },
@@ -258,15 +284,18 @@ export const FooterTemplate: ExperienceComponent = {
   options: {
     rules: [
       {
-        layout: 'flex',
-        divider: true,
+        layout:
+          featureVersion >= '1.2'
+            ? { type: 'flex', bleed: true, sticky: true }
+            : 'flex',
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',
         padding: '30 0',
-        bleed: true,
-        sticky: true,
         typography: 'small',
         style: 'line-height: 24px;',
+        ...(featureVersion >= '1.2'
+          ? {}
+          : { divider: true, bleed: true, sticky: true }),
       },
     ],
   },

@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { Sync, SyncActionHandler } from '@spryker-oryx/offline';
+import { Sync, SyncActionHandler } from '@spryker-oryx/offline/sync';
 import {
   BehaviorSubject,
   Observable,

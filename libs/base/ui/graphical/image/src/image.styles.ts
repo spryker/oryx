@@ -7,9 +7,10 @@ export const styles = css`
 
   svg,
   ::slotted(svg) {
+    --fill: currentColor;
+
     height: 100%;
     width: 100%;
-    fill: currentColor;
   }
 
   [part='fallback'] {

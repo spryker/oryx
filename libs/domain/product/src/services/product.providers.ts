@@ -24,6 +24,7 @@ import {
   mediaNormalizer,
   mediaSetNormalizer,
   priceNormalizer,
+  productIncludes,
   productListNormalizer,
   productNormalizer,
 } from './adapter';
@@ -50,7 +51,7 @@ import {
   categoryListNormalizerFactory,
   categoryNodeNormalizer,
   categoryNormalizerFactory,
-  categoryQuery,
+  categoryQueries,
   categoryTreeNormalizer,
 } from './category';
 import { DefaultProductService } from './default-product.service';
@@ -68,7 +69,11 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
-import { ProductContextFallback } from './product-context';
+import { productListIncludes } from './list/adapter/product-list-includes';
+import {
+  ProductContextFallback,
+  productContextProviders,
+} from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
@@ -125,10 +130,6 @@ export const productProviders: Provider[] = [
     useValue: facetsRangeNormalizer,
   },
   {
-    provide: FacetRatingNormalizer,
-    useValue: facetRatingNormalizer,
-  },
-  {
     provide: SortNormalizer,
     useValue: sortNormalizer,
   },
@@ -139,6 +140,11 @@ export const productProviders: Provider[] = [
   {
     provide: FacetCategoryNormalizer,
     useValue: facetCategoryNormalizer,
+  },
+  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
+  {
+    provide: FacetRatingNormalizer,
+    useValue: facetRatingNormalizer,
   },
   {
     provide: AvailabilityNormalizer,
@@ -174,7 +180,10 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
+  ...productIncludes,
+  ...productListIncludes,
   ProductContextFallback,
+  ...productContextProviders,
   {
     provide: PageMetaResolver,
     useClass: ProductPageTitleMetaResolver,
@@ -213,6 +222,6 @@ export const productProviders: Provider[] = [
   },
   ProductListBreadcrumb,
   ProductDetailsBreadcrumb,
-  categoryQuery,
+  ...categoryQueries,
   ...provideLitRoutes({ routes: productRoutes }),
 ];

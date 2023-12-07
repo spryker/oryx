@@ -1,6 +1,7 @@
 import { AppInitializer, PageMetaService } from '@spryker-oryx/core';
-import { inject, OnDestroy } from '@spryker-oryx/di';
+import { OnDestroy, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
+
 import { Subscription, tap } from 'rxjs';
 
 export const LocaleMetaInitializer = `${AppInitializer}LocaleMeta`;
@@ -37,10 +38,8 @@ export class DefaultLocaleMetaInitializer implements AppInitializer, OnDestroy {
         .get()
         .pipe(
           tap((lang: string) => {
-            this.metaService?.setHtmlAttributes({
-              lang,
-              dir: this.direction(lang),
-            });
+            const dir = this.getTextDirection(lang);
+            this.metaService?.setHtmlAttributes({ lang, dir });
           })
         )
         .subscribe()
@@ -51,11 +50,27 @@ export class DefaultLocaleMetaInitializer implements AppInitializer, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  /**
+   * This method is used to get the text direction of the provided locale code.
+   *
+   * It uses the Intl.Locale API to get the text direction. If the Intl.Locale API
+   * is not supported, it uses the rtlLanguages array to check if the locale code is RTL.
+   */
+  protected getTextDirection(localeCode: string): string {
+    try {
+      const locale = new Intl.Locale(localeCode);
+      return (locale as any).textInfo.direction;
+    } catch (error) {
+      // Handle the error if the provided locale code is invalid or unsupported.
+      // (FF doesn't support textInfo)
+      return this.rtlLanguages.includes(localeCode) ? 'rtl' : 'ltr';
+    }
+  }
+
+  /**
+   * @deprecated use getTextDirection() instead
+   */
   protected direction(localeCode: string): string {
-    return Object.prototype.hasOwnProperty.call(Intl.Locale, 'textInfo')
-      ? (new Intl.Locale(localeCode) as any).textInfo.direction
-      : this.rtlLanguages.includes(localeCode)
-      ? 'rtl'
-      : 'ltr';
+    return this.getTextDirection(localeCode);
   }
 }

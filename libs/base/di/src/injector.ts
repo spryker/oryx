@@ -150,6 +150,14 @@ export class Injector {
         providerInstance.instance = providerInstance.provider.useFactory();
         restoreInjector();
       } else if (isExistingProvider(providerInstance.provider)) {
+        if (
+          !this.providers.has(providerInstance.provider.useExisting) &&
+          // TODO: reconsider this fix
+          this.isMultiProvider(providerInstance.provider.useExisting)
+        ) {
+          this.setupMultiProvider(providerInstance.provider.useExisting);
+        }
+
         providerInstance.instance = this.getInstance(
           providerInstance.provider.useExisting
         );

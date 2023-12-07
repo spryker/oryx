@@ -8,7 +8,7 @@ export class FacetsFragment {
   setTouchscreen = (value: 'Yes' | 'No') => {
     this.getWrapper()
       .find(`input[type="radio"][name="touchscreen"][value="${value}"]`)
-      .check();
+      .check({ force: true });
   };
 
   setBrand = (value: string) => {
@@ -22,20 +22,20 @@ export class FacetsFragment {
       .contains('slot', 'Brand')
       .parent()
       .find('button[aria-label="Clear"]')
-      .click();
+      .click({ force: true });
   };
 
   setColor = (value: string) => {
     this.getWrapper()
       .find(`input[type="checkbox"][name="color"][value="${value}"]`)
-      .check();
+      .check({ force: true });
   };
 
   resetColor = () => {
     this.getWrapper()
       .find('oryx-search-color-facet')
       .find('button[aria-label="Clear"]')
-      .click();
+      .click({ force: true });
   };
 
   setRating = (value: string) => {
@@ -48,13 +48,13 @@ export class FacetsFragment {
     this.getWrapper()
       .find('oryx-search-facet-rating')
       .find('button[aria-label="Clear"]')
-      .click();
+      .click({ force: true });
   };
 
   setLabel = (value: string) => {
     this.getWrapper()
       .find(`input[type="checkbox"][name="label"][value="${value}"]`)
-      .check();
+      .check({ force: true });
   };
 
   resetLabel = () => {
@@ -62,25 +62,29 @@ export class FacetsFragment {
       .contains('slot', 'Product Labels')
       .parent()
       .find('button[aria-label="Clear"]')
-      .click();
+      .click({ force: true });
   };
 
   getPriceFacet = () => cy.get('oryx-search-price-facet');
 
-  setMinPrice = (price: number) =>
+  setMinPrice = (price: number) => {
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-input:nth-of-type(1) input')
-      .clear()
+      .clear({ force: true })
       .type(`${price}{enter}`);
+  };
 
   setMaxPrice = (price: number) =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-input:nth-of-type(2) input')
-      .clear()
+      .clear({ force: true })
       .type(`${price}{enter}`);
 
   setMinPriceRange = (price: number) =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-multi-range')
       .find(`label:nth-of-type(1) input`)
       .invoke('val', price)
@@ -89,6 +93,7 @@ export class FacetsFragment {
 
   setMaxPriceRange = (price: number) =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-multi-range')
       .find(`label:nth-of-type(2) input`)
       .invoke('val', price)
@@ -97,6 +102,7 @@ export class FacetsFragment {
 
   resetPrices = () =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('button[aria-label="Clear"]')
       .click({ force: true });
 }

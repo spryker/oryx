@@ -8,6 +8,7 @@ import {
 } from '@spryker-oryx/cart/mocks';
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { DefaultLocaleService, LocaleService } from '@spryker-oryx/i18n';
 import {
   BehaviorSubject,
   Observable,
@@ -73,6 +74,10 @@ describe('DefaultCartService', () => {
         {
           provide: CartService,
           useClass: DefaultCartService,
+        },
+        {
+          provide: LocaleService,
+          useClass: DefaultLocaleService,
         },
         {
           provide: IdentityService,

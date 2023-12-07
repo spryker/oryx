@@ -135,6 +135,7 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected escapeValue(value: string): string {
+    if (value.indexOf('<svg') > -1) return value;
     return value
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;')

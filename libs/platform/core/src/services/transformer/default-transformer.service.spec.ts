@@ -150,4 +150,20 @@ describe('DefaultTransformerService', () => {
     expect(mockATransformer).toHaveBeenCalledWith(mockData, service);
     expect(result).toBe(mockATransformerResult);
   });
+
+  it('should overwrite property with the value from the last transformer when multiple transformers modify the same property', () => {
+    const mockFirstTransformerResult = { a: '5', b: '1' };
+    const mockSecondTransformerResult = { a: '6', c: '2' };
+    mockATransformer.mockReturnValueOnce(mockFirstTransformerResult);
+    mockBTransformer.mockReturnValueOnce(mockSecondTransformerResult);
+
+    service
+      .transform(
+        mockData,
+        'mockBTransformer' as keyof InjectionTokensContractMap
+      )
+      .subscribe((result) => {
+        expect(result).toEqual({ a: '5', b: '1', c: '2' });
+      });
+  });
 });

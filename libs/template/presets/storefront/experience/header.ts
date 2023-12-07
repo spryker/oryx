@@ -1,4 +1,4 @@
-import { ExperienceComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent, ShadowElevation } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
@@ -63,13 +63,18 @@ export const topHeader = (options?: {
       options: {
         rules: [
           {
-            layout: 'flex',
+            layout:
+              featureVersion >= '1.3'
+                ? { type: 'flex', bleed: true, wrap: false }
+                : featureVersion >= '1.2'
+                ? { type: 'flex', bleed: true }
+                : 'flex',
             background: 'hsl(0, 0%, 9.0%)',
             padding: '10px 0',
             gap: '10px',
             align: 'center',
-            bleed: true,
             style: 'color: white',
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
         ],
       },
@@ -176,14 +181,22 @@ export const mainHeader = (): ExperienceComponent[] => {
       options: {
         rules: [
           {
-            layout: 'column',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'column',
+                    sticky: true,
+                    bleed: true,
+                    zIndex: 1,
+                  }
+                : 'column',
             background: 'var(--oryx-color-primary-9)',
             align: 'center',
-            zIndex: 1,
             padding: '5px 0',
             gap: '5px',
-            sticky: true,
-            bleed: true,
+            ...(featureVersion >= '1.2'
+              ? {}
+              : { bleed: true, sticky: true, zIndex: 1 }),
           },
         ],
       },
@@ -191,9 +204,59 @@ export const mainHeader = (): ExperienceComponent[] => {
   ];
 };
 
+export const categoryNavigation = (
+  exclude: string | (string | number)[]
+): ExperienceComponent[] => {
+  const categoryLinks =
+    featureVersion >= '1.4'
+      ? [{ type: 'oryx-product-category-list', options: { exclude } }]
+      : ((exclude as string[]) ?? []).map((id) => ({
+          type: 'oryx-content-link',
+          options: { id, type: 'category' },
+        }));
+  return [
+    {
+      type: 'oryx-composition',
+      id: 'category-navigation',
+      options: {
+        rules: [
+          {
+            layout: {
+              type: 'navigation',
+              bleed: true,
+            },
+            shadow: ShadowElevation.Raised,
+            top: '78px',
+            gap: '40px',
+            background: 'var(--oryx-color-neutral-1)',
+          },
+        ],
+      },
+      components: [
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'All products' } },
+          options: {
+            url: '/search',
+            icon: 'category',
+          },
+        },
+        ...categoryLinks,
+      ],
+    },
+  ];
+};
+
 export const HeaderTemplate: ExperienceComponent = {
+  type: 'oryx-composition',
   id: 'header',
-  type: 'Page',
-  meta: { title: 'Header', route: '/_header' },
-  components: [...topHeader(), ...mainHeader()],
+  components: [
+    ...topHeader(),
+    ...mainHeader(),
+    ...(featureVersion >= '1.3'
+      ? categoryNavigation(
+          featureVersion >= '1.4' ? '15,16' : ['2', '5', '9', '11']
+        )
+      : []),
+  ],
 };

@@ -15,7 +15,7 @@ const generateThumbs = (
   style?: string
 ): TemplateResult => {
   return html`<oryx-layout
-    .layout=${layout}
+    layout=${layout}
     ?layout-vertical=${vertical}
     class=${cssClass}
     style=${style}
@@ -30,19 +30,19 @@ const Template: Story = (): TemplateResult => {
 
     <h2>Navigation at the top</h2>
     <div class="page">
-      <oryx-layout layout="list">
+      <oryx-layout layout="grid">
         ${generateThumbs('carousel', 'thumbs')}
         ${generateThumbs('carousel', 'main')}
       </oryx-layout>
-      <oryx-layout layout="list">
+      <oryx-layout layout="grid">
         ${generateThumbs('grid', 'thumbs')}
         ${generateThumbs('carousel', 'main')}
       </oryx-layout>
-      <oryx-layout layout="list" layout-overlap>
+      <oryx-layout layout="grid" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs', false, 'place-self:start;')}
       </oryx-layout>
-      <oryx-layout layout="list" layout-overlap>
+      <oryx-layout layout="grid" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', false, 'place-self:start;')}
       </oryx-layout>
@@ -70,19 +70,19 @@ const Template: Story = (): TemplateResult => {
 
     <h2>Navigation at the bottom</h2>
     <div class="page">
-      <oryx-layout layout="list">
+      <oryx-layout layout="grid">
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs')}
       </oryx-layout>
-      <oryx-layout layout="list">
+      <oryx-layout layout="grid">
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs')}
       </oryx-layout>
-      <oryx-layout layout="list" layout-overlap>
+      <oryx-layout layout="grid" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs', false, 'place-self:end;')}
       </oryx-layout>
-      <oryx-layout layout="list" layout-overlap>
+      <oryx-layout layout="grid" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', false, 'place-self:end;')}
       </oryx-layout>
@@ -110,7 +110,7 @@ const Template: Story = (): TemplateResult => {
 
     <h2>Navigation vertical</h2>
     <div class="page">
-      <oryx-layout layout="list">
+      <oryx-layout layout="grid">
         ${generateThumbs('carousel', 'thumbs')}
         ${generateThumbs('carousel', 'main', true)}
       </oryx-layout>
@@ -118,7 +118,7 @@ const Template: Story = (): TemplateResult => {
         ${generateThumbs('carousel', 'thumbs', true)}
         ${generateThumbs('carousel', 'main', true)}
       </oryx-layout>
-      <oryx-layout layout="list" layout-overlap>
+      <oryx-layout layout="grid" layout-overlap>
         ${generateThumbs('carousel', 'main', true)}
         ${generateThumbs('carousel', 'thumbs', false, 'place-self:start;')}
       </oryx-layout>
