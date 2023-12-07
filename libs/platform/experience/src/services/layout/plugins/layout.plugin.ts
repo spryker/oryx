@@ -51,7 +51,12 @@ export const enum LayoutPluginType {
 export interface LayoutPluginRender {
   pre?: TemplateResult;
   post?: TemplateResult;
+  /**
+   * @deprecated since 1.4 will be removed. Use inner instead.
+   */
   wrapper?: TemplateResult;
+  inner?: TemplateResult;
+  outer?: TemplateResult;
 }
 
 export type LayoutPluginImplementation = Record<

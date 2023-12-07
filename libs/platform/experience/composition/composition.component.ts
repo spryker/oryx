@@ -140,7 +140,7 @@ export class CompositionComponent extends LayoutMixin(
 
           return html`
             ${layoutTemplate?.pre}
-            ${layoutTemplate?.wrapper ?? this.renderComponent(component)}
+            ${layoutTemplate?.inner ?? this.renderComponent(component)}
             ${layoutTemplate?.post}
           `;
         }
