@@ -18,15 +18,13 @@ export class CartListItemComponent
 
   protected cartService = resolve(CartService);
 
-  @property({ type: Boolean, reflect: true }) open?: boolean;
+  @property({ type: Boolean }) open?: boolean;
 
   protected setDefault(): void {
-    this.cartService
-      .updateCart({
-        cartId: this.$cart()?.id,
-        isDefault: true,
-      })
-      .subscribe();
+    this.cartService.updateCart({
+      cartId: this.$cart()?.id,
+      isDefault: true,
+    });
   }
 
   protected override render(): TemplateResult | void {
