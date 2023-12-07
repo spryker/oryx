@@ -10,7 +10,7 @@ const features = [
   ...(env.ORYX_PRESET && env.ORYX_PRESET === 'b2b'
     ? b2bStorefrontFeatures
     : storefrontFeatures),
-  ...(env.ORYX_LABS ? labsFeatures : []),
+  ...labsFeatures,
 ];
 
 export const app = appBuilder()
