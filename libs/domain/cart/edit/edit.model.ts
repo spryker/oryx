@@ -1,21 +1,30 @@
-import { FormFieldDefinition, FormFieldOption, FormFieldType } from '@spryker-oryx/form';
+import {
+  FormFieldDefinition,
+  FormFieldOption,
+  FormFieldType,
+} from '@spryker-oryx/form';
 import { PriceModes } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
 
-export const priceModes: PriceModes[] = [PriceModes.GrossMode, PriceModes.NetMode];
+export const priceModes: PriceModes[] = [
+  PriceModes.GrossMode,
+  PriceModes.NetMode,
+];
 
 export interface CartEditComponentOptions {
   /**
-   * Defines if the submit button should have outlined appearance by default
+   * Make the cart default for the current user.
+   *
+   * @default true
    */
   isDefault?: boolean;
-} 
+}
 
 export const fields = (
-    _i18n: typeof i18n,
-    currencyOptions: FormFieldOption[] = [],
-    priceModeOptions: FormFieldOption[] = [],
-): FormFieldDefinition[] => ([
+  _i18n: typeof i18n,
+  currencyOptions: FormFieldOption[] = [],
+  priceModeOptions: FormFieldOption[] = []
+): FormFieldDefinition[] => [
   {
     id: 'name',
     type: FormFieldType.Text,
@@ -42,5 +51,6 @@ export const fields = (
     id: 'isDefault',
     type: FormFieldType.Boolean,
     label: _i18n('cart.edit.set-default'),
+    width: 100,
   },
-]);
+];
