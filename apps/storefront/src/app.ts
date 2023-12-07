@@ -1,5 +1,6 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { labsFeatures } from '@spryker-oryx/labs';
+import { merchantFeature } from '@spryker-oryx/merchant';
 import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';
 import { storefrontFeatures } from '@spryker-oryx/presets/storefront';
 import { storefrontTheme } from '@spryker-oryx/themes';
@@ -10,6 +11,8 @@ const features = [
   ...(env.ORYX_PRESET && env.ORYX_PRESET === 'b2b'
     ? b2bStorefrontFeatures
     : storefrontFeatures),
+  // TODO: use feature flag
+  merchantFeature,
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 
