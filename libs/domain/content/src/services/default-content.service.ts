@@ -41,18 +41,20 @@ export class DefaultContentService implements ContentService {
   protected contentsQuery = createQuery<Content[] | null, ContentQualifier>({
     loader: (q: ContentQualifier) => {
       const adapters = this.getAdapters(q);
+      console.log(adapters, 'adapters');
       return adapters.length
         ? combineLatest(
             adapters.map((adapter) =>
               adapter.getAll(q).pipe(catchError(() => of(null)))
             )
           ).pipe(
-            map((contents) =>
-              contents.reduce(
+            map((contents) => {
+              console.log(contents, 'contents');
+              return contents.reduce(
                 (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
                 null
-              )
-            )
+              );
+            })
           )
         : of(null);
     },

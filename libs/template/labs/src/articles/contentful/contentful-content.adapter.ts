@@ -59,8 +59,10 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   }
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
+    console.log(qualifier, 'qualifier');
     return this.getEntries(qualifier).pipe(
       switchMap((records) => {
+        console.log(records, 'records');
         return from(records).pipe(
           switchMap((record) => this.parseEntryItem(record)),
           reduce((a, c) => [...a, c], [] as Content[])
