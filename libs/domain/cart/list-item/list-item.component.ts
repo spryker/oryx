@@ -50,7 +50,7 @@ export class CartListItemComponent
       <oryx-link slot="heading">
         <a href=${url}>
           ${cart.name}
-          ${this.i18n('cart.cart.totals.<count>-items', {
+          ${this.i18n('carts.totals.<count>-items', {
             count: this.$totalQuantity() ?? 0,
           })}
         </a>
@@ -94,7 +94,7 @@ export class CartListItemComponent
               size=${size}
               @click=${this.setDefault}
             >
-              ${this.i18n('cart.make-default')}
+              ${this.i18n('carts.make-default')}
             </oryx-button>`
         )}
 
@@ -127,7 +127,7 @@ export class CartListItemComponent
 
   protected renderEntries(): TemplateResult {
     if (!this.$totalQuantity()) {
-      return html`<p>${this.i18n('cart.list.no-cart-entries')}</p>`;
+      return html`<p>${this.i18n('carts.list.no-cart-entries')}</p>`;
     }
 
     return html`<oryx-cart-entries

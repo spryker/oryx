@@ -71,7 +71,7 @@ describe('CartListItemComponent', () => {
     const link = element.renderRoot.querySelector('oryx-link > a');
     expect(link?.textContent).toContain(cart.name);
     expect(link?.textContent).toContain(
-      i18n('cart.cart.totals.<count>-items', { count: 1 })
+      i18n('carts.totals.<count>-items', { count: 1 })
     );
   });
 
@@ -164,7 +164,7 @@ describe('CartListItemComponent', () => {
     it('should render link button with 0 items count', () => {
       const link = element.renderRoot.querySelector('oryx-link > a');
       expect(link?.textContent).toContain(
-        i18n('cart.cart.totals.<count>-items', { count: 0 })
+        i18n('carts.totals.<count>-items', { count: 0 })
       );
     });
 

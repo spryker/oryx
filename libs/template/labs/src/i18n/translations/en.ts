@@ -9,14 +9,12 @@ const product = {
 };
 
 const carts = {
-  'cart.totals.<count>-items':
+  'carts.totals.<count>-carts':
     'My carts ({count, plural, one {1 cart} other {{count} carts}})',
-  'cart.cart.totals.<count>-items':
+  'carts.totals.<count>-items':
     '({count, plural, 0 {empty} one {1 item} other {{count} items}})',
-  'cart.list.no-cart-entries':
+  'carts.list.no-cart-entries':
     'There are no cart entries for this cart available.',
-  'cart.list.note':
-    'Manage your carts with ease. Create, track, and shop effortlessly. Need help? Our support team is here for you. Enjoy your shopping!',
 };
 
 const cart = {

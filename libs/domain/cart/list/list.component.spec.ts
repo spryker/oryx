@@ -2,13 +2,23 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import { mockDefaultCart } from '@spryker-oryx/cart/mocks';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
+import { useComponent } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 import { CartListComponent } from './list.component';
 import { cartListComponent } from './list.def';
 
 class MockCartService implements Partial<CartService> {
   getCarts = vi.fn().mockReturnValue(of([mockDefaultCart]));
+}
+
+class MockLayoutService implements Partial<LayoutService> {
+  getStyles = vi.fn().mockReturnValue(of(null));
+}
+
+class MockLayoutBuilder implements Partial<LayoutBuilder> {
+  createStylesFromOptions = vi.fn();
+  getActiveLayoutRules = vi.fn().mockReturnValue(of());
 }
 
 describe('CartListComponent', () => {
@@ -26,6 +36,14 @@ describe('CartListComponent', () => {
           provide: CartService,
           useClass: MockCartService,
         },
+        {
+          provide: LayoutService,
+          useClass: MockLayoutService,
+        },
+        {
+          provide: LayoutBuilder,
+          useClass: MockLayoutBuilder,
+        },
       ],
     });
 
@@ -39,18 +57,6 @@ describe('CartListComponent', () => {
     vi.clearAllMocks();
   });
 
-  it('should render heading with 1 item', () => {
-    const heading = element.renderRoot.querySelector('oryx-heading');
-    expect(heading?.textContent).toContain(
-      i18n('cart.totals.<count>-items', { count: 1 })
-    );
-  });
-
-  it('should render create cart button with correct text', () => {
-    const button = element.renderRoot.querySelector('oryx-button');
-    expect(button?.textContent).toContain(i18n('cart.create-cart'));
-  });
-
   it('should render list of items with cartIds', () => {
     expect(element).toContainElement(
       `oryx-cart-list-item[cartId="${mockDefaultCart.id}"]`
@@ -62,13 +68,6 @@ describe('CartListComponent', () => {
       service.getCarts = vi.fn().mockReturnValue(of([]));
 
       element = await fixture(html`<oryx-cart-list></oryx-cart-list>`);
-    });
-
-    it('should render heading with 0 items', () => {
-      const heading = element.renderRoot.querySelector('oryx-heading');
-      expect(heading?.textContent).toContain(
-        i18n('cart.totals.<count>-items', { count: 0 })
-      );
     });
 
     it('should not render the list', () => {
