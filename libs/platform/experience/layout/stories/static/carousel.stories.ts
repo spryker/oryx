@@ -98,7 +98,7 @@ const Template: Story = (): TemplateResult => {
     <ul>
       <li>Columns can be spanned and keep the column alignment (2, span: 2)</li>
     </ul>
-    <oryx-layout layout="carousel">
+    <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}>
       <div>1</div>
       <div style="--col-span:2;background:var(--oryx-color-secondary-9);">
         2
