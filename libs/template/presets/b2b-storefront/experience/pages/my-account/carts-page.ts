@@ -10,23 +10,11 @@ export const cartsPage: ExperienceComponent = {
     route: '/carts',
     description: 'Carts Page',
   },
-  options: {
-    rules: [
-      { layout: 'list', padding: '30px 0' },
-      { query: { breakpoint: 'sm' }, gap: '0' },
-    ],
-  },
+  options: { rules: [{ layout: 'list', padding: '30px 0' }] },
   components: [
     {
       type: 'oryx-site-breadcrumb',
-      options: {
-        rules: [
-          {
-            colSpan: 2,
-          },
-          { query: { breakpoint: Size.Sm }, hide: true },
-        ],
-      },
+      options: { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] },
     },
     {
       type: 'oryx-composition',
@@ -64,12 +52,8 @@ export const cartsPage: ExperienceComponent = {
           type: 'oryx-content-text',
           content: {
             data: {
-              text: `
-            <p style="text-wrap:initial; margin:0;">
-              Manage your carts with ease. Create, track, and shop effortlessly. 
-              Need help? Our support team is here for you. Enjoy your shopping!
-            </p>
-          `,
+              text: `Manage your carts with ease. Create, track, and shop effortlessly. 
+                    Need help? Our support team is here for you. Enjoy your shopping!`,
             },
           },
         },
