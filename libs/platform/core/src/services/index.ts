@@ -4,6 +4,7 @@ export * from './error';
 export * from './feature-options';
 export * from './http';
 export * from './hydration';
+export * from './includes';
 export * from './page-meta';
 export * from './providers';
 export * from './query';

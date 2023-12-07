@@ -4,9 +4,8 @@ import { storybookPrefix } from '../../../../../../../.constants';
 import { items } from './util';
 
 export default {
-  title: `${storybookPrefix}/Layout/Divider/Demo`,
+  title: `${storybookPrefix}/Layout/Divider`,
   args: {
-    divider: true,
     dividerInBetween: true,
     dividerBefore: false,
     dividerAfter: false,
