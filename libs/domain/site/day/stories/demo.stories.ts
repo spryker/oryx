@@ -31,10 +31,10 @@ export default {
 const Template: Story<DayComponentAttributes> = (
   props: DayComponentAttributes
 ): TemplateResult => {
-  return html`<oryx-day
+  return html`<oryx-site-day
     .day=${props.day}
     .i18nToken=${props.i18nToken}
-  ></oryx-date>`;
+  ></oryx-site-date>`;
 };
 
 export const Demo = Template.bind({});

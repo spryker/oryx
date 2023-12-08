@@ -8,18 +8,21 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <oryx-day day="monday"></oryx-day>
-    <oryx-day .day=${'tuesday'}></oryx-day>
-    <oryx-day day="wednesday"></oryx-day>
-    <oryx-day day="thursday"></oryx-day>
-    <oryx-day day="friday"></oryx-day>
-    <oryx-day day="saturday"></oryx-day>
-    <oryx-day day="sunday"></oryx-day>
+    <oryx-site-day day="monday"></oryx-site-day>
+    <oryx-site-day .day=${'tuesday'}></oryx-site-day>
+    <oryx-site-day day="wednesday"></oryx-site-day>
+    <oryx-site-day day="thursday"></oryx-site-day>
+    <oryx-site-day day="friday"></oryx-site-day>
+    <oryx-site-day day="saturday"></oryx-site-day>
+    <oryx-site-day day="sunday"></oryx-site-day>
     <h3>Inside token</h3>
-    <oryx-day day="monday" .i18nToken=${'before-<day>-after'}></oryx-day>
+    <oryx-site-day
+      day="monday"
+      .i18nToken=${'before-<day>-after'}
+    ></oryx-site-day>
 
     <style>
-      oryx-day {
+      oryx-site-day {
         display: block;
       }
     </style>

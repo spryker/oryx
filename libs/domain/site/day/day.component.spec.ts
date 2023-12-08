@@ -44,7 +44,7 @@ describe('SiteDayComponent', () => {
 
   describe('when the component is initialised', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-day></oryx-day>`);
+      element = await fixture(html`<oryx-site-day></oryx-site-day>`);
     });
 
     it('should be an instance of SiteDayComponent', () => {
@@ -60,7 +60,9 @@ describe('SiteDayComponent', () => {
     describe('and the day is monday', () => {
       beforeEach(async () => {
         localeService.formatDay.mockReturnValue('formatted-date');
-        element = await fixture(html`<oryx-day .day=${'monday'}></oryx-day>`);
+        element = await fixture(
+          html`<oryx-site-day .day=${'monday'}></oryx-site-day>`
+        );
       });
 
       it('should call the locale service to format the date', () => {
@@ -82,10 +84,10 @@ describe('SiteDayComponent', () => {
     describe('and there is a day available', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-day
+          html`<oryx-site-day
             .day=${'monday'}
             i18nToken="my.custom-<day>-day"
-          ></oryx-day>`
+          ></oryx-site-day>`
         );
       });
 
@@ -99,7 +101,7 @@ describe('SiteDayComponent', () => {
     describe('and there is no day available', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-day i18nToken="my.custom-<day>-day"></oryx-day>`
+          html`<oryx-site-day i18nToken="my.custom-<day>-day"></oryx-site-day>`
         );
       });
 
