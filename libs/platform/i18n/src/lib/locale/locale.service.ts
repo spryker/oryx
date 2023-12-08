@@ -6,6 +6,7 @@ export interface LocaleService {
   get(): Observable<string>;
   set(value: string): void;
   formatDate(stamp: string | number | Date): Observable<string>;
+  formatDay(day: string): Observable<string>;
   formatTime(stamp: string | number | Date): Observable<string>;
   formatDateTime(stamp: string | number | Date): Observable<string>;
 }

@@ -52,7 +52,6 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
 
   protected getDate(day?: string, time?: string): Date | undefined {
     if (!day || !time) return;
-
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const date = new Date();
     date.setHours(hours, minutes, seconds, 0);

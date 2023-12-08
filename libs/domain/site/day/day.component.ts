@@ -8,25 +8,28 @@ import {
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
+import { DayComponentAttributes } from './day.model';
 
 @hydrate()
 @signalAware()
-export class SiteTimeComponent extends ContentMixin(LitElement) {
+export class SiteDayComponent extends ContentMixin<DayComponentAttributes>(
+  LitElement
+) {
   protected localeService = resolve(LocaleService);
 
-  @signalProperty() stamp?: string | number | Date;
+  @signalProperty() day?: string;
   @signalProperty() i18nToken?: string;
 
-  protected $time = computed(() =>
-    this.stamp ? this.localeService.formatTime(this.stamp) : undefined
+  protected $day = computed(() =>
+    this.day ? this.localeService.formatDay(this.day) : undefined
   );
 
   protected override render(): TemplateResult | void {
-    if (!this.$time()) return;
+    if (!this.$day()) return;
     if (this.i18nToken) {
-      return html`${this.i18n(this.i18nToken, { date: this.$time() })}`;
+      return html`${this.i18n(this.i18nToken, { day: this.$day() })}`;
     } else {
-      return html`${this.$time()}`;
+      return html`${this.$day()}`;
     }
   }
 }
