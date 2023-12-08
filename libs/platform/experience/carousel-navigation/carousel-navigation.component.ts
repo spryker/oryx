@@ -146,7 +146,7 @@ export class CarouselNavigationComponent
   protected buildNavigation(): void {
     this.style.setProperty(
       '--width',
-      `${getDimensions(this.hostElement, false).size}px`
+      `${getDimensions(this.hostElement).size}px`
     );
     this.style.setProperty(
       '--height',
@@ -306,7 +306,7 @@ export class CarouselNavigationComponent
       ${when(
         this.showIndicators,
         () => html`
-          <div class="indicators" @input=${this.handleIndicator}>
+          <div class="indicators" @input=${this.handleIndicatorInput}>
             ${this.slides.map(
               (slide) =>
                 html`<input value=${slide} type="radio" name="indicators" />`
@@ -376,16 +376,16 @@ export class CarouselNavigationComponent
 
   /**
    *
-   * @param @deprecated use handleIndicator instead
+   * @param @deprecated use handleIndicatorChange instead
    */
   protected handleIndicatorClick(e: Event): void {
-    this.handleIndicator(e);
+    this.handleIndicatorInput(e);
   }
 
   /**
-   * Handles the click on an indicator.
+   * Handles the selected state of an indicator.
    */
-  protected handleIndicator(e: Event): void {
+  protected handleIndicatorInput(e: Event): void {
     const target = e.target as HTMLInputElement;
     this.scrollElementToIndex(parseInt(target.value));
   }
