@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FormRenderer } from '@spryker-oryx/form';
+import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import {
   CurrencyService,
   PriceModeService,
@@ -14,7 +14,6 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { CartEditComponent } from './edit.component';
 import { cartEditComponent } from './edit.def';
-import { fields } from './edit.model';
 
 class MockFormRenderer implements Partial<FormRenderer> {
   buildForm = vi.fn().mockReturnValue(html``);
@@ -41,17 +40,42 @@ class mockPricingService {
   format = vi.fn().mockReturnValue(of('price'));
 }
 
-const expectedFields = fields(
-  i18n,
-  [{ value: 'MOCK', text: 'Mock' }],
-  [
-    { value: PriceModes.GrossMode, text: 'gross' },
-    { value: PriceModes.NetMode, text: 'net' },
-  ]
-);
+const expectedFields = [
+  {
+    id: 'name',
+    type: FormFieldType.Text,
+    label: i18n('cart.edit.name'),
+    placeholder: i18n('cart.edit.name.placeholder'),
+    required: true,
+    width: 100,
+  },
+  {
+    id: 'currency',
+    type: FormFieldType.Select,
+    label: i18n('currency'),
+    required: true,
+    options: [{ value: 'MOCK', text: 'Mock' }],
+  },
+  {
+    id: 'priceMode',
+    type: FormFieldType.Select,
+    label: i18n('cart.edit.price-mode'),
+    required: true,
+    options: [
+      { value: PriceModes.GrossMode, text: 'gross' },
+      { value: PriceModes.NetMode, text: 'net' },
+    ],
+  },
+  {
+    id: 'isDefault',
+    type: FormFieldType.Boolean,
+    label: i18n('cart.edit.set-default'),
+    width: 100,
+  },
+];
+
 const expectedValues = {
   isDefault: true,
-  store: 'Mock',
   priceMode: PriceModes.GrossMode,
   currency: 'MOCK',
 };

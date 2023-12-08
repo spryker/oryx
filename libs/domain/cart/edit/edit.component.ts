@@ -1,15 +1,22 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { FormMixin, FormRenderer, FormValues } from '@spryker-oryx/form';
+import {
+  FormFieldDefinition,
+  FormFieldType,
+  FormMixin,
+  FormRenderer,
+  FormValues,
+} from '@spryker-oryx/form';
 import {
   CurrencyService,
   PriceModeService,
+  PriceModes,
   StoreService,
 } from '@spryker-oryx/site';
 import { computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { CartEditComponentOptions, fields, priceModes } from './edit.model';
+import { CartEditComponentOptions } from './edit.model';
 
 @defaultOptions({ isDefault: true })
 export class CartEditComponent extends CartComponentMixin(
@@ -36,12 +43,6 @@ export class CartEditComponent extends CartComponentMixin(
   protected $currencies = signal(this.currencyService.getAll(), {
     initialValue: [],
   });
-  protected $currencyOptions = computed(() => {
-    return this.$currencies().map((currency) => ({
-      value: currency.code,
-      text: currency.name,
-    }));
-  });
 
   protected priceModeService = resolve(PriceModeService);
   protected $priceMode = signal(this.priceModeService.get());
@@ -49,30 +50,65 @@ export class CartEditComponent extends CartComponentMixin(
   protected storeService = resolve(StoreService);
   protected $store = signal(this.storeService.get());
 
-  protected $fields = computed(() => {
-    const priceModeOptions = priceModes.map((priceMode) => ({
-      value: priceMode,
-      text: this.i18n('cart.mode.<mode>', {
-        mode: priceMode.split('_')[0].toLowerCase(),
-      }),
-    }));
-    return fields(this.i18n, this.$currencyOptions(), priceModeOptions);
-  });
+  protected getFields(): FormFieldDefinition[] {
+    const priceModeOptions = [PriceModes.GrossMode, PriceModes.NetMode].map(
+      (priceMode) => ({
+        value: priceMode,
+        text: this.i18n('cart.mode.<mode>', {
+          mode: priceMode.split('_')[0].toLowerCase(),
+        }),
+      })
+    );
 
-  protected $values = computed(() => {
-    const { isDefault } = this.$options();
+    const currencyOptions = this.$currencies().map((currency) => ({
+      value: currency.code,
+      text: currency.name,
+    }));
+
+    return [
+      {
+        id: 'name',
+        type: FormFieldType.Text,
+        label: this.i18n('cart.edit.name'),
+        placeholder: this.i18n('cart.edit.name.placeholder'),
+        required: true,
+        width: 100,
+      },
+      {
+        id: 'currency',
+        type: FormFieldType.Select,
+        label: this.i18n('currency'),
+        required: true,
+        options: currencyOptions,
+      },
+      {
+        id: 'priceMode',
+        type: FormFieldType.Select,
+        label: this.i18n('cart.edit.price-mode'),
+        required: true,
+        options: priceModeOptions,
+      },
+      {
+        id: 'isDefault',
+        type: FormFieldType.Boolean,
+        label: this.i18n('cart.edit.set-default'),
+        width: 100,
+      },
+    ];
+  }
+
+  protected $values = computed<FormValues>(() => {
     return {
-      store: this.$store(),
       priceMode: this.$priceMode(),
       currency: this.$currency(),
-      isDefault,
+      isDefault: !!this.$options().isDefault,
       //TODO: uncomment and add additional check for edit cart mode
       // ...this.$cartValues(),
-    } as unknown as FormValues;
+    };
   });
 
   protected override render(): TemplateResult {
-    const fields = this.$fields();
+    const fields = this.getFields();
     const values = this.$values();
 
     return html`<form @submit=${this.onSubmit}>
