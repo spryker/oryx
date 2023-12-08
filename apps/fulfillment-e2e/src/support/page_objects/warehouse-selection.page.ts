@@ -15,8 +15,8 @@ export class WarehouseSelectionPage extends AFAPage {
   };
 
   getWrapper = () => cy.get('.warehouses-list');
-  getTitle = () => this.getWrapper().find('oryx-heading h1');
-  getNames = () => this.getWrapper().find('oryx-heading h3');
+  getTitle = () => this.getWrapper().find('oryx-heading').eq(0);
+  getNames = () => this.getWrapper().find('oryx-heading');
   getSelectBtns = () => this.getWrapper().find('oryx-button');
 
   selectByEq = (eq: number) => {
@@ -24,10 +24,6 @@ export class WarehouseSelectionPage extends AFAPage {
   };
 
   selectByName = (name: string) => {
-    this.getNames()
-      .contains(name)
-      .parent('oryx-heading')
-      .next('oryx-button')
-      .click();
+    this.getNames().contains(name).next('oryx-button').click();
   };
 }

@@ -3,7 +3,7 @@ export class UserProfileModal {
 
   getNotification = () => this.getWrapper().find('oryx-notification');
   getLogOutButton = () => this.getWrapper().find('.logout-button');
-  getReceiveDataButton = () => this.getWrapper().find('.receive-data');
+  getSyncDataButton = () => this.getWrapper().find('.sync-data');
   getCloseButton = () =>
     cy.get('oryx-site-navigation-item').find('dialog oryx-button');
 

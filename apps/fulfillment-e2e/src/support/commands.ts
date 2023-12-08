@@ -80,7 +80,7 @@ Cypress.Commands.add('receiveData', () => {
   cy.intercept('GET', '**/picking-lists?include*').as('picking-lists-update');
 
   header.getUserIcon().should('be.visible').click();
-  profile.getReceiveDataButton().should('be.visible').click();
+  profile.getSyncDataButton().should('be.visible').click();
 
   cy.wait('@picking-lists-update');
 

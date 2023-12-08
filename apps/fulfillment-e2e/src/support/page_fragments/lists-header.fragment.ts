@@ -1,4 +1,4 @@
-import { UserProfileModal } from "./user-profile-modal.fragment";
+import { UserProfileModal } from './user-profile-modal.fragment';
 
 export class HeaderFragment {
   getWrapper = () => cy.get('[uid="header-picking-lists"]');
@@ -10,7 +10,7 @@ export class HeaderFragment {
   getSearchClearButton = () => this.getSearch().find('.clear-button');
   getUserIcon = () => this.getWrapper().find('oryx-site-navigation-item');
   getTitle = () => this.getWrapper().find('oryx-heading');
-  
+
   getUserProfileModal = () => new UserProfileModal();
 
   openUserProfileModal = () => this.getUserIcon().click();
