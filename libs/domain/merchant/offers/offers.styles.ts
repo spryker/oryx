@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const productOffersStyles = css`
+export const merchantOffersStyles = css`
   h4 {
     ${headingUtil(HeadingTag.H5)}
 

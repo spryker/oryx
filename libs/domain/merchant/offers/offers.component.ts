@@ -9,14 +9,14 @@ import { LinkService } from '@spryker-oryx/site';
 import { computed, effect, signal } from '@spryker-oryx/utilities';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { ProductMixin } from '../src/mixins';
-import { ProductOffer } from '../src/models';
-import { productOffersStyles } from './offers.styles';
+import { ProductMixin } from '../../product/src/mixins';
+import { ProductOffer } from '../../product/src/models';
+import { merchantOffersStyles } from './offers.styles';
 
-export class ProductOffersComponent extends ProductMixin(
+export class MerchantOffersComponent extends ProductMixin(
   ContentMixin(LitElement)
 ) {
-  static styles = productOffersStyles;
+  static styles = merchantOffersStyles;
 
   protected contextService = resolve(ContextService);
 
