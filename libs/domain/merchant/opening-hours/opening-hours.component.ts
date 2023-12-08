@@ -1,9 +1,6 @@
 import { ContentMixin } from '@spryker-oryx/experience';
-import {
-  MerchantMixin,
-  MerchantScheduleSlot,
-  TimeRange,
-} from '@spryker-oryx/merchant';
+import { MerchantMixin, MerchantScheduleSlot } from '@spryker-oryx/merchant';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { openingHoursStyles } from './opening-hours.styles';
@@ -16,50 +13,46 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
   protected override render(): TemplateResult | void {
     const merchant = this.$merchant();
 
-    if (!merchant) return;
+    if (!merchant?.schedule?.opened) return;
 
     return html`
-      <h3>${this.i18n('merchant.openings-hours')}</h3>
+      <oryx-heading .tag=${HeadingTag.H3}>
+        ${this.i18n('merchant.openings-hours')}
+      </oryx-heading>
 
       <ul>
         ${repeat(
-          merchant.schedule.opened ?? [],
+          merchant.schedule.opened,
           (weekday) =>
             html`<li>
               ${this.i18n(`merchant.weekdays.${weekday.day}`)}
-              ${this.renderSlots(weekday)}
+              ${this.renderTimeSlots(weekday)}
             </li>`
         )}
       </ul>
     `;
   }
 
-  protected renderSlots(slot: MerchantScheduleSlot): TemplateResult | void {
+  protected renderTimeSlots(slot: MerchantScheduleSlot): TemplateResult | void {
     if (slot.day) {
       if (!slot.times?.length)
         return html`<div>${this.i18n('merchant.closed')}</div>`;
 
-      return html` ${repeat(slot.times, (time) =>
-        this.renderTimeSlot(slot.day!, time)
+      return html` ${repeat(
+        slot.times,
+        (time) =>
+          html` <div>
+            <oryx-time .stamp=${this.getDate(slot.day, time.from)}></oryx-time>
+            -
+            <oryx-time .stamp=${this.getDate(slot.day, time.to)}></oryx-time>
+          </div>`
       )}`;
     }
   }
 
-  protected renderTimeSlot(
-    day: string,
-    time: TimeRange
-  ): TemplateResult | void {
-    return html`
-      <div>
-        <oryx-time .stamp=${this.getDate(day, time.from)}></oryx-time>
-        -
-        <oryx-time .stamp=${this.getDate(day, time.to)}></oryx-time>
-      </div>
-    `;
-  }
+  protected getDate(day?: string, time?: string): Date | undefined {
+    if (!day || !time) return;
 
-  protected getDate(day?: string, time?: string): Date {
-    if (!day || !time) return new Date();
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const date = new Date();
     date.setHours(hours, minutes, seconds, 0);
