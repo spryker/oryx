@@ -11,7 +11,7 @@ import { LitElement, TemplateResult, html } from 'lit';
 
 @hydrate()
 @signalAware()
-export class TimeComponent extends ContentMixin(LitElement) {
+export class SiteTimeComponent extends ContentMixin(LitElement) {
   protected localeService = resolve(LocaleService);
 
   @signalProperty() stamp?: string | number | Date;

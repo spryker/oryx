@@ -51,9 +51,9 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
   ): TemplateResult | void {
     return html`
       <div>
-        <oryx-time .stamp=${this.getDate(day, time.from)}></oryx-time>
+        <oryx-site-time .stamp=${this.getDate(day, time.from)}></oryx-site-time>
         -
-        <oryx-time .stamp=${this.getDate(day, time.to)}></oryx-time>
+        <oryx-site-time .stamp=${this.getDate(day, time.to)}></oryx-site-time>
       </div>
     `;
   }
