@@ -1,6 +1,6 @@
 import { QueryService } from '@spryker-oryx/core';
 import { inject, Injector } from '@spryker-oryx/di';
-import { EMPTY, from, of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { LocaleAdapter } from './adapter';
 import { DefaultLocaleService } from './default-locale.service';
 import { LocaleChanged } from './state';
@@ -130,6 +130,15 @@ describe('DefaultLocaleService', () => {
           year: 'numeric',
         }).format(date)
       );
+    });
+
+    it('should return a locale formatted day', () => {
+      const day = 'monday';
+      const cb = vi.fn();
+
+      getService().formatDay(day).subscribe(cb);
+
+      expect(cb).toHaveBeenCalled();
     });
   });
 });

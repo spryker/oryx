@@ -29,7 +29,9 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="carousel">${generateLayoutItems(12)}</oryx-layout>
+    <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}
+      >${generateLayoutItems(12)}</oryx-layout
+    >
 
     <ul>
       <li>Padding can be added using standard CSS</li>
@@ -40,7 +42,9 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="carousel" .options=${{ rules: [{ padding: '10px' }] }}>
+    <oryx-layout
+      .options=${{ rules: [{ layout: 'carousel', padding: '10px' }] }}
+    >
       ${generateLayoutItems(12)}
     </oryx-layout>
 
@@ -55,7 +59,7 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="carousel">
+    <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}>
       <div style="border:5px solid var(--oryx-color-secondary-9);">1</div>
       <div style="margin:20px;background:var(--oryx-color-secondary-9);">2</div>
       <div style="padding:40px;background:var(--oryx-color-secondary-9);">
@@ -73,7 +77,7 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="carousel">
+    <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}>
       <div style="height:100px;background:var(--oryx-color-secondary-9);">
         1
       </div>
@@ -94,7 +98,7 @@ const Template: Story = (): TemplateResult => {
     <ul>
       <li>Columns can be spanned and keep the column alignment (2, span: 2)</li>
     </ul>
-    <oryx-layout layout="carousel">
+    <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}>
       <div>1</div>
       <div style="--col-span:2;background:var(--oryx-color-secondary-9);">
         2
@@ -111,7 +115,9 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Column span reflects the new column size</li>
     </ul>
-    <oryx-layout layout="carousel" .options=${{ rules: [{ columnCount: 6 }] }}>
+    <oryx-layout
+      .options=${{ rules: [{ layout: 'carousel', columnCount: 6 }] }}
+    >
       <div>1</div>
       <div style="grid-column:span 2;background:var(--oryx-color-secondary-9);">
         2
@@ -127,7 +133,10 @@ const Template: Story = (): TemplateResult => {
       <li>custom size is used instead (--oryx-grid-item-size: 100px)</li>
       <li>Columns can be spanned</li>
     </ul>
-    <oryx-layout layout="carousel" style="--oryx-grid-item-size: 100px">
+    <oryx-layout
+      .options=${{ rules: [{ layout: 'carousel' }] }}
+      style="--oryx-grid-item-size: 100px"
+    >
       <div>1</div>
       <div style="--span:2;background:var(--oryx-color-secondary-9);">2</div>
       ${generateLayoutItems(12, 3)}
@@ -140,7 +149,10 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Columns/row spanning is not a thing in this layout</li>
     </ul>
-    <oryx-layout layout="carousel" style="--oryx-grid-item-size: auto;">
+    <oryx-layout
+      .options=${{ rules: [{ layout: 'carousel' }] }}
+      style="--oryx-grid-item-size: auto;"
+    >
       <div>1</div>
       <div style="width: 250px;background:var(--oryx-color-secondary-9);">
         2 (width: 250px)

@@ -16,7 +16,7 @@ export const getClassByRequiredTokens = (
 ): unknown => {
   if (tokens.some((token) => !inject(token, false))) {
     logMissingEnv(tokens);
-    return { get: () => of({}) };
+    return { get: () => of({}), getAll: () => of([]) };
   }
 
   return new clazz();

@@ -1,12 +1,25 @@
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { nextFrame } from '@open-wc/testing-helpers';
+import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { FormFieldType } from '@spryker-oryx/form';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPropertyPlugin,
   LayoutStylesPlugin,
+  LayoutTypeStyles,
 } from '../../../layout';
+import { ExperienceLayoutData } from '../../data-client.model';
 import { LayoutExperienceDataRevealer } from './layout-experience-data.revealer';
+
+const utils = {
+  postMessage: vi.fn(),
+  catchMessage: vi.fn(),
+};
+
+vi.mock('../../utilities', () => ({
+  postMessage: (data: unknown) => utils.postMessage(data),
+  catchMessage: (data: unknown) => utils.catchMessage(data),
+}));
 
 const mockALayout: LayoutPlugin = {
   getConfig: vi.fn().mockReturnValue(of({ schema: { name: 'aLayout' } })),
@@ -110,7 +123,6 @@ describe('LayoutExperienceDataRevealer', () => {
         },
       ],
     });
-    vi.spyOn(window.parent, 'postMessage');
   });
 
   afterEach(() => {
@@ -118,89 +130,79 @@ describe('LayoutExperienceDataRevealer', () => {
     vi.clearAllMocks();
   });
 
-  // TODO: Temporary disabled to unblock release
   describe('reveal', () => {
-    it('should send `MessageType.StylesOptions` post message with proper data', async () => {
-      // getInjector().inject('service').reveal().subscribe();
-      // postMessage(
-      //   {
-      //     type: MessageType.SelectedStyles,
-      //     data: {
-      //       type: 'bLayout',
-      //       bProperty: true,
-      //     } as LayoutTypeStyles,
-      //   },
-      //   window
-      // );
-      // await nextFrame();
-      // expect(window.parent.postMessage).toHaveBeenCalledWith(
-      //   {
-      //     type: MessageType.StylesOptions,
-      //     data: {
-      //       defaults: {
-      //         bSpecialLayout: 'default',
-      //         bSpecialProperty: 'default',
-      //       },
-      //       fields: {
-      //         container: [
-      //           {
-      //             id: 'layout-type',
-      //             label: 'layout',
-      //             type: FormFieldType.Select,
-      //             options: [{ value: 'aLayout' }, { value: 'bLayout' }],
-      //           },
-      //           {
-      //             id: 'layout-aProperty',
-      //             label: 'aProperty',
-      //             type: FormFieldType.Boolean,
-      //           },
-      //           {
-      //             id: 'layout-bProperty',
-      //             label: 'bProperty',
-      //             type: FormFieldType.Boolean,
-      //           },
-      //         ],
-      //         special: [
-      //           {
-      //             id: 'layout-bSpecialLayout',
-      //             type: FormFieldType.Boolean,
-      //             label: 'b Special Layout',
-      //           },
-      //           {
-      //             id: 'layout-bSpecialProperty',
-      //             type: FormFieldType.Text,
-      //             label: 'b Special Property',
-      //           },
-      //         ],
-      //         aStyle: [
-      //           {
-      //             id: 'padding',
-      //             label: 'padding',
-      //             type: FormFieldType.Text,
-      //           },
-      //           {
-      //             id: 'margin',
-      //             label: 'margin',
-      //             type: FormFieldType.Text,
-      //           },
-      //         ],
-      //         bStyle: [
-      //           {
-      //             id: 'zIndex',
-      //             label: 'z Index',
-      //             type: FormFieldType.Text,
-      //           },
-      //           {
-      //             id: 'marginCameCase',
-      //             label: 'margin Came Case',
-      //             type: FormFieldType.Text,
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      //   '*'
-      // );
+    it('should send create proper object depends on active layout styles', async () => {
+      const catchTrigger = new BehaviorSubject<LayoutTypeStyles>({
+        type: 'bLayout',
+        bProperty: true,
+      } as LayoutTypeStyles);
+      utils.catchMessage.mockReturnValue(catchTrigger);
+      let expected = {} as ExperienceLayoutData;
+      getInjector()
+        .inject('service')
+        .reveal()
+        .subscribe((data: ExperienceLayoutData) => {
+          expected = data;
+        });
+      await nextFrame();
+      expect(expected.defaults).toEqual({
+        bSpecialLayout: 'default',
+        bSpecialProperty: 'default',
+      });
+      expect(expected.fields.container).toEqual([
+        {
+          id: 'layout-type',
+          label: 'layout',
+          type: FormFieldType.Select,
+          options: [{ value: 'aLayout' }, { value: 'bLayout' }],
+        },
+        {
+          id: 'layout-aProperty',
+          label: 'aProperty',
+          type: FormFieldType.Boolean,
+        },
+        {
+          id: 'layout-bProperty',
+          label: 'bProperty',
+          type: FormFieldType.Boolean,
+        },
+      ]);
+      expect(expected.fields.special).toEqual([
+        {
+          id: 'layout-bSpecialLayout',
+          type: FormFieldType.Boolean,
+          label: 'b Special Layout',
+        },
+        {
+          id: 'layout-bSpecialProperty',
+          type: FormFieldType.Text,
+          label: 'b Special Property',
+        },
+      ]);
+      expect(expected.fields.aStyle).toEqual([
+        {
+          id: 'padding',
+          label: 'padding',
+          type: FormFieldType.Text,
+        },
+        {
+          id: 'margin',
+          label: 'margin',
+          type: FormFieldType.Text,
+        },
+      ]);
+      expect(expected.fields.bStyle).toEqual([
+        {
+          id: 'zIndex',
+          label: 'z Index',
+          type: FormFieldType.Text,
+        },
+        {
+          id: 'marginCameCase',
+          label: 'margin Came Case',
+          type: FormFieldType.Text,
+        },
+      ]);
     });
   });
 });
