@@ -261,6 +261,7 @@
         "libs/domain/site/currency-selector/index.ts"
       ],
       "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
+      "@spryker-oryx/site/day": ["libs/domain/site/day/index.ts"],
       "@spryker-oryx/site/locale-selector": [
         "libs/domain/site/locale-selector/index.ts"
       ],
