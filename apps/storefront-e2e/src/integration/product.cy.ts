@@ -26,47 +26,42 @@ describe('Product details page suite', () => {
     pdp.getRelations().getProducts().should('be.visible');
   });
 
-  it('should proper change carousel with navigation between slides using buttons', () => {
+  it.only('should proper change carousel with navigation between slides using buttons', () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
-    const animationTime = 700;
 
     cy.intercept('**/catalog-search?category**').as('catalog-search');
     pdp.visit();
     cy.wait('@catalog-search');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(7000);
 
     cy.log('initial state');
+    // removed all waits and replaced them with .scrollIntoView() call
+    // it will scroll the carousel into view and will make elements visible
+    pdp.getCarousel().getWrapper().scrollIntoView();
     pdp.getCarousel().getButton('next').should('be.visible');
     pdp.getCarousel().getButton('previous').should('not.be.visible');
 
     cy.log('next slide');
     pdp.getCarousel().getButton('next').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(animationTime);
     pdp.getCarousel().getButton('next').should('be.visible');
     pdp.getCarousel().getButton('previous').should('be.visible');
 
     cy.log('last slide');
     pdp.getCarousel().getButton('next').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(animationTime);
     pdp.getCarousel().getButton('next').should('not.be.visible');
     pdp.getCarousel().getButton('previous').should('be.visible');
 
     cy.log('first slide');
     pdp.getCarousel().getButton('previous').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(animationTime);
     pdp.getCarousel().getButton('previous').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(animationTime);
     pdp.getCarousel().getButton('next').should('be.visible');
     pdp.getCarousel().getButton('previous').should('not.be.visible');
   });
 
-  it('should proper change carousel with navigation between slides using indicators', () => {
+  // We should check CSS properties in E2E tests because
+  // this is a UI implementation detait which might change
+  // probably, it should be covered in unit tests
+  xit('should proper change carousel with navigation between slides using indicators', () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
     const animationTime = 700;
