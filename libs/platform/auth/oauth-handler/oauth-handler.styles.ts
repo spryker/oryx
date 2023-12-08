@@ -2,6 +2,8 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
+    --oryx-icon-size: 32px;
+
     display: flex;
     flex-direction: column;
     background-color: var(--oryx-color-primary-9);
@@ -9,7 +11,6 @@ export const styles = css`
     align-items: center;
     height: 100vh;
     color: var(--oryx-color-neutral-1);
-    --oryx-icon-size: 32px;
   }
 
   :host:before {
