@@ -1,10 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { OptionComponent } from '@spryker-oryx/ui/option';
 import { POPOVER_EVENT } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { SpyInstance } from 'vitest';
-import { OptionComponent } from '../../../../form/option';
 import { getControl } from '../../../../form/utilities/getControl';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { FilterController } from './filter.controller';

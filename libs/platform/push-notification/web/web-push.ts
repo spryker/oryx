@@ -49,11 +49,12 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     const applicationServerKey = this.options?.applicationServerKey
       ? this.encodeKey(this.options.applicationServerKey)
       : undefined;
+
     return this.pushManager$.pipe(
       switchMap((pushManager) =>
         pushManager.subscribe({
-          applicationServerKey,
           userVisibleOnly,
+          applicationServerKey,
         })
       )
     );

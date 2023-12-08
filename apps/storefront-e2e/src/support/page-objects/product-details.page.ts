@@ -26,7 +26,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   }
 
   waitForLoaded(): void {
-    this.getQuantityComponent().getInput().should('be.visible');
+    this.getQuantityComponent().getInput().should('exist');
     cy.wait('@productRequest');
   }
 

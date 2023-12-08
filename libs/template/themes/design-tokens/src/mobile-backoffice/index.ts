@@ -6,7 +6,7 @@ import {
   typographyTokens,
 } from '../backoffice/typography.tokens';
 import { color } from '../color.tokens';
-import { commonTokensSmall } from '../common-tokens';
+import { commonTokens, commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 import { tokens } from './other.tokens';
 
@@ -14,6 +14,7 @@ export const mobileBackofficeTokens: DesignToken[] = [
   ...buttonTokens,
   {
     color,
+    ...commonTokens,
     ...tokens,
     typography: Object.assign(
       {},
@@ -23,29 +24,20 @@ export const mobileBackofficeTokens: DesignToken[] = [
     ...layoutTokens,
   },
   {
-    media: {
-      screen: Size.Lg,
-    },
+    media: { screen: Size.Lg },
     ...layoutTokens,
   },
   {
-    media: {
-      screen: Size.Md,
-    },
+    media: { screen: Size.Md },
     ...layoutMdTokens,
-    container: {
-      width: '414px',
-      bleed: '8px',
-    },
+    container: { width: '414px', bleed: '8px' },
+    modal: { bleed: '8px' },
   },
   {
-    media: {
-      screen: Size.Sm,
-    },
+    media: { screen: Size.Sm },
     ...layoutSmTokens,
     ...commonTokensSmall,
-    container: {
-      bleed: '0',
-    },
+    container: { bleed: '0' },
+    modal: { bleed: '16px' },
   },
 ];

@@ -43,7 +43,9 @@ export const generateNestedLayout = (
     <li>Nested column count is driven by parent span (3rd column, span=2)</li>
   </ul>
 
-  <oryx-layout layout=${layout} style="--split-column-factor:calc(2/3)">
+  <oryx-layout .options=${{
+    rules: [{ layout }],
+  }} style="--split-column-factor:calc(2/3)">
     <oryx-layout layout="grid">
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
@@ -65,7 +67,7 @@ export const generateNestedLayout = (
     <li>⚠️ The border breaks the flow of <i>nested</i> layouts.</li>
   </ul>
 
-  <oryx-layout layout=${layout} style="align-items: center">
+  <oryx-layout .options=${{ rules: [{ layout }] }}  style="--align: center">
     <div style="height: 300px">1 (height: 300px)</div>
     <oryx-layout
       layout="grid"
@@ -92,12 +94,33 @@ export const generateNestedLayout = (
     <li>Nested carousels support the same features as a nested grid</li>
   </ul>
 
-  <oryx-layout layout=${layout}>
-    <oryx-layout layout="carousel">
+  <oryx-layout .options=${{ rules: [{ layout }] }} >
+    <oryx-layout .options=${{
+      rules: [
+        {
+          layout: {
+            type: 'carousel',
+            showArrows: false,
+            showIndicators: false,
+          },
+        },
+      ],
+    }}>
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
     <div>2</div>
-    <oryx-layout layout="carousel" .options=${{ rules: [{ colSpan: 2 }] }}>
+    <oryx-layout .options=${{
+      rules: [
+        {
+          layout: {
+            type: 'carousel',
+            showArrows: false,
+            showIndicators: false,
+          },
+          colSpan: 2,
+        },
+      ],
+    }}>
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
     ${generateLayoutItems(12, 5)}
@@ -107,16 +130,18 @@ export const generateNestedLayout = (
     <li>Nested carousels support the same features as a nested grid</li>
   </ul>
 
-  <oryx-layout layout=${layout} .options=${{
-  rules: [{ align: 'center' }],
-}}
+  <oryx-layout .options=${{ rules: [{ layout, align: 'center' }] }}
 >
     <div style="height:150px">1</div>
     <oryx-layout
-      layout="carousel"
       .options=${{
         rules: [
           {
+            layout: {
+              type: 'carousel',
+              showArrows: false,
+              showIndicators: false,
+            },
             colSpan: 2,
             background: 'var(--oryx-color-neutral-1)',
             padding: '10px',
@@ -135,7 +160,7 @@ export const generateNestedLayout = (
     <li>Nested columns support the same features as a nested grid</li>
   </ul>
 
-  <oryx-layout layout=${layout} .options=${{ rules: [{ align: 'center' }] }}>
+  <oryx-layout .options=${{ rules: [{ layout, align: 'center' }] }}>
     <div>1</div>
     <oryx-layout layout="column">
       ${generateLayoutItems(5, 1, 'N', true)}
@@ -148,7 +173,7 @@ export const generateNestedLayout = (
       N11)
     </p>
 
-    <oryx-layout layout=${layout}>
+    <oryx-layout .options=${{ rules: [{ layout }] }} >
       <div>1</div>
       <oryx-layout layout="column" .options=${{ rules: [{ colSpan: 2 }] }} >
         ${generateLayoutItems(13, 1, 'N', true)}
@@ -160,9 +185,9 @@ export const generateNestedLayout = (
 
     <p>Nested flex layout is not affected by the parent layout system</p>
 
-    <oryx-layout layout=${layout}>
+    <oryx-layout .options=${{ rules: [{ layout }] }} >
       <div>1</div>
-      <oryx-layout layout="flex">
+      <oryx-layout .options=${{ rules: [{ layout: { type: 'flex' } }] }}>
         ${generateLayoutItems(3, 1, 'N', true)}
       </oryx-layout>
       ${generateLayoutItems(10, 5)}
@@ -172,9 +197,11 @@ export const generateNestedLayout = (
       <li>Spanning column does not effect the nested flex layout</li>
       <li>Column size is driven by the content (1) or explicit width (2)</li>
     </ul>
-    <oryx-layout layout=${layout}>
+    <oryx-layout .options=${{ rules: [{ layout }] }} >
       <div>1</div>
-      <oryx-layout layout="flex" .options=${{ rules: [{ colSpan: 2 }] }}>
+      <oryx-layout  .options=${{
+        rules: [{ layout: { type: 'flex' }, colSpan: 2 }],
+      }}>
         <div style="background:var(--oryx-color-secondary-9);">
           N1 - lengthy content
         </div>
@@ -190,7 +217,7 @@ export const generateNestedLayout = (
 
     <p>Nested list layout is not affected by the parent layout system</p>
 
-    <oryx-layout layout=${layout}>
+    <oryx-layout .options=${{ rules: [{ layout }] }} >
       <div>1</div>
       <oryx-layout layout="list" .options=${{ rules: [{ colSpan: 2 }] }}>
         ${generateLayoutItems(3, 1, 'N', true)}
@@ -204,7 +231,7 @@ export const generateNestedLayout = (
       Nested text layout takes the the same minimum columns as grid/carousel
     </p>
 
-    <oryx-layout layout=${layout}>
+    <oryx-layout .options=${{ rules: [{ layout }] }} }>
       <div>1</div>
       <oryx-layout layout="text" .options=${{ rules: [{ colSpan: 2 }] }}>
         <h3>Lorem ipsum</h3>
@@ -251,7 +278,7 @@ export const generateNestedLayout = (
       any)
     </p>
 
-    <oryx-layout layout=${layout}>
+    <oryx-layout .options=${{ rules: [{ layout }] }} >
       <div>1</div>
       <oryx-layout> ${generateLayoutItems(3, 1, 'N', true)} </oryx-layout>
       ${generateLayoutItems(10, 5)}

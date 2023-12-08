@@ -30,6 +30,7 @@
       ],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
+      "@spryker-oryx/cart/coupon": ["libs/domain/cart/coupon/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
       "@spryker-oryx/cart/entry": ["libs/domain/cart/entry/index.ts"],
       "@spryker-oryx/cart/heading": ["libs/domain/cart/heading/index.ts"],
@@ -114,6 +115,10 @@
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"
       ],
+      "@spryker-oryx/offline/service-worker": [
+        "libs/platform/offline/service-worker/index.ts"
+      ],
+      "@spryker-oryx/offline/sync": ["libs/platform/offline/sync/index.ts"],
       "@spryker-oryx/order": ["libs/domain/order/src/index.ts"],
       "@spryker-oryx/order/confirmation-banner": [
         "libs/domain/order/confirmation-banner/index.ts"
@@ -124,7 +129,6 @@
       "@spryker-oryx/order/summary": ["libs/domain/order/summary/index.ts"],
       "@spryker-oryx/order/totals": ["libs/domain/order/totals/index.ts"],
       "@spryker-oryx/picking": ["libs/domain/picking/src/index.ts"],
-      "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
       "@spryker-oryx/picking/customer-note": [
         "libs/domain/picking/customer-note/index.ts"
       ],
@@ -138,26 +142,28 @@
         "libs/domain/picking/filter-button/index.ts"
       ],
       "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
-      "@spryker-oryx/picking/header": ["libs/domain/picking/header/index.ts"],
       "@spryker-oryx/picking/list-item": [
         "libs/domain/picking/list-item/index.ts"
       ],
       "@spryker-oryx/picking/lists": ["libs/domain/picking/lists/index.ts"],
-      "@spryker-oryx/picking/lists-header": [
-        "libs/domain/picking/lists-header/index.ts"
-      ],
-      "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
       "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
-      "@spryker-oryx/picking/picker": ["libs/domain/picking/picker/index.ts"],
-      "@spryker-oryx/picking/picker-header": [
-        "libs/domain/picking/picker-header/index.ts"
+      "@spryker-oryx/picking/order-reference": [
+        "libs/domain/picking/order-reference/index.ts"
       ],
+      "@spryker-oryx/picking/picker": ["libs/domain/picking/picker/index.ts"],
       "@spryker-oryx/picking/picking-in-progress": [
         "libs/domain/picking/picking-in-progress/index.ts"
       ],
       "@spryker-oryx/picking/product-card": [
         "libs/domain/picking/product-card/index.ts"
+      ],
+      "@spryker-oryx/picking/search": ["libs/domain/picking/search/index.ts"],
+      "@spryker-oryx/picking/service-worker": [
+        "libs/domain/picking/service-worker/index.ts"
+      ],
+      "@spryker-oryx/picking/services": [
+        "libs/domain/picking/services/index.ts"
       ],
       "@spryker-oryx/picking/user-profile": [
         "libs/domain/picking/user-profile/index.ts"
@@ -178,6 +184,9 @@
       "@spryker-oryx/presets/fes": ["libs/template/presets/fes/index.ts"],
       "@spryker-oryx/presets/fulfillment": [
         "libs/template/presets/fulfillment/index.ts"
+      ],
+      "@spryker-oryx/presets/fulfillment-sw": [
+        "libs/template/presets/fulfillment-sw/index.ts"
       ],
       "@spryker-oryx/presets/storefront": [
         "libs/template/presets/storefront/index.ts"
@@ -329,6 +338,9 @@
       ],
       "@spryker-oryx/ui/password": ["libs/base/ui/form/password/index.ts"],
       "@spryker-oryx/ui/popover": ["libs/base/ui/overlays/popover/index.ts"],
+      "@spryker-oryx/ui/quantity-input": [
+        "libs/base/ui/form/quantity-input/index.ts"
+      ],
       "@spryker-oryx/ui/radio": ["libs/base/ui/form/radio/index.ts"],
       "@spryker-oryx/ui/rating": ["libs/base/ui/graphical/rating/index.ts"],
       "@spryker-oryx/ui/searchbox": ["libs/base/ui/search/searchbox/index.ts"],

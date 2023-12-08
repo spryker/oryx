@@ -14,4 +14,6 @@ export class ContactPage extends AbstractSFPage {
         ? 'This is B2B Contact Page element.'
         : 'This is Contact Page element.'
     );
+
+  updateUrl = (url: string) => (this.url = url);
 }

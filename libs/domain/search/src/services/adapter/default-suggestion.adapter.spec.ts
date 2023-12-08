@@ -1,4 +1,8 @@
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  HttpService,
+  JsonApiIncludeService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
@@ -23,6 +27,11 @@ const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
   do: vi.fn().mockReturnValue(() => of(null)),
 };
+class MockJsonApiIncludeService implements Partial<JsonApiIncludeService> {
+  get() {
+    return of('');
+  }
+}
 
 describe('DefaultSuggestionAdapter', () => {
   let service: SuggestionAdapter;
@@ -46,6 +55,10 @@ describe('DefaultSuggestionAdapter', () => {
         {
           provide: JsonAPITransformerService,
           useValue: mockTransformer,
+        },
+        {
+          provide: JsonApiIncludeService,
+          useClass: MockJsonApiIncludeService,
         },
       ],
     });

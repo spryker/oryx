@@ -14,11 +14,7 @@ export const loginPage: ExperienceComponent = {
   ...(featureVersion >= '1.1'
     ? {
         components: [
-          featureVersion >= '1.2'
-            ? {
-                ref: 'header',
-              }
-            : {},
+          featureVersion >= '1.2' ? { ref: 'header' } : {},
           {
             type: 'oryx-composition',
             options: {
@@ -119,6 +115,12 @@ export const loginPage: ExperienceComponent = {
                           data: {
                             text: `<oryx-button href="/registration" type=${ButtonType.Outline} size=${ButtonSize.Md} style="width: 100%">Create account</oryx-button>`,
                           },
+                        },
+                        options: {
+                          rules:
+                            featureVersion >= '1.3'
+                              ? [{ query: { breakpoint: Size.Sm }, colSpan: 2 }]
+                              : [],
                         },
                       },
                     ],

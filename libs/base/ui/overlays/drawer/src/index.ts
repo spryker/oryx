@@ -1,4 +1,3 @@
-export * from './component';
 export * from './drawer.component';
 export * from './drawer.model';
 export * from './service';

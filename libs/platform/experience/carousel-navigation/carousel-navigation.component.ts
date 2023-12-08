@@ -36,18 +36,16 @@ export class CarouselNavigationComponent
   @property({ reflect: true }) indicatorsAlignment?: CarouselIndicatorAlignment;
   @property({ reflect: true }) scrollBehavior?: CarouselScrollBehavior;
 
-  protected resizeObserver?: ResizeObserver;
-  protected intersectionObserver?: IntersectionObserver;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected throttledScrollListener: () => void = () => {};
-
-  protected intersectionThrottleTime = 150;
-  protected scrollThrottleTime = 50;
-
   @state() protected items: HTMLElement[] = [];
   @state() protected slides: number[] = [];
-
   @queryAll('input') protected indicatorElements?: NodeListOf<HTMLInputElement>;
+
+  protected throttleTime = 150;
+  protected mutationObserver?: MutationObserver;
+  protected resizeObserver?: ResizeObserver;
+  protected isIntersected = false;
+  protected intersectionObserver?: IntersectionObserver;
+  protected scrollListener?: () => void;
 
   /**
    * @override Initialize the intersection observer. The intersection observer is
@@ -55,22 +53,17 @@ export class CarouselNavigationComponent
    * and listens to scroll events to always keep the state up to date.
    */
   connectedCallback(): void {
+    this.initializeMutationObserver();
     this.initializeIntersectionObserver();
     super.connectedCallback();
   }
 
   disconnectedCallback(): void {
-    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
     this.intersectionObserver?.disconnect();
-    if (this.hostElement) {
-      this.hostElement.removeEventListener(
-        'scroll',
-        this.throttledScrollListener
-      );
-      this.hostElement.removeEventListener(
-        'scrollend',
-        this.throttledScrollListener
-      );
+    this.resizeObserver?.disconnect();
+    if (this.scrollListener) {
+      this.hostElement?.removeEventListener('scroll', this.scrollListener);
     }
     super.disconnectedCallback();
   }
@@ -80,23 +73,42 @@ export class CarouselNavigationComponent
    * This is necessary to calculate the carousel's width and to build the navigation.
    */
   protected initializeIntersectionObserver(): void {
-    if (this.intersectionObserver) return;
-
     this.intersectionObserver = new IntersectionObserver(
-      throttle((entries: IntersectionObserverEntry[]) => {
-        return entries.forEach((entry) => {
-          if (this.resolveItems().length) {
-            this.buildNavigation();
-            this.initializeScrollListener();
-            this.initializeResizeObserver();
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.intersectionObserver!.disconnect();
-          }
-        });
-      }, this.intersectionThrottleTime),
+      throttle(
+        (entries: IntersectionObserverEntry[]) => {
+          return entries.forEach(() => {
+            this.isIntersected = true;
+            if (this.resolveItems().length) {
+              this.buildNavigation();
+              this.initializeScrollListener();
+              this.initializeResizeObserver();
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              this.intersectionObserver!.disconnect();
+            }
+          });
+        },
+        this.throttleTime,
+        true
+      ),
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
+  }
+
+  protected initializeMutationObserver(): void {
+    this.mutationObserver = new MutationObserver(() => {
+      if (!this.isIntersected) return;
+      this.buildNavigation();
+      this.initializeScrollListener();
+      this.initializeResizeObserver();
+    });
+    const shadowRoot = this.getRootNode();
+    if (shadowRoot instanceof ShadowRoot) {
+      this.mutationObserver.observe(shadowRoot, {
+        childList: true,
+        subtree: true,
+      });
+    }
   }
 
   /**
@@ -105,36 +117,41 @@ export class CarouselNavigationComponent
    */
   protected initializeResizeObserver(): void {
     if (this.resizeObserver) return;
-    const throttleTime = this.hostElement.clientWidth
-      ? this.intersectionThrottleTime
-      : 0;
     this.resizeObserver = new ResizeObserver(
-      throttle(() => {
-        this.buildNavigation();
-      }, throttleTime)
+      throttle(
+        (entries: ResizeObserverEntry[]) => {
+          window.requestAnimationFrame((): void => {
+            if (!Array.isArray(entries) || !entries.length) return;
+            this.buildNavigation();
+          });
+        },
+        this.throttleTime,
+        true
+      )
     );
     this.resizeObserver.observe(this.hostElement);
   }
 
   protected initializeScrollListener(): void {
-    this.throttledScrollListener = throttle(() => {
-      this.updateState();
-    }, this.scrollThrottleTime);
-    this.hostElement.addEventListener('scroll', this.throttledScrollListener);
-    this.hostElement.addEventListener(
-      'scrollend',
-      this.throttledScrollListener
+    this.scrollListener = throttle(
+      () => {
+        this.updateState();
+      },
+      this.throttleTime,
+      true
     );
+    this.hostElement.addEventListener('scroll', this.scrollListener);
   }
 
   protected buildNavigation(): void {
-    this.style.setProperty('--width', `${this.hostElement.clientWidth}px`);
-    this.style.setProperty('--height', `${this.hostElement.clientHeight}px`);
-    if (this.showIndicators)
-      this.hostElement.style.setProperty(
-        'margin-block-end',
-        'var(--indicator-area-height, 50px)'
-      );
+    this.style.setProperty(
+      '--width',
+      `${getDimensions(this.hostElement).size}px`
+    );
+    this.style.setProperty(
+      '--height',
+      `${getDimensions(this.hostElement, true).size}px`
+    );
 
     const items = this.resolveItems();
     if (
@@ -143,7 +160,7 @@ export class CarouselNavigationComponent
     ) {
       this.items = items;
       this.setScrollSnap();
-      if (this.showIndicators) this.setSlides();
+      this.setSlides();
     }
   }
 
@@ -171,18 +188,21 @@ export class CarouselNavigationComponent
   protected updateArrowState(): void {
     if (!this.items.length || !this.showArrows) return;
 
+    this.setScrollSnap();
+
+    const hostScroll = getScrollDimensions(this.hostElement, this.isVertical);
+    const hostDimensions = getDimensions(this.hostElement, this.isVertical);
+    const itemDimensions = getDimensions(this.items?.[0], this.isVertical);
+
     this.toggleAttribute(
       'has-previous',
-      getScrollDimensions(this.hostElement, this.isVertical).position >
-        getDimensions(this.items?.[0], this.isVertical).size
+      hostScroll.position > itemDimensions.size
     );
 
     this.toggleAttribute(
       'has-next',
-      getScrollDimensions(this.hostElement, this.isVertical).position +
-        this.hostElement.getBoundingClientRect().width <
-        getScrollDimensions(this.hostElement, this.isVertical).size -
-          getDimensions(this.items?.[0], this.isVertical).size
+      hostScroll.position + hostDimensions.size <=
+        hostScroll.size - itemDimensions.size
     );
   }
 
@@ -216,6 +236,7 @@ export class CarouselNavigationComponent
       ) {
         opacity = 1;
       }
+      indicator.checked = opacity === 1;
       indicator.style.setProperty('--opacity', `${opacity}`);
     });
   }
@@ -285,15 +306,10 @@ export class CarouselNavigationComponent
       ${when(
         this.showIndicators,
         () => html`
-          <div class="indicators">
+          <div class="indicators" @input=${this.handleIndicatorInput}>
             ${this.slides.map(
               (slide) =>
-                html`<input
-                  value=${slide}
-                  type="radio"
-                  name="indicators"
-                  @focusin=${this.handleIndicatorClick}
-                />`
+                html`<input value=${slide} type="radio" name="indicators" />`
             )}
           </div>
         `
@@ -330,6 +346,7 @@ export class CarouselNavigationComponent
               );
             });
     }
+
     this.scrollElementToIndex(index);
   }
 
@@ -358,9 +375,17 @@ export class CarouselNavigationComponent
   }
 
   /**
-   * Handles the click on an indicator.
+   *
+   * @param @deprecated use handleIndicatorChange instead
    */
   protected handleIndicatorClick(e: Event): void {
+    this.handleIndicatorInput(e);
+  }
+
+  /**
+   * Handles the selected state of an indicator.
+   */
+  protected handleIndicatorInput(e: Event): void {
     const target = e.target as HTMLInputElement;
     this.scrollElementToIndex(parseInt(target.value));
   }
@@ -414,14 +439,15 @@ export class CarouselNavigationComponent
    * @returns An array of HTMLElements representing the child elements of the host component.
    */
   protected resolveItems(): HTMLElement[] {
-    const items = [
-      ...(this.hostElement?.shadowRoot?.querySelectorAll(
-        ':not(:is(oryx-carousel-navigation,slot,style)'
-      ) ?? []),
-      ...this.hostElement.children,
-    ];
-
     const result: HTMLElement[] = [];
+
+    const items = [
+      ...Array.from(this.hostElement.shadowRoot?.children ?? []),
+      ...this.hostElement.children,
+    ].filter(
+      (e) =>
+        !['style', 'oryx-carousel-navigation'].includes(e.tagName.toLowerCase())
+    );
 
     for (const item of items) {
       // If the display is 'contents' we collect all the child elements to the result
