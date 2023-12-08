@@ -26,6 +26,7 @@ describe('Product details page suite', () => {
     pdp.getRelations().getProducts().should('be.visible');
   });
 
+  // TODO: should be moved to cypress component tests.
   it('should proper change carousel and arrow visibility with navigation between slides using buttons', () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
@@ -70,6 +71,7 @@ describe('Product details page suite', () => {
     pdp.getCarousel().getButton('previous').should('not.be.visible');
   });
 
+  // TODO: should be moved to cypress component tests.
   it('should proper change carousel with navigation between slides using indicators', () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
