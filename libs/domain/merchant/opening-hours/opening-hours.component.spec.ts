@@ -156,7 +156,7 @@ describe('MerchantOpeningsHoursComponent', () => {
     });
 
     it('should render 4 time elements for the first day', () => {
-      const times = element.shadowRoot?.querySelectorAll('li oryx-time');
+      const times = element.shadowRoot?.querySelectorAll('li oryx-site-time');
       expect(times?.length).toBe(4);
     });
   });
@@ -175,9 +175,8 @@ describe('MerchantOpeningsHoursComponent', () => {
     });
 
     it('should render closed', () => {
-      const day = element.shadowRoot?.querySelector('ul li:nth-child(1)');
-      const closedElement = day?.querySelector('div:nth-child(1)');
-      expect(closedElement?.textContent).toBe('Closed');
+      const day = element.shadowRoot?.querySelector('div');
+      expect(day?.textContent).toBe('Closed');
     });
   });
 });

@@ -25,7 +25,7 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
           merchant.schedule.opened,
           (weekday) =>
             html`<li>
-              ${this.i18n(`merchant.weekdays.${weekday.day}`)}
+              <oryx-site-day .day=${weekday.day}></oryx-site-day>
               ${this.renderTimeSlots(weekday)}
             </li>`
         )}
@@ -42,16 +42,16 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
         slot.times,
         (time) =>
           html` <div>
-            <oryx-time .stamp=${this.getDate(slot.day, time.from)}></oryx-time>
+            <oryx-site-time .stamp=${this.getDate(time.from)}></oryx-site-time>
             -
-            <oryx-time .stamp=${this.getDate(slot.day, time.to)}></oryx-time>
+            <oryx-site-time .stamp=${this.getDate(time.to)}></oryx-site-time>
           </div>`
       )}`;
     }
   }
 
-  protected getDate(day?: string, time?: string): Date | undefined {
-    if (!day || !time) return;
+  protected getDate(time?: string): Date | undefined {
+    if (!time) return;
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const date = new Date();
     date.setHours(hours, minutes, seconds, 0);
