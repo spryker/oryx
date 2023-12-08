@@ -1,5 +1,5 @@
 export class ProductListFragment {
-  getWrapper = () => cy.get('oryx-product-relations + oryx-product-list');
+  getWrapper = () => cy.get('oryx-product-list');
   getCard = (index: number) =>
     this.getWrapper().find('oryx-product-card').eq(index);
   getNavigation = () => this.getWrapper().find(`oryx-carousel-navigation`);
