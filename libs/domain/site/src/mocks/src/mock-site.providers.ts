@@ -14,11 +14,15 @@ import {
   DefaultGenderService,
   DefaultLinkService,
   DefaultNotificationService,
+  DefaultPriceModeService,
   DefaultPricingService,
   DefaultSalutationService,
   GenderService,
   LinkService,
   NotificationService,
+  PriceMode,
+  PriceModeService,
+  PriceModes,
   PricingService,
   SalutationService,
   SapiLocaleAdapter,
@@ -84,5 +88,13 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: BreadcrumbService,
     useClass: MockBreadcrumbService,
+  },
+  {
+    provide: PriceMode,
+    useValue: PriceModes.GrossMode,
+  },
+  {
+    provide: PriceModeService,
+    useClass: DefaultPriceModeService,
   },
 ];

@@ -19,6 +19,8 @@ const cart = {
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',
   'oauth.logging-you-in': 'Logging you in...',
+  'cart.edit.name.placeholder': 'The name of the shopping cart',
+  'cart.edit.set-default': 'Make this cart my current cart',
 };
 
 const coupon = {
