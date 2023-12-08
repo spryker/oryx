@@ -279,6 +279,7 @@
       "@spryker-oryx/site/price-mode-selector": [
         "libs/domain/site/price-mode-selector/index.ts"
       ],
+      "@spryker-oryx/site/time": ["libs/domain/site/time/index.ts"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"
