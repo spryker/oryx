@@ -1,10 +1,12 @@
 import { Provider } from '@spryker-oryx/di';
+import { ProductContext, ProductService } from '@spryker-oryx/product';
 import {
   AppInitializer,
   AppInitializerService,
   DefaultAppInitializerService,
 } from './app-initializer';
 import { ContextService, DefaultContextService } from './context';
+import { DefaultEntityService, EntityProvider, EntityService } from './entity';
 import { DefaultErrorService, ErrorService } from './error';
 import {
   DefaultFeatureOptionsService,
@@ -115,6 +117,17 @@ export const coreProviders: Provider[] = [
   {
     provide: JsonApiIncludeService,
     useClass: DefaultJsonApiIncludeService,
+  },
+  {
+    provide: EntityService,
+    useClass: DefaultEntityService,
+  },
+  {
+    provide: `${EntityProvider}product`,
+    useValue: {
+      service: ProductService,
+      context: ProductContext.SKU,
+    },
   },
   CoreResourceResolver,
 ];
