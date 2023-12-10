@@ -17,7 +17,8 @@ export const baseStyles = css`
     color: var(--oryx-color-neutral-8);
   }
 
-  ::slotted(input[checked]) {
+  ::slotted(input[checked]),
+  ::slotted(input:checked) {
     background-clip: content-box;
     /* stylelint-disable-next-line */
     background-image: linear-gradient(currentColor 0%, currentColor 100%);
@@ -62,12 +63,12 @@ export const baseStyles = css`
     pointer-events: none;
   }
 
-  ::slotted(input[checked]:hover) {
+  ::slotted(input[checked]:hover),
+  ::slotted(input:checked:hover) {
     color: var(--oryx-color-primary-10);
   }
 
-  :host([hasError]) ::slotted(input),
-  :host([hasError]) ::slotted(input[checked]) {
+  :host([hasError]) ::slotted(input) {
     border-color: var(--oryx-color-error-9);
   }
 `;
