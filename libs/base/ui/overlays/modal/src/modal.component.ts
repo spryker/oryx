@@ -6,7 +6,7 @@ import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
+import { BACK_EVENT, CLOSE_EVENT, CLOSED_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
 
 export class ModalComponent
@@ -42,9 +42,21 @@ export class ModalComponent
     this.setDialogState();
   }
 
+  connectedCallback(): void {
+    if (featureVersion >= '1.4') {
+      this.addEventListener(CLOSE_EVENT, this.close);
+    }
+
+    super.connectedCallback();
+  }
+
   disconnectedCallback(): void {
     if (this.isOpen) {
       this.toggleScrollLock();
+    }
+
+    if (featureVersion >= '1.4') {
+      this.removeEventListener(CLOSE_EVENT, this.close);
     }
 
     super.disconnectedCallback();
@@ -76,9 +88,15 @@ export class ModalComponent
   }
 
   close(): void {
-    this.dispatchEvent(
-      new CustomEvent(CLOSE_EVENT, { bubbles: true, composed: true })
-    );
+    if (featureVersion >= '1.4') {
+      this.dispatchEvent(
+        new CustomEvent(CLOSED_EVENT, {bubbles: true, composed: true})
+      );
+    } else {
+      this.dispatchEvent(
+        new CustomEvent(CLOSE_EVENT, {bubbles: true, composed: true})
+      );
+    }
     this.removeAttribute('open');
   }
 

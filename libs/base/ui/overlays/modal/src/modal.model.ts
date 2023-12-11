@@ -1,5 +1,6 @@
-export const CLOSE_EVENT = 'oryx.close';
-export const BACK_EVENT = 'oryx.back';
+export const CLOSE_EVENT = 'oryx.modal.close';
+export const CLOSED_EVENT = 'oryx.modal.closed';
+export const BACK_EVENT = 'oryx.modal.back';
 
 export interface ModalProperties {
   /**
