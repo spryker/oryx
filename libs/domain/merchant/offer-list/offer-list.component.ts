@@ -101,12 +101,18 @@ export class MerchantOfferListComponent extends ProductMixin(
     const current = this.$current()?.id;
 
     return html`
-      <a href=${$link()} tabindex="-1" aria-label="bla">
+      <a
+        href=${$link()}
+        tabindex="-1"
+        aria-label=${this.i18n('merchant.link-to-<offer>', {
+          offer: offer.id,
+        })}
+      >
         <oryx-radio data-sku=${productContext}>
           <input
             type="radio"
             name="offer"
-            .ariaLabel=${this.i18n('merchant.link-to-<offer>', {
+            aria-label=${this.i18n('merchant.link-to-<offer>', {
               offer: offer.id,
             })}
             value=${offer.id}

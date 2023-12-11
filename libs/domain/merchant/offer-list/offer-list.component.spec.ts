@@ -58,6 +58,10 @@ describe('MerchantOfferListComponent', () => {
       );
     });
 
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
+
     it('should render a link with radio input and offer-list-item for each offer', () => {
       expect(element).toContainElement(
         'a input[value="offer-1"] + oryx-merchant-offer-list-item'
