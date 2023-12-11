@@ -100,6 +100,7 @@ export enum IconTypes {
   Carrier = 'carrier',
   Location = 'location_on',
   Login = 'login',
+  Logout = 'logout',
   List = 'list',
   ViewList = 'view_list',
   BulletList = 'format_list_bulleted',

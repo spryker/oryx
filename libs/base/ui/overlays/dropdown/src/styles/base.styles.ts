@@ -5,7 +5,6 @@ import { Position } from '../dropdown.model';
 
 export const dropdownBaseStyles = css`
   :host {
-    --oryx-popover-top-space: 4px;
     --oryx-popover-vertical-offset: 10px;
     --oryx-popover-maxwidth: 206px;
 
@@ -32,7 +31,7 @@ export const dropdownBaseStyles = css`
       ),
       var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
     );
-    width: var(--_oryx-dropdown-width);
+    width: var(--oryx-dropdown-width, var(--_oryx-dropdown-width));
     inset-block-start: 0;
     inset-inline: var(--_oryx-dropdown-start-offset, auto)
       var(--_oryx-dropdown-end-offset, auto);
@@ -49,9 +48,8 @@ export const dropdownBaseStyles = css`
 
   ${featureVersion >= `1.3`
     ? css`
-        :host(:not([vertical-align])) oryx-popover {
-          transform: scaleX(var(--oryx-popover-visible, 0))
-            scaleY(var(--oryx-popover-visible, 0));
+        :host([vertical-align]) oryx-popover {
+          transform: scaleY(var(--oryx-popover-visible, 0));
         }
       `
     : css``}
@@ -95,7 +93,7 @@ export const dropdownBaseStyles = css`
   }
 
   :host([vertical-align]:not([up])) oryx-popover {
-    inset-block-start: calc(100% + var(--oryx-popover-top-space));
+    inset-block-start: calc(100% + var(--oryx-popover-top-space, 4px));
   }
 
   :host([vertical-align][up]) oryx-popover {

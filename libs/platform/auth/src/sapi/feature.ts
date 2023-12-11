@@ -2,19 +2,20 @@ import {
   AnonAuthTokenService,
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
-  authLoginComponent,
   AuthTokenService,
   IdentityService,
-  loginLinkComponent,
   OauthFeature,
   OauthFeatureConfig,
   OauthService,
   PasswordGrantAuthLoginStrategy,
   PasswordGrantAuthLoginStrategyConfig,
+  authLoginComponent,
+  loginLinkComponent,
+  logoutLinkComponent,
 } from '@spryker-oryx/auth';
 import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
 import { AppFeature, HttpInterceptor } from '@spryker-oryx/core';
-import { inject, Provider } from '@spryker-oryx/di';
+import { Provider, inject } from '@spryker-oryx/di';
 import { ComponentsInfo, featureVersion } from '@spryker-oryx/utilities';
 import {
   GuestIdentityInterceptor,
@@ -115,5 +116,9 @@ export interface SapiAuthFeatureConfig extends OauthFeatureConfig {
 }
 
 export class SapiAuthComponentsFeature implements AppFeature {
-  components: ComponentsInfo = [authLoginComponent, loginLinkComponent];
+  components: ComponentsInfo = [
+    authLoginComponent,
+    loginLinkComponent,
+    logoutLinkComponent,
+  ];
 }
