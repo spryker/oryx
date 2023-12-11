@@ -121,11 +121,17 @@
       ],
       "@spryker-oryx/merchant/legal": ["libs/domain/merchant/legal/index.ts"],
       "@spryker-oryx/merchant/logo": ["libs/domain/merchant/logo/index.ts"],
+      "@spryker-oryx/merchant/mocks": [
+        "libs/domain/merchant/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/merchant/offer-list": [
+        "libs/domain/merchant/offer-list/index.ts"
+      ],
+      "@spryker-oryx/merchant/offer-list-item": [
+        "libs/domain/merchant/offer-list-item/index.ts"
+      ],
       "@spryker-oryx/merchant/opening-hours": [
         "libs/domain/merchant/opening-hours/index.ts"
-      ],
-      "@spryker-oryx/merchant/sold-by": [
-        "libs/domain/merchant/sold-by/index.ts"
       ],
       "@spryker-oryx/merchant/title": ["libs/domain/merchant/title/index.ts"],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
