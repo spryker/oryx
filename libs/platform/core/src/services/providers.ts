@@ -122,12 +122,5 @@ export const coreProviders: Provider[] = [
     provide: EntityService,
     useClass: DefaultEntityService,
   },
-  {
-    provide: `${EntityProvider}product`,
-    useValue: {
-      service: ProductService,
-      context: ProductContext.SKU,
-    },
-  },
   CoreResourceResolver,
 ];

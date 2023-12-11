@@ -1,4 +1,4 @@
-import { PageMetaResolver } from '@spryker-oryx/core';
+import { EntityProvider, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
@@ -71,8 +71,9 @@ import {
 } from './list';
 import { productListIncludes } from './list/adapter/product-list-includes';
 import {
+  ProductContext,
   ProductContextFallback,
-  productContextProviders,
+  productContextProviders
 } from './product-context';
 import { ProductService } from './product.service';
 import {
@@ -224,4 +225,11 @@ export const productProviders: Provider[] = [
   ProductDetailsBreadcrumb,
   ...categoryQueries,
   ...provideLitRoutes({ routes: productRoutes }),
+  {
+    provide: `${EntityProvider}product`,
+    useValue: {
+      service: ProductService,
+      context: ProductContext.SKU,
+    },
+  },
 ];
