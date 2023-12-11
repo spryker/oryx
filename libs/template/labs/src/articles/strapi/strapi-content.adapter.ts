@@ -63,23 +63,36 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
     return combineLatest([this.getType(qualifier), this.locale.get()]).pipe(
-      switchMap(([{ type, attributes, pluralType }, locale]) => {
-        const query = qualifier.query ? `_q=${qualifier.query}` : '';
-        const preview = this.isPreview ? 'publicationState=preview' : '';
+      switchMap(([{ type, attributes, pluralType }, _locale]) => {
+        const { tags = [], query: _query } = qualifier;
+        const query = _query ? `_q=${_query}` : '';
+        const preview = this.isPreview ? '&publicationState=preview' : '';
+        const locale = `&locale=${_locale}`;
 
         return combineLatest([
-          this.search(`${pluralType}?${query}&locale=${locale}&${preview}`),
-          of({ type, attributes }),
+          this.search(`${pluralType}?${query}${locale}${preview}`),
+          of({
+            type,
+            attributes,
+            tags: Array.isArray(tags) ? tags : [tags],
+          }),
         ] as const);
       }),
-      switchMap(([{ data }, { type: contentType, attributes }]) => {
-        return from(data).pipe(
-          switchMap((record) =>
-            this.parseEntry(record, contentType, attributes)
-          ),
-          reduce((a, c) => [...a, c], [] as Content[])
-        );
-      })
+      switchMap(
+        ([{ data: _data }, { type: contentType, attributes, tags }]) => {
+          const data = tags
+            ? _data.filter((item) =>
+                item.attributes.tags.some((tag) => tags.includes(tag.name))
+              )
+            : _data;
+          return from(data).pipe(
+            switchMap((record) =>
+              this.parseEntry(record, contentType, attributes)
+            ),
+            reduce((a, c) => [...a, c], [] as Content[])
+          );
+        }
+      )
     );
   }
 

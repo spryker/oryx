@@ -15,13 +15,15 @@ import {
   ArticlePageDescriptionMetaResolver,
   ArticlePageTitleMetaResolver,
 } from './resolvers';
+import { storyblokProviders } from './storyblok';
+import { strapiProviders } from './strapi';
 
 export const articleProviders: Provider[] = [
   ArticleIdContextFallback,
   ArticleTypeContextFallback,
   ...contentfulProviders,
-  // ...storyblokProviders,
-  // ...strapiProviders,
+  ...storyblokProviders,
+  ...strapiProviders,
   provideExperienceData(experienceArticlePages),
   ...provideLitRoutes({ routes: articleRoutes }),
   {

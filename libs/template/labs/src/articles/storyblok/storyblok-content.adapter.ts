@@ -78,6 +78,12 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
 
     if (qualifier.query) endpoint += `&search_term=${qualifier.query}`;
     if (qualifier.type) endpoint += `&by_slugs=${qualifier.type}/*`;
+    if (qualifier.tags)
+      endpoint += `&with_tag=${
+        Array.isArray(qualifier.tags)
+          ? qualifier.tags.join(',')
+          : qualifier.tags
+      }`;
 
     return this.search<StoryblokCmsModel.EntriesResponse>(endpoint).pipe(
       switchMap((stories) => {
