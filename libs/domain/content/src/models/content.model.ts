@@ -13,6 +13,7 @@ export interface ContentQualifier {
   type?: string;
   id?: string;
   query?: string;
+  tags?: string[] | string;
   entities?: ContentEntity[];
 }
 
