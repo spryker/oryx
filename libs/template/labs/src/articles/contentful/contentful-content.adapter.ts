@@ -155,11 +155,19 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     }));
   }
 
-  protected getParams(qualifier: Record<string, unknown>): string {
-    return Object.entries(qualifier).reduce((acc, [key, value]) => {
+  protected getParams(
+    qualifier: ContentQualifier & { locale: string }
+  ): string {
+    return Object.entries({ ...qualifier }).reduce((acc, [key, _value]) => {
       if (key === 'id' || key === 'entities') return acc;
 
-      const param = `${key === 'type' ? 'content_type' : key}=${value}`;
+      const mapper = {
+        [key]: key,
+        tags: 'metadata.tags.sys.id[in]',
+        type: 'content_type',
+      };
+      const value = Array.isArray(_value) ? _value.join(',') : _value;
+      const param = `${mapper[key as keyof typeof mapper]}=${value}`;
 
       if (!acc.length) {
         return param;

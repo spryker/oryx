@@ -26,7 +26,10 @@ export class ArticlesComponent extends LitElement {
     const type = this.$articleType();
 
     return type
-      ? this.contentService.getAll<ArticleContent>({ type, entities: [type] })
+      ? this.contentService.getAll<ArticleContent>({
+          type,
+          entities: [type],
+        })
       : of(null);
   });
 
