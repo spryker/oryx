@@ -112,7 +112,7 @@ export const productPage: ExperienceComponent = {
                 },
                 { type: 'oryx-cart-add' },
                 { type: 'oryx-product-availability' },
-                { type: 'oryx-merchant-offers' },
+                { type: 'oryx-merchant-offer-list' },
               ],
             },
           ],

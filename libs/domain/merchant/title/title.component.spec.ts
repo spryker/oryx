@@ -5,7 +5,7 @@ import { RouteType } from '@spryker-oryx/router';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { MerchantService } from '../../src/merchant';
+import { MerchantService } from '../src/services';
 import { MerchantTitleComponent } from './title.component';
 import { merchantTitleComponent } from './title.def';
 

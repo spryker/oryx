@@ -316,6 +316,13 @@ export class MockProductService implements Partial<ProductService> {
       },
       mediaSet: [],
     },
+    {
+      sku: 'mp-1',
+      offers: [
+        { id: 'offer-1', merchant: { name: 'Merchant 1' }, price: {} },
+        { id: 'offer-2', merchant: { name: 'Merchant 2' }, price: {} },
+      ],
+    },
   ];
 
   get(qualifier: ProductQualifier): Observable<Product> {

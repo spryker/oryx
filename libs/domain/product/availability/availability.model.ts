@@ -16,6 +16,8 @@ export interface CartItemAvailabilityOptions {
    * The exact stock is omitted in case of out-of-stock status.
    */
   enableExactStock?: boolean;
+
+  hideInStock?: boolean;
 }
 
 export enum StockAvailability {
