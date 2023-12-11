@@ -2,8 +2,9 @@ export function getDimensions(
   el: HTMLElement,
   isVertical = false
 ): { position: number; size: number } {
-  const { left, top, width, height } = el.getBoundingClientRect();
-  const size = isVertical ? height : width;
+  const { left, top } = el.getBoundingClientRect();
+  const style = window.getComputedStyle(el);
+  const size = isVertical ? parseFloat(style.height) : parseFloat(style.width);
   const position = isVertical ? top : left;
   return { position, size };
 }
