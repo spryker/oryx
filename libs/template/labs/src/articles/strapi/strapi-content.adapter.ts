@@ -82,7 +82,7 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
         ([{ data: _data }, { type: contentType, attributes, tags }]) => {
           const data = tags
             ? _data.filter((item) =>
-                item.attributes.tags.some((tag) => tags.includes(tag.name))
+                item.attributes.tags?.some((tag) => tags.includes(tag.name))
               )
             : _data;
           return from(data).pipe(

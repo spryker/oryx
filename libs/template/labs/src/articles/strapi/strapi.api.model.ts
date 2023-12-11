@@ -12,7 +12,7 @@ export module StrapiCmsModel {
       createdAt: string;
       publishedAt: string;
       updatedAt: string;
-      tags: Tag[];
+      tags?: Tag[];
     };
   }
 
