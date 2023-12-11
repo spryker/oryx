@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { defineConfig } from 'vite';
 import { viteConfig } from './vite.config.common.js';
 
@@ -6,6 +7,11 @@ export default defineConfig({
   envDir: viteConfig.root,
   envPrefix: viteConfig.envPrefix,
   build: {
+    outDir: join(
+      viteConfig.monorepoRoot,
+      viteConfig.build.outDirRoot,
+      viteConfig.build.index
+    ),
     sourcemap: true,
   },
   server: {
