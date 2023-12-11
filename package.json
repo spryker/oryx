@@ -178,7 +178,6 @@
     "lit": "^2.7.4",
     "marked": "^5.1.0",
     "oauth4webapi": "^2.1.0",
-    "qs": "^6.11.2",
     "request": "^2.88.2",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "7.5.6",
