@@ -80,7 +80,7 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
       }),
       switchMap(
         ([{ data: _data }, { type: contentType, attributes, tags }]) => {
-          const data = tags
+          const data = tags.length
             ? _data.filter((item) =>
                 item.attributes.tags?.some((tag) => tags.includes(tag.name))
               )
