@@ -42,7 +42,6 @@ describe('MerchantOfferListItemComponent', () => {
     });
 
     it('should render the offer details', () => {
-      expect(element).toContainElement('oryx-heading');
       expect(element).toContainElement('oryx-product-price');
       expect(element).toContainElement('.delivery-time');
       expect(element).toContainElement('oryx-product-availability');

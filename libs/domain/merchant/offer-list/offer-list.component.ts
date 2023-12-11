@@ -11,11 +11,17 @@ import {
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { computed, elementEffect, signal } from '@spryker-oryx/utilities';
+import {
+  computed,
+  elementEffect,
+  hydrate,
+  signal,
+} from '@spryker-oryx/utilities';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { merchantOffersStyles } from './offer-list.styles';
 
+@hydrate({ context: ProductContext.SKU })
 export class MerchantOfferListComponent extends ProductMixin(
   ContentMixin(LitElement)
 ) {

@@ -2,11 +2,16 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { LitElement, TemplateResult, html } from 'lit';
 
 import { ProductMixin } from '@spryker-oryx/product';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size, computed, signalProperty } from '@spryker-oryx/utilities';
+import {
+  Size,
+  computed,
+  signalAware,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { merchantOfferListItemStyles } from './offer-list-item.styles';
 
+@signalAware()
 export class MerchantOfferListItemComponent extends ProductMixin(
   ContentMixin(LitElement)
 ) {
@@ -22,12 +27,7 @@ export class MerchantOfferListItemComponent extends ProductMixin(
     const offer = this.$offer();
     if (!offer) return;
 
-    return html`<oryx-heading
-        .tag=${HeadingTag.H5}
-        .typography=${HeadingTag.H6}
-      >
-        ${offer.merchant.name}
-      </oryx-heading>
+    return html`${offer.merchant.name}
 
       <oryx-product-price
         .options=${{ enableTaxMessage: false }}

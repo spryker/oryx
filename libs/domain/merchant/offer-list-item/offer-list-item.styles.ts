@@ -4,6 +4,7 @@ export const merchantOfferListItemStyles = css`
   :host {
     display: grid;
     grid-template-columns: auto auto;
+    align-items: center;
     gap: 8px;
     pointer-events: none;
     container-type: inline-size;
