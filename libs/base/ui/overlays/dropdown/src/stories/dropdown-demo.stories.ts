@@ -21,6 +21,7 @@ interface Props {
   icon: string;
   customTrigger: boolean;
   triggerIconSize: Size;
+  showOnFocus: boolean;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -61,6 +62,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         <oryx-dropdown
           position=${props.position}
           ?vertical-align=${props.verticalAlign}
+          ?showOnFocus=${props.showOnFocus}
           triggerIconSize=${props.triggerIconSize}
           @oryx.close=${(): void => console.log('close')}
         >
@@ -89,6 +91,7 @@ DropdownDemo.args = {
   content: 'options',
   customTrigger: false,
   triggerIconSize: Size.Md,
+  showOnFocus: false,
 };
 
 DropdownDemo.argTypes = {

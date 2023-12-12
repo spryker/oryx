@@ -1,7 +1,13 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverController } from '@spryker-oryx/ui/popover';
-import { Size, hydrate, queryFirstFocusable } from '@spryker-oryx/utilities';
+import {
+  I18nMixin,
+  Size,
+  featureVersion,
+  hydrate,
+  queryFirstFocusable,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DropdownProperties, Position } from './dropdown.model';
@@ -9,31 +15,53 @@ import { dropdownBaseStyles } from './styles';
 
 @hydrate({ event: ['mouseover', 'focusin'] })
 export class DropdownComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements DropdownProperties
 {
   static styles = dropdownBaseStyles;
-  protected controller = new PopoverController(this, {
-    boundingElement: this,
-  });
 
-  @property({ reflect: true, type: Boolean }) open = false;
-  @property() position?: Position;
+  /**
+   * @deprecated not needed to keep a reference to the controller.
+   */
+  protected controller?: PopoverController =
+    featureVersion >= '1.4'
+      ? new PopoverController(this, {
+          boundingElement: this,
+        })
+      : undefined;
+
+  @property({ reflect: true, type: Boolean }) open?: boolean;
+  @property({ type: Boolean }) showOnFocus?: boolean;
+  @property({ reflect: true }) position?: Position;
   @property({ type: Boolean, attribute: 'vertical-align' })
   verticalAlign?: boolean;
   @property() triggerIconSize = Size.Md;
 
-  //translation
+  /**
+   * @deprecated since version 1.4 use the i18n token 'ui.toggle-dropdown' instead
+   */
   @property() toggleButtonAriaLabel = 'Toggle dropdown';
+
+  connectedCallback(): void {
+    if (featureVersion >= '1.4') {
+      new PopoverController(this, {
+        boundingElement: this,
+        showOnFocus: this.showOnFocus,
+      });
+    }
+    super.connectedCallback();
+  }
 
   protected override render(): TemplateResult {
     return html`
-      <slot name="trigger">
+      <slot name="trigger" @click=${this.onOpen}>
         <oryx-button
           .type=${ButtonType.Icon}
           .active=${this.open}
           .size=${this.triggerIconSize}
-          .label=${this.toggleButtonAriaLabel}
+          .label=${featureVersion >= '1.4'
+            ? this.i18n('ui.toggle-dropdown')
+            : this.toggleButtonAriaLabel}
           .icon=${IconTypes.Actions}
         ></oryx-button>
       </slot>
@@ -50,6 +78,12 @@ export class DropdownComponent
 
   protected get trigger(): Element | null | undefined {
     return this.renderRoot?.querySelector('slot[name="trigger"]');
+  }
+
+  protected onOpen(): void {
+    if (featureVersion >= '1.4') {
+      this.open = !this.open;
+    }
   }
 
   /**
