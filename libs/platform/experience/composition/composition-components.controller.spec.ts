@@ -378,5 +378,39 @@ describe('CompositionComponentsController', () => {
         });
       });
     });
+
+    describe('when composition has refs', () => {
+      const callback = vi.fn();
+      const mocks = {
+        mockRefA: { id: 'mockRefA', type: 'mockRefA' },
+        mockRefB: { id: 'mockRefB', type: 'mockRefB' },
+        mockId: {
+          id: 'mockId',
+          type: 'mockType',
+          components: [
+            { ref: 'mockRefA' },
+            { id: 'mockId1', type: 'mockType1' },
+            { ref: 'mockRefB' },
+          ],
+        },
+      };
+
+      beforeEach(() => {
+        mockObserve.get = vi.fn().mockReturnValue(of(mocks.mockId.id));
+        experienceService.getComponent.mockImplementation(
+          (data: { uid: keyof typeof mocks }) => of(mocks[data.uid])
+        );
+      });
+
+      it('should properly resolve refs', () => {
+        const controller = new CompositionComponentsController(mockElement);
+        controller.getComponents().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith([
+          mocks.mockRefA,
+          mocks.mockId.components[1],
+          mocks.mockRefB,
+        ]);
+      });
+    });
   });
 });

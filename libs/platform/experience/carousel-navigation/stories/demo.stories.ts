@@ -56,9 +56,6 @@ const Template: Story<CarouselLayoutProperties> = (
     <oryx-layout .options=${options}> ${items(12)} </oryx-layout>
 
     <style>
-      oryx-layout {
-        margin-bottom: 50px;
-      }
       oryx-layout > * {
         background: var(--oryx-color-neutral-5);
         padding: 50px;
