@@ -117,7 +117,6 @@ export class PopoverController implements ReactiveController {
 
   constructor(protected host: LitElement, protected options?: PopoverOptions) {
     this.host.addController(this);
-    console.log(options);
     this.toggleController = new ToggleController(host, {
       elementSelector: this.popoverSelector,
       itemSelector: this.optionsSelector,

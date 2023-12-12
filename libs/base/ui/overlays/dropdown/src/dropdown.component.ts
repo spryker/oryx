@@ -25,10 +25,10 @@ export class DropdownComponent
    */
   protected controller?: PopoverController =
     featureVersion >= '1.4'
-      ? new PopoverController(this, {
+      ? undefined
+      : new PopoverController(this, {
           boundingElement: this,
-        })
-      : undefined;
+        });
 
   @property({ reflect: true, type: Boolean }) open?: boolean;
   @property({ type: Boolean }) showOnFocus?: boolean;
@@ -54,7 +54,7 @@ export class DropdownComponent
 
   protected override render(): TemplateResult {
     return html`
-      <slot name="trigger" @click=${this.onOpen}>
+      <slot name="trigger">
         <oryx-button
           .type=${ButtonType.Icon}
           .active=${this.open}
@@ -78,12 +78,6 @@ export class DropdownComponent
 
   protected get trigger(): Element | null | undefined {
     return this.renderRoot?.querySelector('slot[name="trigger"]');
-  }
-
-  protected onOpen(): void {
-    if (featureVersion >= '1.4') {
-      this.open = !this.open;
-    }
   }
 
   /**
