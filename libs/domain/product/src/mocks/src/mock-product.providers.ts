@@ -5,7 +5,7 @@ import {
   DefaultProductListPageService,
   DefaultProductListService,
   ProductAdapter,
-  ProductCategoryService,
+  ProductCategoryService, ProductContext,
   ProductImageService,
   ProductListAdapter,
   ProductListPageService,
@@ -13,12 +13,13 @@ import {
   productMediaConfig,
   ProductMediaConfig,
   ProductRelationsListService,
-  ProductService,
+  ProductService
 } from '@spryker-oryx/product';
 import { MockProductCategoryService } from './mock-category.service';
 import { MockProductService } from './mock-product.service';
 import { MockProductListAdapter } from './product-list';
 import { MockProductRelationsListService } from './product-relations/mock-product-relations-list.service';
+import { provideEntity } from '@spryker-oryx/core';
 
 export const mockProductProviders: Provider[] = [
   {
@@ -57,4 +58,8 @@ export const mockProductProviders: Provider[] = [
     provide: ProductCategoryService,
     useClass: MockProductCategoryService,
   },
+  provideEntity('product', {
+    service: ProductService,
+    context: ProductContext.SKU,
+  }),
 ];
