@@ -43,9 +43,10 @@ const legalLinks: ExperienceComponent = {
               rules: [
                 {
                   layout: {
+                    type: 'flex',
                     divider: true,
                   },
-                  style: 'display: contents;',
+                  width: 'auto',
                 },
               ],
             },
