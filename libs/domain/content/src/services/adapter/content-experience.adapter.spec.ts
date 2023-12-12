@@ -13,6 +13,7 @@ describe('ContentExperienceAdapter', () => {
   let contentService: ContentService;
 
   beforeEach(() => {
+    mockFeatureVersion('1.4');
     const testInjector = createInjector({
       providers: [
         { provide: ContentService, useValue: mockContentService },
