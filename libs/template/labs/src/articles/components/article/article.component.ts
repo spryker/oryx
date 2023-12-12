@@ -45,12 +45,12 @@ export class ArticleComponent extends LitElement {
   protected override render(): TemplateResult | void {
     const data = this.$data();
 
-    if (!data?.fields.content) {
+    if (!data?.content) {
       return;
     }
 
     return html`<oryx-content-text
-      .content=${{ text: data.fields.content }}
+      .content=${{ text: data.content }}
     ></oryx-content-text> `;
   }
 }

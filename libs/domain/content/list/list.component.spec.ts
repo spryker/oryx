@@ -15,27 +15,27 @@ import { ContentListComponent } from './list.component';
 
 const mockContent = [
   {
-    name: 'aName',
-    type: 'aType',
-    fields: {
-      id: 'aId',
-      heading: 'aHeading',
+    _meta: {
+      name: 'aName',
+      type: 'aType',
     },
+    id: 'aId',
+    heading: 'aHeading',
   },
   {
-    name: 'bName',
-    type: 'bType',
-    fields: {
-      id: 'bId',
+    _meta: {
+      name: 'bName',
+      type: 'bType',
     },
+    id: 'bId',
   },
   {
-    name: 'cName',
-    type: 'cType',
-    fields: {
-      id: 'cId',
-      heading: 'cHeading',
+    _meta: {
+      name: 'cName',
+      type: 'cType',
     },
+    id: 'cId',
+    heading: 'cHeading',
   },
 ];
 
@@ -119,12 +119,12 @@ describe('ContentListComponent', () => {
       links.forEach((link, index) => {
         const data = mockContent[index];
         expect(link).toHaveProperty('options', {
-          type: data.type,
-          id: data.fields.id,
+          type: data._meta.type,
+          id: data.id,
           url: undefined,
         });
         expect(link).toHaveProperty('content', {
-          text: data.fields.heading ?? data.name,
+          text: data.heading ?? data._meta.name,
         });
       });
     });

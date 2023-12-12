@@ -55,8 +55,7 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
   get(qualifier: ContentQualifier): Observable<Content | null> {
     return this.getAll(qualifier).pipe(
       map(
-        (data) =>
-          data?.find((content) => content.fields.id === qualifier.id) ?? null
+        (data) => data?.find((content) => content.id === qualifier.id) ?? null
       )
     );
   }
@@ -110,17 +109,22 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
           )
       )
     ).pipe(
-      map((fields) => ({
-        id: String(record.id),
-        type,
-        fields: fields.reduce(
-          (acc, { key, value }) => ({
-            ...acc,
-            [key === 'identifier' ? 'id' : key]: value,
-          }),
-          {} as Content['fields']
-        ),
-      }))
+      map(
+        (fields) =>
+          ({
+            _meta: {
+              id: String(record.id),
+              type,
+            },
+            ...fields.reduce(
+              (acc, { key, value }) => ({
+                ...acc,
+                [key === 'identifier' ? 'id' : key]: value,
+              }),
+              {}
+            ),
+          } as Content)
+      )
     );
   }
 
