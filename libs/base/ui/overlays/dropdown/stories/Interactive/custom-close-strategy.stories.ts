@@ -3,11 +3,11 @@ import { wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { fireEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { TemplateResult, html } from 'lit';
+import { storybookPrefix } from '../../../../.constants';
 import { DropdownComponent } from '../../index';
 
-import { renderOptions } from '../utils';
+import { renderCustomContent } from '../utils';
 
 export default {
   title: `${storybookPrefix}/Overlays/Dropdown/Interactive`,
@@ -15,20 +15,23 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html` <oryx-dropdown> ${renderOptions()} </oryx-dropdown> `;
+  return html` <oryx-dropdown open> ${renderCustomContent()} </oryx-dropdown> `;
 };
 
-export const OpenBySpace = Template.bind({});
+export const CustomClose = Template.bind({});
 
-OpenBySpace.play = async (obj: {
+CustomClose.play = async (obj: {
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const dropdown = obj.canvasElement.querySelector(
     'oryx-dropdown'
   ) as DropdownComponent;
+  const closeButton = dropdown.querySelector(
+    '.custom-content button[close-popover]'
+  );
 
   await wait(1000);
-  fireEvent.keyDown(dropdown, { key: ' ' });
+  fireEvent.mouseUp(closeButton as Element);
   await wait(500);
-  expect(dropdown.hasAttribute('open')).toBe(true);
+  expect(dropdown.hasAttribute('open')).toBe(false);
 };

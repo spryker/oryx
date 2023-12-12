@@ -1,6 +1,6 @@
 import { featureVersion } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
-import { POPOVER_HEIGHT } from '../../popover';
+import { POPOVER_HEIGHT } from '../popover';
 import { Position } from './dropdown.model';
 
 export const dropdownBaseStyles = css`
