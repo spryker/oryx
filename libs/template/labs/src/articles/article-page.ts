@@ -59,20 +59,6 @@ export const experienceArticlePages = experienceArticleTags
               type: 'oryx-site-breadcrumb',
               options: { rules: [{ colSpan: 2 }] },
             },
-            {
-              type: 'oryx-entity-text',
-              options: {
-                entity: 'content',
-                field: 'fields.content',
-              },
-            },
-            {
-              type: 'oryx-entity-image',
-              options: {
-                entity: 'content',
-                field: 'fields.image',
-              },
-            },
 
             { type: 'oryx-content-article' },
           ],
