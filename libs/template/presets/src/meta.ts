@@ -12,13 +12,13 @@ import { ElementDefinition } from '@spryker-oryx/core';
 export const iconMeta = (): ElementDefinition[] => [
   {
     name: 'link',
-    attrs: { rel: 'icon', href: '/public/icon.svg' },
+    attrs: { rel: 'icon', href: '/icon.svg' },
   },
   {
     name: 'link',
     attrs: {
       rel: 'icon',
-      href: '/public/icon.svg',
+      href: '/icon.svg',
       media: '(prefers-color-scheme: dark)',
     },
   },
