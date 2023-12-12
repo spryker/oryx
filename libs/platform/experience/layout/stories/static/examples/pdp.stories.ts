@@ -22,7 +22,7 @@ const Template: Story = (): TemplateResult => {
       >
         <oryx-layout layout="list">
           <oryx-layout
-            layout="carousel"
+            .options=${{ rules: [{ layout: 'carousel' }] }}
             style="--oryx-column-count:1;--h:200px"
           >
             ${generateLayoutItems(8, 1, 'image ')}
@@ -30,7 +30,7 @@ const Template: Story = (): TemplateResult => {
 
           <oryx-layout
             class="thumbs"
-            layout="carousel"
+            .options=${{ rules: [{ layout: 'carousel' }] }}
             style="--oryx-grid-item-size: 100px;"
           >
             ${generateLayoutItems(8, 1, 'thumb ')}
@@ -44,7 +44,7 @@ const Template: Story = (): TemplateResult => {
       </oryx-layout>
 
       <h3>recommendations (carousel)</h3>
-      <oryx-layout layout="carousel" layout-bleed>
+      <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }} layout-bleed>
         ${generateLayoutItems(12)}
       </oryx-layout>
 
@@ -54,10 +54,14 @@ const Template: Story = (): TemplateResult => {
       </oryx-layout>
 
       <h3>others bought (carousel)</h3>
-      <oryx-layout layout="carousel"> ${generateLayoutItems(12)} </oryx-layout>
+      <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}>
+        ${generateLayoutItems(12)}
+      </oryx-layout>
 
       <h3>more stuff (carousel)</h3>
-      <oryx-layout layout="carousel"> ${generateLayoutItems(12)} </oryx-layout>
+      <oryx-layout .options=${{ rules: [{ layout: 'carousel' }] }}>
+        ${generateLayoutItems(12)}
+      </oryx-layout>
     </oryx-layout>
 
     ${pageStyles}
