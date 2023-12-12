@@ -25,7 +25,7 @@ export interface ContentMeta {
 
 export type Content<T = Record<string, unknown>> = {
   _meta: ContentMeta;
-  id: string;
   heading?: string;
+  id: string;
   [key: string]: unknown;
 } & T;
