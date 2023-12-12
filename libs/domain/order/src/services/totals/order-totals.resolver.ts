@@ -3,14 +3,15 @@ import {
   NormalizedTotals,
   PriceMode,
   TotalsResolver,
+  TotalsResolverOptions,
 } from '@spryker-oryx/cart';
 import { ContextService } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { OrderData, OrderDiscount } from '../../models';
-import { GetOrderDataProps } from '../adapter';
 import { OrderContext } from '../order-context';
 import { OrderService } from '../order.service';
+import { GetOrderDataProps } from '../adapter';
 
 export class OrderTotalsResolver implements TotalsResolver {
   constructor(
@@ -27,21 +28,19 @@ export class OrderTotalsResolver implements TotalsResolver {
     }));
   }
 
-  protected getFromContext(): Observable<OrderData | null | void> {
-    return this.context
-      .get<string>(
-        null /* for now we are happy with global/fallback orderId */,
-        OrderContext.OrderId
-      )
-      .pipe(switchMap((id) => (id ? this.orderService.get({ id }) : of(null))));
+  protected getFromContext(options?: TotalsResolverOptions): Observable<OrderData | null | void> {
+    return this.context.get<string>(
+      options?.contextElement ?? null,
+      OrderContext.OrderId
+    ).pipe(switchMap((id) => (id ? this.orderService.get({ id }) : of(null))));
   }
 
   getTotals(
-    qualifier?: GetOrderDataProps
+    options?: GetOrderDataProps | TotalsResolverOptions
   ): Observable<NormalizedTotals | null> {
-    const source = qualifier
-      ? this.orderService.get(qualifier)
-      : this.getFromContext();
+    const source = typeof options === 'string'
+      ? this.orderService.get(options)
+      : this.getFromContext(options as TotalsResolverOptions);
     return source.pipe(
       map((order) => {
         if (!order) return null;

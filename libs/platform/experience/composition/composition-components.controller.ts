@@ -75,7 +75,10 @@ export class CompositionComponentsController implements ReactiveController {
           return of(null);
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.tokenResolver.resolveToken(rules.hideByRule!).pipe(
+        return this.tokenResolver.resolveToken(
+          rules.hideByRule!,
+          { contextElement: this.host },
+        ).pipe(
           //hidden by default
           startWith(true),
           map((value) => (value ? null : component))

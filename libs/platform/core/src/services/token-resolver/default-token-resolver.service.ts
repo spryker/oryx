@@ -4,6 +4,7 @@ import { combineLatest, map, of } from 'rxjs';
 import {
   ResolvedToken,
   TokenResolver,
+  TokenResolverOptions,
   TokenResourceResolver,
   TokenResourceResolvers,
 } from './token-resolver.service';
@@ -15,19 +16,22 @@ export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
   protected injector = inject(INJECTOR);
 
-  resolveToken(token: string): ResolvedToken {
+  resolveToken(token: string, options?: TokenResolverOptions): ResolvedToken {
     if (this.isConditionalToken(token)) {
-      return this.resolveConditionalToken(token);
+      return this.resolveConditionalToken(token, options);
     }
 
     if (!this.isToken(token)) {
       return of(token);
     }
 
-    return this.resolveSimpleToken(token);
+    return this.resolveSimpleToken(token, options);
   }
 
-  protected resolveConditionalToken(token: string): ResolvedToken {
+  protected resolveConditionalToken(
+    token: string,
+    options?: TokenResolverOptions
+  ): ResolvedToken {
     const tokens = token.split('||').map((token) => token.trim());
 
     const invalidTokens = tokens.filter(
@@ -44,7 +48,7 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     const resolvedTokens = tokensToResolve.map((token) =>
-      this.resolveToken(token)
+      this.resolveToken(token, options)
     );
 
     return combineLatest(resolvedTokens).pipe(
@@ -52,7 +56,10 @@ export class DefaultTokenService implements TokenResolver {
     );
   }
 
-  protected resolveSimpleToken(token: string): ResolvedToken {
+  protected resolveSimpleToken(
+    token: string,
+    options?: TokenResolverOptions
+  ): ResolvedToken {
     const [resourceResolver, rawResolver] = token.split('.');
     const isNegative = this.isNegative(rawResolver);
     const resolver = rawResolver.slice(isNegative ? 1 : 0);
@@ -64,7 +71,7 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     return tokenResolver
-      .resolve(resolver)
+      .resolve(resolver, options)
       .pipe(
         map((resolvedValue) => (isNegative ? !resolvedValue : resolvedValue))
       );

@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { Observable } from 'rxjs';
 
@@ -7,14 +8,18 @@ export type ResolvedToken = Observable<
 >;
 export type ResolvedResult = DirectiveResult | string | boolean | null;
 
-export type Resolver = () => Observable<ResolvedResult>;
+export type Resolver = (options?: TokenResolverOptions) => Observable<ResolvedResult>;
 
 export interface TokenResolver {
-  resolveToken(token: string): Observable<ResolvedResult>;
+  resolveToken(token: string, options?: TokenResolverOptions): Observable<ResolvedResult>;
 }
 
 export interface TokenResourceResolver {
-  resolve(resolver: string): Observable<ResolvedResult>;
+  resolve(resolver: string, options?: TokenResolverOptions): Observable<ResolvedResult>;
+}
+
+export interface TokenResolverOptions {
+  contextElement?: HTMLElement | LitElement;
 }
 
 export const TokenResolver = 'oryx.TokenResolver';

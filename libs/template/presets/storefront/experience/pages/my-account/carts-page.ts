@@ -6,8 +6,7 @@ export const cartsPage: ExperienceComponent = {
   type: 'Page',
   meta: {
     title: 'Carts',
-    // TODO: replace with final url
-    route: '/carts',
+    route: '/my-account/carts',
     description: 'Carts Page',
   },
   options: { rules: [{ layout: 'list', padding: '30px 0' }] },
@@ -34,11 +33,10 @@ export const cartsPage: ExperienceComponent = {
             },
             {
               type: 'oryx-content-text',
-              // TODO: replace hardcoded url with final one
               content: {
                 data: {
                   text: `
-                <oryx-button type="text" href="/create-cart">
+                <oryx-button type="text" href="/my-account/create-cart">
                   Create cart
                 </oryx-button>
               `,
