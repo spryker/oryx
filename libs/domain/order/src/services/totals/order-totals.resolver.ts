@@ -11,7 +11,6 @@ import { Observable, map, of, switchMap } from 'rxjs';
 import { OrderData, OrderDiscount } from '../../models';
 import { OrderContext } from '../order-context';
 import { OrderService } from '../order.service';
-import { GetOrderDataProps } from '../adapter';
 
 export class OrderTotalsResolver implements TotalsResolver {
   constructor(
@@ -28,20 +27,18 @@ export class OrderTotalsResolver implements TotalsResolver {
     }));
   }
 
-  protected getFromContext(options?: TotalsResolverOptions): Observable<OrderData | null | void> {
-    return this.context.get<string>(
-      options?.contextElement ?? null,
-      OrderContext.OrderId
-    ).pipe(switchMap((id) => (id ? this.orderService.get({ id }) : of(null))));
+  protected getFromContext(
+    options?: TotalsResolverOptions
+  ): Observable<OrderData | null | void> {
+    return this.context
+      .get<string>(options?.contextElement ?? null, OrderContext.OrderId)
+      .pipe(switchMap((id) => (id ? this.orderService.get({ id }) : of(null))));
   }
 
   getTotals(
-    options?: GetOrderDataProps | TotalsResolverOptions
+    options?: TotalsResolverOptions
   ): Observable<NormalizedTotals | null> {
-    const source = typeof options === 'string'
-      ? this.orderService.get(options)
-      : this.getFromContext(options as TotalsResolverOptions);
-    return source.pipe(
+    return this.getFromContext(options).pipe(
       map((order) => {
         if (!order) return null;
 

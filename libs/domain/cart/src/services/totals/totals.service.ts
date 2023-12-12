@@ -1,6 +1,6 @@
+import { LitElement } from 'lit';
 import { Observable } from 'rxjs';
 import { NormalizedTotals } from '../../models';
-import { LitElement } from 'lit';
 
 export const enum TotalsContext {
   Reference = 'cart-totals',
@@ -10,11 +10,16 @@ export const TotalsService = 'oryx.TotalsService';
 export const TotalsResolver = 'oryx.TotalsResolver*';
 
 export interface TotalsService {
-  get(context?: string, options?: TotalsResolverOptions): Observable<NormalizedTotals | null>;
+  get(
+    context?: string,
+    options?: TotalsResolverOptions
+  ): Observable<NormalizedTotals | null>;
 }
 
 export interface TotalsResolver {
-  getTotals(options?: TotalsResolverOptions): Observable<NormalizedTotals | null>;
+  getTotals(
+    options?: TotalsResolverOptions
+  ): Observable<NormalizedTotals | null>;
 }
 
 export interface TotalsResolverOptions {

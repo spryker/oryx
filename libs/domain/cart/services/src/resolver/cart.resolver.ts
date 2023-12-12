@@ -1,5 +1,11 @@
 import { CartQualifier, CartService } from '@spryker-oryx/cart';
-import { BaseResolver, ContextService, ResolvedResult, Resolver, TokenResolverOptions } from '@spryker-oryx/core';
+import {
+  BaseResolver,
+  ContextService,
+  ResolvedResult,
+  Resolver,
+  TokenResolverOptions,
+} from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map, of, switchMap } from 'rxjs';
@@ -16,17 +22,25 @@ export class CartResolver extends BaseResolver<CartResolvers> {
   protected cartService = inject(CartService);
   protected contextService = inject(ContextService);
 
-  protected getContext(options?: TokenResolverOptions): Observable<CartQualifier | undefined>{
-    return featureVersion < '1.4' || !options?.contextElement ?
-      of(undefined): 
-      this.contextService.get<CartQualifier>(options.contextElement, CartContext.CartID)
+  protected getContext(
+    options?: TokenResolverOptions
+  ): Observable<CartQualifier | undefined> {
+    return featureVersion < '1.4' || !options?.contextElement
+      ? of(undefined)
+      : this.contextService.get<CartQualifier>(
+          options.contextElement,
+          CartContext.CartID
+        );
   }
 
   protected resolvers = {
     SUMMARY: (options?: TokenResolverOptions): Observable<ResolvedResult> => {
       return this.getContext(options).pipe(
-        switchMap((context) => 
-          (featureVersion >= '1.1' ? this.cartService : this.cartService$).getCart(context)
+        switchMap((contextQualifier) =>
+          (featureVersion >= '1.1'
+            ? this.cartService
+            : this.cartService$
+          ).getCart(contextQualifier)
         ),
         map((cart) => {
           const quantity = cart?.products?.reduce(
@@ -40,15 +54,18 @@ export class CartResolver extends BaseResolver<CartResolvers> {
           //TODO: Make max quantity to show configurable
           return quantity > 99 ? '99+' : String(quantity);
         })
-      )
+      );
     },
     EMPTY: (options?: TokenResolverOptions): Observable<ResolvedResult> => {
       return this.getContext(options).pipe(
-        switchMap((context) => 
-          (featureVersion >= '1.1' ? this.cartService : this.cartService$).getCart(context)
+        switchMap((contextQualifier) =>
+          (featureVersion >= '1.1'
+            ? this.cartService
+            : this.cartService$
+          ).getCart(contextQualifier)
         ),
         map((cart) => !cart?.products?.find(({ quantity }) => !!quantity))
-      )
+      );
     },
   };
 }

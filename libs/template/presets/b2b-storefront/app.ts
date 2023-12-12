@@ -11,5 +11,4 @@ const StaticB2BExperienceFeature: AppFeature = {
 export const b2bStorefrontFeatures: AppFeature[] = [
   ...storefrontFeatures,
   StaticB2BExperienceFeature,
-  
 ];

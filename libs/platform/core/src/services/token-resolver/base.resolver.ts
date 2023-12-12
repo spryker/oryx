@@ -11,7 +11,10 @@ export class BaseResolver<T extends Record<string, Resolver>>
 {
   protected resolvers: T = {} as T;
 
-  resolve(resolver: string, options?: TokenResolverOptions): Observable<ResolvedResult> {
+  resolve(
+    resolver: string,
+    options?: TokenResolverOptions
+  ): Observable<ResolvedResult> {
     if (!(resolver in this.resolvers)) {
       console.warn(`Resolver ${resolver} is not supported`);
       return of(resolver);

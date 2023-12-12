@@ -14,14 +14,14 @@ export class DefaultTotalsService implements TotalsService {
     return `${TotalsResolver}${ref ?? 'CART'}`;
   }
 
-  get(context: string, options?: TotalsResolverOptions): Observable<NormalizedTotals | null> {
+  get(
+    context: string,
+    options?: TotalsResolverOptions
+  ): Observable<NormalizedTotals | null> {
     return (
-      (
-        this.injector.inject(
-          this.getReference(context),
-          null
-        )
-      )?.getTotals(options) ?? of(null)
+      this.injector
+        .inject(this.getReference(context), null)
+        ?.getTotals(options) ?? of(null)
     );
   }
 }

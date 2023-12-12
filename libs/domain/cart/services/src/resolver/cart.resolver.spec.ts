@@ -1,5 +1,5 @@
 import { Cart, CartEntry, CartService } from '@spryker-oryx/cart';
-import { TokenResourceResolvers } from '@spryker-oryx/core';
+import { ContextService, TokenResourceResolvers } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { CartResolver } from './cart.resolver';
@@ -34,9 +34,16 @@ class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of(null));
 }
 
+class MockContextService implements Partial<ContextService> {
+  get = vi.fn().mockReturnValue(of(undefined));
+}
+
+const qualifier = { cartId: 'mock' };
+
 describe('CartResolver', () => {
   let resolver: CartResolver;
   let cartService: MockCartService;
+  let contextService: MockContextService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -46,6 +53,10 @@ describe('CartResolver', () => {
           useClass: MockCartService,
         },
         {
+          provide: ContextService,
+          useClass: MockContextService,
+        },
+        {
           provide: `${TokenResourceResolvers}CART`,
           useClass: CartResolver,
         },
@@ -53,14 +64,14 @@ describe('CartResolver', () => {
     });
 
     resolver = testInjector.inject(`${TokenResourceResolvers}CART`);
-    cartService = testInjector.inject(
-      CartService
-    ) as unknown as MockCartService;
+    cartService = testInjector.inject<MockCartService>(CartService);
+    contextService = testInjector.inject<MockContextService>(ContextService);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
     destroyInjector();
+    mockFeatureVersion('1.0');
   });
 
   describe('SUMMARY', () => {
@@ -95,6 +106,26 @@ describe('CartResolver', () => {
       '99+',
       variousValuesTypeCart
     );
+
+    describe('when feature version >= 1.4', () => {
+      beforeEach(() => {
+        mockFeatureVersion('1.4');
+      });
+
+      describe('and context provided', () => {
+        beforeEach(() => {
+          contextService.get = vi.fn().mockReturnValue(of(qualifier));
+        });
+
+        it(`should pass context qualifier to the service`, () => {
+          resolver
+            .resolve('EMPTY', { contextElement: {} as HTMLElement })
+            .subscribe(() => {
+              expect(cartService.getCart).toHaveBeenCalledWith(qualifier);
+            });
+        });
+      });
+    });
   });
 
   describe('EMPTY', () => {
@@ -118,5 +149,25 @@ describe('CartResolver', () => {
 
     expectedResult('when cart is empty', true, emptyCart);
     expectedResult('when cart is not empty', false, smallCart);
+
+    describe('when feature version >= 1.4', () => {
+      beforeEach(() => {
+        mockFeatureVersion('1.4');
+      });
+
+      describe('and contextElement is provided', () => {
+        beforeEach(() => {
+          contextService.get = vi.fn().mockReturnValue(of(qualifier));
+        });
+
+        it(`should pass context qualifier to the service`, () => {
+          resolver
+            .resolve('EMPTY', { contextElement: {} as HTMLElement })
+            .subscribe(() => {
+              expect(cartService.getCart).toHaveBeenCalledWith(qualifier);
+            });
+        });
+      });
+    });
   });
 });

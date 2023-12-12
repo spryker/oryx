@@ -6,6 +6,7 @@ import {
   Cart,
   CartAdapter,
   CartEntryQualifier,
+  CartFeatureOptionsKey,
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
@@ -14,7 +15,11 @@ import {
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  FeatureOptionsService,
+  HttpService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   CurrencyService,
@@ -40,7 +45,8 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService),
     protected store = inject(StoreService),
     protected currency = inject(CurrencyService),
-    protected priceMode = inject(PriceModeService)
+    protected priceMode = inject(PriceModeService),
+    protected optionsService = inject(FeatureOptionsService)
   ) {}
 
   getAll(): Observable<Cart[]> {
@@ -200,17 +206,16 @@ export class DefaultCartAdapter implements CartAdapter {
       this.store.get(),
       this.currency.get(),
       this.priceMode.get(),
-      this.generateCartName(qualifier),
     ]).pipe(
       take(1),
-      switchMap(([store, currency, priceMode, name]) =>
+      switchMap(([store, currency, priceMode]) =>
         this.http.post<ApiCartModel.Response>(
           `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
           {
             data: {
               type: 'carts',
               attributes: {
-                name,
+                name: this.ensureCartName(qualifier),
                 priceMode,
                 currency,
                 store: store?.id,
@@ -289,10 +294,13 @@ export class DefaultCartAdapter implements CartAdapter {
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
   }
 
-  //TODO: adjust setting of the cart name for multi vs single cart
-  protected generateCartName(
+  protected ensureCartName(
     qualifier?: CreateCartQualifier
-  ): Observable<string | void> {
-    return of(qualifier?.name ?? 'My cart');
+  ): string | undefined {
+    const isMultiCart = this.optionsService.getFeatureOptions(
+      CartFeatureOptionsKey
+    )?.multi;
+
+    return isMultiCart ? qualifier?.name : undefined;
   }
 }

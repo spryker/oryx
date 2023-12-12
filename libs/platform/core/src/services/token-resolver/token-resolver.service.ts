@@ -8,14 +8,22 @@ export type ResolvedToken = Observable<
 >;
 export type ResolvedResult = DirectiveResult | string | boolean | null;
 
-export type Resolver = (options?: TokenResolverOptions) => Observable<ResolvedResult>;
+export type Resolver = (
+  options?: TokenResolverOptions
+) => Observable<ResolvedResult>;
 
 export interface TokenResolver {
-  resolveToken(token: string, options?: TokenResolverOptions): Observable<ResolvedResult>;
+  resolveToken(
+    token: string,
+    options?: TokenResolverOptions
+  ): Observable<ResolvedResult>;
 }
 
 export interface TokenResourceResolver {
-  resolve(resolver: string, options?: TokenResolverOptions): Observable<ResolvedResult>;
+  resolve(
+    resolver: string,
+    options?: TokenResolverOptions
+  ): Observable<ResolvedResult>;
 }
 
 export interface TokenResolverOptions {

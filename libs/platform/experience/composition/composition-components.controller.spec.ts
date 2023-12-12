@@ -347,8 +347,10 @@ describe('CompositionComponentsController', () => {
           controller.getComponents().subscribe(callback);
         });
 
-        it('should resolve the token', () => {
-          expect(tokenResolver.resolveToken).toBeCalledWith(hideByRule);
+        it('should resolve the token with options', () => {
+          expect(tokenResolver.resolveToken).toBeCalledWith(hideByRule, {
+            contextElement: mockElement,
+          });
         });
 
         it('should not filter the components', () => {

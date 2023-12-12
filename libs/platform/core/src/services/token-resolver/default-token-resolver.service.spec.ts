@@ -18,6 +18,7 @@ class TestResolver implements TokenResourceResolver {
 describe('DefaultTokenService', () => {
   let service: DefaultTokenService;
   let resolver: TestResolver;
+  let spy: SpyInstance;
   const callback = vi.fn();
 
   beforeEach(() => {
@@ -146,7 +147,6 @@ describe('DefaultTokenService', () => {
     });
 
     describe('and tokens are negated', () => {
-      let spy: SpyInstance;
       beforeEach(() => {
         spy = vi.spyOn(resolver, 'resolve');
       });
@@ -213,7 +213,6 @@ describe('DefaultTokenService', () => {
 
   describe('when token is negative', () => {
     const token = 'TEST.!NEGATIVE_VALUE';
-    let spy: SpyInstance;
 
     beforeEach(() => {
       spy = vi.spyOn(resolver, 'resolve');
@@ -226,6 +225,20 @@ describe('DefaultTokenService', () => {
 
     it('should return reversal value', () => {
       expect(callback).toHaveBeenCalledWith(!'NEGATIVE_VALUE');
+    });
+  });
+
+  describe('when options are provided', () => {
+    const token = 'TEST.WITH_OPTIONS';
+    const options = { contextElement: {} as HTMLElement };
+
+    beforeEach(() => {
+      spy = vi.spyOn(resolver, 'resolve');
+      service.resolveToken(token, options).subscribe(callback);
+    });
+
+    it('should pass options to the resolver', () => {
+      expect(spy).toHaveBeenCalledWith('RESOLVED_VALUE', options);
     });
   });
 });

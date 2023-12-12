@@ -1,6 +1,7 @@
 import { cartContextProviders } from '@spryker-oryx/cart/services';
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
 import {
   CartResolver,
@@ -13,6 +14,7 @@ import {
 } from '../services-reexports';
 import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
 import { CartService } from './cart.service';
+import { cartRoutes } from './routes';
 import { TotalsResolver, TotalsService } from './totals';
 
 export const TotalsResolverCartToken = `${TotalsResolver}CART`;
@@ -123,4 +125,5 @@ export const cartProviders: Provider[] =
             ),
         },
         ...cartContextProviders,
+        ...provideLitRoutes({ routes: cartRoutes }),
       ];
