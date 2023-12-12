@@ -1,7 +1,7 @@
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap, throwError } from 'rxjs';
 import { ContextService } from '../context';
-import { EntityProvider } from './entity-provider';
+import { EntityProvider, isCustomEntityProvider } from './entity-provider';
 import {
   EntityFieldQualifier,
   EntityQualifier,
@@ -12,12 +12,12 @@ export class DefaultEntityService implements EntityService {
   protected injector = inject(INJECTOR);
   protected context = inject(ContextService);
 
-  get<E = unknown, T = unknown>({
+  get<E = unknown, Q = unknown>({
     qualifier,
     element,
     type,
-  }: EntityQualifier<T>): Observable<E | undefined> {
-    const config = this.getConfig(type);
+  }: EntityQualifier<Q>): Observable<E | undefined> {
+    const config = type ? this.getConfig<E, Q>(type) : null;
 
     if (!config) {
       return throwError(
@@ -25,32 +25,25 @@ export class DefaultEntityService implements EntityService {
       );
     }
 
-    let qualifier$: Observable<T | undefined>;
+    let qualifier$: Observable<Q | undefined>;
 
     if (!qualifier) {
-      // resolve qualifier from context
-
       if (!config.context) {
         return throwError(
           () => new Error(`No context or qualifier provided for entity ${type}`)
         );
       }
-
       qualifier$ = this.context.get(element ?? null, config.context);
     } else {
       qualifier$ = of(qualifier);
     }
 
-    const service = this.injector.inject(config.service, null);
-
-    if (!service) {
-      return throwError(() => new Error(`No service found for entity ${type}`));
-    }
-
     return qualifier$.pipe(
-      switchMap((qualifier) => {
-        return service.get(qualifier) as Observable<E>;
-      })
+      switchMap((qualifier) =>
+        qualifier
+          ? this.resolveServiceOrFactory<E, Q>(config, qualifier)
+          : of(undefined)
+      )
     );
   }
 
@@ -62,11 +55,36 @@ export class DefaultEntityService implements EntityService {
     );
   }
 
-  protected getConfig(type: string): EntityProvider {
+  protected getConfig<E, Q>(type: string): EntityProvider<E, Q> {
     return this.injector.inject(`${EntityProvider}${type}`, null);
   }
 
-  protected pickField(obj: any, fieldPath: string): any {
+  protected resolveServiceOrFactory<E, Q>(
+    provider: EntityProvider<E, Q>,
+    qualifier: Q
+  ): Observable<E | undefined> {
+    if (!isCustomEntityProvider(provider)) {
+      const service = this.injector.inject<{
+        get: (q?: Q) => Observable<E>;
+      } | null>(provider.service!, null);
+      if (!service) {
+        return throwError(
+          () => new Error(`No service found for entity ${provider.service}`)
+        );
+      }
+      return service.get(qualifier);
+    } else {
+      const service = provider.service
+        ? this.injector.inject<{ get: (q?: Q) => Observable<E> } | null>(
+            provider.service,
+            null
+          )
+        : this.injector;
+      return provider.resolve(service, qualifier);
+    }
+  }
+
+  protected pickField(obj: any, fieldPath?: string): any {
     if (!fieldPath) {
       return obj;
     }

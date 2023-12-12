@@ -5,8 +5,16 @@ import { ContextService } from '../context';
 import { DefaultEntityService } from './default-entity.service';
 import { EntityService } from './entity.service';
 
+const mockResult: any = {
+  result: 'data',
+  nested: {
+    field: 'nestedValue',
+  },
+};
+
 const mockTestService = {
-  get: vi.fn((qualifier) => of({ result: 'data' } as any)),
+  get: vi.fn((qualifier) => of(mockResult)),
+  getCustom: vi.fn((qualifier) => of({ customData: qualifier } as any)),
 };
 const mockContextService = {
   get: vi.fn((element, context) => of('mockQualifier')),
@@ -25,6 +33,12 @@ describe('DefaultEntityService', () => {
         provideEntity('testType', {
           service: 'MockTestService',
           context: 'mockContext',
+        }),
+        provideEntity('customType', {
+          service: 'MockTestService',
+          context: 'mockContext',
+          resolve: (service: any, qualifier: any) =>
+            service.getCustom(qualifier),
         }),
         {
           provide: ContextService,
@@ -47,7 +61,7 @@ describe('DefaultEntityService', () => {
   describe('get method', () => {
     it('should return entity data', async () => {
       const data = await firstValueFrom(service.get({ type: 'testType' }));
-      expect(data).toEqual({ result: 'data' });
+      expect(data).toEqual(mockResult);
     });
 
     it('should handle missing entity provider', async () => {
@@ -66,18 +80,19 @@ describe('DefaultEntityService', () => {
     });
 
     it('should return nested field data', async () => {
-      const mockEntity = {
-        nested: {
-          field: 'nestedValue',
-        },
-      };
-      mockTestService.get.mockReturnValue(of(mockEntity));
-
-      // Test getField for a nested field
       const data = await firstValueFrom(
         service.getField({ type: 'testType', field: 'nested.field' })
       );
       expect(data).toBe('nestedValue');
+    });
+  });
+
+  describe('get method with CustomEntityProvider', () => {
+    it('should use custom provider logic for entity resolution', async () => {
+      const result = await firstValueFrom(
+        service.get({ type: 'customType', qualifier: 'someQualifier' })
+      );
+      expect(result).toEqual({ customData: 'someQualifier' });
     });
   });
 });
