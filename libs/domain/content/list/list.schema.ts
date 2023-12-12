@@ -1,9 +1,9 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { ListComponent } from './list.component';
+import { ContentListComponent } from './list.component';
 
-export const listSchema: ContentComponentSchema<ListComponent> = {
+export const contentListSchema: ContentComponentSchema<ContentListComponent> = {
   name: 'List',
   group: 'Content',
   icon: IconTypes.List,

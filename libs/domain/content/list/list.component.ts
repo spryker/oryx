@@ -15,7 +15,7 @@ import { ContentListOptions } from './list.model';
 
 @signalAware()
 @hydrate()
-export class ListComponent extends LayoutMixin(
+export class ContentListComponent extends LayoutMixin(
   ContentMixin<ContentListOptions>(LitElement)
 ) {
   @signalProperty({ reflect: true }) type?: string;
