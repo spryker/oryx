@@ -1,6 +1,16 @@
-export const CLOSE_EVENT = 'oryx.modal.close';
-export const CLOSED_EVENT = 'oryx.modal.closed';
-export const BACK_EVENT = 'oryx.modal.back';
+/**
+ * @deprecated since 1.4, use CLOSE_MODAL_EVENT instead.
+ */
+export const CLOSE_EVENT = 'oryx.close';
+
+/**
+ * @deprecated since 1.4, use BACK_MODAL_EVENT instead.
+ */
+export const BACK_EVENT = 'oryx.back';
+
+export const CLOSED_MODAL_EVENT = 'oryx.modal.closed';
+export const CLOSE_MODAL_EVENT = 'oryx.modal.close';
+export const BACK_MODAL_EVENT = 'oryx.modal.back';
 
 export interface ModalProperties {
   /**

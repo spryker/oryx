@@ -6,7 +6,14 @@ import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { BACK_EVENT, CLOSE_EVENT, CLOSED_EVENT, ModalProperties } from './modal.model';
+import {
+  BACK_EVENT,
+  BACK_MODAL_EVENT,
+  CLOSED_MODAL_EVENT,
+  CLOSE_EVENT,
+  CLOSE_MODAL_EVENT,
+  ModalProperties,
+} from './modal.model';
 import { styles } from './modal.styles';
 
 export class ModalComponent
@@ -44,7 +51,7 @@ export class ModalComponent
 
   connectedCallback(): void {
     if (featureVersion >= '1.4') {
-      this.addEventListener(CLOSE_EVENT, this.close);
+      this.addEventListener(CLOSE_MODAL_EVENT, this.close);
     }
 
     super.connectedCallback();
@@ -56,7 +63,7 @@ export class ModalComponent
     }
 
     if (featureVersion >= '1.4') {
-      this.removeEventListener(CLOSE_EVENT, this.close);
+      this.removeEventListener(CLOSE_MODAL_EVENT, this.close);
     }
 
     super.disconnectedCallback();
@@ -88,15 +95,10 @@ export class ModalComponent
   }
 
   close(): void {
-    if (featureVersion >= '1.4') {
-      this.dispatchEvent(
-        new CustomEvent(CLOSED_EVENT, {bubbles: true, composed: true})
-      );
-    } else {
-      this.dispatchEvent(
-        new CustomEvent(CLOSE_EVENT, {bubbles: true, composed: true})
-      );
-    }
+    const event = featureVersion >= '1.4' ? CLOSED_MODAL_EVENT : CLOSE_EVENT;
+    this.dispatchEvent(
+      new CustomEvent(event, { bubbles: true, composed: true })
+    );
     this.removeAttribute('open');
   }
 
@@ -132,11 +134,9 @@ export class ModalComponent
   }
 
   protected onGoBack(): void {
+    const event = featureVersion >= '1.4' ? BACK_MODAL_EVENT : BACK_EVENT;
     this.dispatchEvent(
-      new CustomEvent(BACK_EVENT, {
-        bubbles: true,
-        composed: true,
-      })
+      new CustomEvent(event, { bubbles: true, composed: true })
     );
   }
 
