@@ -190,6 +190,7 @@ jobs:
           ORYX_FULFILLMENT_BACKEND_URL: ${{ secrets.ORYX_FULFILLMENT_BACKEND_URL }}
           ORYX_FULFILLMENT_PUBLIC_VAPID_KEY: ${{ secrets.ORYX_FULFILLMENT_PUBLIC_VAPID_KEY }}
           ORYX_FULFILLMENT_CLIENT_ID: ${{ secrets.ORYX_FULFILLMENT_CLIENT_ID }}
+          ORYX_FEATURE_VERSION: latest
         with:
           cmd: npm run fa:e2e:headless:ci
           affectedCmd: npm run fa:e2e:headless:ci:affected
