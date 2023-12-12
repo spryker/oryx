@@ -1,15 +1,6 @@
 import { Observable } from 'rxjs';
 
 export const EntityService = 'oryx.EntityService';
-export const EntityProvider = 'oryx.EntityServiceProvider*';
-
-export interface EntityProvider<E = unknown, Q = unknown> {
-  type: string;
-  service: string;
-  // factory?: () => E;
-  context?: string;
-  // contextToQualifier?: () => Q;
-}
 
 export interface EntityQualifier<T = unknown> {
   type: string;
@@ -25,13 +16,12 @@ export interface EntityFieldQualifier<T = unknown> extends EntityQualifier<T> {
 }
 
 export interface EntityService {
-  get<E = unknown, T = unknown>(entity: EntityQualifier<T>): Observable<E>;
-  getField<T = unknown>(entity: EntityFieldQualifier<T>): Observable<T>;
+  get<E = unknown, T = unknown>(entity: EntityQualifier<T>): Observable<E | undefined>;
+  getField<T = unknown>(entity: EntityFieldQualifier<T>): Observable<T | undefined>;
 }
 
 declare global {
   interface InjectionTokensContractMap {
     [EntityService]: EntityService;
-    [EntityProvider]: EntityProvider;
   }
 }

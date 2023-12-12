@@ -1,23 +1,23 @@
-
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap, throwError } from 'rxjs';
+import { ContextService } from '../context';
 import {
   EntityFieldQualifier,
-  EntityProvider,
+
   EntityQualifier,
   EntityService,
 } from './entity.service';
-import { ContextService } from '../context';
+import { EntityProvider } from './entity-provider';
 
 export class DefaultEntityService implements EntityService {
   protected injector = inject(INJECTOR);
-  protected context = inject(ContextService, null);
+  protected context = inject(ContextService);
 
   get<E = unknown, T = unknown>({
     qualifier,
     element,
     type,
-  }: EntityQualifier<T>): Observable<E> {
+  }: EntityQualifier<T>): Observable<E | undefined> {
     const config = this.getConfig(type);
 
     if (!config) {
@@ -26,7 +26,7 @@ export class DefaultEntityService implements EntityService {
       );
     }
 
-    let qualifier$: Observable<T>;
+    let qualifier$: Observable<T | undefined>;
 
     if (!qualifier) {
       // resolve qualifier from context
@@ -37,15 +37,12 @@ export class DefaultEntityService implements EntityService {
         );
       }
 
-      qualifier$ = this.context.get(element, config.context);
+      qualifier$ = this.context.get(element ?? null, config.context);
     } else {
       qualifier$ = of(qualifier);
     }
 
-    const service = this.injector.inject<{ get: (q: T) => Observable<E> }>(
-      config.service,
-      null
-    );
+    const service = this.injector.inject(config.service, null);
 
     if (!service) {
       return throwError(() => new Error(`No service found for entity ${type}`));
@@ -58,12 +55,33 @@ export class DefaultEntityService implements EntityService {
     );
   }
 
-  getField<T = unknown>(entity: EntityFieldQualifier<T>): Observable<T> {
-    // TODO: add support for nested fields
-    return this.get(entity).pipe(map((value) => value?.[entity.field] as T));
+  getField<T = unknown>(
+    entity: EntityFieldQualifier<T>
+  ): Observable<T | undefined> {
+    return this.get(entity).pipe(
+      map((value) => this.pickField(value, entity.field))
+    );
   }
 
-  protected getConfig(entity: string): EntityProvider {
-    return this.injector.inject(`${EntityProvider}${entity}`, null);
+  protected getConfig(type: string): EntityProvider {
+    return this.injector.inject(`${EntityProvider}${type}`, null);
+  }
+
+  protected pickField(obj: any, fieldPath: string): any {
+    if (!fieldPath) {
+      return obj;
+    }
+
+    const fields = fieldPath.split('.');
+    let currentObj = obj;
+
+    for (const field of fields) {
+      if (currentObj[field] === undefined) {
+        return null;
+      }
+      currentObj = currentObj[field];
+    }
+
+    return currentObj;
   }
 }
