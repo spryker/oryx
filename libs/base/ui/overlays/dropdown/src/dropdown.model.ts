@@ -43,4 +43,9 @@ export interface DropdownProperties {
    * @default `Size.medium`
    */
   triggerIconSize?: Size;
+
+  /**
+   * Indicates that the popover will be opened on focus.
+   */
+  showOnFocus?: boolean;
 }
