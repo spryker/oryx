@@ -15,8 +15,8 @@ const generateThumbs = (
   style?: string
 ): TemplateResult => {
   return html`<oryx-layout
-    layout=${layout}
     ?layout-vertical=${vertical}
+    .options=${{ rules: [{ layout }] }}
     class=${cssClass}
     style=${style}
   >
