@@ -1,6 +1,6 @@
 import { getAppIcons } from '@/tools/storybook';
 import { Size } from '@spryker-oryx/utilities';
-import { Meta, Story } from '@storybook/web-components';
+import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
@@ -9,9 +9,43 @@ import { renderCustomContent, renderOptions } from './utils';
 
 export default {
   title: `${storybookPrefix}/Overlays/Dropdown`,
-  // disables Chromatic's snapshotting on a story level
+  args: {
+    position: Position.END,
+    verticalAlign: false,
+    content: 'options',
+    customTrigger: false,
+    triggerIconSize: Size.Md,
+    showOnFocus: false,
+  },
+  argTypes: {
+    content: {
+      options: ['options', 'custom'],
+      control: { type: 'radio' },
+      table: { category: 'Slots' },
+    },
+    icon: {
+      options: getAppIcons(),
+      control: { type: 'select' },
+      table: { category: 'Slots' },
+    },
+    customTrigger: {
+      control: { type: 'boolean' },
+      table: { category: 'Slots' },
+    },
+    position: {
+      control: { type: 'select' },
+      options: Object.values(Position),
+    },
+    triggerIconSize: {
+      options: [Size.Lg, Size.Md, Size.Sm],
+      control: { type: 'select' },
+    },
+    verticalAlign: {
+      control: { type: 'boolean' },
+    },
+  },
   parameters: { chromatic: { disableSnapshot: true } },
-} as Meta;
+};
 
 interface Props {
   content: 'options' | 'custom';
@@ -83,41 +117,4 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   `;
 };
 
-export const DropdownDemo = Template.bind({});
-
-DropdownDemo.args = {
-  position: Position.END,
-  verticalAlign: false,
-  content: 'options',
-  customTrigger: false,
-  triggerIconSize: Size.Md,
-  showOnFocus: false,
-};
-
-DropdownDemo.argTypes = {
-  content: {
-    options: ['options', 'custom'],
-    control: { type: 'radio' },
-    table: { category: 'Slots' },
-  },
-  icon: {
-    options: getAppIcons(),
-    control: { type: 'select' },
-    table: { category: 'Slots' },
-  },
-  customTrigger: {
-    control: { type: 'boolean' },
-    table: { category: 'Slots' },
-  },
-  position: {
-    control: { type: 'select' },
-    options: Object.values(Position),
-  },
-  triggerIconSize: {
-    options: [Size.Lg, Size.Md, Size.Sm],
-    control: { type: 'select' },
-  },
-  verticalAlign: {
-    control: { type: 'boolean' },
-  },
-};
+export const Demo = Template.bind({});
