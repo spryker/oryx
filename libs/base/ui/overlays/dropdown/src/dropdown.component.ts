@@ -11,7 +11,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DropdownProperties, Position } from './dropdown.model';
-import { dropdownBaseStyles } from './styles';
+import { dropdownBaseStyles } from './dropdown.styles';
 
 @hydrate({ event: ['mouseover', 'focusin'] })
 export class DropdownComponent
