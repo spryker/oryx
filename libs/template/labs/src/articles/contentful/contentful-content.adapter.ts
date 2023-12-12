@@ -155,10 +155,8 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     }));
   }
 
-  protected getParams(
-    qualifier: ContentQualifier & { locale: string }
-  ): string {
-    return Object.entries({ ...qualifier }).reduce((acc, [key, _value]) => {
+  protected getParams(qualifier: Record<string, unknown>): string {
+    return Object.entries(qualifier).reduce((acc, [key, _value]) => {
       if (key === 'id' || key === 'entities') return acc;
 
       const mapper = {

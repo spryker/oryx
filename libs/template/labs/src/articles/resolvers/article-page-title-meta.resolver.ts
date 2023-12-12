@@ -1,4 +1,8 @@
-import { ContentService } from '@spryker-oryx/content';
+import {
+  ContentContext,
+  ContentQualifier,
+  ContentService,
+} from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -20,9 +24,9 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   getScore(): Observable<unknown[]> {
     return combineLatest([
       this.context.get(null, ArticleContext.Id),
-      this.context.get(null, ArticleContext.Type),
+      this.context.get(null, ContentContext.Qualifier),
       combineLatest([
-        this.context.get(null, ArticleContext.Type),
+        this.context.get(null, ContentContext.Qualifier),
         this.router.currentRoute(),
       ]).pipe(map(([type, route]) => route.includes(`/${type}/`))),
     ]);
@@ -31,9 +35,11 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   resolve(): Observable<ElementResolver> {
     return combineLatest([
       this.context.get<string>(null, ArticleContext.Id),
-      this.context.get<string>(null, ArticleContext.Type),
+      this.context.get<ContentQualifier>(null, ContentContext.Qualifier),
     ]).pipe(
-      switchMap(([id, type]) => {
+      switchMap(([id, content]) => {
+        const type = content?.type;
+
         if (!id || !type) return of({});
 
         return this.content
