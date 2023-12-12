@@ -34,7 +34,11 @@ export class ArticleComponent extends LitElement {
     const type = this.$articleType()?.type;
 
     return id && type
-      ? this.contentService.get<ArticleContent>({ id, type, entities: [type] })
+      ? this.contentService.get<ArticleContent>({
+          id,
+          type,
+          entities: [type],
+        })
       : of(null);
   });
 
@@ -45,6 +49,8 @@ export class ArticleComponent extends LitElement {
       return;
     }
 
-    return html`<oryx-text .content=${data.fields.content}></oryx-text> `;
+    return html`<oryx-content-text
+      .content=${{ text: data.fields.content }}
+    ></oryx-content-text> `;
   }
 }
