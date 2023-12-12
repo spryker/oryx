@@ -120,7 +120,7 @@ export class PopoverController implements ReactiveController {
     this.toggleController = new ToggleController(host, {
       elementSelector: this.popoverSelector,
       itemSelector: this.optionsSelector,
-      ...(featureVersion < '1.4' ? { showOnFocus: true } : {}),
+      ...(featureVersion >= '1.4' ? {} : { showOnFocus: true }),
       ...options,
     });
     this.highlightController = new HighlightController(
