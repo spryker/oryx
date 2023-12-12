@@ -36,6 +36,7 @@
     },
     "build-netlify": {
       "executor": "nx:run-commands",
+      "outputs": ["dist/apps/fulfillment"],
       "options": {
         "commands": [
           "npx nx run fulfillment:init-env:netlify-test",
