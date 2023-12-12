@@ -23,8 +23,7 @@ class MockIntersectionObserver implements IntersectionObserver {
 window.IntersectionObserver = MockIntersectionObserver;
 
 (window as any).getComputedStyle = () => ({
-  getPropertyValue: (property: string) =>
-    property === 'column-gap' ? '0px' : '',
+  getPropertyValue: () => '0px',
 });
 
 @customElement('mock-layout')
@@ -36,6 +35,7 @@ class MockLayout extends LitElement {
     return html` <oryx-carousel-navigation
         ?showArrows=${this.options?.showArrows}
         ?showIndicators=${this.options?.showIndicators}
+        ?vertical=${this.options?.vertical}
       ></oryx-carousel-navigation>
       <slot></slot>`;
   }
@@ -67,89 +67,92 @@ describe('CarouselNavigationComponent', () => {
 
   const itemCount = 12;
 
-  describe('when vertical is false', () => {
-    beforeEach(async () => {
-      vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
-        800
-      );
-      vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(
-        itemCount * 200
-      );
-    });
+  const mockTests = [
+    { vertical: false, mocks: ['clientWidth', 'scrollWidth'] },
+    { vertical: true, mocks: ['clientHeight', 'scrollHeight'] },
+  ] as const;
 
-    describe('and showArrow is true', () => {
+  mockTests.forEach(({ vertical, mocks }) => {
+    describe(`when vertical is ${vertical}`, () => {
       beforeEach(async () => {
-        await layout({ showArrows: true });
-      });
-
-      it('should render the arrows', () => {
-        expect(nav).toContainElement('oryx-button.previous');
-        expect(nav).toContainElement('oryx-button.next');
-      });
-    });
-
-    describe('and showArrow is false', () => {
-      beforeEach(async () => {
-        await layout({ showArrows: false });
-      });
-
-      it('should not render the arrows', () => {
-        expect(nav).not.toContainElement('oryx-button.previous');
-        expect(nav).not.toContainElement('oryx-button.next');
-      });
-    });
-
-    describe('and showIndicators is true', () => {
-      beforeEach(async () => {
-        await layout({ showIndicators: true });
-      });
-
-      it(`should render ${itemCount / 4} indicators`, () => {
-        expect(nav).toContainElement(
-          `.indicators input:nth-child(${itemCount / 4})`
+        vi.spyOn(HTMLElement.prototype, mocks[0], 'get').mockReturnValue(800);
+        vi.spyOn(HTMLElement.prototype, mocks[1], 'get').mockReturnValue(
+          itemCount * 200
         );
       });
 
-      it(`should have active first indicator`, () => {
-        const firstIndicator = nav?.shadowRoot?.querySelector(
-          '.indicators input:nth-child(1)'
-        ) as HTMLInputElement & {
-          style: { getPropertyValue: (property: string) => string };
-        };
+      describe('and showArrow is true', () => {
+        beforeEach(async () => {
+          await layout({ vertical, showArrows: true });
+        });
 
-        expect(firstIndicator.style.getPropertyValue('--opacity')).toBe('1');
+        it('should render the arrows', () => {
+          expect(nav).toContainElement('oryx-button.previous');
+          expect(nav).toContainElement('oryx-button.next');
+        });
       });
 
-      it(`should change indicators length depends on clientWidth`, async () => {
-        vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
-          400
-        );
-        element.dispatchEvent(new Event('resize'));
-        await nextFrame();
-        await nextFrame();
-        expect(nav).toContainElement(
-          `.indicators input:nth-child(${itemCount / 2})`
-        );
+      describe('and showArrow is false', () => {
+        beforeEach(async () => {
+          await layout({ vertical, showArrows: false });
+        });
+
+        it('should not render the arrows', () => {
+          expect(nav).not.toContainElement('oryx-button.previous');
+          expect(nav).not.toContainElement('oryx-button.next');
+        });
       });
 
-      it(`should not show indicators when clientWidth more then slides width`, async () => {
-        vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
-          itemCount * 300
-        );
-        element.dispatchEvent(new Event('resize'));
-        await nextFrame();
-        await nextFrame();
-        expect(nav).not.toContainElement(`.indicators input`);
-      });
-    });
+      describe('and showIndicators is true', () => {
+        beforeEach(async () => {
+          await layout({ vertical, showIndicators: true });
+        });
 
-    describe('and showIndicators is false', () => {
-      beforeEach(async () => {
-        await layout({ showIndicators: false });
+        it(`should render ${itemCount / 4} indicators`, () => {
+          expect(nav).toContainElement(
+            `.indicators input:nth-child(${itemCount / 4})`
+          );
+        });
+
+        it(`should have active first indicator`, () => {
+          const firstIndicator = nav?.shadowRoot?.querySelector(
+            '.indicators input:nth-child(1)'
+          ) as HTMLInputElement & {
+            style: { getPropertyValue: (property: string) => string };
+          };
+
+          expect(firstIndicator.style.getPropertyValue('--opacity')).toBe('1');
+        });
+
+        it(`should change indicators length depends on clientWidth`, async () => {
+          vi.spyOn(HTMLElement.prototype, mocks[0], 'get').mockReturnValue(400);
+          element.dispatchEvent(new Event('resize'));
+          await nextFrame();
+          await nextFrame();
+          expect(nav).toContainElement(
+            `.indicators input:nth-child(${itemCount / 2})`
+          );
+        });
+
+        it(`should not show indicators when clientWidth more then slides width`, async () => {
+          vi.spyOn(HTMLElement.prototype, mocks[0], 'get').mockReturnValue(
+            itemCount * 300
+          );
+          element.dispatchEvent(new Event('resize'));
+          await nextFrame();
+          await nextFrame();
+          expect(nav).not.toContainElement(`.indicators input`);
+        });
       });
 
-      it(`should not render indicators`, () => {
-        expect(nav).not.toContainElement(`.indicators`);
+      describe('and showIndicators is false', () => {
+        beforeEach(async () => {
+          await layout({ vertical, showIndicators: false });
+        });
+
+        it(`should not render indicators`, () => {
+          expect(nav).not.toContainElement(`.indicators`);
+        });
       });
     });
   });
