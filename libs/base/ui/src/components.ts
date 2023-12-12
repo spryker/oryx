@@ -23,7 +23,7 @@ export * from '../navigation/pagination/pagination.def';
 export * from '../navigation/tab/src/tab.def';
 export * from '../navigation/tabs/src/tabs.def';
 export * from '../overlays/drawer/src/component';
-export * from '../overlays/dropdown/src/component';
+export * from '../overlays/dropdown/src/dropdown.def';
 export * from '../overlays/modal/src/modal.def';
 export * from '../overlays/notification-center/src/notification-center.def';
 export * from '../overlays/notification/src/notification.def';
