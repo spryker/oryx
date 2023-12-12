@@ -1,9 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
-import { FieldTextOptions } from './entity-text.model';
+import { EntityTextOptions } from './entity-text.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-entity-text'?: FieldTextOptions;
+    'oryx-entity-text'?: EntityTextOptions;
   }
 }
 

@@ -4,10 +4,10 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { computed, hydrate, Signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { FieldTextOptions } from './entity-text.model';
+import { EntityTextOptions } from './entity-text.model';
 
 @hydrate()
-export class EntityTextComponent extends ContentMixin<FieldTextOptions>(
+export class EntityTextComponent extends ContentMixin<EntityTextOptions>(
   LitElement
 ) {
   protected entity = resolve(EntityService);

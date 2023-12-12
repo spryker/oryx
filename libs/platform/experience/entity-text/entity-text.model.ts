@@ -5,4 +5,4 @@ export interface EntityFieldOptions {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface FieldTextOptions extends EntityFieldOptions {}
+export interface EntityTextOptions extends EntityFieldOptions {}
