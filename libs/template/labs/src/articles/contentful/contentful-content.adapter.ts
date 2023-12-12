@@ -159,7 +159,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     qualifier: ContentQualifier & { locale: string }
   ): string {
     return Object.entries({ ...qualifier }).reduce((acc, [key, _value]) => {
-      if (key === 'id' || key === 'entities') return acc;
+      if (key === 'id' || key === 'entities' || !_value) return acc;
 
       const mapper = {
         [key]: key,

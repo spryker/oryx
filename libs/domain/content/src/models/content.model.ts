@@ -19,6 +19,7 @@ export interface ContentQualifier {
 
 export interface ContentField {
   [key: string]: unknown;
+  heading?: string;
   id: string;
 }
 
