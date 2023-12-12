@@ -50,9 +50,7 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
           })
           .pipe(
             map((data) =>
-              data?.fields?.description
-                ? { description: data.fields.description }
-                : {}
+              data?.description ? { description: data.description } : {}
             )
           );
       })

@@ -48,11 +48,7 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
             type,
             entities: [type],
           })
-          .pipe(
-            map((data) =>
-              data?.fields.heading ? { title: data.fields.heading } : {}
-            )
-          );
+          .pipe(map((data) => (data?.heading ? { title: data.heading } : {})));
       })
     );
   }

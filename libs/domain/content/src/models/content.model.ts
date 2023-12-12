@@ -17,15 +17,15 @@ export interface ContentQualifier {
   entities?: ContentEntity[];
 }
 
-export interface ContentField {
-  [key: string]: unknown;
-  heading?: string;
-  id: string;
-}
-
-export interface Content<T = Record<string, unknown>> {
-  fields: T & ContentField;
+export interface ContentMeta {
   id: string;
   type: string;
   name?: string;
 }
+
+export type Content<T = Record<string, unknown>> = {
+  _meta: ContentMeta;
+  id: string;
+  heading?: string;
+  [key: string]: unknown;
+} & T;

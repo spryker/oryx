@@ -39,10 +39,10 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
         map(
           (items) =>
             items?.map((item) => ({
-              ...(typeof item.fields.data === 'string'
-                ? JSON.parse(item.fields.data)
-                : item.fields.data),
-              id: item.fields.id,
+              ...(typeof item.data === 'string'
+                ? JSON.parse(item.data)
+                : item.data),
+              id: item.id,
             })) ?? null
         )
       );

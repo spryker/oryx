@@ -58,7 +58,7 @@ export class ContentListComponent extends LayoutMixin(
 
     return this.renderLayout({
       template: html`${data.map(
-        ({ type, name, fields: { id, heading } }) => html`
+        ({ _meta: { type, name }, id, heading }) => html`
           <oryx-content-link
             .options=${{ type, id }}
             .content=${{ text: heading ?? name }}
