@@ -1,4 +1,3 @@
-import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
@@ -9,7 +8,6 @@ import {
   computed,
   featureVersion,
   hydrate,
-  signal,
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -37,16 +35,6 @@ export class ProductTitleComponent extends ProductMixin(
     });
   });
 
-  entity = resolve(EntityService);
-
-  $entityField = signal(
-    this.entity.getField({
-      element: this,
-      type: 'product',
-      field: 'name',
-    })
-  );
-
   protected override render(): TemplateResult | void {
     const title = this.$product()?.name;
     if (!title) return;
@@ -54,16 +42,16 @@ export class ProductTitleComponent extends ProductMixin(
     const { linkType, ...options } = this.$options();
 
     return html`<oryx-heading
-        .tag=${options.tag}
-        .typography=${options.typography}
-        .sm=${options.sm}
-        .md=${options.md}
-        .lg=${options.lg}
-        .maxLines=${options.maxLines}
-        >${!linkType || linkType === 'none'
-          ? title
-          : this.renderLink(title)}</oryx-heading
-      >${this.$entityField()}`;
+      .tag=${options.tag}
+      .typography=${options.typography}
+      .sm=${options.sm}
+      .md=${options.md}
+      .lg=${options.lg}
+      .maxLines=${options.maxLines}
+      >${!linkType || linkType === 'none'
+        ? title
+        : this.renderLink(title)}</oryx-heading
+    >`;
   }
 
   protected renderLink(template?: TemplateResult | string): TemplateResult {
