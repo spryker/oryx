@@ -34,31 +34,11 @@ const legalLinks: ExperienceComponent = {
       type: 'oryx-content-text',
       content: { data: { text: `©️ 2023 Spryker` } },
     },
-    ...(featureVersion >= '1.4'
-      ? [
-          {
-            type: 'oryx-content-list',
-            options: {
-              tags: 'legal',
-              rules: [
-                {
-                  layout: {
-                    type: 'flex',
-                    divider: true,
-                  },
-                  width: 'auto',
-                },
-              ],
-            },
-          },
-        ]
-      : [
-          link('Imprint', '/faq/imprint'),
-          link('Terms & conditions', '/article/terms-and-conditions'),
-          link('Privacy Notice', '/article/privacy'),
-          link('Data preference'),
-          link('Condition of use'),
-        ]),
+    link('Imprint', '/faq/imprint'),
+    link('Terms & conditions', '/article/terms-and-conditions'),
+    link('Privacy Notice', '/article/privacy'),
+    link('Data preference'),
+    link('Condition of use'),
   ],
   options: {
     rules: [
