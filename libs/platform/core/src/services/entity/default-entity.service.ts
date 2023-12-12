@@ -1,13 +1,12 @@
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap, throwError } from 'rxjs';
 import { ContextService } from '../context';
+import { EntityProvider } from './entity-provider';
 import {
   EntityFieldQualifier,
-
   EntityQualifier,
   EntityService,
 } from './entity.service';
-import { EntityProvider } from './entity-provider';
 
 export class DefaultEntityService implements EntityService {
   protected injector = inject(INJECTOR);

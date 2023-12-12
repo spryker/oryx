@@ -9,7 +9,10 @@ import {
   layoutProviders,
 } from './services';
 
-export const experienceComponents = [components.compositionComponent, components.entityText];
+export const experienceComponents = [
+  components.compositionComponent,
+  components.entityText,
+];
 
 export const layoutFeature: AppFeature = {
   providers: layoutProviders,

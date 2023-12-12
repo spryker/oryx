@@ -63,14 +63,6 @@ export const productPage: ExperienceComponent = {
                 },
                 { type: 'oryx-product-images' },
                 { type: 'oryx-product-description' },
-                {
-                  type: 'oryx-entity-text',
-                  options: {
-                    entity: 'product',
-                    field: 'description',
-                  },
-                },
-
                 { type: 'oryx-product-attributes' },
               ],
             },
@@ -99,13 +91,6 @@ export const productPage: ExperienceComponent = {
                     ...(featureVersion >= '1.4'
                       ? { tag: HeadingTag.H1, typography: HeadingTag.H3 }
                       : {}),
-                  },
-                },
-                {
-                  type: 'oryx-entity-text',
-                  options: {
-                    entity: 'product',
-                    field: 'name',
                   },
                 },
                 {

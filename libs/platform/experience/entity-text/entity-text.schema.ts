@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { EntityTextComponent } from './entity-text.component';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { EntityTextComponent } from './entity-text.component';
 
 export const entityTextSchema: ContentComponentSchema<EntityTextComponent> = {
   name: 'Entity text',

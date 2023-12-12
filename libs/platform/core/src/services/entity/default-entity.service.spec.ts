@@ -68,16 +68,16 @@ describe('DefaultEntityService', () => {
     it('should return nested field data', async () => {
       const mockEntity = {
         nested: {
-          field: 'nestedValue'
-        }
+          field: 'nestedValue',
+        },
       };
       mockTestService.get.mockReturnValue(of(mockEntity));
 
       // Test getField for a nested field
-      const data = await firstValueFrom(service.getField({ type: 'testType', field: 'nested.field' }));
+      const data = await firstValueFrom(
+        service.getField({ type: 'testType', field: 'nested.field' })
+      );
       expect(data).toBe('nestedValue');
     });
-
   });
-
 });

@@ -11,6 +11,5 @@ export const entityText = componentDef({
   name: 'oryx-entity-text',
   impl: () =>
     import('./entity-text.component').then((m) => m.EntityTextComponent),
-  schema: () =>
-    import('./entity-text.schema').then((m) => m.entityTextSchema),
+  schema: () => import('./entity-text.schema').then((m) => m.entityTextSchema),
 });
