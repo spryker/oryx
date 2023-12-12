@@ -85,7 +85,7 @@ export class DefaultEntityService implements EntityService {
   }
 
   protected pickField(obj: any, fieldPath?: string): any {
-    if (!fieldPath) {
+    if (!fieldPath || !obj) {
       return obj;
     }
 
