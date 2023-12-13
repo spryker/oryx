@@ -1,4 +1,4 @@
-export class AbstractFAPage {
+export class AFAPage {
   url: string;
 
   visit(): void {

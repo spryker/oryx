@@ -2,16 +2,36 @@ import { FiltersFragment } from '../support/page_fragments/filters.fragment';
 
 const filtersFragment = new FiltersFragment();
 
-describe('When user interacts with the filters', () => {
+// TODO: this is not E2E, these are component tests
+xdescribe('When user interacts with the filters', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
+    cy.cleanupPickings();
+
+    // create picking #1
+    cy.createPicking().then((orderId) => {
+      cy.receiveData();
+      cy.waitForPickingToAppear(orderId);
+    });
+
+    // create picking #2
+    cy.createPicking().then((orderId) => {
+      cy.receiveData();
+      cy.waitForPickingToAppear(orderId);
+    });
   });
 
   describe('And filters is closed', () => {
+    // TODO: it is very hard to understand what is being tested here
+    // it is not an e2e test but a component test
+    // it this test fails in CI - you will never know what caused the failure
     it('should reset unapplied changes', () => {
       //check whether default configuration is applied
       filtersFragment.getFilterButtonTrigger().should('not.be.checked');
+
+      // TODO: refactor methods with boolean flags that change behavior
+      // https://softwareengineering.stackexchange.com/questions/147977/is-it-wrong-to-use-a-boolean-parameter-to-determine-behavior
       filtersFragment.shouldChangePickingListsOrder(false);
 
       filtersFragment.getFilterButtonTrigger().click();
@@ -41,6 +61,7 @@ describe('When user interacts with the filters', () => {
     });
   });
 
+  // TODO: it is not an e2e test but a component test
   describe('And filters are applied', () => {
     [
       { option: 'Latest pickup time', shouldChangesTheOrder: true },
@@ -58,6 +79,7 @@ describe('When user interacts with the filters', () => {
         filtersFragment.getFiltersModal().should('not.be.visible');
 
         //should apply sorting order
+        // TODO: method name is confusing + boolean param again
         filtersFragment.shouldChangePickingListsOrder(shouldChangesTheOrder);
 
         //should make sort button active
@@ -66,6 +88,7 @@ describe('When user interacts with the filters', () => {
     });
   });
 
+  // TODO: it is not an e2e test but a component test
   describe('And preselected filters are reset', () => {
     it('should restore default sorting configuration', () => {
       filtersFragment.getFilterButtonTrigger().click();

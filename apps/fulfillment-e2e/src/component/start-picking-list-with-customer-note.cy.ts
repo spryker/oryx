@@ -9,6 +9,7 @@ const customerNoteFragment = new CustomerNoteFragment();
 const pickerHeaderFragment = new PickerHeaderFragment();
 const discardModalFragment = new DiscardModalFragment();
 
+// TODO: this is not E2E, these are component tests
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
@@ -22,6 +23,7 @@ describe('Start picking a picklist with customer note', () => {
     customerNoteFragment
       .getNote()
       .should('be.visible')
+      // TODO: hardcoded data
       .and('contain', 'Some cart note');
 
     // should display “Customer note” headline
@@ -53,6 +55,8 @@ describe('Start picking a picklist with customer note', () => {
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
+    // TODO: this test checks too many areas of the application
+    // everything here should be covered by component tests
     it('check Picking page', () => {
       // should display tabs
       pickingFragment.getTabs().should('be.visible');
@@ -120,6 +124,7 @@ describe('Start picking a picklist with customer note', () => {
 
   describe('and picking is already in progress', () => {
     beforeEach(() => {
+      // TODO: remove mock
       cy.mockPickingInProgress();
 
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
@@ -128,6 +133,7 @@ describe('Start picking a picklist with customer note', () => {
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
+    // TODO: component test
     it('should show modal and stay on the same page', () => {
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
       customerNoteFragment.pickingInProgressModal
@@ -138,6 +144,7 @@ describe('Start picking a picklist with customer note', () => {
         .should('contain.text', 'Already in progress');
     });
 
+    // TODO: component test
     describe('and modal is dismissed', () => {
       beforeEach(() => {
         customerNoteFragment.pickingInProgressModal.getOverlay().click();
@@ -148,6 +155,7 @@ describe('Start picking a picklist with customer note', () => {
       });
     });
 
+    // TODO: unit test
     describe('and picking in progress modal is closed', () => {
       beforeEach(() => {
         customerNoteFragment.pickingInProgressModal.getCloseButton().click();
