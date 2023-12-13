@@ -29,9 +29,9 @@ export class ContentSuggestionAdapter implements SuggestionAdapter {
     return this.content.getAll<ArticleContent>(qualifier).pipe(
       map((data) => ({
         [SuggestionField.Contents]: data?.map((entry) => ({
-          name: entry.fields.heading ?? entry.name,
-          id: entry.fields.id,
-          type: entry.type,
+          name: entry.heading ?? entry._meta.name,
+          id: entry.id,
+          type: entry._meta.type,
         })),
       }))
     );

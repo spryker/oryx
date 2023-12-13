@@ -55,31 +55,43 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
   get(qualifier: ContentQualifier): Observable<Content | null> {
     return this.getAll(qualifier).pipe(
       map(
-        (data) =>
-          data?.find((content) => content.fields.id === qualifier.id) ?? null
+        (data) => data?.find((content) => content.id === qualifier.id) ?? null
       )
     );
   }
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
     return combineLatest([this.getType(qualifier), this.locale.get()]).pipe(
-      switchMap(([{ type, attributes, pluralType }, locale]) => {
-        const query = qualifier.query ? `_q=${qualifier.query}` : '';
-        const preview = this.isPreview ? 'publicationState=preview' : '';
+      switchMap(([{ type, attributes, pluralType }, _locale]) => {
+        const { tags = [], query: _query } = qualifier;
+        const query = _query ? `_q=${_query}` : '';
+        const preview = this.isPreview ? '&publicationState=preview' : '';
+        const locale = `&locale=${_locale}`;
 
         return combineLatest([
-          this.search(`${pluralType}?${query}&locale=${locale}&${preview}`),
-          of({ type, attributes }),
+          this.search(`${pluralType}?${query}${locale}${preview}`),
+          of({
+            type,
+            attributes,
+            tags: Array.isArray(tags) ? tags : [tags],
+          }),
         ] as const);
       }),
-      switchMap(([{ data }, { type: contentType, attributes }]) => {
-        return from(data).pipe(
-          switchMap((record) =>
-            this.parseEntry(record, contentType, attributes)
-          ),
-          reduce((a, c) => [...a, c], [] as Content[])
-        );
-      })
+      switchMap(
+        ([{ data: _data }, { type: contentType, attributes, tags }]) => {
+          const data = tags.length
+            ? _data.filter((item) =>
+                item.attributes.tags?.some((tag) => tags.includes(tag.name))
+              )
+            : _data;
+          return from(data).pipe(
+            switchMap((record) =>
+              this.parseEntry(record, contentType, attributes)
+            ),
+            reduce((a, c) => [...a, c], [] as Content[])
+          );
+        }
+      )
     );
   }
 
@@ -97,17 +109,22 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
           )
       )
     ).pipe(
-      map((fields) => ({
-        id: String(record.id),
-        type,
-        fields: fields.reduce(
-          (acc, { key, value }) => ({
-            ...acc,
-            [key === 'identifier' ? 'id' : key]: value,
-          }),
-          {} as Content['fields']
-        ),
-      }))
+      map(
+        (fields) =>
+          ({
+            _meta: {
+              id: String(record.id),
+              type,
+            },
+            ...fields.reduce(
+              (acc, { key, value }) => ({
+                ...acc,
+                [key === 'identifier' ? 'id' : key]: value,
+              }),
+              {}
+            ),
+          } as Content)
+      )
     );
   }
 

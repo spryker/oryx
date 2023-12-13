@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { Position } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nTranslationValue, hydrate, signal } from '@spryker-oryx/utilities';
@@ -20,7 +21,7 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
 
   protected override render(): TemplateResult | void {
     return html`
-      <oryx-dropdown vertical-align position="start">
+      <oryx-dropdown vertical-align .position=${Position.START}>
         <oryx-button
           slot="trigger"
           .size=${ButtonSize.Md}
