@@ -1,8 +1,8 @@
-import { ContentAdapter } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { of } from 'rxjs';
+import { ContentAdapter } from '../../adapter';
 import { StoryblokFieldNormalizer } from './normalizers';
 import { DefaultStoryblokContentAdapter } from './storyblok-content.adapter';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
@@ -200,22 +200,22 @@ describe('DefaultStoryblokContentAdapter', () => {
       );
       expect(callback).toHaveBeenCalledWith([
         {
-          fields: {
-            id: mockStories.stories[0].content.id,
-            content: mockStories.stories[0].content.content,
+          id: mockStories.stories[0].content.id,
+          content: mockStories.stories[0].content.content,
+          _meta: {
+            id: mockStories.stories[0].id,
+            type: mockStories.stories[0].content.component,
+            name: mockStories.stories[0].name,
           },
-          id: mockStories.stories[0].id,
-          type: mockStories.stories[0].content.component,
-          name: mockStories.stories[0].name,
         },
         {
-          fields: {
-            id: mockStories.stories[1].content.id,
-            content: mockStories.stories[1].content.content,
+          id: mockStories.stories[1].content.id,
+          content: mockStories.stories[1].content.content,
+          _meta: {
+            id: mockStories.stories[1].id,
+            type: mockStories.stories[1].content.component,
+            name: mockStories.stories[1].name,
           },
-          id: mockStories.stories[1].id,
-          type: mockStories.stories[1].content.component,
-          name: mockStories.stories[1].name,
         },
       ]);
     });
@@ -233,13 +233,13 @@ describe('DefaultStoryblokContentAdapter', () => {
       adapter.get(qualifier).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith({
-        fields: {
-          id: mockStories.stories[0].content.id,
-          content: mockStories.stories[0].content.content,
+        id: mockStories.stories[0].content.id,
+        content: mockStories.stories[0].content.content,
+        _meta: {
+          id: mockStories.stories[0].id,
+          type: mockStories.stories[0].content.component,
+          name: mockStories.stories[0].name,
         },
-        id: mockStories.stories[0].id,
-        type: mockStories.stories[0].content.component,
-        name: mockStories.stories[0].name,
       });
     });
   });

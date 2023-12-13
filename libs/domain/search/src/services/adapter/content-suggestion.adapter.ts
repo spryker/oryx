@@ -1,12 +1,8 @@
 import { ContentService } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
-import {
-  Suggestion,
-  SuggestionAdapter,
-  SuggestionField,
-  SuggestionQualifier,
-} from '@spryker-oryx/search';
 import { Observable, map } from 'rxjs';
+import { Suggestion, SuggestionQualifier } from '../../models';
+import { SuggestionAdapter, SuggestionField } from './suggestion.adapter';
 
 declare global {
   interface ContentFields {

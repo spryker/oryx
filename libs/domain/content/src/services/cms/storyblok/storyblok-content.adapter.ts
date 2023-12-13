@@ -1,9 +1,3 @@
-import {
-  Content,
-  ContentAdapter,
-  ContentMeta,
-  ContentQualifier,
-} from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
@@ -17,6 +11,8 @@ import {
   reduce,
   switchMap,
 } from 'rxjs';
+import { Content, ContentMeta, ContentQualifier } from '../../../models';
+import { ContentAdapter } from '../../adapter';
 import { StoryblokFieldNormalizer } from './normalizers';
 import { StoryblokCmsModel } from './storyblok.api.model';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
