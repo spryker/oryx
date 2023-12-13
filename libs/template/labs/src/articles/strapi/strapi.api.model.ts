@@ -1,4 +1,8 @@
 export module StrapiCmsModel {
+  export interface Tag {
+    name: string;
+  }
+
   export interface Entry {
     id: number;
     attributes: {
@@ -8,6 +12,7 @@ export module StrapiCmsModel {
       createdAt: string;
       publishedAt: string;
       updatedAt: string;
+      tags?: Tag[];
     };
   }
 

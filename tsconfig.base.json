@@ -83,6 +83,7 @@
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
       "@spryker-oryx/content/image": ["libs/domain/content/image/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
+      "@spryker-oryx/content/list": ["libs/domain/content/list/index.ts"],
       "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
       "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
       "@spryker-oryx/core": ["libs/platform/core/src/index.ts"],
