@@ -52,6 +52,7 @@ export default async function vitestExecutor(
         '**/*.mixin.ts',
         '**/constants.ts',
         '**/feature.ts',
+        '**/providers.ts',
       ]
     );
 
