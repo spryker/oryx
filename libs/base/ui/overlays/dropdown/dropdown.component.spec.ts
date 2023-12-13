@@ -1,8 +1,8 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { PopoverComponent } from '@spryker-oryx/ui/popover';
 import { Size, a11yConfig, useComponent } from '@spryker-oryx/utilities';
-import { dropdownComponent } from './component';
 import { DropdownComponent } from './dropdown.component';
+import { dropdownComponent } from './dropdown.def';
 
 describe('DropdownComponent', () => {
   let element: DropdownComponent;

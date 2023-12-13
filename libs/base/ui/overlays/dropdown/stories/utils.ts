@@ -1,7 +1,7 @@
 import { states } from '@/tools/storybook';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { CLOSE_EVENT } from '../../../popover';
+import { CLOSE_EVENT } from '../../popover';
 import { Position } from '../dropdown.model';
 
 const dropdownMaxHeight = 200;

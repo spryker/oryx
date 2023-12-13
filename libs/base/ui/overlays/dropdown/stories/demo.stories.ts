@@ -1,26 +1,56 @@
 import { getAppIcons } from '@/tools/storybook';
 import { Size } from '@spryker-oryx/utilities';
-import { Meta, Story } from '@storybook/web-components';
+import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { storybookPrefix } from '../../../../.constants';
-import { Position } from '../dropdown.model';
+import { storybookPrefix } from '../../../.constants';
+import { DropdownProperties, Position } from '../dropdown.model';
 import { renderCustomContent, renderOptions } from './utils';
 
 export default {
   title: `${storybookPrefix}/Overlays/Dropdown`,
-  // disables Chromatic's snapshotting on a story level
+  args: {
+    position: Position.END,
+    verticalAlign: false,
+    triggerIconSize: Size.Md,
+    content: 'options',
+    customTrigger: false,
+    showOnFocus: false,
+  },
+  argTypes: {
+    position: {
+      control: { type: 'select' },
+      options: Object.values(Position),
+    },
+    verticalAlign: {
+      control: { type: 'boolean' },
+    },
+    triggerIconSize: {
+      options: [Size.Lg, Size.Md, Size.Sm],
+      control: { type: 'select' },
+    },
+    content: {
+      options: ['options', 'custom'],
+      control: { type: 'radio' },
+      table: { category: 'Demo' },
+    },
+    icon: {
+      options: getAppIcons(),
+      control: { type: 'select' },
+      table: { category: 'Demo' },
+    },
+    customTrigger: {
+      control: { type: 'boolean' },
+      table: { category: 'Demo' },
+    },
+  },
   parameters: { chromatic: { disableSnapshot: true } },
-} as Meta;
+};
 
-interface Props {
+interface Props extends DropdownProperties {
   content: 'options' | 'custom';
-  position: Position;
-  verticalAlign: boolean;
-  customContent: boolean;
   icon: string;
   customTrigger: boolean;
-  triggerIconSize: Size;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -61,6 +91,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         <oryx-dropdown
           position=${props.position}
           ?vertical-align=${props.verticalAlign}
+          ?showOnFocus=${props.showOnFocus}
           triggerIconSize=${props.triggerIconSize}
           @oryx.close=${(): void => console.log('close')}
         >
@@ -81,40 +112,4 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   `;
 };
 
-export const DropdownDemo = Template.bind({});
-
-DropdownDemo.args = {
-  position: Position.END,
-  verticalAlign: false,
-  content: 'options',
-  customTrigger: false,
-  triggerIconSize: Size.Md,
-};
-
-DropdownDemo.argTypes = {
-  content: {
-    options: ['options', 'custom'],
-    control: { type: 'radio' },
-    table: { category: 'Slots' },
-  },
-  icon: {
-    options: getAppIcons(),
-    control: { type: 'select' },
-    table: { category: 'Slots' },
-  },
-  customTrigger: {
-    control: { type: 'boolean' },
-    table: { category: 'Slots' },
-  },
-  position: {
-    control: { type: 'select' },
-    options: Object.values(Position),
-  },
-  triggerIconSize: {
-    options: [Size.Lg, Size.Md, Size.Sm],
-    control: { type: 'select' },
-  },
-  verticalAlign: {
-    control: { type: 'boolean' },
-  },
-};
+export const Demo = Template.bind({});
