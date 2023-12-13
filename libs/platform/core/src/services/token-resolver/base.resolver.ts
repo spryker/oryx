@@ -14,8 +14,10 @@ export class BaseResolver<T extends Record<string, Resolver>>
   resolve(
     resolverOptions: ResourceResolverConfig | string
   ): Observable<ResolvedResult> {
-    const { resolver = resolverOptions as string, ...options } =
-      typeof resolverOptions === 'object' ? resolverOptions : {};
+    const { resolver, ...options } =
+      typeof resolverOptions === 'object'
+        ? resolverOptions
+        : { resolver: resolverOptions };
 
     if (!(resolver in this.resolvers)) {
       console.warn(`Resolver ${resolver} is not supported`);

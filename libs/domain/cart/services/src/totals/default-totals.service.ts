@@ -17,8 +17,10 @@ export class DefaultTotalsService implements TotalsService {
   get(
     contextOptions?: TotalsOptions | string
   ): Observable<NormalizedTotals | null> {
-    const { totalsContext = contextOptions as string, ...options } =
-      typeof contextOptions === 'object' ? contextOptions : {};
+    const { totalsContext, ...options } =
+      typeof contextOptions === 'object'
+        ? contextOptions
+        : { totalsContext: contextOptions };
 
     return (
       this.injector
