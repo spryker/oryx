@@ -50,6 +50,13 @@ export const layoutPluginsProviders: Provider[] = [
   {
     provide: LayoutStylesPlugin,
     asyncClass: () =>
+      import('./styles/image/image-style.plugin').then(
+        (m) => m.ImageStylePlugin
+      ),
+  },
+  {
+    provide: LayoutStylesPlugin,
+    asyncClass: () =>
       import('./styles/transform/transform-style.plugin').then(
         (m) => m.TransformStylePlugin
       ),

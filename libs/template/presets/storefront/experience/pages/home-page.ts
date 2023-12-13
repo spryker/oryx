@@ -1,4 +1,8 @@
-import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import {
+  ExperienceComponent,
+  ObjectFit,
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
@@ -36,12 +40,15 @@ export const homePage: ExperienceComponent = {
             },
           },
           options: {
-            position: 'center 20%',
+            ...(featureVersion >= '1.4' ? {} : { position: 'center 20%' }),
             rules: [
               {
                 width: '100%',
                 height: 'inherit',
                 style: 'position:absolute;left:0',
+                ...(featureVersion >= '1.4'
+                  ? { imageFit: ObjectFit.Cover, imagePosition: 'center 20%' }
+                  : {}),
               },
             ],
           },
