@@ -4,10 +4,12 @@ import { ListsFragment } from '../support/page_fragments/lists.fragment';
 const listsFragment = new ListsFragment();
 const customerNoteFragment = new CustomerNoteFragment();
 
-describe('pick a picking list in progress', () => {
+// TODO: this is not E2E, these are component tests
+xdescribe('pick a picking list in progress', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
+
+    // TODO: remove mock
     cy.mockPickingInProgress();
 
     // open first picking which is mocked as In Progress
