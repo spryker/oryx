@@ -5,6 +5,7 @@ import {
   EntityService,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';

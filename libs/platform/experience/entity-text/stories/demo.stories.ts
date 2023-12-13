@@ -1,6 +1,5 @@
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ProductContext } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
@@ -23,9 +22,13 @@ type Props = EntityTextOptions /*& FieldComponentProperties*/;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { ...options } = props;
-  resolve(ContextService).provide(document.body, ProductContext.SKU, {
-    sku: '1',
-  });
+  resolve(ContextService).provide(
+    document.body,
+    'sku' /* ProductContext.SKU */,
+    {
+      sku: '1',
+    }
+  );
   return html` <oryx-entity-text .options=${options}></oryx-entity-text> `;
 };
 
