@@ -3,10 +3,9 @@ import {
   ContextService,
   DefaultEntityService,
   EntityService,
+  provideEntity,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -23,7 +22,6 @@ describe('EntityTextComponent', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
-        ...mockProductProviders,
         { provide: EntityService, useClass: DefaultEntityService },
         {
           provide: ContextService,
@@ -31,6 +29,19 @@ describe('EntityTextComponent', () => {
             get: () => of({ sku: '1' }),
           },
         },
+        {
+          provide: 'ProductService',
+          useClass: class {
+            get = () =>
+              of({
+                name: 'Sample product',
+              });
+          },
+        },
+        provideEntity('product', {
+          service: 'ProductService',
+          context: 'sku',
+        }),
       ],
     });
   });
