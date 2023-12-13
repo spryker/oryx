@@ -1,3 +1,5 @@
+[build]
+  ignore = "cd ../../ && bash ./should-ignore-build.sh ${PROJECT_NAME}"
 
 [[redirects]]
   from = "/*"

@@ -6,6 +6,7 @@ import {
 import { fixture } from '@open-wc/testing-helpers';
 import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
+import { CLOSE_MODAL_EVENT } from '@spryker-oryx/ui/modal';
 import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html } from 'lit';
@@ -343,6 +344,28 @@ describe('Modal', () => {
 
       it('should set default value to auto', () => {
         expectBodyOverflow('auto');
+      });
+    });
+  });
+
+  describe('when the featureVersion >= 1.4', () => {
+    beforeEach(async () => {
+      mockFeatureVersion('1.4');
+      element = await fixture(html`<oryx-modal open></oryx-modal>`);
+    });
+
+    describe('when CLOSE_MODAL_EVENT is dispatched', () => {
+      beforeEach(() => {
+        element.dispatchEvent(
+          new CustomEvent(CLOSE_MODAL_EVENT, {
+            bubbles: true,
+            composed: true,
+          })
+        );
+      });
+
+      it('should close the modal', () => {
+        expectDialogOpen(false);
       });
     });
   });

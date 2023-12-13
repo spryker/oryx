@@ -1,4 +1,5 @@
 import { OptionComponent } from '@spryker-oryx/ui/option';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import {
   HighlightController,
@@ -6,9 +7,9 @@ import {
   ToggleController,
 } from './controllers';
 import {
+  POPOVER_EVENT,
   PopoverOptions,
   PopoverSelectEvent,
-  POPOVER_EVENT,
 } from './popover.model';
 import { TAG_NAME } from './tag';
 
@@ -119,7 +120,7 @@ export class PopoverController implements ReactiveController {
     this.toggleController = new ToggleController(host, {
       elementSelector: this.popoverSelector,
       itemSelector: this.optionsSelector,
-      showOnFocus: true,
+      ...(featureVersion >= '1.4' ? {} : { showOnFocus: true }),
       ...options,
     });
     this.highlightController = new HighlightController(
