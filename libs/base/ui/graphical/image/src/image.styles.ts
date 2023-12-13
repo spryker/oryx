@@ -7,8 +7,6 @@ export const styles = css`
 
   svg,
   ::slotted(svg) {
-    --fill: currentColor;
-
     height: 100%;
     width: 100%;
   }
@@ -32,5 +30,11 @@ export const styles = css`
     max-height: var(--image-max-height, 100%);
     object-fit: var(--image-fit, contain);
     object-position: var(--image-position);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+      --oryx-fill: currentColor;
+    }
   }
 `;
