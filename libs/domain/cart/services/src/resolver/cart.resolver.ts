@@ -25,12 +25,12 @@ export class CartResolver extends BaseResolver<CartResolvers> {
   protected getContext(
     options?: TokenResolverOptions
   ): Observable<CartQualifier | undefined> {
-    return featureVersion < '1.4' || !options?.contextElement
-      ? of(undefined)
-      : this.contextService.get<CartQualifier>(
+    return options?.contextElement
+      ? this.contextService.get<CartQualifier>(
           options.contextElement,
           CartContext.CartID
-        );
+        )
+      : of(undefined);
   }
 
   protected resolvers = {

@@ -7,7 +7,6 @@ import {
 } from '@spryker-oryx/cart';
 import { ContextService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { CartContext } from '../cart-context';
 
@@ -20,12 +19,12 @@ export class CartTotalsResolver implements TotalsResolver {
   protected getContext(
     options?: TotalsResolverOptions
   ): Observable<CartQualifier | undefined> {
-    return featureVersion < '1.4' || !options?.contextElement
-      ? of(undefined)
-      : this.contextService.get<CartQualifier>(
+    return options?.contextElement
+      ? this.contextService.get<CartQualifier>(
           options.contextElement,
           CartContext.CartID
-        );
+        )
+      : of(undefined);
   }
 
   getTotals(

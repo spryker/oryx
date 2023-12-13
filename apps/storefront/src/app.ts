@@ -17,7 +17,4 @@ export const app = appBuilder()
   .withFeature(features)
   .withTheme([storefrontTheme])
   .withEnvironment(env)
-  .withOptions({
-    cart: { multi: env.ORYX_PRESET === 'b2b' || env.ORYX_MULTI_CART },
-  })
   .create();

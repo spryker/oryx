@@ -1,7 +1,9 @@
 import { CartComponentMixin, CartService, PriceMode } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
+import { RouteType } from '@spryker-oryx/router';
+import { LinkService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
+import { I18nMixin, Size, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -17,6 +19,7 @@ export class CartListItemComponent
   static styles = cartListItemStyles;
 
   protected cartService = resolve(CartService);
+  protected linkService = resolve(LinkService);
 
   @property({ type: Boolean }) open?: boolean;
 
@@ -39,20 +42,19 @@ export class CartListItemComponent
     `;
   }
 
+  protected $cartLink = signal(this.linkService.get({ type: RouteType.Cart }));
+
   protected renderHeading(): TemplateResult {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const cart = this.$cart()!;
-    //TODO: use link service or content link
-    const url = `/my-account/carts/${cart.id}`;
 
     return html`
-      <oryx-link slot="heading">
-        <a href=${url}>
-          ${cart.name}
-          ${this.i18n('carts.totals.<count>-items', {
-            count: this.$totalQuantity() ?? 0,
-          })}
-        </a>
-      </oryx-link>
+      <span slot="heading">
+        ${cart.name}
+        ${this.i18n('carts.totals.<count>-items', {
+          count: this.$totalQuantity() ?? 0,
+        })}
+      </span>
       ${when(
         cart.isDefault,
         () =>
@@ -85,7 +87,15 @@ export class CartListItemComponent
     return html`
       <div class="meta">
         ${when(
-          !this.$cart()?.isDefault,
+          this.$cart()?.isDefault,
+          () => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const link = this.$cartLink()!;
+
+            return html`<oryx-button type="outline" size=${size} href=${link}>
+              ${this.i18n('carts.open-cart')}
+            </oryx-button> `;
+          },
           () =>
             html`<oryx-button
               type="outline"
@@ -128,8 +138,9 @@ export class CartListItemComponent
       return html`<p>${this.i18n('carts.list.no-cart-entries')}</p>`;
     }
 
-    return html`<oryx-cart-entries
-      cartId=${this.$cart()!.id}
-    ></oryx-cart-entries>`;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const cartId = this.$cart()!.id;
+
+    return html`<oryx-cart-entries cartId=${cartId}></oryx-cart-entries>`;
   }
 }

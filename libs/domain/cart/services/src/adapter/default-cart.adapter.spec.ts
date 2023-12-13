@@ -6,11 +6,7 @@ import {
   CartsNormalizer,
 } from '@spryker-oryx/cart';
 import { mockGetCartsResponse } from '@spryker-oryx/cart/mocks';
-import {
-  FeatureOptionsService,
-  HttpService,
-  JsonAPITransformerService,
-} from '@spryker-oryx/core';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
@@ -59,10 +55,6 @@ class MockPriceModeService implements Partial<PriceModeService> {
   get = vi.fn<[], Observable<string>>().mockReturnValue(of('GROSS_MODE'));
 }
 
-class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
-  getFeatureOptions = vi.fn().mockReturnValue({ multi: true });
-}
-
 describe('DefaultCartAdapter', () => {
   let adapter: CartAdapter;
   let identity: MockIdentityService;
@@ -70,7 +62,6 @@ describe('DefaultCartAdapter', () => {
   let storeService: MockStoreService;
   let currencyService: MockCurrencyService;
   let priceModeService: MockPriceModeService;
-  let optionsService: MockFeatureOptionsService;
 
   function requestIncludes(isAuthenticated = false): string {
     return `?include=${(isAuthenticated
@@ -114,10 +105,6 @@ describe('DefaultCartAdapter', () => {
           provide: PriceModeService,
           useClass: MockPriceModeService,
         },
-        {
-          provide: FeatureOptionsService,
-          useClass: MockFeatureOptionsService,
-        },
       ],
     });
 
@@ -128,9 +115,6 @@ describe('DefaultCartAdapter', () => {
     currencyService = testInjector.inject<MockCurrencyService>(CurrencyService);
     priceModeService =
       testInjector.inject<MockPriceModeService>(PriceModeService);
-    optionsService = testInjector.inject<MockFeatureOptionsService>(
-      FeatureOptionsService
-    );
     http.flush(mockGetCartsResponse);
   });
 
@@ -569,28 +553,6 @@ describe('DefaultCartAdapter', () => {
     describe('when qualifier is not provided', () => {
       beforeEach(() => {
         adapter.create().subscribe();
-      });
-
-      it('should not provide the name', () => {
-        expect(http.post).toHaveBeenCalledWith(`${mockApiUrl}/carts`, {
-          data: {
-            type: 'carts',
-            attributes: {
-              priceMode: 'GROSS_MODE',
-              currency: 'EUR',
-              store: 'DE',
-            },
-          },
-        });
-      });
-    });
-
-    describe('when single cart setup', () => {
-      beforeEach(() => {
-        optionsService.getFeatureOptions = vi
-          .fn()
-          .mockReturnValue({ multi: false });
-        adapter.create(qualifier).subscribe();
       });
 
       it('should not provide the name', () => {

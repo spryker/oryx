@@ -159,8 +159,8 @@ describe('DefaultTokenService', () => {
         });
 
         it('should pass correct tokens to the resolver', () => {
-          expect(spy).toHaveBeenCalledWith('TOKEN_ONE');
-          expect(spy).toHaveBeenCalledWith('TOKEN_TWO');
+          expect(spy).toHaveBeenNthCalledWith(1, 'TOKEN_ONE', undefined);
+          expect(spy).toHaveBeenNthCalledWith(2, 'TOKEN_TWO', undefined);
         });
 
         it('should resolve tokens with `false` value', () => {
@@ -176,8 +176,8 @@ describe('DefaultTokenService', () => {
         });
 
         it('should pass correct tokens to the resolver', () => {
-          expect(spy).toHaveBeenCalledWith('TOKEN_ONE');
-          expect(spy).toHaveBeenCalledWith('TOKEN_TWO');
+          expect(spy).toHaveBeenNthCalledWith(1, 'TOKEN_ONE', undefined);
+          expect(spy).toHaveBeenNthCalledWith(2, 'TOKEN_TWO', undefined);
         });
 
         it('should resolve tokens with `true` value', () => {
@@ -220,11 +220,11 @@ describe('DefaultTokenService', () => {
     });
 
     it('should pass correct token to the resolver', () => {
-      expect(spy).toHaveBeenCalledWith('NEGATIVE_VALUE');
+      expect(spy).toHaveBeenCalledWith('NEGATIVE_VALUE', undefined);
     });
 
     it('should return reversal value', () => {
-      expect(callback).toHaveBeenCalledWith(!'NEGATIVE_VALUE');
+      expect(callback).toHaveBeenCalledWith(false);
     });
   });
 
@@ -238,7 +238,7 @@ describe('DefaultTokenService', () => {
     });
 
     it('should pass options to the resolver', () => {
-      expect(spy).toHaveBeenCalledWith('RESOLVED_VALUE', options);
+      expect(spy).toHaveBeenCalledWith('WITH_OPTIONS', options);
     });
   });
 });
