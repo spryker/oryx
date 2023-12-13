@@ -4,7 +4,7 @@ import { combineLatest, map, of } from 'rxjs';
 import {
   ResolvedToken,
   TokenResolver,
-  TokenResolverOptions,
+  TokenResolverConfig,
   TokenResourceResolver,
   TokenResourceResolvers,
 } from './token-resolver.service';
@@ -16,22 +16,23 @@ export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
   protected injector = inject(INJECTOR);
 
-  resolveToken(token: string, options?: TokenResolverOptions): ResolvedToken {
+  resolveToken(tokenConfig: TokenResolverConfig | string): ResolvedToken {
+    const { token } = this.getTokenConfig(tokenConfig);
     if (this.isConditionalToken(token)) {
-      return this.resolveConditionalToken(token, options);
+      return this.resolveConditionalToken(tokenConfig);
     }
 
     if (!this.isToken(token)) {
       return of(token);
     }
 
-    return this.resolveSimpleToken(token, options);
+    return this.resolveSimpleToken(tokenConfig);
   }
 
   protected resolveConditionalToken(
-    token: string,
-    options?: TokenResolverOptions
+    tokenConfig: TokenResolverConfig | string
   ): ResolvedToken {
+    const { token, ...options } = this.getTokenConfig(tokenConfig);
     const tokens = token.split('||').map((token) => token.trim());
 
     const invalidTokens = tokens.filter(
@@ -48,7 +49,10 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     const resolvedTokens = tokensToResolve.map((token) =>
-      this.resolveToken(token, options)
+      this.resolveToken({
+        ...(options ?? {}),
+        token,
+      })
     );
 
     return combineLatest(resolvedTokens).pipe(
@@ -57,9 +61,9 @@ export class DefaultTokenService implements TokenResolver {
   }
 
   protected resolveSimpleToken(
-    token: string,
-    options?: TokenResolverOptions
+    tokenConfig: TokenResolverConfig | string
   ): ResolvedToken {
+    const { token, ...options } = this.getTokenConfig(tokenConfig);
     const [resourceResolver, rawResolver] = token.split('.');
     const isNegative = this.isNegative(rawResolver);
     const resolver = rawResolver.slice(isNegative ? 1 : 0);
@@ -71,7 +75,7 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     return tokenResolver
-      .resolve(resolver, options)
+      .resolve({ resolver, ...(options ?? {}) })
       .pipe(
         map((resolvedValue) => (isNegative ? !resolvedValue : resolvedValue))
       );
@@ -113,5 +117,11 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     return this.resolvers.get(key);
+  }
+
+  protected getTokenConfig(
+    config: TokenResolverConfig | string
+  ): TokenResolverConfig {
+    return typeof config === 'object' ? config : { token: config };
   }
 }

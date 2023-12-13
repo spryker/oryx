@@ -348,7 +348,8 @@ describe('CompositionComponentsController', () => {
         });
 
         it('should resolve the token with options', () => {
-          expect(tokenResolver.resolveToken).toBeCalledWith(hideByRule, {
+          expect(tokenResolver.resolveToken).toBeCalledWith({
+            token: hideByRule,
             contextElement: mockElement,
           });
         });
@@ -372,7 +373,8 @@ describe('CompositionComponentsController', () => {
         });
 
         it('should resolve the token with options', () => {
-          expect(tokenResolver.resolveToken).toBeCalledWith(hideByRule, {
+          expect(tokenResolver.resolveToken).toBeCalledWith({
+            token: hideByRule,
             contextElement: mockElement,
           });
         });

@@ -9,10 +9,10 @@ import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 
-const context = 'mock';
+const totalsContext = 'mock';
 
 const mockContext = {
-  get: vi.fn().mockReturnValue(of(context)),
+  get: vi.fn().mockReturnValue(of(totalsContext)),
   provide: vi.fn(),
 };
 
@@ -55,7 +55,7 @@ describe('TotalsController', () => {
       it('should pass provided context to the provide method', () => {
         expect(mockContext.provide).toHaveBeenCalledWith(
           TotalsContext.Reference,
-          context
+          totalsContext
         );
       });
     });
@@ -82,7 +82,8 @@ describe('TotalsController', () => {
       });
 
       it('should pas the context and host to the service get the totals', () => {
-        expect(service.get).toHaveBeenCalledWith(context, {
+        expect(service.get).toHaveBeenCalledWith({
+          totalsContext,
           contextElement: mockThis,
         });
       });

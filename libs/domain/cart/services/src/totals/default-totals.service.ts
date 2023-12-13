@@ -1,7 +1,7 @@
 import {
   NormalizedTotals,
+  TotalsOptions,
   TotalsResolver,
-  TotalsResolverOptions,
   TotalsService,
 } from '@spryker-oryx/cart';
 import { INJECTOR, inject } from '@spryker-oryx/di';
@@ -15,12 +15,14 @@ export class DefaultTotalsService implements TotalsService {
   }
 
   get(
-    context: string,
-    options?: TotalsResolverOptions
+    contextOptions?: TotalsOptions | string
   ): Observable<NormalizedTotals | null> {
+    const { totalsContext = contextOptions as string, ...options } =
+      typeof contextOptions === 'object' ? contextOptions : {};
+
     return (
       this.injector
-        .inject(this.getReference(context), null)
+        .inject(this.getReference(totalsContext), null)
         ?.getTotals(options) ?? of(null)
     );
   }

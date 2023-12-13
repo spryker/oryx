@@ -119,7 +119,7 @@ describe('CartResolver', () => {
 
         it(`should pass context qualifier to the service`, () => {
           resolver
-            .resolve('EMPTY', { contextElement: {} as HTMLElement })
+            .resolve({ resolver: 'EMPTY', contextElement: {} as HTMLElement })
             .subscribe(() => {
               expect(cartService.getCart).toHaveBeenCalledWith(qualifier);
             });
@@ -162,7 +162,7 @@ describe('CartResolver', () => {
 
         it(`should pass context qualifier to the service`, () => {
           resolver
-            .resolve('EMPTY', { contextElement: {} as HTMLElement })
+            .resolve({ resolver: 'EMPTY', contextElement: {} as HTMLElement })
             .subscribe(() => {
               expect(cartService.getCart).toHaveBeenCalledWith(qualifier);
             });

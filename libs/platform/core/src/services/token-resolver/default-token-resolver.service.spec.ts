@@ -4,13 +4,15 @@ import { SpyInstance } from 'vitest';
 import { DefaultTokenService } from './default-token-resolver.service';
 import {
   ResolvedToken,
+  ResourceResolverConfig,
   TokenResolver,
   TokenResourceResolver,
   TokenResourceResolvers,
 } from './token-resolver.service';
 
 class TestResolver implements TokenResourceResolver {
-  resolve(resolver: string): ResolvedToken {
+  resolve(config: ResourceResolverConfig | string): ResolvedToken {
+    const resolver = typeof config === 'string' ? config : config.resolver;
     return of(resolver);
   }
 }
@@ -159,8 +161,8 @@ describe('DefaultTokenService', () => {
         });
 
         it('should pass correct tokens to the resolver', () => {
-          expect(spy).toHaveBeenNthCalledWith(1, 'TOKEN_ONE', undefined);
-          expect(spy).toHaveBeenNthCalledWith(2, 'TOKEN_TWO', undefined);
+          expect(spy).toHaveBeenNthCalledWith(1, { resolver: 'TOKEN_ONE' });
+          expect(spy).toHaveBeenNthCalledWith(2, { resolver: 'TOKEN_TWO' });
         });
 
         it('should resolve tokens with `false` value', () => {
@@ -176,8 +178,8 @@ describe('DefaultTokenService', () => {
         });
 
         it('should pass correct tokens to the resolver', () => {
-          expect(spy).toHaveBeenNthCalledWith(1, 'TOKEN_ONE', undefined);
-          expect(spy).toHaveBeenNthCalledWith(2, 'TOKEN_TWO', undefined);
+          expect(spy).toHaveBeenNthCalledWith(1, { resolver: 'TOKEN_ONE' });
+          expect(spy).toHaveBeenNthCalledWith(2, { resolver: 'TOKEN_TWO' });
         });
 
         it('should resolve tokens with `true` value', () => {
@@ -220,7 +222,7 @@ describe('DefaultTokenService', () => {
     });
 
     it('should pass correct token to the resolver', () => {
-      expect(spy).toHaveBeenCalledWith('NEGATIVE_VALUE', undefined);
+      expect(spy).toHaveBeenCalledWith({ resolver: 'NEGATIVE_VALUE' });
     });
 
     it('should return reversal value', () => {
@@ -234,11 +236,14 @@ describe('DefaultTokenService', () => {
 
     beforeEach(() => {
       spy = vi.spyOn(resolver, 'resolve');
-      service.resolveToken(token, options).subscribe(callback);
+      service.resolveToken({ token, ...options }).subscribe(callback);
     });
 
     it('should pass options to the resolver', () => {
-      expect(spy).toHaveBeenCalledWith('WITH_OPTIONS', options);
+      expect(spy).toHaveBeenCalledWith({
+        resolver: 'WITH_OPTIONS',
+        ...options,
+      });
     });
   });
 });

@@ -1,7 +1,7 @@
 import {
   ResolvedResult,
   Resolver,
-  TokenResolverOptions,
+  ResourceResolverConfig,
   TokenResourceResolver,
 } from '@spryker-oryx/core';
 import { Observable, of } from 'rxjs';
@@ -12,9 +12,11 @@ export class BaseResolver<T extends Record<string, Resolver>>
   protected resolvers: T = {} as T;
 
   resolve(
-    resolver: string,
-    options?: TokenResolverOptions
+    resolverOptions: ResourceResolverConfig | string
   ): Observable<ResolvedResult> {
+    const { resolver = resolverOptions as string, ...options } =
+      typeof resolverOptions === 'object' ? resolverOptions : {};
+
     if (!(resolver in this.resolvers)) {
       console.warn(`Resolver ${resolver} is not supported`);
       return of(resolver);

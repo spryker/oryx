@@ -6,8 +6,4 @@ export const cartRoutes: RouteConfig[] = [
     path: '/my-account/carts',
     type: RouteType.Carts,
   },
-  {
-    path: '/my-account/carts/:cartId',
-    type: RouteType.CartDetails,
-  },
 ];

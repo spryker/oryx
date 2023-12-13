@@ -10,16 +10,18 @@ export const TotalsService = 'oryx.TotalsService';
 export const TotalsResolver = 'oryx.TotalsResolver*';
 
 export interface TotalsService {
-  get(
-    context?: string,
-    options?: TotalsResolverOptions
-  ): Observable<NormalizedTotals | null>;
+  get(context?: string): Observable<NormalizedTotals | null>;
+  get(options: TotalsOptions): Observable<NormalizedTotals | null>;
 }
 
 export interface TotalsResolver {
   getTotals(
     options?: TotalsResolverOptions
   ): Observable<NormalizedTotals | null>;
+}
+
+export interface TotalsOptions extends TotalsResolverOptions {
+  totalsContext?: string;
 }
 
 export interface TotalsResolverOptions {
