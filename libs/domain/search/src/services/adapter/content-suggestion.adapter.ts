@@ -7,10 +7,9 @@ import {
   SuggestionQualifier,
 } from '@spryker-oryx/search';
 import { Observable, map } from 'rxjs';
-import { ArticleContent } from './article.model';
 
 declare global {
-  interface DynamicContentFields {
+  interface ContentFields {
     [SuggestionField.Contents]: undefined;
   }
 }
@@ -26,10 +25,10 @@ export class ContentSuggestionAdapter implements SuggestionAdapter {
   }
 
   get(qualifier: SuggestionQualifier): Observable<Suggestion> {
-    return this.content.getAll<ArticleContent>(qualifier).pipe(
+    return this.content.getAll(qualifier).pipe(
       map((data) => ({
         [SuggestionField.Contents]: data?.map((entry) => ({
-          name: entry.heading ?? entry._meta.name,
+          name: entry.heading ?? entry._meta.name ?? '',
           id: entry.id,
           type: entry._meta.type,
         })),

@@ -14,8 +14,4 @@ declare global {
     [StoryblokToken]: string;
     [StoryblokSpace]: string;
   }
-
-  interface DynamicContentFields {
-    faq: undefined;
-  }
 }

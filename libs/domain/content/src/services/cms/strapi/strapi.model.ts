@@ -14,8 +14,4 @@ declare global {
     [StrapiToken]: string;
     [StrapiApiUrl]: string;
   }
-
-  interface DynamicContentFields {
-    about: undefined;
-  }
 }

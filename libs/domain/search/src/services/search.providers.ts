@@ -4,6 +4,7 @@ import { ExperienceDataRevealer } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { facetProviders } from '../renderers';
 import {
+  ContentSuggestionAdapter,
   DefaultSuggestionAdapter,
   SuggestionAdapter,
   SuggestionField,
@@ -37,6 +38,10 @@ export const searchProviders: Provider[] = [
   {
     provide: SuggestionAdapter,
     useClass: DefaultSuggestionAdapter,
+  },
+  {
+    provide: SuggestionAdapter,
+    useClass: ContentSuggestionAdapter,
   },
   {
     provide: SuggestionService,
