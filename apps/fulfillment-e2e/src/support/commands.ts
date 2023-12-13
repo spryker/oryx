@@ -1,51 +1,122 @@
+import { Interception } from 'node_modules/cypress/types/net-stubbing';
 import { TestUserData } from '../types/user.type';
-import { WarehouseSelectionListFragment } from './page_fragments/warehouse-selection-list.fragment';
+import { PickingApi } from './backoffice-api/picking.api';
+import './backoffice/commands';
+import { CheckoutApi } from './glue-api/checkout.api';
+import { GuestCartsItemsApi } from './glue-api/guest-carts-items.api';
+import { GuestCartsApi } from './glue-api/guest-carts.api';
+import { HeaderFragment } from './page_fragments/lists-header.fragment';
+import { ListsFragment } from './page_fragments/lists.fragment';
+import { UserProfileModal } from './page_fragments/user-profile-modal.fragment';
 import { LoginPage } from './page_objects/login.page';
+import { PickingListPage } from './page_objects/picking-list.page';
+import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
 export {};
 
 declare global {
   namespace Cypress {
     interface Chainable {
-      login(user?: TestUserData): Chainable<void>;
+      login(user?: TestUserData): void;
       clearIndexedDB(): void;
       waitForIndexedDB(): void;
       mockPickingInProgress(): void;
       mockSyncPending(): void;
+      receiveData(): Chainable<any>;
+      createPicking(numberOfItems?: number): Chainable<string>;
+      cleanupPickings(): void;
+      glueApiCreateOrder(numberOfItems?: number): Chainable<string>;
+      waitForPickingToAppear(orderId: string): Chainable<string>;
     }
   }
 }
 
 const indexedDBName = 'fulfillment-app-db';
 const indexedDBStorageName = 'oryx-local-db-storage';
-const defaultUser = { email: 'admin@spryker.com', password: 'change123' };
-const loginPage = new LoginPage();
+export const defaultUser = {
+  email: 'harald@spryker.com',
+  password: 'change123',
+  warehouseName: 'Spryker MER000001 Warehouse 1',
+};
 
 Cypress.Commands.add('login', (user = defaultUser) => {
-  const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
-
-  cy.intercept('POST', '**/token').as('token');
+  const loginPage = new LoginPage();
+  const warehouseSelectionPage = new WarehouseSelectionPage();
+  const pickListsPage = new PickingListPage();
 
   loginPage.visit();
-  loginPage.loginForm.login(user);
+  loginPage.login(user);
+  warehouseSelectionPage.waitForLoaded();
+  warehouseSelectionPage.selectByName(user.warehouseName);
+  pickListsPage.waitForLoaded();
+});
 
-  // we have to wait for 5++ seconds here
-  // because our bundle is huge and Cypress is not able
-  // to cache all 500++ files fast enough
-  cy.wait('@token', { timeout: 30000 });
+Cypress.Commands.add('createPicking', (numberOfItems = 1) => {
+  // initializes FA as a base domain
+  cy.visit('/');
 
-  cy.intercept('GET', '**/warehouse-user-assignments').as(
-    'warehouse-user-assignments'
+  return cy
+    .glueApiCreateOrder(numberOfItems)
+    .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId));
+});
+
+Cypress.Commands.add('cleanupPickings', () => {
+  const api = new PickingApi();
+
+  // picking list requests should already be intercepted and available in this place
+  cy.get<Interception>('@picking-lists').then((interception: Interception) => {
+    api.accessToken = interception.request.headers.authorization as string;
+
+    interception.response.body.data
+      .filter((picking) => picking.attributes.status === 'ready-for-picking')
+      .map((picking) => picking.id)
+      .map((pickingId) => api.startPicking(pickingId));
+  });
+});
+
+Cypress.Commands.add('receiveData', () => {
+  const header = new HeaderFragment();
+  const profile = new UserProfileModal();
+
+  cy.intercept('GET', '**/picking-lists?include*').as('picking-lists-update');
+
+  header.getUserIcon().should('be.visible').click();
+  profile.getSyncDataButton().should('be.visible').click();
+
+  cy.wait('@picking-lists-update');
+
+  return cy.wrap(null);
+});
+
+Cypress.Commands.add('glueApiCreateOrder', (numberOfItems = 1) => {
+  const customerUniqueId = Math.random();
+  const guestCartsApi = new GuestCartsApi();
+  const guestCartsItemsApi = new GuestCartsItemsApi();
+  const checkoutApi = new CheckoutApi();
+
+  guestCartsApi.customerUniqueId = customerUniqueId;
+  guestCartsItemsApi.customerUniqueId = customerUniqueId;
+  checkoutApi.customerUniqueId = customerUniqueId;
+
+  return (
+    guestCartsItemsApi
+      // add product that is always available in the stock
+      // 086_30521602 adjusted manually in backoffice, we have to
+      // find another product to use here later
+      .postGuestCartsItems('086_30521602', numberOfItems)
+      .then(() => guestCartsApi.getGuestCarts())
+      .then((res) => res.body.data[0].id)
+      .then((idCart) => checkoutApi.checkout(idCart))
+      .then((res) => res.body.data.attributes.orderReference)
   );
-  cy.wait('@warehouse-user-assignments');
-  warehouseSelectionListFragment.getWarehouseSelectionButtons().eq(0).click();
+});
 
-  cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
-  cy.wait('@picking-lists');
+Cypress.Commands.add('waitForPickingToAppear', (orderId: string) => {
+  const list = new ListsFragment();
 
-  cy.waitForIndexedDB();
-  // this wait is needed to populate the DB with data
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(800);
+  list.getPickingListsItems().should('have.length', 1);
+  list.getPickingListItemByOrderId(orderId).should('be.visible');
+
+  return cy.wrap(orderId);
 });
 
 Cypress.Commands.add('clearIndexedDB', () => {
@@ -164,7 +235,7 @@ function clearIndexedDb(win, dbName) {
 
 function mockSyncPending(win) {
   return new Promise<void>((resolve, reject) => {
-    const request = win.indexedDB.open('fulfillment-app-db');
+    const request = win.indexedDB.open(indexedDBName);
 
     request.onsuccess = function () {
       const db = request.result;

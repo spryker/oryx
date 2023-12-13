@@ -10,11 +10,12 @@ import {
 } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
-import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
+import { CLOSE_EVENT, CLOSE_MODAL_EVENT } from '@spryker-oryx/ui/modal';
 import {
   ConnectableSignal,
   I18nMixin,
   computed,
+  featureVersion,
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
@@ -136,8 +137,9 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
       .syncData(this.injector)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(() => {
+        const event = featureVersion >= '1.4' ? CLOSE_MODAL_EVENT : CLOSE_EVENT;
         this.dispatchEvent(
-          new CustomEvent(CLOSE_EVENT, {
+          new CustomEvent(event, {
             bubbles: true,
             composed: true,
           })

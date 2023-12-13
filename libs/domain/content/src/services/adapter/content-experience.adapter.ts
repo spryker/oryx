@@ -4,6 +4,7 @@ import {
   ExperienceAdapter,
   ExperienceQualifier,
 } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map } from 'rxjs';
 import { ContentService } from '../content.service';
 
@@ -38,12 +39,16 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
       .pipe(
         map(
           (items) =>
-            items?.map((item) => ({
-              ...(typeof item.fields.data === 'string'
-                ? JSON.parse(item.fields.data)
-                : item.fields.data),
-              id: item.fields.id,
-            })) ?? null
+            items?.map((item) => {
+              const id = featureVersion >= '1.4' ? item.id : item.fields?.id;
+              const data =
+                featureVersion >= '1.4' ? item.data : item.fields?.data;
+
+              return {
+                ...(typeof data === 'string' ? JSON.parse(data) : data),
+                id,
+              };
+            }) ?? null
         )
       );
   }
