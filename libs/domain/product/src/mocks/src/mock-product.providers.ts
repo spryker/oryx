@@ -1,3 +1,4 @@
+import { provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   DefaultProductAdapter,
@@ -6,6 +7,7 @@ import {
   DefaultProductListService,
   ProductAdapter,
   ProductCategoryService,
+  ProductContext,
   ProductImageService,
   ProductListAdapter,
   ProductListPageService,
@@ -57,4 +59,8 @@ export const mockProductProviders: Provider[] = [
     provide: ProductCategoryService,
     useClass: MockProductCategoryService,
   },
+  provideEntity('product', {
+    service: ProductService,
+    context: ProductContext.SKU,
+  }),
 ];

@@ -5,6 +5,7 @@ import {
   DefaultAppInitializerService,
 } from './app-initializer';
 import { ContextService, DefaultContextService } from './context';
+import { DefaultEntityService, EntityService } from './entity';
 import { DefaultErrorService, ErrorService } from './error';
 import {
   DefaultFeatureOptionsService,
@@ -115,6 +116,10 @@ export const coreProviders: Provider[] = [
   {
     provide: JsonApiIncludeService,
     useClass: DefaultJsonApiIncludeService,
+  },
+  {
+    provide: EntityService,
+    useClass: DefaultEntityService,
   },
   CoreResourceResolver,
 ];
