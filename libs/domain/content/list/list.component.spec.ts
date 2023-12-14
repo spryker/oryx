@@ -73,7 +73,6 @@ describe('ContentListComponent', () => {
   });
 
   beforeEach(async () => {
-    mockFeatureVersion('1.4');
     createInjector({
       providers: [
         {
