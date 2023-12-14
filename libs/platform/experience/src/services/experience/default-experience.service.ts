@@ -64,8 +64,8 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected processData(component: Component | ExperienceComponent): void {
     if (component.meta?.route) {
-      []
-        .concat(component.meta?.route)
+      ([] as string[])
+        .concat(component.meta?.route ?? [])
         .forEach((route) => this.storeData('dataRoutes', route, component.id));
     }
 
