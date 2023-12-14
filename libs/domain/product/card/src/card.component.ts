@@ -95,7 +95,7 @@ export class ProductCardComponent extends ProductMixin(
   protected $link = computed(() =>
     this.semanticLinkService.get({
       type: RouteType.Product,
-      id: featureVersion <= '1.4' ? this.$product()?.sku : undefined,
+      id: featureVersion >= '1.4' ? undefined : this.$product()?.sku,
       qualifier: this.$productQualifier(),
     })
   );

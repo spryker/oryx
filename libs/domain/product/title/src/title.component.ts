@@ -31,7 +31,7 @@ export class ProductTitleComponent extends ProductMixin(
     }
     return this.semanticLinkService.get({
       type: RouteType.Product,
-      id: featureVersion <= '1.4' ? this.$product()?.sku : undefined,
+      id: featureVersion >= '1.4' ? undefined : this.$product()?.sku,
       qualifier: this.$productQualifier(),
     });
   });
