@@ -150,7 +150,7 @@ describe('DefaultStoryblokContentAdapter', () => {
       });
       expect(mockHttpService.get).toHaveBeenNthCalledWith(
         2,
-        `${readonlyUrl}?&by_slugs=${qualifier.type}/*&version=draft&token=${mockSpaceData.space.first_token}&language=${mockLocale}`
+        `${readonlyUrl}?&by_slugs=${qualifier.type}/*&version=published&token=${mockSpaceData.space.first_token}&language=${mockLocale}`
       );
       expect(mockHttpService.get).toHaveBeenNthCalledWith(
         3,

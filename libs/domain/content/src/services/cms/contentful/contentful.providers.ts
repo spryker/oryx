@@ -9,7 +9,8 @@ import {
 import { contentfulFieldNormalizers } from './normalizers';
 
 export const contentfulProviders: Provider[] =
-  import.meta.env.ORYX_CONTENTFUL_TOKEN && import.meta.env.ORYX_CONTENTFUL_SPACE
+  import.meta.env?.ORYX_CONTENTFUL_TOKEN &&
+  import.meta.env?.ORYX_CONTENTFUL_SPACE
     ? [
         {
           provide: ContentfulToken,

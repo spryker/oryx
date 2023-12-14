@@ -9,7 +9,7 @@ import {
 } from './strapi.model';
 
 export const strapiProviders: Provider[] =
-  import.meta.env.ORYX_STRAPI_TOKEN && import.meta.env.ORYX_STRAPI_API_URL
+  import.meta.env?.ORYX_STRAPI_TOKEN && import.meta.env?.ORYX_STRAPI_API_URL
     ? [
         {
           provide: StrapiToken,

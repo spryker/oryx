@@ -23,16 +23,16 @@ export interface TypeData {
 }
 
 export class DefaultStrapiContentAdapter implements ContentAdapter {
-  constructor(
-    protected token = inject(StrapiToken),
-    protected config = inject(ContentConfig, [] as ContentConfig[]),
-    protected url = inject(StrapiApiUrl),
-    protected http = inject(HttpService),
-    protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService),
-    protected injector = inject(INJECTOR)
-  ) {
-    this.defaultType = config.reduce(
+  protected token = inject(StrapiToken);
+  protected config = inject(ContentConfig, [] as ContentConfig[]);
+  protected url = inject(StrapiApiUrl);
+  protected http = inject(HttpService);
+  protected transformer = inject(TransformerService);
+  protected locale = inject(LocaleService);
+  protected injector = inject(INJECTOR);
+
+  constructor() {
+    this.defaultType = this.config.reduce(
       (acc, item) => ({ ...acc, ...item }),
       {}
     )?.strapi?.defaultType;

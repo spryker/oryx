@@ -9,7 +9,7 @@ import {
 } from './storyblok.model';
 
 export const storyblokProviders: Provider[] =
-  import.meta.env.ORYX_STORYBLOK_TOKEN && import.meta.env.ORYX_STORYBLOK_SPACE
+  import.meta.env?.ORYX_STORYBLOK_TOKEN && import.meta.env?.ORYX_STORYBLOK_SPACE
     ? [
         {
           provide: StoryblokToken,

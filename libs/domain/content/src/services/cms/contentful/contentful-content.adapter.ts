@@ -26,15 +26,12 @@ export interface ContentfulEntry {
 }
 
 export class DefaultContentfulContentAdapter implements ContentAdapter {
-  constructor(
-    protected token = inject(ContentfulToken),
-    protected space = inject(ContentfulSpace),
-    protected http = inject(HttpService),
-    protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService),
-    protected injector = inject(INJECTOR)
-  ) {}
-
+  protected token = inject(ContentfulToken);
+  protected space = inject(ContentfulSpace);
+  protected http = inject(HttpService);
+  protected transformer = inject(TransformerService);
+  protected locale = inject(LocaleService);
+  protected injector = inject(INJECTOR);
   protected url = `https://cdn.contentful.com/spaces/${this.space}`;
 
   /**

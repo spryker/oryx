@@ -11,7 +11,7 @@ declare global {
 }
 
 export class ContentSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected content = inject(ContentService)) {}
+  protected content = inject(ContentService);
 
   /**
    * @deprecated Since version 1.1. Will be removed.
