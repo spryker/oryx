@@ -210,8 +210,6 @@ export class LitRouter implements ReactiveController {
         }
       }, [] as RouteConfig[]);
 
-    console.log(routes);
-
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {
       routes = routes.map((route) => {
