@@ -17,16 +17,11 @@ export class ImageStylePlugin implements LayoutPlugin {
   getStyleProperties(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
-    const { styles } = data;
-
-    const properties: {
-      [IMAGE_FIT]?: string;
-      [IMAGE_POSITION]?: string;
-    } = {};
-
-    properties[IMAGE_FIT] ??= styles.imageFit;
-    properties[IMAGE_POSITION] ??= styles.imagePosition;
-
+    const { imageFit, imagePosition } = data.styles;
+    const properties = {
+      ...(imageFit ? { [IMAGE_FIT]: imageFit } : {}),
+      ...(imagePosition ? { [IMAGE_POSITION]: imagePosition } : {}),
+    };
     return of(properties);
   }
 }

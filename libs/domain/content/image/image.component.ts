@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ContentImageContent, ContentImageOptions } from './image.model';
 import { contentImageStyles } from './image.styles';
 
-@defaultOptions({ fit: 'cover' })
+@defaultOptions(featureVersion >= '1.4' ? {} : { fit: 'cover' })
 export class ContentImageComponent extends ContentMixin<
   ContentImageOptions,
   ContentImageContent
