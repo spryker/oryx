@@ -68,7 +68,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
         }),
   },
   {
-    path: featureVersion >= '1.4' ? '/404' : '/*',
+    path: featureVersion >= '1.4' ? '404' : '/*',
     type: RouteType.NotFound,
     render: (): TemplateResult =>
       html`<oryx-heading><h1>Error 404</h1></oryx-heading>
