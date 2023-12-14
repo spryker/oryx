@@ -200,17 +200,16 @@ export class DefaultCartAdapter implements CartAdapter {
       this.store.get(),
       this.currency.get(),
       this.priceMode.get(),
-      this.generateCartName(qualifier),
     ]).pipe(
       take(1),
-      switchMap(([store, currency, priceMode, name]) =>
+      switchMap(([store, currency, priceMode]) =>
         this.http.post<ApiCartModel.Response>(
           `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
           {
             data: {
               type: 'carts',
               attributes: {
-                name,
+                name: this.ensureCartName(qualifier),
                 priceMode,
                 currency,
                 store: store?.id,
@@ -289,10 +288,9 @@ export class DefaultCartAdapter implements CartAdapter {
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
   }
 
-  //TODO: adjust setting of the cart name for multi vs single cart
-  protected generateCartName(
+  protected ensureCartName(
     qualifier?: CreateCartQualifier
-  ): Observable<string | void> {
-    return of(qualifier?.name ?? 'My cart');
+  ): string | undefined {
+    return qualifier?.name;
   }
 }

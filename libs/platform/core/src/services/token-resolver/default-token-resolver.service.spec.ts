@@ -4,13 +4,15 @@ import { SpyInstance } from 'vitest';
 import { DefaultTokenService } from './default-token-resolver.service';
 import {
   ResolvedToken,
+  ResourceResolverConfig,
   TokenResolver,
   TokenResourceResolver,
   TokenResourceResolvers,
 } from './token-resolver.service';
 
 class TestResolver implements TokenResourceResolver {
-  resolve(resolver: string): ResolvedToken {
+  resolve(config: ResourceResolverConfig | string): ResolvedToken {
+    const resolver = typeof config === 'string' ? config : config.resolver;
     return of(resolver);
   }
 }
@@ -18,6 +20,7 @@ class TestResolver implements TokenResourceResolver {
 describe('DefaultTokenService', () => {
   let service: DefaultTokenService;
   let resolver: TestResolver;
+  let spy: SpyInstance;
   const callback = vi.fn();
 
   beforeEach(() => {
@@ -146,7 +149,6 @@ describe('DefaultTokenService', () => {
     });
 
     describe('and tokens are negated', () => {
-      let spy: SpyInstance;
       beforeEach(() => {
         spy = vi.spyOn(resolver, 'resolve');
       });
@@ -159,8 +161,8 @@ describe('DefaultTokenService', () => {
         });
 
         it('should pass correct tokens to the resolver', () => {
-          expect(spy).toHaveBeenCalledWith('TOKEN_ONE');
-          expect(spy).toHaveBeenCalledWith('TOKEN_TWO');
+          expect(spy).toHaveBeenNthCalledWith(1, { resolver: 'TOKEN_ONE' });
+          expect(spy).toHaveBeenNthCalledWith(2, { resolver: 'TOKEN_TWO' });
         });
 
         it('should resolve tokens with `false` value', () => {
@@ -176,8 +178,8 @@ describe('DefaultTokenService', () => {
         });
 
         it('should pass correct tokens to the resolver', () => {
-          expect(spy).toHaveBeenCalledWith('TOKEN_ONE');
-          expect(spy).toHaveBeenCalledWith('TOKEN_TWO');
+          expect(spy).toHaveBeenNthCalledWith(1, { resolver: 'TOKEN_ONE' });
+          expect(spy).toHaveBeenNthCalledWith(2, { resolver: 'TOKEN_TWO' });
         });
 
         it('should resolve tokens with `true` value', () => {
@@ -213,7 +215,6 @@ describe('DefaultTokenService', () => {
 
   describe('when token is negative', () => {
     const token = 'TEST.!NEGATIVE_VALUE';
-    let spy: SpyInstance;
 
     beforeEach(() => {
       spy = vi.spyOn(resolver, 'resolve');
@@ -221,11 +222,28 @@ describe('DefaultTokenService', () => {
     });
 
     it('should pass correct token to the resolver', () => {
-      expect(spy).toHaveBeenCalledWith('NEGATIVE_VALUE');
+      expect(spy).toHaveBeenCalledWith({ resolver: 'NEGATIVE_VALUE' });
     });
 
     it('should return reversal value', () => {
-      expect(callback).toHaveBeenCalledWith(!'NEGATIVE_VALUE');
+      expect(callback).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('when options are provided', () => {
+    const token = 'TEST.WITH_OPTIONS';
+    const options = { contextElement: {} as HTMLElement };
+
+    beforeEach(() => {
+      spy = vi.spyOn(resolver, 'resolve');
+      service.resolveToken({ token, ...options }).subscribe(callback);
+    });
+
+    it('should pass options to the resolver', () => {
+      expect(spy).toHaveBeenCalledWith({
+        resolver: 'WITH_OPTIONS',
+        ...options,
+      });
     });
   });
 });

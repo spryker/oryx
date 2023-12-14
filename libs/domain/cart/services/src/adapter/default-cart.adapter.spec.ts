@@ -555,12 +555,11 @@ describe('DefaultCartAdapter', () => {
         adapter.create().subscribe();
       });
 
-      it('should use default name', () => {
+      it('should not provide the name', () => {
         expect(http.post).toHaveBeenCalledWith(`${mockApiUrl}/carts`, {
           data: {
             type: 'carts',
             attributes: {
-              name: 'My cart',
               priceMode: 'GROSS_MODE',
               currency: 'EUR',
               store: 'DE',

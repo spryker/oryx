@@ -2,7 +2,7 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import { mockBaseCart } from '@spryker-oryx/cart/mocks';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PricingService } from '@spryker-oryx/site';
+import { LinkService, PricingService } from '@spryker-oryx/site';
 import { SitePriceComponent } from '@spryker-oryx/site/price';
 import { Size, i18n, useComponent } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
@@ -29,6 +29,10 @@ class mockPricingService {
   format = vi.fn().mockReturnValue(of('price'));
 }
 
+export class MockSemanticLinkService implements Partial<LinkService> {
+  get = vi.fn().mockReturnValue('/cart');
+}
+
 describe('CartListItemComponent', () => {
   let element: CartListItemComponent;
   let service: MockCartService;
@@ -47,6 +51,10 @@ describe('CartListItemComponent', () => {
         {
           provide: PricingService,
           useClass: mockPricingService,
+        },
+        {
+          provide: LinkService,
+          useClass: MockSemanticLinkService,
         },
       ],
     });
@@ -67,10 +75,12 @@ describe('CartListItemComponent', () => {
     expect(element).toContainElement('oryx-collapsible:not([open])');
   });
 
-  it('should render link button with cart name and items count', () => {
-    const link = element.renderRoot.querySelector('oryx-link > a');
-    expect(link?.textContent).toContain(cart.name);
-    expect(link?.textContent).toContain(
+  it('should render cart name and items count', () => {
+    const span = element.renderRoot.querySelector(
+      'oryx-collapsible > span:first-child'
+    );
+    expect(span?.textContent).toContain(cart.name);
+    expect(span?.textContent).toContain(
       i18n('carts.totals.<count>-items', { count: 1 })
     );
   });
@@ -132,8 +142,11 @@ describe('CartListItemComponent', () => {
       expect(chip?.textContent).toContain(i18n('default'));
     });
 
-    it('should not render make default button', () => {
-      expect(element).not.toContainElement(`.meta > oryx-button`);
+    it('should render open cart button with proper url', () => {
+      const link = element.renderRoot.querySelector(
+        `.meta > oryx-button[type="outline"][size="${Size.Md}"][href="/cart"]`
+      );
+      expect(link?.textContent).toContain(i18n('carts.open-cart'));
     });
   });
 
@@ -162,8 +175,10 @@ describe('CartListItemComponent', () => {
     });
 
     it('should render link button with 0 items count', () => {
-      const link = element.renderRoot.querySelector('oryx-link > a');
-      expect(link?.textContent).toContain(
+      const span = element.renderRoot.querySelector(
+        'oryx-collapsible > span:first-child'
+      );
+      expect(span?.textContent).toContain(
         i18n('carts.totals.<count>-items', { count: 0 })
       );
     });
