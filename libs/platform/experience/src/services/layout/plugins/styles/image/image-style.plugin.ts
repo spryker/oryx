@@ -1,3 +1,4 @@
+import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
 import { Observable, of } from 'rxjs';
 import {
   LayoutPlugin,
@@ -19,12 +20,12 @@ export class ImageStylePlugin implements LayoutPlugin {
     const { styles } = data;
 
     const properties: {
-      '--image-fit'?: string;
-      '--image-position'?: string;
+      [IMAGE_FIT]?: string;
+      [IMAGE_POSITION]?: string;
     } = {};
 
-    properties['--image-fit'] ??= styles.imageFit;
-    properties['--image-position'] ??= styles.imagePosition;
+    properties[IMAGE_FIT] ??= styles.imageFit;
+    properties[IMAGE_POSITION] ??= styles.imagePosition;
 
     return of(properties);
   }

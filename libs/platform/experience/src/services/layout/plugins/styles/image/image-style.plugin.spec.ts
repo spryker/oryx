@@ -1,3 +1,4 @@
+import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
 import { lastValueFrom } from 'rxjs';
 import { ObjectFit } from './image-style.model';
 import { ImageStylePlugin } from './image-style.plugin';
@@ -28,8 +29,8 @@ describe('ImageStylePlugin', () => {
         imagePosition: 'center',
       };
       const styleProperties = {
-        '--image-fit': ObjectFit.Cover,
-        '--image-position': 'center',
+        [IMAGE_FIT]: ObjectFit.Cover,
+        [IMAGE_POSITION]: 'center',
       };
       const result = await lastValueFrom(
         plugin.getStyleProperties({ styles: data, options: {} })

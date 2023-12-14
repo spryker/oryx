@@ -1,4 +1,5 @@
-import { css } from 'lit';
+import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
+import { css, unsafeCSS } from 'lit';
 
 export const styles = css`
   :host {
@@ -28,8 +29,8 @@ export const styles = css`
     box-sizing: border-box;
     max-width: var(--image-max-width, 100%);
     max-height: var(--image-max-height, 100%);
-    object-fit: var(--image-fit, contain);
-    object-position: var(--image-position);
+    object-fit: var(${unsafeCSS(IMAGE_FIT)}, contain);
+    object-position: var(${unsafeCSS(IMAGE_POSITION)});
   }
 
   @media (prefers-color-scheme: dark) {
