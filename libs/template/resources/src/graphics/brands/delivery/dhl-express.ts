@@ -1,4 +1,4 @@
-export const resource = `<svg width="44" height="14" viewBox="0 0 44 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const resource = `<svg width="44" height="14" viewBox="0 0 44 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#FFCC00;">
     <path  style="fill: var(--oryx-fill, #FFCC00)" fill-rule="evenodd" clip-rule="evenodd" d="M44 10.6996H36.7V9.59959H44V10.6996ZM0 13.5996H7.3V12.4996H0V13.5996ZM36.7 13.6996H44V12.5996H36.7V13.6996ZM0 10.6996H7.3V9.59959H0V10.6996Z" />
     <g style="fill: var(--oryx-fill, #E30017)">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M9 13.5996H11.2L11.6 13.0996H9.9L10.8 11.7996H12.3L12.7 11.2996H11.2L12 10.0996H13.6L14 9.59959H11.8L9 13.5996Z" />

@@ -32,9 +32,9 @@ export const styles = css`
     object-position: var(--image-position);
   }
 
-  @media (prefers-color-scheme: dark) {
+  /* @media (prefers-color-scheme: dark) {
     :host {
       --oryx-fill: currentColor;
     }
-  }
+  } */
 `;

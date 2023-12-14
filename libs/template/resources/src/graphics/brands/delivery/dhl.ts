@@ -1,6 +1,6 @@
 export const resource = `
-<svg width="41" height="9" viewBox="0 0 41 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g style="fill: var(--oryx-fill, #E30017)">
+<svg width="41" height="9" viewBox="0 0 41 9"  xmlns="http://www.w3.org/2000/svg" style="background:#FFCC00;">
+    <g style="fill: var(--oryx-fill, #E30017)" >
         <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5979 0.191406L0.832001 2.61001H10.4562C10.9427 2.61001 10.9364 2.79641 10.6986 3.12111C10.4572 3.45091 10.053 4.02411 9.8071 4.35881C9.6822 4.52881 9.4565 4.83861 10.2044 4.83861H14.1401C14.1401 4.83861 14.7745 3.96821 15.3063 3.24061C16.0298 2.25091 15.3689 0.191406 12.7827 0.191406H2.5979Z" />
         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.117199 8.07141L3.6641 3.21291H8.0657C8.5522 3.21291 8.5457 3.39921 8.3079 3.72401C8.0665 4.05371 7.6557 4.6209 7.4097 4.9558C7.2849 5.1257 7.0592 5.43571 7.807 5.43571H13.7036C12.5801 7.06011 10.7411 8.04171 8.7663 8.07141H0.117199Z" />
         <path fill-rule="evenodd" clip-rule="evenodd" d="M20.4307 5.4355L18.5074 8.0718H13.4336L15.3576 5.4361L20.4307 5.4355Z" />
