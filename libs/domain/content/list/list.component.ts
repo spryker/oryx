@@ -32,9 +32,9 @@ export class ContentListComponent extends LayoutMixin(
     const type = this.context ?? options?.context;
     const field = this.field ?? options?.field;
 
-    if (!type || !field) return;
-
-    return this.entityService.getField({ type, field });
+    return type && field
+      ? this.entityService.getField({ type, field })
+      : of(null);
   });
 
   protected $data = computed(() => {
@@ -55,7 +55,7 @@ export class ContentListComponent extends LayoutMixin(
       ...(context && field
         ? {
             [behavior]: field,
-            ...(behavior === 'type' ? { entities: [behavior] } : {}),
+            ...(behavior === 'type' ? { entities: [field as string] } : {}),
           }
         : {}),
     };
