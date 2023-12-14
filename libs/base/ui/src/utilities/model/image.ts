@@ -1,2 +1,2 @@
-export const IMAGE_FIT = '--image-fit';
-export const IMAGE_POSITION = '--image-position';
+export const OBJECT_FIT = '--image-fit';
+export const OBJECT_POSITION = '--image-position';

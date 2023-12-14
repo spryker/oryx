@@ -1,8 +1,8 @@
-import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
+import { OBJECT_FIT, OBJECT_POSITION } from '@spryker-oryx/ui';
 import { css, unsafeCSS } from 'lit';
 
-const objectFit = unsafeCSS(`var(${IMAGE_FIT}, contain)`);
-const objectPosition = unsafeCSS(`var(${IMAGE_POSITION})`);
+const objectFit = unsafeCSS(`var(${OBJECT_FIT}, contain)`);
+const objectPosition = unsafeCSS(`var(${OBJECT_POSITION})`);
 
 export const styles = css`
   :host {

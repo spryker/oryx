@@ -1,18 +1,18 @@
-import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
+import { OBJECT_FIT, OBJECT_POSITION } from '@spryker-oryx/ui';
 import { lastValueFrom } from 'rxjs';
-import { ObjectFit } from './image-style.model';
-import { ImageStylePlugin } from './image-style.plugin';
+import { ObjectFit } from './media-style.model';
+import { MediaStylePlugin } from './media-style.plugin';
 
 describe('ImageStylePlugin', () => {
-  let plugin: ImageStylePlugin;
+  let plugin: MediaStylePlugin;
 
   beforeEach(() => {
-    plugin = new ImageStylePlugin();
+    plugin = new MediaStylePlugin();
   });
 
   describe('getConfig', () => {
     it('should return proper schema in the object', async () => {
-      const schema = await import('./image-style.schema').then(
+      const schema = await import('./media-style.schema').then(
         (module) => module.schema
       );
       const config = await lastValueFrom(plugin.getConfig?.());
@@ -29,8 +29,8 @@ describe('ImageStylePlugin', () => {
         imagePosition: 'center',
       };
       const styleProperties = {
-        [IMAGE_FIT]: ObjectFit.Cover,
-        [IMAGE_POSITION]: 'center',
+        [OBJECT_FIT]: ObjectFit.Cover,
+        [OBJECT_POSITION]: 'center',
       };
       const result = await lastValueFrom(
         plugin.getStyleProperties({ styles: data, options: {} })

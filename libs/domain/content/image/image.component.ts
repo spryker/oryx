@@ -1,5 +1,5 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
+import { OBJECT_FIT, OBJECT_POSITION } from '@spryker-oryx/ui';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -42,8 +42,8 @@ export class ContentImageComponent extends ContentMixin<
     if (featureVersion >= '1.4') return;
     const { fit, position } = this.$options();
     let styles = '';
-    if (fit) styles += `${IMAGE_FIT}:${fit};`;
-    if (position) styles += `${IMAGE_POSITION}:${position};`;
+    if (fit) styles += `${OBJECT_FIT}:${fit};`;
+    if (position) styles += `${OBJECT_POSITION}:${position};`;
     return styles || undefined;
   }
 }

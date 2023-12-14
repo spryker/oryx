@@ -1,15 +1,15 @@
 import { FormFieldType } from '@spryker-oryx/form';
 import { ContentComponentSchema } from '../../../../../models';
-import { ObjectFit } from './image-style.model';
+import { ObjectFit } from './media-style.model';
 
 export const schema: ContentComponentSchema = {
-  name: 'image',
+  name: 'media',
   group: 'layout',
   options: {
-    imagePosition: {
+    objectPosition: {
       type: FormFieldType.Text,
     },
-    imageFit: {
+    objectFit: {
       type: FormFieldType.Select,
       options: [
         { value: ObjectFit.Contain },

@@ -47,7 +47,7 @@ export const homePage: ExperienceComponent = {
                 height: 'inherit',
                 style: 'position:absolute;left:0',
                 ...(featureVersion >= '1.4'
-                  ? { imageFit: ObjectFit.Cover, imagePosition: 'center 20%' }
+                  ? { objectFit: ObjectFit.Cover, objectPosition: 'center 20%' }
                   : {}),
               },
             ],
