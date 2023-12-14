@@ -1,10 +1,12 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { html, LitElement, TemplateResult } from 'lit';
+import { OBJECT_FIT, OBJECT_POSITION } from '@spryker-oryx/ui';
+import { featureVersion } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { ContentImageContent, ContentImageOptions } from './image.model';
 import { contentImageStyles } from './image.styles';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
-@defaultOptions({ fit: 'cover' })
+@defaultOptions(featureVersion >= '1.4' ? {} : { fit: 'cover' })
 export class ContentImageComponent extends ContentMixin<
   ContentImageOptions,
   ContentImageContent
@@ -37,10 +39,11 @@ export class ContentImageComponent extends ContentMixin<
   }
 
   protected getStyles(): string | undefined {
+    if (featureVersion >= '1.4') return;
     const { fit, position } = this.$options();
     let styles = '';
-    if (fit) styles += `--image-fit:${fit};`;
-    if (position) styles += `--image-position:${position};`;
+    if (fit) styles += `${OBJECT_FIT}:${fit};`;
+    if (position) styles += `${OBJECT_POSITION}:${position};`;
     return styles || undefined;
   }
 }

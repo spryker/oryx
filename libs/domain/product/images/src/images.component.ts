@@ -9,6 +9,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
+import { OBJECT_FIT } from '@spryker-oryx/ui';
 import { featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -99,7 +100,7 @@ export class ProductImagesComponent extends ProductMixin(
       layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
       .options=${options}
-      style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
+      style="--oryx-column-count: 1;${OBJECT_FIT}:${objectFit};--cols: ${cols}"
     >
       ${media.map(
         (_, i) => html`
@@ -148,7 +149,7 @@ export class ProductImagesComponent extends ProductMixin(
       class="navigation"
       layout=${layout || NavigationLayout.Carousel}
       ?layout-vertical=${isVertical}
-      style="--oryx-grid-item-size:${height};--image-fit:${objectFit};"
+      style="--oryx-grid-item-size:${height};${OBJECT_FIT}:${objectFit};"
       .options=${options}
     >
       ${media.map(
