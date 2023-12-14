@@ -31,10 +31,4 @@ export const styles = css`
     object-fit: var(--image-fit, contain);
     object-position: var(--image-position);
   }
-
-  /* @media (prefers-color-scheme: dark) {
-    :host {
-      --oryx-fill: currentColor;
-    }
-  } */
 `;
