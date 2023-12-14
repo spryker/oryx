@@ -31,6 +31,7 @@ export class CanvasStylePlugin implements LayoutPlugin {
     if (styles.radius) properties['border-radius'] = styles.radius;
     if (styles.border) properties['border'] = styles.border;
     if (styles.fill) properties['--oryx-fill'] = styles.fill;
+    properties['overflow'] ??= styles.overflow;
 
     return of(properties);
   }
