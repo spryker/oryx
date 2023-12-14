@@ -3,7 +3,7 @@ import { lastValueFrom } from 'rxjs';
 import { ObjectFit } from './media-style.model';
 import { MediaStylePlugin } from './media-style.plugin';
 
-describe('ImageStylePlugin', () => {
+describe('MediaStylePlugin', () => {
   let plugin: MediaStylePlugin;
 
   beforeEach(() => {
@@ -24,16 +24,16 @@ describe('ImageStylePlugin', () => {
 
   describe('getStyleProperties', () => {
     it('should return a LayoutStyleProperties object', async () => {
-      const data = {
-        imageFit: ObjectFit.Cover,
-        imagePosition: 'center',
+      const styles = {
+        objectFit: ObjectFit.Cover,
+        objectPosition: 'center',
       };
       const styleProperties = {
         [OBJECT_FIT]: ObjectFit.Cover,
         [OBJECT_POSITION]: 'center',
       };
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data, options: {} })
+        plugin.getStyleProperties({ styles, options: {} })
       );
 
       expect(result).toEqual(styleProperties);
