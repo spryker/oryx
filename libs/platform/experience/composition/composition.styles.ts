@@ -16,33 +16,31 @@ const compositionPreviewStylesNew = css`
 
   .eb-preview-focus::before {
     content: '';
-    top: calc(var(--ebp-top) - var(--ebp-rel-top, 0px));
-    left: calc(var(--ebp-left) - var(--ebp-rel-left, 0px));
+    inset-block-start: calc(var(--ebp-top) - var(--ebp-rel-top, 0px));
+    inset-inline-start: calc(var(--ebp-left) - var(--ebp-rel-left, 0px));
     width: var(--ebp-width);
     height: var(--ebp-height);
     border-radius: inherit;
     z-index: var(--oryx-overlay-z-index, 3);
   }
 
-  .eb-preview-focus.ebp-absolute::before,
-  .eb-preview-focus.ebp-sticky::before {
+  .eb-preview-focus:is(.ebp-absolute, ebp-sticky)::before {
     inset-block-start: 0;
     inset-inline-start: 0;
   }
 
-  .eb-preview-focus.ebp-absolute::after,
-  .eb-preview-focus.ebp-sticky::after {
+  .eb-preview-focus:is(.ebp-absolute, ebp-sticky)::after {
     inset-block-start: -26px;
     inset-inline-start: 0;
   }
 
   .eb-preview-focus::after {
     content: attr(name);
-    top: calc(
+    inset-block-start: calc(
       var(--ebp-top) - var(--ebp-rel-top, 0px) -
         (26px - var(--eb-preview-radius))
     );
-    left: calc(var(--ebp-left) - var(--ebp-rel-left, 0px));
+    inset-inline-start: calc(var(--ebp-left) - var(--ebp-rel-left, 0px));
     height: 26px;
     padding: 2px 15px;
     border-radius: var(--eb-preview-radius) var(--eb-preview-radius) 0 0;
