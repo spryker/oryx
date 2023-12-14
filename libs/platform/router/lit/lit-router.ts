@@ -190,8 +190,8 @@ export class LitRouter implements ReactiveController {
     routes: Array<RouteConfig>,
     options?: { fallback?: BaseRouteConfig }
   ) {
-    let fallbackRoutes = [] as RouteConfig[];
-    let otherRoutes = [] as RouteConfig[];
+    const fallbackRoutes = [] as RouteConfig[];
+    const otherRoutes = [] as RouteConfig[];
     [
       ...resolve(LitRoutesRegistry, [])
         .map((registry) => registry.routes)

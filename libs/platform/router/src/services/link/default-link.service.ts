@@ -103,15 +103,15 @@ export class DefaultLinkService implements LinkService {
   protected canSatisfyPath(path: string, qualifier: GenericQualifier): boolean {
     if (!qualifier) return true;
     const requiredSegments = path.match(/:\w+/g) || [];
-    return requiredSegments.every((segment) =>
-      qualifier.hasOwnProperty(segment.substring(1))
+    return requiredSegments.every(
+      (segment) => qualifier[segment.substring(1)] !== undefined
     );
   }
 
-  protected generatePath(path: string, qualifier: GenericQualifier) {
+  protected generatePath(path: string, qualifier: GenericQualifier): string {
     return path.replace(/:\w+/g, (match) => {
       const key = match.substring(1);
-      return qualifier.hasOwnProperty(key)
+      return qualifier[key] !== undefined
         ? encodeURIComponent(qualifier[key] as string | number | boolean)
         : '';
     });
