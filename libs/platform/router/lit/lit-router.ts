@@ -189,19 +189,25 @@ export class LitRouter implements ReactiveController {
     routes: Array<RouteConfig>,
     options?: { fallback?: BaseRouteConfig }
   ) {
-    routes = [
+    let fallbackRoutes = [] as RouteConfig[];
+    let otherRoutes = [] as RouteConfig[];
+    [
       ...resolve(LitRoutesRegistry, [])
         .map((registry) => registry.routes)
         .flat(),
       ...routes,
-    ]
+    ].forEach((route) => {
       // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
-      .sort((a) =>
-        (a as PathRouteConfig).path === '/*' ||
-        (a as PathRouteConfig).path === '/:page'
-          ? 1
-          : -1
-      );
+      if (
+        (route as PathRouteConfig).path === '/*' ||
+        (route as PathRouteConfig).path === '/:page'
+      ) {
+        fallbackRoutes.push(route);
+      } else {
+        otherRoutes.push(route);
+      }
+    });
+    routes = [...otherRoutes, ...fallbackRoutes];
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {
