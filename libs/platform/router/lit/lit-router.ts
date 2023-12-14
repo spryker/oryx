@@ -27,6 +27,7 @@ import {
   tap,
 } from 'rxjs';
 
+import { featureVersion } from '@spryker-oryx/utilities';
 import { when } from 'lit/directives/when.js';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
@@ -420,11 +421,21 @@ export class LitRouter implements ReactiveController {
       this.parsePathname(window?.location.pathname, true);
     }
 
-    const path = isRouterPath(this._currentRoute)
-      ? this._currentParams.page
-        ? `/${this._currentParams.page}`
-        : this._currentRoute.path
-      : '/';
+    let path = '';
+
+    if (featureVersion >= '1.4') {
+      path = isRouterPath(this._currentRoute)
+        ? this._currentRoute.path === '/*'
+          ? `/${this._currentParams[0]}`
+          : this._currentRoute.path
+        : '/';
+    } else {
+      path = isRouterPath(this._currentRoute)
+        ? this._currentParams.page
+          ? `/${this._currentParams.page}`
+          : this._currentRoute.path
+        : '/';
+    }
 
     return html`<outlet>
       ${when(
