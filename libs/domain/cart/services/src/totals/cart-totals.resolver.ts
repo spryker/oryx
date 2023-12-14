@@ -19,9 +19,9 @@ export class CartTotalsResolver implements TotalsResolver {
   protected getContext(
     options?: TotalsResolverOptions
   ): Observable<CartQualifier | undefined> {
-    return options?.contextElement
+    return options?.element
       ? this.contextService.get<CartQualifier>(
-          options.contextElement,
+          options.element,
           CartContext.CartID
         )
       : of(undefined);

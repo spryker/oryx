@@ -54,17 +54,17 @@ describe('OrderTotalsResolver', () => {
   });
 
   describe('when a qualifier is provided', () => {
-    const contextElement = {} as HTMLElement;
+    const element = {} as HTMLElement;
     const id = 'mock';
 
     beforeEach(() => {
       contextService.get = vi.fn().mockReturnValue(of(id));
-      resolver.getTotals({ contextElement }).subscribe();
+      resolver.getTotals({ element }).subscribe();
     });
 
     it('should pass the context element to the get context call', () => {
       expect(contextService.get).toHaveBeenCalledWith(
-        contextElement,
+        element,
         OrderContext.OrderId
       );
     });
@@ -96,7 +96,7 @@ describe('OrderTotalsResolver', () => {
       });
 
       it('should normalize the order totals', () => {
-        resolver.getTotals({ contextElement }).subscribe((value) => {
+        resolver.getTotals({ element }).subscribe((value) => {
           expect(value?.currency).toBe(mock.currencyIsoCode);
           expect(value?.grandTotal).toBe(mock.totals.grandTotal);
           expect(value?.subtotal).toBe(mock.totals.subtotal);
@@ -134,7 +134,7 @@ describe('OrderTotalsResolver', () => {
       });
 
       it('should not normalize the discount', () => {
-        resolver.getTotals({ contextElement }).subscribe((value) => {
+        resolver.getTotals({ element }).subscribe((value) => {
           expect(value?.currency).toBe(mock.currencyIsoCode);
           expect(value?.grandTotal).toBe(mock.totals.grandTotal);
           expect(value?.priceMode).toBe(mock.priceMode);

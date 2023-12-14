@@ -29,10 +29,10 @@ export class TotalsController implements ReactiveController {
   getTotals(): Observable<NormalizedTotals | null> {
     return defer(() =>
       this.context.get<string>(TotalsContext.Reference).pipe(
-        switchMap((totalsContext) => {
+        switchMap((context) => {
           return this.totalsService.get({
-            totalsContext,
-            contextElement: this.host,
+            context,
+            element: this.host,
           });
         }),
         shareReplay({ refCount: true, bufferSize: 1 })

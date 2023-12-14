@@ -13,16 +13,21 @@ export type Resolver = (
 ) => Observable<ResolvedResult>;
 
 export interface TokenResolver {
+  /** @deprecated since 1.4. Use TokenResolverConfig instead of string token */
   resolveToken(token: string): Observable<ResolvedResult>;
   resolveToken(options: TokenResolverConfig): Observable<ResolvedResult>;
 }
 
 export interface TokenResourceResolver {
+  /** @deprecated since 1.4. Use ResourceResolverConfig instead of string*/
   resolve(resolver: string): Observable<ResolvedResult>;
   resolve(options: ResourceResolverConfig): Observable<ResolvedResult>;
 }
 
 export interface TokenResolverConfig extends TokenResolverOptions {
+  /**
+   * String token for the resources resolving
+   */
   token: string;
 }
 

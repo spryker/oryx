@@ -14,17 +14,20 @@ export class DefaultTotalsService implements TotalsService {
     return `${TotalsResolver}${ref ?? 'CART'}`;
   }
 
+  /** @deprecated since 1.4. Use set of options instead */
+  get(context?: string): Observable<NormalizedTotals | null>;
+  get(contextOptions?: TotalsOptions): Observable<NormalizedTotals | null>;
   get(
     contextOptions?: TotalsOptions | string
   ): Observable<NormalizedTotals | null> {
-    const { totalsContext, ...options } =
+    const { context, ...options } =
       typeof contextOptions === 'object'
         ? contextOptions
-        : { totalsContext: contextOptions };
+        : { context: contextOptions };
 
     return (
       this.injector
-        .inject(this.getReference(totalsContext), null)
+        .inject(this.getReference(context), null)
         ?.getTotals(options) ?? of(null)
     );
   }

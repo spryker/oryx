@@ -89,17 +89,15 @@ describe('CartTotalsResolver', () => {
       mockFeatureVersion('1.4');
     });
 
-    describe('and contextElement is provided', () => {
+    describe('and context element is provided', () => {
       beforeEach(() => {
         contextService.get = vi.fn().mockReturnValue(of(qualifier));
       });
 
       it(`should pass context qualifier to the service`, () => {
-        resolver
-          .getTotals({ contextElement: {} as HTMLElement })
-          .subscribe(() => {
-            expect(cartService.getCart).toHaveBeenCalledWith(qualifier);
-          });
+        resolver.getTotals({ element: {} as HTMLElement }).subscribe(() => {
+          expect(cartService.getCart).toHaveBeenCalledWith(qualifier);
+        });
       });
     });
   });

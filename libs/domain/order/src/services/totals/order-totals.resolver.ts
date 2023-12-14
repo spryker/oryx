@@ -31,7 +31,7 @@ export class OrderTotalsResolver implements TotalsResolver {
     options?: TotalsResolverOptions
   ): Observable<OrderData | null | void> {
     return this.context
-      .get<string>(options?.contextElement ?? null, OrderContext.OrderId)
+      .get<string>(options?.element ?? null, OrderContext.OrderId)
       .pipe(switchMap((id) => (id ? this.orderService.get({ id }) : of(null))));
   }
 

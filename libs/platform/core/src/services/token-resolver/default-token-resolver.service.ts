@@ -1,7 +1,8 @@
 import { INJECTOR, inject, resolve } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { combineLatest, map, of } from 'rxjs';
+import { Observable, combineLatest, map, of } from 'rxjs';
 import {
+  ResolvedResult,
   ResolvedToken,
   TokenResolver,
   TokenResolverConfig,
@@ -16,7 +17,12 @@ export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
   protected injector = inject(INJECTOR);
 
-  resolveToken(tokenConfig: TokenResolverConfig | string): ResolvedToken {
+  /** @deprecated since 1.4. Use TokenResolverConfig instead of string token */
+  resolveToken(token: string): ResolvedToken;
+  resolveToken(tokenConfig: TokenResolverConfig): Observable<ResolvedResult>;
+  resolveToken(
+    tokenConfig: TokenResolverConfig | string
+  ): Observable<ResolvedResult> {
     const { token } = this.getTokenConfig(tokenConfig);
     if (this.isConditionalToken(token)) {
       return this.resolveConditionalToken(tokenConfig);
