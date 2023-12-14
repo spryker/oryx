@@ -5,6 +5,7 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { facetProviders } from '../renderers';
 import {
+  ContentSuggestionAdapter,
   DefaultSuggestionAdapter,
   SuggestionAdapter,
   SuggestionField,
@@ -38,6 +39,10 @@ export const searchProviders: Provider[] = [
   {
     provide: SuggestionAdapter,
     useClass: DefaultSuggestionAdapter,
+  },
+  {
+    provide: SuggestionAdapter,
+    useClass: ContentSuggestionAdapter,
   },
   {
     provide: SuggestionService,

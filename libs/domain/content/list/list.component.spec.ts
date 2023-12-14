@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContentService, contentListComponent } from '@spryker-oryx/content';
-import * as core from '@spryker-oryx/core';
+import { EntityService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   LayoutBuilder,
@@ -10,7 +10,6 @@ import {
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { SpyInstance } from 'vitest';
 import { ContentListComponent } from './list.component';
 
 const mockContent = [
@@ -43,8 +42,8 @@ const mockContentService = {
   getAll: vi.fn().mockReturnValue(of(mockContent)),
 };
 
-const mockContext = {
-  get: vi.fn().mockReturnValue(of({})),
+const mockEntityService = {
+  getField: vi.fn().mockReturnValue(of({})),
 };
 
 const mockLayoutService = {
@@ -62,9 +61,6 @@ const mockScreenService = {
   getScreenSize: vi.fn(),
 };
 
-vi.spyOn(core, 'ContextController') as SpyInstance;
-(core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
-
 describe('ContentListComponent', () => {
   let element: ContentListComponent;
 
@@ -72,8 +68,7 @@ describe('ContentListComponent', () => {
     await useComponent(contentListComponent);
   });
 
-  beforeEach(async () => {
-    mockFeatureVersion('1.4');
+  beforeEach(() => {
     createInjector({
       providers: [
         {
@@ -92,17 +87,24 @@ describe('ContentListComponent', () => {
           provide: ContentService,
           useValue: mockContentService,
         },
+        {
+          provide: EntityService,
+          useValue: mockEntityService,
+        },
       ],
     });
   });
 
   afterEach(() => {
     destroyInjector();
+    vi.resetAllMocks();
   });
 
   describe('when component is created', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-content-list></oryx-content-list>`);
+      element = await fixture(
+        html`<oryx-content-list type="test"></oryx-content-list>`
+      );
     });
 
     it('passes the a11y audit', async () => {
@@ -131,30 +133,49 @@ describe('ContentListComponent', () => {
   });
 
   describe('when context is provided', () => {
+    const contextValue = 'contextValue';
+
     beforeEach(async () => {
-      mockContext.get.mockReturnValue(
-        of({ type: 'type', query: 'query', tags: 'tags' })
+      mockEntityService.getField.mockReturnValue(of(contextValue));
+      element = await fixture(
+        html`<oryx-content-list
+          context="context"
+          field="sku"
+        ></oryx-content-list>`
       );
-      element = await fixture(html`<oryx-content-list></oryx-content-list>`);
     });
 
     it('should call contentService with proper params', () => {
+      expect(mockEntityService.getField).toHaveBeenCalledWith({
+        type: 'context',
+        field: 'sku',
+      });
       expect(mockContentService.getAll).toHaveBeenCalledWith({
-        type: 'type',
-        entities: ['type'],
-        query: 'query',
-        tags: 'tags',
+        tags: contextValue,
+      });
+    });
+
+    describe('and behavior is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-content-list
+            context="context"
+            field="sku"
+            behavior="type"
+          ></oryx-content-list>`
+        );
+      });
+
+      it('should call contentService with proper params', () => {
+        expect(mockContentService.getAll).toHaveBeenCalledWith({
+          type: contextValue,
+          entities: [contextValue],
+        });
       });
     });
   });
 
   describe('when props are provided', () => {
-    beforeEach(() => {
-      mockContext.get.mockReturnValue(
-        of({ type: 'type', query: 'query', tags: 'tags' })
-      );
-    });
-
     it('should call contentService with proper params', async () => {
       element = await fixture(
         html`<oryx-content-list type="type"></oryx-content-list>`

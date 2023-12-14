@@ -1,4 +1,4 @@
-import { ContentAdapter } from '@spryker-oryx/content';
+import { ContentAdapter } from '../../adapter';
 
 export const StoryblokToken = 'oryx.StoryblokToken';
 export const StoryblokSpace = 'oryx.StoryblokSpace';
@@ -13,9 +13,5 @@ declare global {
   interface InjectionTokensContractMap {
     [StoryblokToken]: string;
     [StoryblokSpace]: string;
-  }
-
-  interface DynamicContentFields {
-    faq: undefined;
   }
 }

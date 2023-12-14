@@ -1,8 +1,8 @@
-import { ContentAdapter } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { of } from 'rxjs';
+import { ContentAdapter } from '../../adapter';
 import { DefaultContentfulContentAdapter } from './contentful-content.adapter';
 import { ContentfulSpace, ContentfulToken } from './contentful.model';
 import { ContentfulFieldNormalizer } from './normalizers';
@@ -194,16 +194,20 @@ describe('DefaultContentfulContentAdapter', () => {
       );
       expect(callback).toHaveBeenCalledWith([
         {
-          fields: mockEntries.items[0].fields,
-          id: mockEntries.items[0].sys.id,
-          type: qualifier.type,
-          name: mockEntries.items[0].fields.id,
+          ...mockEntries.items[0].fields,
+          _meta: {
+            id: mockEntries.items[0].sys.id,
+            type: qualifier.type,
+            name: mockEntries.items[0].fields.id,
+          },
         },
         {
-          fields: mockEntries.items[1].fields,
-          id: mockEntries.items[1].sys.id,
-          type: qualifier.type,
-          name: mockEntries.items[1].fields.id,
+          ...mockEntries.items[1].fields,
+          _meta: {
+            id: mockEntries.items[1].sys.id,
+            type: qualifier.type,
+            name: mockEntries.items[1].fields.id,
+          },
         },
       ]);
     });
@@ -221,10 +225,12 @@ describe('DefaultContentfulContentAdapter', () => {
       adapter.get(qualifier).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith({
-        fields: mockEntries.items[1].fields,
-        id: mockEntries.items[1].sys.id,
-        type: qualifier.type,
-        name: mockEntries.items[1].fields.id,
+        ...mockEntries.items[1].fields,
+        _meta: {
+          id: mockEntries.items[1].sys.id,
+          type: qualifier.type,
+          name: mockEntries.items[1].fields.id,
+        },
       });
     });
   });

@@ -16,10 +16,7 @@ export function strapiFieldNormalizer(
   if (data.type === 'text') {
     return {
       ...data,
-      value: marked.parse(data.value as string, {
-        mangle: false,
-        headerIds: false,
-      }),
+      value: marked.parse(data.value as string),
     };
   }
 
