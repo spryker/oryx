@@ -1,6 +1,6 @@
-export const resource = `<svg width="44" height="14" viewBox="0 0 44 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#FFCC00;">
-    <path  style="fill: var(--oryx-fill, #FFCC00)" fill-rule="evenodd" clip-rule="evenodd" d="M44 10.6996H36.7V9.59959H44V10.6996ZM0 13.5996H7.3V12.4996H0V13.5996ZM36.7 13.6996H44V12.5996H36.7V13.6996ZM0 10.6996H7.3V9.59959H0V10.6996Z" />
-    <g style="fill: var(--oryx-fill, #E30017)">
+export const resource = `<svg width="44" height="14" viewBox="0 0 44 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#FFCC00;padding:0 5px;border-radius:2px;">
+    <path style="fill:#E30017" fill-rule="evenodd" clip-rule="evenodd" d="M44 10.6996H36.7V9.59959H44V10.6996ZM0 13.5996H7.3V12.4996H0V13.5996ZM36.7 13.6996H44V12.5996H36.7V13.6996ZM0 10.6996H7.3V9.59959H0V10.6996Z" />
+    <g style="fill:#E30017">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M9 13.5996H11.2L11.6 13.0996H9.9L10.8 11.7996H12.3L12.7 11.2996H11.2L12 10.0996H13.6L14 9.59959H11.8L9 13.5996Z" />
         <path fill-rule="evenodd" clip-rule="evenodd" d="M11.8008 13.5996H12.5008L15.1008 11.8996V13.5996H15.9008V11.5996L18.8008 9.59959H18.1008L15.8008 11.1996V9.59959H15.0008V11.5996L11.8008 13.5996Z" />
         <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 13.5996H17.1L18.3 11.9996H18.9C19.8171 12.0013 20.6767 11.5528 21.2 10.7996C21.9 9.89959 21.4 9.59959 20.5 9.59959H19.4L16.5 13.5996ZM19.7 10.0996H20.2C20.6 10.0996 21 10.2996 20.6 10.7996C20.2805 11.2007 19.8108 11.4537 19.3 11.4996H18.7L19.7 10.0996Z" />
