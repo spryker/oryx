@@ -1,6 +1,9 @@
 import { IMAGE_FIT, IMAGE_POSITION } from '@spryker-oryx/ui';
 import { css, unsafeCSS } from 'lit';
 
+const objectFit = unsafeCSS(`var(${IMAGE_FIT}, contain)`);
+const objectPosition = unsafeCSS(`var(${IMAGE_POSITION})`);
+
 export const styles = css`
   :host {
     display: contents;
@@ -29,8 +32,8 @@ export const styles = css`
     box-sizing: border-box;
     max-width: var(--image-max-width, 100%);
     max-height: var(--image-max-height, 100%);
-    object-fit: var(${unsafeCSS(IMAGE_FIT)}, contain);
-    object-position: var(${unsafeCSS(IMAGE_POSITION)});
+    object-position: ${objectPosition};
+    object-fit: ${objectFit};
   }
 
   @media (prefers-color-scheme: dark) {

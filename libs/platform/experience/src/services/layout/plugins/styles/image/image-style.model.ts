@@ -2,7 +2,15 @@ export {};
 
 declare global {
   export interface LayoutStylesProperties {
+    /**
+     * Specifies how the element's content object should be fitted to the containing
+     * element's box.
+     */
     imageFit?: ObjectFit;
+    /**
+     * Specifies the alignment of the replaced element's content object within the
+     * element's box.
+     */
     imagePosition?: string;
   }
 }
