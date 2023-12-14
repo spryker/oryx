@@ -64,7 +64,9 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected processData(component: Component | ExperienceComponent): void {
     if (component.meta?.route) {
-      this.storeData('dataRoutes', component.meta.route, component.id);
+      []
+        .concat(component.meta?.route)
+        .forEach((route) => this.storeData('dataRoutes', route, component.id));
     }
 
     this.storeData('dataComponent', component.id, component);
