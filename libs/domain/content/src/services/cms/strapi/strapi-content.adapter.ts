@@ -31,14 +31,10 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
   protected locale = inject(LocaleService);
   protected injector = inject(INJECTOR);
 
-  constructor() {
-    this.defaultType = this.config.reduce(
-      (acc, item) => ({ ...acc, ...item }),
-      {}
-    )?.strapi?.defaultType;
-  }
-
-  protected defaultType?: string;
+  protected defaultType = this.config.reduce(
+    (acc, item) => ({ ...acc, ...item }),
+    {}
+  )?.strapi?.defaultType;
   protected isPreview = false;
 
   /**
