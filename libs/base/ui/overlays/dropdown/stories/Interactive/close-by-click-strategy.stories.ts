@@ -3,8 +3,8 @@ import { wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { TemplateResult, html } from 'lit';
+import { storybookPrefix } from '../../../../.constants';
 import { DropdownComponent } from '../../index';
 
 import { renderOptions } from '../utils';

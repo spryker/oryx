@@ -1,7 +1,7 @@
 import {
   Content,
   ContentAdapter,
-  ContentField,
+  ContentMeta,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
@@ -22,10 +22,8 @@ import { StoryblokCmsModel } from './storyblok.api.model';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
 
 export interface StoryblokEntry {
-  id: string;
   fields: StoryblokCmsModel.StoryContent;
-  type: string;
-  name: string;
+  _meta: ContentMeta;
 }
 
 export class DefaultStoryblokContentAdapter implements ContentAdapter {
@@ -63,9 +61,11 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
         this.parseEntry(
           {
             fields: story.content,
-            type: story.content.component ?? qualifier.type,
-            id: String(story.id),
-            name: story.name,
+            _meta: {
+              type: story.content.component ?? qualifier.type,
+              id: String(story.id),
+              name: story.name,
+            },
           },
           component.schema
         )
@@ -78,6 +78,12 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
 
     if (qualifier.query) endpoint += `&search_term=${qualifier.query}`;
     if (qualifier.type) endpoint += `&by_slugs=${qualifier.type}/*`;
+    if (qualifier.tags)
+      endpoint += `&with_tag=${
+        Array.isArray(qualifier.tags)
+          ? qualifier.tags.join(',')
+          : qualifier.tags
+      }`;
 
     return this.search<StoryblokCmsModel.EntriesResponse>(endpoint).pipe(
       switchMap((stories) => {
@@ -87,9 +93,11 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
         for (const entry of stories.stories) {
           entities.push({
             fields: entry.content,
-            id: String(entry.id),
-            type: entry.content.component,
-            name: entry.name,
+            _meta: {
+              id: String(entry.id),
+              type: entry.content.component,
+              name: entry.name,
+            },
           });
 
           types$[entry.content.component] ??=
@@ -123,13 +131,15 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
     return combineLatest([
       this.parseEntryFields(entry.fields, types),
       of(entry),
-    ]).pipe(map(([fields, data]) => ({ ...data, fields })));
+    ]).pipe(
+      map(([fields, data]) => ({ _meta: data._meta, ...fields } as Content))
+    );
   }
 
   protected parseEntryFields(
     content: StoryblokCmsModel.StoryContent,
     types: Record<string, StoryblokCmsModel.Field>
-  ): Observable<ContentField> {
+  ): Observable<Record<string, unknown>> {
     return combineLatest(
       Object.entries(types).map(([key, data]) => {
         const { type } = data;
@@ -140,10 +150,7 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
       })
     ).pipe(
       map((fields) =>
-        fields.reduce(
-          (acc, { key, value }) => ({ ...acc, [key]: value }),
-          {} as ContentField
-        )
+        fields.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
       )
     );
   }

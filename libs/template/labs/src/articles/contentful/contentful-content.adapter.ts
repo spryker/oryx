@@ -1,6 +1,7 @@
 import {
   Content,
   ContentAdapter,
+  ContentMeta,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
@@ -24,10 +25,8 @@ import {
 } from './normalizers';
 
 export interface ContentfulEntry {
-  id: string;
   fields: ContentfulContentField[];
-  type: string;
-  name: string;
+  _meta: ContentMeta;
 }
 
 export class DefaultContentfulContentAdapter implements ContentAdapter {
@@ -52,8 +51,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   get(qualifier: ContentQualifier): Observable<Content | null> {
     return this.getAll(qualifier).pipe(
       map(
-        (data) =>
-          data?.find((content) => content.fields.id === qualifier.id) ?? null
+        (data) => data?.find((content) => content.id === qualifier.id) ?? null
       )
     );
   }
@@ -78,8 +76,8 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
       map(
         (fields) =>
           ({
-            ...record,
-            fields: fields.reduce(
+            _meta: record._meta,
+            ...fields.reduce(
               (acc, { key, value }) => ({ ...acc, [key]: value }),
               {}
             ),
@@ -136,9 +134,11 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   ): ContentfulEntry {
     return {
       fields: this.parseEntryFields(record.fields, types, locale),
-      id: record.sys.id,
-      type: qualifier.type ?? record.sys.contentType.sys.id,
-      name: record.fields.id,
+      _meta: {
+        id: record.sys.id,
+        type: qualifier.type ?? record.sys.contentType.sys.id,
+        name: record.fields.id,
+      },
     };
   }
 
@@ -156,10 +156,16 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   }
 
   protected getParams(qualifier: Record<string, unknown>): string {
-    return Object.entries(qualifier).reduce((acc, [key, value]) => {
+    return Object.entries(qualifier).reduce((acc, [key, _value]) => {
       if (key === 'id' || key === 'entities') return acc;
 
-      const param = `${key === 'type' ? 'content_type' : key}=${value}`;
+      const mapper = {
+        [key]: key,
+        tags: 'metadata.tags.sys.id[in]',
+        type: 'content_type',
+      };
+      const value = Array.isArray(_value) ? _value.join(',') : _value;
+      const param = `${mapper[key as keyof typeof mapper]}=${value}`;
 
       if (!acc.length) {
         return param;

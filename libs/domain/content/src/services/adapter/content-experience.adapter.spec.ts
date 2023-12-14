@@ -13,6 +13,7 @@ describe('ContentExperienceAdapter', () => {
   let contentService: ContentService;
 
   beforeEach(() => {
+    mockFeatureVersion('1.4');
     const testInjector = createInjector({
       providers: [
         { provide: ContentService, useValue: mockContentService },
@@ -35,7 +36,8 @@ describe('ContentExperienceAdapter', () => {
       { id: 'test-id-2', meta: { route: 'test-route-2' } },
     ];
     const data = components.map((component) => ({
-      fields: { data: JSON.stringify(component), id: component.id },
+      data: JSON.stringify(component),
+      id: component.id,
     }));
 
     mockContentService.getAll.mockReturnValue(of(data));
@@ -55,7 +57,8 @@ describe('ContentExperienceAdapter', () => {
       { id: 'test-id-2', meta: { route: 'test-route-2' } },
     ];
     const data = components.map((component) => ({
-      fields: { data: JSON.stringify(component), id: component.id },
+      data: JSON.stringify(component),
+      id: component.id,
     }));
     mockContentService.getAll.mockReturnValue(of(data));
     const result = await lastValueFrom(adapter.getAll());
@@ -72,7 +75,8 @@ describe('ContentExperienceAdapter', () => {
       { id: 'test-id-2', meta: { route: 'test-route-2' } },
     ];
     const data = components.map((component) => ({
-      fields: { data: JSON.stringify(component), id: component.id },
+      data: JSON.stringify(component),
+      id: component.id,
     }));
     const qualifier = { id: 'test-id-1' };
     mockContentService.getAll.mockReturnValue(of(data));
