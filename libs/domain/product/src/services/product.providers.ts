@@ -1,6 +1,7 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -223,5 +224,7 @@ export const productProviders: Provider[] = [
   ProductListBreadcrumb,
   ProductDetailsBreadcrumb,
   ...categoryQueries,
-  ...provideLitRoutes({ routes: productRoutes }),
+  ...(featureVersion >= '1.4'
+    ? []
+    : provideLitRoutes({ routes: productRoutes })),
 ];
