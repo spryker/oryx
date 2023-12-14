@@ -10,6 +10,7 @@ export * from './properties/sticky/sticky-layout.plugin';
 export * as stickyLayout from './properties/sticky/sticky.styles';
 export * from './styles/canvas/canvas-style.plugin';
 export * from './styles/layout/layout-style.plugin';
+export * from './styles/media/media-style.plugin';
 export * from './styles/spacing/spacing-style.plugin';
 export * from './styles/transform/transform-style.plugin';
 export * from './styles/typography/typography-style.plugin';
