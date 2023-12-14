@@ -14,15 +14,17 @@ module.exports = defineConfig({
   pageLoadTimeout: 180000,
   viewportWidth: 414,
   viewportHeight: 844,
+  redirectionLimit: 100,
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
     baseUrl: 'http://localhost:4200',
     specPattern: './src/integration/*.cy.{js,jsx,ts,tsx}',
     supportFile: './src/support/index.ts',
+    experimentalOriginDependencies: true,
   },
   env: {
-    ORYX_FULFILLMENT_BACKEND_URL: process.env.ORYX_FULFILLMENT_BACKEND_URL,
-    ORYX_FULFILLMENT_CLIENT_ID: process.env.ORYX_FULFILLMENT_CLIENT_ID,
+    glueApiUrl: 'https://api.de.demo-picking-app.cloud.spryker.toys',
+    backofficeUrl: 'https://backoffice.de.demo-picking-app.cloud.spryker.toys',
+    backofficeApiUrl:
+      'https://backend-api.de.demo-picking-app.cloud.spryker.toys',
   },
 });

@@ -5,7 +5,6 @@ import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import {
   ProductCategoryListAttributes,
   ProductCategoryListOptions,
@@ -36,7 +35,6 @@ export class ProductCategoryListComponent
           (category) => category.id,
           (category) => this.renderItem(category.id)
         )}
-        ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
       `,
     });
   }
