@@ -11,5 +11,11 @@ export const contentListSchema: ContentComponentSchema<ContentListComponent> = {
     query: { type: FormFieldType.Text },
     tags: { type: FormFieldType.Text },
     type: { type: FormFieldType.Text },
+    context: { type: FormFieldType.Text },
+    field: { type: FormFieldType.Text },
+    behavior: {
+      type: FormFieldType.Select,
+      options: [{ value: 'type' }, { value: 'query' }, { value: 'tags' }],
+    },
   },
 };

@@ -16,10 +16,7 @@ export function storyblokFieldNormalizer(
   if (data.type === 'markdown') {
     return {
       ...data,
-      value: marked.parse(data.value as string, {
-        mangle: false,
-        headerIds: false,
-      }),
+      value: marked.parse(data.value as string),
     };
   }
 

@@ -11,7 +11,7 @@ vi.mock('marked', () => ({
   },
 }));
 
-describe('contentfulFieldNormalizer', () => {
+describe('storyblokFieldNormalizer', () => {
   afterEach(() => {
     vi.resetAllMocks();
   });

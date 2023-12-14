@@ -1,9 +1,3 @@
-import {
-  Content,
-  ContentAdapter,
-  ContentMeta,
-  ContentQualifier,
-} from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
@@ -17,6 +11,8 @@ import {
   reduce,
   switchMap,
 } from 'rxjs';
+import { Content, ContentMeta, ContentQualifier } from '../../../models';
+import { ContentAdapter } from '../../adapter';
 import { ContentfulCmsModel } from './contentful.api.model';
 import { ContentfulSpace, ContentfulToken } from './contentful.model';
 import {
@@ -30,15 +26,12 @@ export interface ContentfulEntry {
 }
 
 export class DefaultContentfulContentAdapter implements ContentAdapter {
-  constructor(
-    protected token = inject(ContentfulToken),
-    protected space = inject(ContentfulSpace),
-    protected http = inject(HttpService),
-    protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService),
-    protected injector = inject(INJECTOR)
-  ) {}
-
+  protected token = inject(ContentfulToken);
+  protected space = inject(ContentfulSpace);
+  protected http = inject(HttpService);
+  protected transformer = inject(TransformerService);
+  protected locale = inject(LocaleService);
+  protected injector = inject(INJECTOR);
   protected url = `https://cdn.contentful.com/spaces/${this.space}`;
 
   /**

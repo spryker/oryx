@@ -1,29 +1,18 @@
+import { ContentConfig } from '@spryker-oryx/content';
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { SuggestionAdapter } from '@spryker-oryx/search';
-import {
-  ArticleIdContextFallback,
-  ArticleTypeContextFallback,
-} from './article-context';
+import { ArticleQualifierContextFallback } from './article-context';
 import { experienceArticlePages } from './article-page';
 import { articleRoutes } from './article-routes';
-import { ContentSuggestionAdapter } from './content-suggestion.adapter';
-import { contentfulProviders } from './contentful';
 import {
   ArticlePageDescriptionMetaResolver,
   ArticlePageTitleMetaResolver,
 } from './resolvers';
-import { storyblokProviders } from './storyblok';
-import { strapiProviders } from './strapi';
 
 export const articleProviders: Provider[] = [
-  ArticleIdContextFallback,
-  ArticleTypeContextFallback,
-  ...contentfulProviders,
-  ...storyblokProviders,
-  ...strapiProviders,
+  ArticleQualifierContextFallback,
   provideExperienceData(experienceArticlePages),
   ...provideLitRoutes({ routes: articleRoutes }),
   {
@@ -35,7 +24,18 @@ export const articleProviders: Provider[] = [
     useClass: ArticlePageDescriptionMetaResolver,
   },
   {
-    provide: SuggestionAdapter,
-    useClass: ContentSuggestionAdapter,
+    provide: ContentConfig,
+    useValue: {
+      storyblok: {
+        types: ['component', 'faq', 'contents'],
+      },
+      strapi: {
+        types: ['component', 'about', 'contents'],
+        defaultType: 'about',
+      },
+      contentful: {
+        types: ['component', 'article', 'contents'],
+      },
+    },
   },
 ];

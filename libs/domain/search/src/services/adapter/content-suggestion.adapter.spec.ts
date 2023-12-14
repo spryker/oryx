@@ -1,12 +1,9 @@
 import { ContentService } from '@spryker-oryx/content';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  SuggestionAdapter,
-  SuggestionField,
-  SuggestionQualifier,
-} from '@spryker-oryx/search';
 import { of } from 'rxjs';
+import { SuggestionQualifier } from '../../models';
 import { ContentSuggestionAdapter } from './content-suggestion.adapter';
+import { SuggestionAdapter, SuggestionField } from './suggestion.adapter';
 
 const mockContentService = {
   getAll: vi.fn(),
@@ -42,18 +39,18 @@ describe('ContentSuggestionAdapter', () => {
 
     const data = [
       {
-        fields: {
-          id: '1',
-          heading: 'Test Article 1',
+        id: '1',
+        heading: 'Test Article 1',
+        _meta: {
+          type: 'article',
         },
-        type: 'article',
       },
       {
-        fields: {
-          id: '2',
-          heading: 'Test Article 2',
+        id: '2',
+        heading: 'Test Article 2',
+        _meta: {
+          type: 'article',
         },
-        type: 'article',
       },
     ];
     mockContentService.getAll.mockReturnValue(of(data));
@@ -62,14 +59,14 @@ describe('ContentSuggestionAdapter', () => {
     expect(callback).toHaveBeenCalledWith({
       [SuggestionField.Contents]: [
         {
-          name: data[0].fields.heading,
-          id: data[0].fields.id,
-          type: data[0].type,
+          name: data[0].heading,
+          id: data[0].id,
+          type: data[0]._meta.type,
         },
         {
-          name: data[1].fields.heading,
-          id: data[1].fields.id,
-          type: data[1].type,
+          name: data[1].heading,
+          id: data[1].id,
+          type: data[1]._meta.type,
         },
       ],
     });

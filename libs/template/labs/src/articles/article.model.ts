@@ -1,6 +1,8 @@
 declare global {
-  interface DynamicContentFields {
+  interface ContentFields {
     article: undefined;
+    about: undefined;
+    faq: undefined;
   }
 }
 

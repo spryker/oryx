@@ -1,9 +1,3 @@
-import {
-  Content,
-  ContentAdapter,
-  ContentMeta,
-  ContentQualifier,
-} from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
@@ -17,6 +11,8 @@ import {
   reduce,
   switchMap,
 } from 'rxjs';
+import { Content, ContentMeta, ContentQualifier } from '../../../models';
+import { ContentAdapter } from '../../adapter';
 import { StoryblokFieldNormalizer } from './normalizers';
 import { StoryblokCmsModel } from './storyblok.api.model';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
@@ -27,18 +23,15 @@ export interface StoryblokEntry {
 }
 
 export class DefaultStoryblokContentAdapter implements ContentAdapter {
-  constructor(
-    protected token = inject(StoryblokToken),
-    protected space = inject(StoryblokSpace),
-    protected http = inject(HttpService),
-    protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService),
-    protected injector = inject(INJECTOR)
-  ) {}
-
+  protected token = inject(StoryblokToken);
+  protected space = inject(StoryblokSpace);
+  protected http = inject(HttpService);
+  protected transformer = inject(TransformerService);
+  protected locale = inject(LocaleService);
+  protected injector = inject(INJECTOR);
   protected url = `https://mapi.storyblok.com/v1/spaces/${this.space}`;
   protected readonlyUrl = `https://api.storyblok.com/v2/cdn/stories/`;
-
+  protected isPreview = false;
   /**
    * @deprecated Since version 1.1. Will be removed.
    */
@@ -156,10 +149,12 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
   }
 
   protected search<T>(endpoint: string): Observable<T> {
+    const preview = this.isPreview ? 'draft' : 'published';
+
     return combineLatest([this.locale.get(), this.getSpaceData()]).pipe(
       switchMap(([locale, { space }]) =>
         this.http.get<T>(
-          `${this.readonlyUrl}${endpoint}&version=draft&token=${space.first_token}&language=${locale}`
+          `${this.readonlyUrl}${endpoint}&version=${preview}&token=${space.first_token}&language=${locale}`
         )
       )
     );
