@@ -37,6 +37,8 @@ export class DefaultLinkService implements LinkService {
                 (route as PathRouteConfig).path,
                 link.qualifier as GenericQualifier
               )
+            : route.type === RouteType.Page
+            ? `/${encodeURIComponent(link.type)}`
             : (route as PathRouteConfig).path;
           const dynamicParams = link.params
             ? `?${this.getUrlParams(link.params)}`
