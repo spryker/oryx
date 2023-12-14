@@ -13,17 +13,30 @@ export interface ContentQualifier {
   type?: string;
   id?: string;
   query?: string;
+  tags?: string[] | string;
   entities?: ContentEntity[];
 }
 
-export interface ContentField {
-  [key: string]: unknown;
-  id: string;
-}
-
-export interface Content<T = Record<string, unknown>> {
-  fields: T & ContentField;
+export interface ContentMeta {
   id: string;
   type: string;
   name?: string;
 }
+
+/**
+ * @deprecated Since version 1.4. Will be removed.
+ */
+interface DeprecatedContent {
+  fields?: Record<string, unknown>;
+  name?: string;
+  id?: string;
+  type?: string;
+}
+
+export type Content<T = Record<string, unknown>> = {
+  _meta: ContentMeta;
+  heading?: string;
+  id: string;
+  [key: string]: unknown;
+} & T &
+  DeprecatedContent;
