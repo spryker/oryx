@@ -4,6 +4,7 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
   DefaultMerchantAdapter,
   MerchantAdapter,
+  merchantIncludes,
   MerchantNormalizer,
   OfferNormalizer,
   productOfferNormalizer,
@@ -58,4 +59,5 @@ export const merchantProviders: Provider[] = [
   MerchantContextFallback,
   ...provideLitRoutes({ routes: merchantRoutes }),
   ...merchantsEffects,
+  ...merchantIncludes,
 ];

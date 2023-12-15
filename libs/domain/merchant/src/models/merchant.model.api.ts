@@ -50,4 +50,11 @@ export module ApiMerchantModel {
     price: number;
     prices: Price[];
   }
+
+  export const enum Includes {
+    ProductOffers = 'product-offers',
+    ProductOfferPrices = 'product-offer-prices',
+    ProductOfferAvailabilities = 'product-offer-availabilities',
+    Merchants = 'merchants',
+  }
 }
