@@ -94,9 +94,9 @@ export class CartEntryComponent
         ProductContext.SKU,
         featureVersion >= '1.3'
           ? {
-              sku: this.$entry().sku,
+              sku: this.$entry()!.sku,
               ...(featureVersion >= '1.4'
-                ? { offer: this.$entry().productOfferReference ?? undefined }
+                ? { offer: this.$entry()!.productOfferReference ?? undefined }
                 : {}),
             }
           : this.sku
