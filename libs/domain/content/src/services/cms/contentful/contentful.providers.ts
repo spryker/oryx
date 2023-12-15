@@ -1,5 +1,6 @@
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { DefaultContentfulContentAdapter } from './contentful-content.adapter';
 import {
   ContentfulContentAdapter,
@@ -9,6 +10,7 @@ import {
 import { contentfulFieldNormalizers } from './normalizers';
 
 export const contentfulProviders: Provider[] =
+  featureVersion >= '1.4' &&
   import.meta.env?.ORYX_CONTENTFUL_TOKEN &&
   import.meta.env?.ORYX_CONTENTFUL_SPACE
     ? [
