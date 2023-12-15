@@ -9,7 +9,6 @@ import { DefaultMerchantService } from './default-merchant.service';
 import { MerchantService } from './merchant.service';
 
 class MockMerchantAdapter implements Partial<MerchantAdapter> {
-  getKey = (qualifier: MerchantQualifier): string => qualifier.id!;
   get = vi
     .fn()
     .mockImplementation((qualifier: MerchantQualifier) =>
