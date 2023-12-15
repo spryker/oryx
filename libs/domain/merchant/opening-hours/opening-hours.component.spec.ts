@@ -73,7 +73,7 @@ describe('MerchantOpeningHoursComponent', () => {
     });
 
     it('should render a heading', () => {
-      expect(element).toContainElement('oryx-heading');
+      expect(element).toContainElement('h3');
     });
 
     it('should render the schedule', () => {
@@ -93,7 +93,7 @@ describe('MerchantOpeningHoursComponent', () => {
     });
 
     it('should not render a heading', () => {
-      expect(element).not.toContainElement('oryx-heading');
+      expect(element).not.toContainElement('h3');
     });
 
     it('should not render the schedule', () => {
