@@ -115,6 +115,7 @@
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
+      "@spryker-oryx/merchant": ["libs/domain/merchant/src/index.ts"],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"
