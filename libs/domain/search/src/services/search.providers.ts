@@ -2,8 +2,10 @@ import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { ExperienceDataRevealer } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { facetProviders } from '../renderers';
 import {
+  ContentSuggestionAdapter,
   DefaultSuggestionAdapter,
   SuggestionAdapter,
   SuggestionField,
@@ -39,6 +41,10 @@ export const searchProviders: Provider[] = [
     useClass: DefaultSuggestionAdapter,
   },
   {
+    provide: SuggestionAdapter,
+    useClass: ContentSuggestionAdapter,
+  },
+  {
     provide: SuggestionService,
     useClass: DefaultSuggestionService,
   },
@@ -72,7 +78,9 @@ export const searchProviders: Provider[] = [
     },
   },
   CategoryBreadcrumb,
-  ...provideLitRoutes({ routes: categoryRoutes }),
+  ...(featureVersion >= '1.4'
+    ? []
+    : provideLitRoutes({ routes: categoryRoutes })),
 ];
 
 export const searchPreviewProviders: Provider[] = [

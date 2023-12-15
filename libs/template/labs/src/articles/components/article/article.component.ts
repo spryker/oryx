@@ -13,7 +13,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { of } from 'rxjs';
-import { ArticleContext } from '../../article-context';
 import { ArticleContent } from '../../article.model';
 
 @signalAware()
@@ -22,16 +21,14 @@ export class ArticleComponent extends LitElement {
   protected contentService = resolve(ContentService);
   protected contextController = new ContextController(this);
 
-  protected $articleId = signal(
-    this.contextController.get<string>(ArticleContext.Id)
-  );
-  protected $articleType = signal(
+  protected $articleQualifier = signal(
     this.contextController.get<ContentQualifier>(ContentContext.Qualifier)
   );
 
   protected $data = computed(() => {
-    const id = this.$articleId();
-    const type = this.$articleType()?.type;
+    const qualifier = this.$articleQualifier();
+    const id = qualifier?.id;
+    const type = qualifier?.type;
 
     return id && type
       ? this.contentService.get<ArticleContent>({

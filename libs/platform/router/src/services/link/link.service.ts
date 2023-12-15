@@ -1,9 +1,11 @@
-import { RouteType } from '@spryker-oryx/router';
 import { Observable } from 'rxjs';
+import { RouteType } from '../router.service';
 
-export interface LinkOptions {
+export interface LinkOptions<T = unknown> {
   type: RouteType | string;
+  /** @deprecated since 1.4, use qualifier instead. */
   id?: string;
+  qualifier?: T;
   params?: Record<string, string>;
 }
 

@@ -1,4 +1,5 @@
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { DefaultOrderAdapter, OrderAdapter } from './adapter';
 import { orderNormalizer } from './adapter/normalizers';
 import { DefaultOrderService } from './default-order.service';
@@ -19,5 +20,5 @@ export const orderProviders = [
   OrderTotalsProvider,
   ...orderNormalizer,
   OrderContextFallback,
-  ...provideLitRoutes({ routes: orderRoutes }),
+  ...(featureVersion >= '1.4' ? [] : provideLitRoutes({ routes: orderRoutes })),
 ];

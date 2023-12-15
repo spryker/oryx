@@ -1,4 +1,4 @@
-import { ContentAdapter } from '@spryker-oryx/content';
+import { ContentAdapter } from '../../adapter';
 
 export const ContentfulToken = 'oryx.ContentfulToken';
 export const ContentfulSpace = 'oryx.ContentfulSpace';

@@ -42,6 +42,7 @@ export const experienceArticlePages = [
             meta: {
               title: `${tag} List`,
               route: `/${tag}`,
+              routeType: tag,
             },
             components: [
               { ref: 'header' },

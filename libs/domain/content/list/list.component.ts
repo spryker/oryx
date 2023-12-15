@@ -1,11 +1,10 @@
-import { ContentContext, ContentService } from '@spryker-oryx/content';
-import { ContextController } from '@spryker-oryx/core';
+import { ContentService } from '@spryker-oryx/content';
+import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, LayoutMixin } from '@spryker-oryx/experience';
 import {
   computed,
   hydrate,
-  signal,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -21,31 +20,48 @@ export class ContentListComponent extends LayoutMixin(
   @signalProperty({ reflect: true }) type?: string;
   @signalProperty({ reflect: true }) query?: string;
   @signalProperty({ reflect: true }) tags?: string;
+  @signalProperty({ reflect: true }) context?: string;
+  @signalProperty({ reflect: true }) field?: string;
+  @signalProperty({ reflect: true }) behavior?: 'type' | 'query' | 'tags';
 
   protected contentService = resolve(ContentService);
-  protected contextController = new ContextController(this);
+  protected entityService = resolve(EntityService);
 
-  protected $context = signal(
-    this.contextController.get<ContentListOptions>(ContentContext.Qualifier)
-  );
+  protected $contextField = computed(() => {
+    const options = this.$options();
+    const type = this.context ?? options?.context;
+    const field = this.field ?? options?.field;
+
+    return type && field
+      ? this.entityService.getField({ type, field })
+      : of(null);
+  });
 
   protected $data = computed(() => {
-    const _options = this.$options();
-    const options =
-      _options.type || _options.query || _options.tags ? _options : undefined;
-    const context = this.$context();
-    const props =
-      this.type || this.query || this.tags
-        ? { type: this.type, query: this.query, tags: this.tags }
-        : undefined;
-    const data = props ?? options ?? context;
+    const options = this.$options();
+    const context = this.context ?? options?.context;
+    const data = {
+      type: this.type,
+      query: this.query,
+      tags: this.tags,
+      ...options,
+    };
+    const behavior = this.behavior ?? options?.behavior ?? 'tags';
+    const field = this.$contextField();
+    const qualifier = {
+      ...(data.type ? { type: data.type, entities: [data.type] } : {}),
+      ...(data.query ? { query: data.query } : {}),
+      ...(data.tags ? { tags: data.tags } : {}),
+      ...(context && field
+        ? {
+            [behavior]: field,
+            ...(behavior === 'type' ? { entities: [field as string] } : {}),
+          }
+        : {}),
+    };
 
-    return data
-      ? this.contentService.getAll({
-          ...(data.type ? { type: data.type, entities: [data.type] } : {}),
-          ...(data.query ? { query: data.query } : {}),
-          ...(data.tags ? { tags: data.tags } : {}),
-        })
+    return Object.keys(qualifier).length
+      ? this.contentService.getAll(qualifier)
       : of(null);
   });
 
