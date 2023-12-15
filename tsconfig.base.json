@@ -217,7 +217,6 @@
       "@spryker-oryx/product/list": ["libs/domain/product/list/index.ts"],
       "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
       "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
-      "@spryker-oryx/product/offers": ["libs/domain/product/offers/index.ts"],
       "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
       "@spryker-oryx/product/relations": [
         "libs/domain/product/relations/index.ts"
