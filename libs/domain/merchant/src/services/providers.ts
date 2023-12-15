@@ -1,12 +1,15 @@
 import { Provider } from '@spryker-oryx/di';
-import { ProductNormalizer } from '@spryker-oryx/product';
+import {
+  ProductContextSerializerToken,
+  ProductNormalizer,
+} from '@spryker-oryx/product';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
   DefaultMerchantAdapter,
   MerchantAdapter,
-  merchantIncludes,
   MerchantNormalizer,
   OfferNormalizer,
+  merchantIncludes,
   productOfferNormalizer,
 } from './adapter';
 import { merchantNormalizer } from './adapter/normalizers';
@@ -19,6 +22,7 @@ import {
 import { DefaultMerchantService } from './default-merchant.service';
 import { MerchantContextFallback } from './merchant.context';
 import { MerchantService } from './merchant.service';
+import { ProductWithOfferContextSerializer } from './product-context';
 import { merchantRoutes } from './routes';
 import { merchantQueries, merchantsEffects } from './state';
 
@@ -56,6 +60,10 @@ export const merchantProviders: Provider[] = [
     useValue: merchantNormalizer,
   },
   ...merchantQueries,
+  {
+    provide: ProductContextSerializerToken,
+    useClass: ProductWithOfferContextSerializer,
+  },
   MerchantContextFallback,
   ...provideLitRoutes({ routes: merchantRoutes }),
   ...merchantsEffects,

@@ -32,17 +32,15 @@ export class ProductContextSerializer
   implements ContextSerializer<ProductQualifier>
 {
   serialize(value: ProductQualifier): Observable<string> {
-    return value?.sku
-      ? of(`${value.sku}${value.offer ? `,${value.offer}` : ''}`)
-      : of('');
+    return value?.sku ? of(value.sku) : of('');
   }
 
   deserialize(value: string): Observable<ProductQualifier | undefined> {
-    const parts = value.split(',');
-    return of({
-      sku: parts[0],
-      ...(parts[1] ? { offer: parts[1] } : {}),
-    });
+    return value
+      ? of({
+          sku: value,
+        })
+      : of(undefined);
   }
 }
 
