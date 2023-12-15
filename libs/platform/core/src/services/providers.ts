@@ -5,6 +5,7 @@ import {
   DefaultAppInitializerService,
 } from './app-initializer';
 import { ContextService, DefaultContextService } from './context';
+import { DefaultEntityService, EntityService } from './entity';
 import { DefaultErrorService, ErrorService } from './error';
 import {
   DefaultFeatureOptionsService,
@@ -17,6 +18,10 @@ import {
   HttpService,
 } from './http';
 import { DefaultHydrationService, HydrationService } from './hydration';
+import {
+  DefaultJsonApiIncludeService,
+  JsonApiIncludeService,
+} from './includes';
 import {
   DefaultPageMetaResolverService,
   DefaultPageMetaService,
@@ -107,6 +112,14 @@ export const coreProviders: Provider[] = [
   {
     provide: AppInitializer,
     useExisting: PageMetaResolverService,
+  },
+  {
+    provide: JsonApiIncludeService,
+    useClass: DefaultJsonApiIncludeService,
+  },
+  {
+    provide: EntityService,
+    useClass: DefaultEntityService,
   },
   CoreResourceResolver,
 ];

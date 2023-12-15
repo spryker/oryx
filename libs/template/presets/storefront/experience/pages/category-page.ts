@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 export const categoryPage: ExperienceComponent = {
@@ -7,6 +8,7 @@ export const categoryPage: ExperienceComponent = {
   meta: {
     title: 'Category Page',
     route: '/category/:id',
+    routeType: RouteType.Category,
     follow: true,
     index: true,
   },
@@ -57,7 +59,12 @@ export const categoryPage: ExperienceComponent = {
           id: 'category-product-listing',
           name: 'Product listing',
           options: {
-            rules: [{ layout: 'list', gap: '20px' }],
+            rules: [
+              {
+                layout: featureVersion >= '1.4' ? { type: 'list' } : 'flex',
+                gap: '20px',
+              },
+            ],
           },
           components: [
             {

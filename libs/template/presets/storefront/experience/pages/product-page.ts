@@ -1,4 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
@@ -7,6 +9,7 @@ export const productPage: ExperienceComponent = {
   meta: {
     title: 'Product Page',
     route: '/product/:sku',
+    routeType: RouteType.Product,
     description: 'Default Product Page Description',
   },
   components: [
@@ -71,10 +74,10 @@ export const productPage: ExperienceComponent = {
               options: {
                 rules: [
                   {
-                    layout: {
-                      vertical: true,
-                      sticky: true,
-                    },
+                    layout:
+                      featureVersion >= '1.4'
+                        ? { type: 'list', sticky: true }
+                        : { vertical: true, sticky: true },
                     top: '108px',
                     ...(featureVersion >= '1.2'
                       ? {}
@@ -85,7 +88,12 @@ export const productPage: ExperienceComponent = {
               components: [
                 {
                   type: 'oryx-product-title',
-                  options: { tag: 'h1' },
+                  options: {
+                    tag: 'h1',
+                    ...(featureVersion >= '1.4'
+                      ? { tag: HeadingTag.H1, typography: HeadingTag.H3 }
+                      : {}),
+                  },
                 },
                 {
                   type: 'oryx-product-brand',

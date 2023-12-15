@@ -16,13 +16,15 @@ export interface Component<
   id: string;
   name?: string;
   type: string;
+  ref?: string;
   meta?: {
-    route?: string;
+    route?: string | string[];
+    routeType?: string;
     title?: string;
     description?: string;
     follow?: boolean;
     index?: boolean;
-    [key: string]: string | boolean | undefined;
+    [key: string]: string | boolean | unknown | undefined;
   };
   components?: Component[];
   options?: Options;

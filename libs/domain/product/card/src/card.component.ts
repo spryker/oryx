@@ -95,7 +95,8 @@ export class ProductCardComponent extends ProductMixin(
   protected $link = computed(() =>
     this.semanticLinkService.get({
       type: RouteType.Product,
-      id: this.$product()?.sku,
+      id: featureVersion >= '1.4' ? undefined : this.$product()?.sku,
+      qualifier: this.$productQualifier(),
     })
   );
   protected renderListItem(): TemplateResult {
@@ -150,7 +151,10 @@ export class ProductCardComponent extends ProductMixin(
   protected renderTitle(): TemplateResult | void {
     if (this.$options().enableTitle) {
       return html`<oryx-product-title
-        .options="${{ tag: HeadingTag.Caption } as ProductTitleOptions}"
+        .options="${{
+          tag: HeadingTag.Caption,
+          maxLines: featureVersion >= '1.4' ? 2 : undefined,
+        } as ProductTitleOptions}"
       ></oryx-product-title>`;
     }
   }

@@ -1,4 +1,8 @@
-import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import {
+  ExperienceComponent,
+  ObjectFit,
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
@@ -36,12 +40,15 @@ export const homePage: ExperienceComponent = {
             },
           },
           options: {
-            position: 'center 20%',
+            ...(featureVersion >= '1.4' ? {} : { position: 'center 20%' }),
             rules: [
               {
                 width: '100%',
                 height: 'inherit',
                 style: 'position:absolute;left:0',
+                ...(featureVersion >= '1.4'
+                  ? { objectFit: ObjectFit.Cover, objectPosition: 'center 20%' }
+                  : {}),
               },
             ],
           },
@@ -53,9 +60,8 @@ export const homePage: ExperienceComponent = {
               text: `
               <span class="subtitle">CANON EOS R7 System camera</span>
               <h1 style="margin:20px 0;">Discover everything</h1>
-              <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
-              <oryx-button  href="/category/12">Shop now</oryx-button>
-
+              <div class="h3" style="margin-bottom:20px;">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
+              <oryx-button href="/category/12">Shop now</oryx-button>
             `,
             },
           },
@@ -111,7 +117,10 @@ export const homePage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'grid',
+            layout: {
+              type: 'grid',
+              transition: true,
+            },
             padding: '60px 0',
             gap: '30px 0px',
             columnCount: 6,
@@ -145,10 +154,6 @@ export const homePage: ExperienceComponent = {
         brand('Acer'),
       ],
     },
-    featureVersion >= '1.2'
-      ? {
-          ref: 'footer',
-        }
-      : {},
+    featureVersion >= '1.2' ? { ref: 'footer' } : {},
   ],
 };

@@ -1,6 +1,7 @@
-import { PageMetaResolver } from '@spryker-oryx/core';
+import { PageMetaResolver, provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -24,6 +25,7 @@ import {
   mediaNormalizer,
   mediaSetNormalizer,
   priceNormalizer,
+  productIncludes,
   productListNormalizer,
   productNormalizer,
 } from './adapter';
@@ -50,7 +52,7 @@ import {
   categoryListNormalizerFactory,
   categoryNodeNormalizer,
   categoryNormalizerFactory,
-  categoryQuery,
+  categoryQueries,
   categoryTreeNormalizer,
 } from './category';
 import { DefaultProductService } from './default-product.service';
@@ -68,7 +70,12 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
-import { productContextProviders } from './product-context';
+import { productListIncludes } from './list/adapter/product-list-includes';
+import {
+  ProductContext,
+  ProductContextFallback,
+  productContextProviders,
+} from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
@@ -175,6 +182,9 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
+  ...productIncludes,
+  ...productListIncludes,
+  ProductContextFallback,
   ...productContextProviders,
   {
     provide: PageMetaResolver,
@@ -214,6 +224,12 @@ export const productProviders: Provider[] = [
   },
   ProductListBreadcrumb,
   ProductDetailsBreadcrumb,
-  categoryQuery,
-  ...provideLitRoutes({ routes: productRoutes }),
+  ...categoryQueries,
+  ...(featureVersion >= '1.4'
+    ? []
+    : provideLitRoutes({ routes: productRoutes })),
+  provideEntity('product', {
+    service: ProductService,
+    context: ProductContext.SKU,
+  }),
 ];

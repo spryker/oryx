@@ -1,7 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { catchError, combineLatest, map, Observable, of } from 'rxjs';
+import { catchError, merge, Observable, of, scan } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
@@ -21,16 +21,14 @@ export class DefaultContentService implements ContentService {
     loader: (q: ContentQualifier) => {
       const adapters = this.getAdapters(q);
       return adapters.length
-        ? combineLatest(
-            adapters.map((adapter) =>
+        ? merge(
+            ...adapters.map((adapter) =>
               adapter.get(q).pipe(catchError(() => of(null)))
             )
           ).pipe(
-            map((contents) =>
-              contents.reduce(
-                (acc, curr) => (curr ? { ...acc, ...curr } : acc),
-                null
-              )
+            scan<Content | null, Content | null>(
+              (acc, curr) => (curr ? { ...(acc ?? {}), ...curr } : acc),
+              null
             )
           )
         : of(null);
@@ -42,16 +40,14 @@ export class DefaultContentService implements ContentService {
     loader: (q: ContentQualifier) => {
       const adapters = this.getAdapters(q);
       return adapters.length
-        ? combineLatest(
-            adapters.map((adapter) =>
+        ? merge(
+            ...adapters.map((adapter) =>
               adapter.getAll(q).pipe(catchError(() => of(null)))
             )
           ).pipe(
-            map((contents) =>
-              contents.reduce(
-                (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
-                null
-              )
+            scan<Content[] | null, Content[] | null>(
+              (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
+              null
             )
           )
         : of(null);

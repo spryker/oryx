@@ -72,9 +72,15 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     const routePath = route.split('/').filter(Boolean)[0];
 
     return this.experienceData.find((data) => {
-      const metaPath = data.meta?.route?.split('/').filter(Boolean)[0];
+      // support for routes being either a string or an array of strings
+      const routes = Array.isArray(data.meta?.route)
+        ? data.meta?.route
+        : [data.meta?.route];
 
-      return routePath === metaPath;
+      return routes?.some((route) => {
+        const metaPath = route?.split('/').filter(Boolean)[0];
+        return routePath === metaPath;
+      });
     })?.meta;
   }
 }

@@ -1,4 +1,8 @@
-import { css } from 'lit';
+import { OBJECT_FIT, OBJECT_POSITION } from '@spryker-oryx/ui';
+import { css, unsafeCSS } from 'lit';
+
+const objectFit = unsafeCSS(`var(${OBJECT_FIT}, contain)`);
+const objectPosition = unsafeCSS(`var(${OBJECT_POSITION})`);
 
 export const styles = css`
   :host {
@@ -9,7 +13,6 @@ export const styles = css`
   ::slotted(svg) {
     height: 100%;
     width: 100%;
-    fill: currentColor;
   }
 
   [part='fallback'] {
@@ -29,7 +32,7 @@ export const styles = css`
     box-sizing: border-box;
     max-width: var(--image-max-width, 100%);
     max-height: var(--image-max-height, 100%);
-    object-fit: var(--image-fit, contain);
-    object-position: var(--image-position);
+    object-position: ${objectPosition};
+    object-fit: ${objectFit};
   }
 `;

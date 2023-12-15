@@ -5,12 +5,14 @@ import {
   DividerLayoutPluginToken,
   OverlapLayoutPluginToken,
   StickyLayoutPluginToken,
+  TransitionLayoutPluginToken,
 } from './properties';
 import {
   CarouselLayoutPluginToken,
   ColumnLayoutPluginToken,
   FlexLayoutPluginToken,
   GridLayoutPluginToken,
+  ListLayoutPluginToken,
   NavigationLayoutPluginToken,
   SplitLayoutPluginToken,
   TextLayoutPluginToken,
@@ -48,6 +50,13 @@ export const layoutPluginsProviders: Provider[] = [
   {
     provide: LayoutStylesPlugin,
     asyncClass: () =>
+      import('./styles/media/media-style.plugin').then(
+        (m) => m.MediaStylePlugin
+      ),
+  },
+  {
+    provide: LayoutStylesPlugin,
+    asyncClass: () =>
       import('./styles/transform/transform-style.plugin').then(
         (m) => m.TransformStylePlugin
       ),
@@ -56,6 +65,11 @@ export const layoutPluginsProviders: Provider[] = [
     provide: GridLayoutPluginToken,
     asyncClass: () =>
       import('./types/grid/grid-layout.plugin').then((m) => m.GridLayoutPlugin),
+  },
+  {
+    provide: ListLayoutPluginToken,
+    asyncClass: () =>
+      import('./types/list/list.plugin').then((m) => m.ListLayoutPlugin),
   },
   {
     provide: CarouselLayoutPluginToken,
@@ -121,6 +135,13 @@ export const layoutPluginsProviders: Provider[] = [
     asyncClass: () =>
       import('./properties/overlap/overlap-layout.plugin').then(
         (m) => m.OverlapLayoutPlugin
+      ),
+  },
+  {
+    provide: TransitionLayoutPluginToken,
+    asyncClass: () =>
+      import('./properties/transition/transition.plugin').then(
+        (m) => m.TransitionLayoutPlugin
       ),
   },
 ];

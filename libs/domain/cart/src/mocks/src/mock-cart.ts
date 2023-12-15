@@ -4,6 +4,7 @@ import {
   CartDiscount,
   CartEntry,
   CartTotals,
+  Coupon,
   NormalizedTotals,
   PriceMode,
 } from '@spryker-oryx/cart';
@@ -54,6 +55,24 @@ export const mockCartEntry4: CartEntry = {
     sumPrice: 150,
     sumPriceToPayAggregation: 150,
   },
+};
+
+export const mockCartCoupon1: Coupon = {
+  id: '1',
+  code: 'couponCode_1',
+  amount: 100,
+  displayName: 'Coupon 1',
+  expirationDateTime: '2021-12-31T23:59:59+00:00',
+  discountType: 'percentage',
+};
+
+export const mockCartCoupon2: Coupon = {
+  id: '2',
+  code: 'couponCode_2',
+  amount: 200,
+  displayName: 'Coupon 2',
+  expirationDateTime: '2021-12-31T23:59:59+00:00',
+  discountType: 'percentage',
 };
 
 const mockFullCartTotals: CartTotals = {
@@ -125,6 +144,7 @@ export const mockDefaultCart: Cart = {
   totals: mockFullCartTotals,
   priceMode: PriceMode.GrossMode,
   products: [mockCartEntry],
+  coupons: [mockCartCoupon1],
   discounts: mockDiscounts,
 };
 
@@ -177,6 +197,7 @@ export const mockCartWithMultipleProducts: Cart = {
   ...mockBaseCart,
   id: 'multiple',
   products: [mockCartEntry, mockCartEntry2, mockCartEntry3],
+  coupons: [mockCartCoupon1, mockCartCoupon2],
 };
 
 export const mockCartLarge: Cart = {

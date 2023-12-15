@@ -30,6 +30,7 @@
       ],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
+      "@spryker-oryx/cart/coupon": ["libs/domain/cart/coupon/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
       "@spryker-oryx/cart/entry": ["libs/domain/cart/entry/index.ts"],
       "@spryker-oryx/cart/heading": ["libs/domain/cart/heading/index.ts"],
@@ -82,6 +83,7 @@
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
       "@spryker-oryx/content/image": ["libs/domain/content/image/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
+      "@spryker-oryx/content/list": ["libs/domain/content/list/index.ts"],
       "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
       "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
       "@spryker-oryx/core": ["libs/platform/core/src/index.ts"],
@@ -96,6 +98,9 @@
       ],
       "@spryker-oryx/experience/composition": [
         "libs/platform/experience/composition/index.ts"
+      ],
+      "@spryker-oryx/experience/entity-text": [
+        "libs/platform/experience/entity-text/index.ts"
       ],
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"
@@ -260,6 +265,7 @@
         "libs/domain/site/currency-selector/index.ts"
       ],
       "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
+      "@spryker-oryx/site/day": ["libs/domain/site/day/index.ts"],
       "@spryker-oryx/site/locale-selector": [
         "libs/domain/site/locale-selector/index.ts"
       ],
@@ -277,6 +283,7 @@
       "@spryker-oryx/site/price-mode-selector": [
         "libs/domain/site/price-mode-selector/index.ts"
       ],
+      "@spryker-oryx/site/time": ["libs/domain/site/time/index.ts"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"

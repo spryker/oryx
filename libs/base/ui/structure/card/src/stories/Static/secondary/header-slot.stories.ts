@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../../.constants';
 
 export default {
@@ -8,10 +8,7 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
-    <oryx-card type="secondary">
-      <oryx-heading slot="heading">
-        <h5>header</h5>
-      </oryx-heading>
+    <oryx-card type="secondary" heading="header">
       <div>content slot</div>
       <div slot="footer">footer slot</div>
     </oryx-card>

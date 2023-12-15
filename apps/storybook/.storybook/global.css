@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 :root {
+  --_container-width: min(
+    var(--oryx-container-width),
+    calc(100vw - (2 * var(--oryx-container-bleed, 0px)))
+  );
+
   font-family: var(--oryx-typography-body-font);
   font-size: 14px;
   font-weight: var(--oryx-typography-body-weight);

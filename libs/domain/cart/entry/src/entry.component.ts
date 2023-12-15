@@ -7,6 +7,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { ProductPriceOptions } from '@spryker-oryx/product/price';
+import { ProductTitleOptions } from '@spryker-oryx/product/title';
 import { RouteType } from '@spryker-oryx/router';
 import {
   LinkService,
@@ -98,7 +99,8 @@ export class CartEntryComponent
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
       type: RouteType.Product,
-      id: this.$product()?.sku,
+      id: featureVersion >= '1.4' ? undefined : this.$product()?.sku,
+      qualifier: this.$productQualifier() as Record<string, string>,
     });
   });
 
@@ -125,7 +127,10 @@ export class CartEntryComponent
   protected renderDetails(): TemplateResult | void {
     return html`<section class="details">
       <oryx-product-title
-        .options=${{ linkType: LinkType.Neutral }}
+        .options=${{
+          linkType: LinkType.Neutral,
+          maxLines: featureVersion >= '1.4' ? 1 : undefined,
+        } as ProductTitleOptions}
       ></oryx-product-title>
 
       ${when(

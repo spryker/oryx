@@ -1,7 +1,8 @@
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, computed } from '@spryker-oryx/utilities';
+import { I18nMixin, computed, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -31,11 +32,7 @@ export class PickingCustomerNoteModalComponent
       )}
 
       <oryx-modal ?open=${this.open} enableFooter footerButtonFullWidth minimal>
-        <oryx-heading slot="heading">
-          <h2>${this.i18n('picking-lists.customer-note.customer-note')}</h2>
-        </oryx-heading>
-
-        ${this.$cartNote()}
+        ${this.__renderHeading()}${this.$cartNote()}
 
         <oryx-button
           slot="footer"
@@ -47,5 +44,19 @@ export class PickingCustomerNoteModalComponent
         ></oryx-button>
       </oryx-modal>
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderHeading(): TemplateResult {
+    const text = this.i18n('picking-lists.customer-note.customer-note');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading slot="heading" .tag=${HeadingTag.H2}>
+        ${text}
+      </oryx-heading>`;
+    } else {
+      return html` <oryx-heading slot="heading">
+        <h2>${text}</h2>
+      </oryx-heading>`;
+    }
   }
 }
