@@ -2,10 +2,8 @@ import { ContentConfig } from '@spryker-oryx/content';
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { ArticleQualifierContextFallback } from './article-context';
 import { experienceArticlePages } from './article-page';
-import { articleRoutes } from './article-routes';
 import {
   ArticlePageDescriptionMetaResolver,
   ArticlePageTitleMetaResolver,
@@ -14,7 +12,6 @@ import {
 export const articleProviders: Provider[] = [
   ArticleQualifierContextFallback,
   provideExperienceData(experienceArticlePages),
-  ...provideLitRoutes({ routes: articleRoutes }),
   {
     provide: PageMetaResolver,
     useClass: ArticlePageTitleMetaResolver,

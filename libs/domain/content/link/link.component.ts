@@ -34,9 +34,15 @@ export class ContentLinkComponent extends ContentMixin<
   protected contentService = resolve(ContentService);
 
   protected $link = computed(() => {
-    const { url, type, id, params } = this.$options();
+    const { url, type, id, qualifier, params } = this.$options();
     if (url) return of(url);
-    if (type) return this.semanticLinkService.get({ type: type, id, params });
+    if (type)
+      return this.semanticLinkService.get({
+        type: type,
+        id,
+        qualifier,
+        params,
+      });
     return of(null);
   });
 
@@ -71,7 +77,7 @@ export class ContentLinkComponent extends ContentMixin<
   }
 
   protected $text = computed(() => {
-    const { type, id } = this.$options();
+    const { type, id, qualifier } = this.$options();
     const { text } = this.$content() ?? {};
 
     if (text) return text;
@@ -82,9 +88,9 @@ export class ContentLinkComponent extends ContentMixin<
         .pipe(map((category) => category?.name));
     }
 
-    if (type === RouteType.Product && id) {
+    if (type === RouteType.Product && (id || qualifier)) {
       return this.productService
-        .get({ sku: id })
+        .get(qualifier ?? { sku: id })
         .pipe(map((product) => product?.name));
     }
 

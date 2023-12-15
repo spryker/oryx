@@ -9,6 +9,7 @@ export interface ContentLinkOptions {
   url?: string;
   type?: RouteType;
   id?: string;
+  qualifier?: Record<string, string>;
   params?: Record<string, string>;
 
   color?: ColorType;

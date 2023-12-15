@@ -99,7 +99,8 @@ export class CartEntryComponent
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
       type: RouteType.Product,
-      id: this.$product()?.sku,
+      id: featureVersion >= '1.4' ? undefined : this.$product()?.sku,
+      qualifier: this.$productQualifier() as Record<string, string>,
     });
   });
 
