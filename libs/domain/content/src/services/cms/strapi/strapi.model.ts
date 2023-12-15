@@ -1,4 +1,4 @@
-import { ContentAdapter } from '@spryker-oryx/content';
+import { ContentAdapter } from '../../adapter';
 
 export const StrapiToken = 'oryx.StrapiToken';
 export const StrapiApiUrl = 'oryx.StrapiApiUrl';
@@ -13,9 +13,5 @@ declare global {
   interface InjectionTokensContractMap {
     [StrapiToken]: string;
     [StrapiApiUrl]: string;
-  }
-
-  interface DynamicContentFields {
-    about: undefined;
   }
 }

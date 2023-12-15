@@ -1,9 +1,3 @@
-import {
-  Content,
-  ContentAdapter,
-  ContentConfig,
-  ContentQualifier,
-} from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
@@ -16,6 +10,8 @@ import {
   reduce,
   switchMap,
 } from 'rxjs';
+import { Content, ContentQualifier } from '../../../models';
+import { ContentAdapter, ContentConfig } from '../../adapter';
 import { StrapiFieldNormalizer } from './normalizers';
 import { StrapiCmsModel } from './strapi.api.model';
 import { StrapiApiUrl, StrapiToken } from './strapi.model';
@@ -27,22 +23,18 @@ export interface TypeData {
 }
 
 export class DefaultStrapiContentAdapter implements ContentAdapter {
-  constructor(
-    protected token = inject(StrapiToken),
-    protected config = inject(ContentConfig),
-    protected url = inject(StrapiApiUrl),
-    protected http = inject(HttpService),
-    protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService),
-    protected injector = inject(INJECTOR)
-  ) {
-    this.defaultType = config.reduce(
-      (acc, item) => ({ ...acc, ...item }),
-      {}
-    ).strapi.defaultType;
-  }
+  protected token = inject(StrapiToken);
+  protected config = inject(ContentConfig, [] as ContentConfig[]);
+  protected url = inject(StrapiApiUrl);
+  protected http = inject(HttpService);
+  protected transformer = inject(TransformerService);
+  protected locale = inject(LocaleService);
+  protected injector = inject(INJECTOR);
 
-  protected defaultType?: string;
+  protected defaultType = this.config.reduce(
+    (acc, item) => ({ ...acc, ...item }),
+    {}
+  )?.strapi?.defaultType;
   protected isPreview = false;
 
   /**

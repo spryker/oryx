@@ -238,4 +238,44 @@ describe('DefaultLinkService', () => {
       });
     });
   });
+
+  describe('DefaultLinkService with dynamic parameters and qualifier', () => {
+    const callback = vi.fn();
+
+    beforeEach(() => {
+      mockFeatureVersion('1.4');
+      mockRouterService.getRoutes.mockReturnValue(
+        of([
+          {
+            path: '/product/:sku,:offer',
+            type: RouteType.Product,
+          },
+          {
+            path: '/ppp/:sku',
+            type: RouteType.Product,
+          },
+        ])
+      );
+    });
+
+    it('should generate link for /product/:sku,:offer with both sku and offer', () => {
+      const link: LinkOptions = {
+        type: RouteType.Product,
+        qualifier: { sku: 'aa', offer: 'bb' },
+      };
+      service.get(link).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith('/product/aa,bb');
+    });
+
+    it('should match and generate link for /ppp/:sku with only sku', () => {
+      const link: LinkOptions = {
+        type: RouteType.Product,
+        qualifier: { sku: 'cc' },
+      };
+      service.get(link).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith('/ppp/cc');
+    });
+  });
 });

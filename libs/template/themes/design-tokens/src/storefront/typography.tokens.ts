@@ -43,9 +43,9 @@ export const typographySmallTokens: ThemeToken = {
 };
 
 const mediumStrongTypographyToken: ThemeToken =
-  featureVersion <= '1.4'
-    ? { bold: { size: '1rem', weight: '600' } }
-    : { strong: { size: '1rem', weight: '600' } };
+  featureVersion >= '1.4'
+    ? { strong: { size: '1rem', weight: '600' } }
+    : { bold: { size: '1rem', weight: '600' } };
 
 export const typographyMediumAndLargerTokens: ThemeToken = {
   typography: {
@@ -55,7 +55,6 @@ export const typographyMediumAndLargerTokens: ThemeToken = {
     h4: { size: '1.2857142857rem', line: '1.4444444444em', weight: '500' },
     h5: { size: '1.1428571429rem', line: '1.5em', weight: '600' },
     h6: { size: '1.1428571429rem', line: '1.5em', weight: '500' },
-    strong: { size: '1rem', weight: '600' },
     ...mediumStrongTypographyToken,
   },
 };

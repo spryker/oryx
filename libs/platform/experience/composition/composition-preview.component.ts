@@ -2,6 +2,7 @@ import { PreviewExperienceService } from '@spryker-oryx/experience';
 import {
   effect,
   elementEffect,
+  featureVersion,
   observe,
   signal,
   subscribe,
@@ -41,27 +42,75 @@ export class CompositionPreviewComponent extends CompositionComponent {
     }
 
     const focusedNameAttr = 'name';
-    const targetComponent = this.shadowRoot?.querySelector(
+    const targetComponent = this.shadowRoot?.querySelector<HTMLElement>(
       ` [uid='${interaction.component.id}']`
     );
 
-    if (
-      targetComponent &&
-      getComputedStyle(targetComponent).display === 'inline'
-    ) {
-      (targetComponent as HTMLElement)?.style.setProperty('display', 'block');
-    }
+    if (featureVersion >= '1.4') {
+      this.focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
+      this.focusedComponent?.removeAttribute(focusedNameAttr);
+      this.focusedComponent?.style.removeProperty('--ebp-top');
+      this.focusedComponent?.style.removeProperty('--ebp-left');
+      this.focusedComponent?.style.removeProperty('--ebp-width');
+      this.focusedComponent?.style.removeProperty('--ebp-height');
 
-    this.focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
-    this.focusedComponent?.removeAttribute(focusedNameAttr);
-    this.focusedComponent?.style.removeProperty('display');
+      if (targetComponent) {
+        const { left, top, width, height } =
+          targetComponent.getBoundingClientRect();
+        const { scrollTop, scrollLeft } = window.document.documentElement;
 
-    if (interaction.action !== 'mouseout') {
-      targetComponent?.classList.add(EB_PREVIEW_FOCUS_CLASS);
-      targetComponent?.setAttribute(
-        focusedNameAttr,
-        interaction.component.name
-      );
+        const { position } = getComputedStyle(targetComponent);
+
+        // TODO: when display: contents, we need to get the top/left and width/height from the first and last element
+
+        targetComponent.style.setProperty('--ebp-top', `${top + scrollTop}px`);
+        targetComponent.style.setProperty(
+          '--ebp-left',
+          `${left + scrollLeft}px`
+        );
+        targetComponent.style.setProperty('--ebp-width', `${width}px`);
+        targetComponent.style.setProperty('--ebp-height', `${height}px`);
+
+        if (interaction.action !== 'mouseout') {
+          targetComponent?.classList.add(EB_PREVIEW_FOCUS_CLASS);
+          if (position === 'absolute') {
+            targetComponent?.classList.add('ebp-absolute');
+          }
+          if (position === 'sticky') {
+            targetComponent?.classList.add('ebp-sticky');
+            targetComponent.style.setProperty(
+              '--ebp-rel-top',
+              `${top + scrollTop}px`
+            );
+            targetComponent.style.setProperty(
+              '--ebp-rel-left',
+              `${left + scrollLeft}px`
+            );
+          }
+          targetComponent?.setAttribute(
+            focusedNameAttr,
+            interaction.component.name
+          );
+        }
+      }
+    } else {
+      if (
+        targetComponent &&
+        getComputedStyle(targetComponent).display === 'inline'
+      ) {
+        (targetComponent as HTMLElement)?.style.setProperty('display', 'block');
+      }
+      this.focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
+      this.focusedComponent?.removeAttribute(focusedNameAttr);
+      this.focusedComponent?.style.removeProperty('display');
+
+      if (interaction.action !== 'mouseout') {
+        targetComponent?.classList.add(EB_PREVIEW_FOCUS_CLASS);
+        targetComponent?.setAttribute(
+          focusedNameAttr,
+          interaction.component.name
+        );
+      }
     }
   });
 

@@ -27,6 +27,7 @@ import {
   tap,
 } from 'rxjs';
 
+import { featureVersion } from '@spryker-oryx/utilities';
 import { when } from 'lit/directives/when.js';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
@@ -195,13 +196,19 @@ export class LitRouter implements ReactiveController {
         .flat(),
       ...routes,
     ]
-      // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
-      .sort((a) =>
-        (a as PathRouteConfig).path === '/*' ||
-        (a as PathRouteConfig).path === '/:page'
-          ? 1
-          : -1
-      );
+      // moves 404 page and fallback pages (/:page) to the end in order not to break new provided routes
+      .reduce((ordered: RouteConfig[], route: RouteConfig) => {
+        if (
+          (route as PathRouteConfig).path === '/*' ||
+          (route as PathRouteConfig).path === '404' ||
+          (route as PathRouteConfig).path ===
+            '/:page' /** /:page route is deprecated since 1.4 */
+        ) {
+          return [...ordered, route];
+        } else {
+          return [route, ...ordered];
+        }
+      }, [] as RouteConfig[]);
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {
@@ -414,11 +421,21 @@ export class LitRouter implements ReactiveController {
       this.parsePathname(window?.location.pathname, true);
     }
 
-    const path = isRouterPath(this._currentRoute)
-      ? this._currentParams.page
-        ? `/${this._currentParams.page}`
-        : this._currentRoute.path
-      : '/';
+    let path = '';
+
+    if (featureVersion >= '1.4') {
+      path = isRouterPath(this._currentRoute)
+        ? this._currentRoute.path === '/*'
+          ? `/${this._currentParams[0]}`
+          : this._currentRoute.path
+        : '/';
+    } else {
+      path = isRouterPath(this._currentRoute)
+        ? this._currentParams.page
+          ? `/${this._currentParams.page}`
+          : this._currentRoute.path
+        : '/';
+    }
 
     return html`<outlet>
       ${when(
