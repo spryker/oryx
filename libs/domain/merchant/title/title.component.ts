@@ -1,6 +1,5 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { MerchantMixin } from '@spryker-oryx/merchant';
-import { RouteType } from '@spryker-oryx/router';
 import { LitElement, TemplateResult, html } from 'lit';
 import { MerchantLinkOptions } from './title.model';
 
@@ -35,7 +34,7 @@ export class MerchantTitleComponent extends MerchantMixin(
     if (!merchant) return;
 
     const options = {
-      type: RouteType.Merchant,
+      type: 'merchant',
       id: merchant?.id,
     };
 
