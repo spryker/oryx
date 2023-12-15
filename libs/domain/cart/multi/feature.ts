@@ -4,7 +4,7 @@ export * from './components';
 
 export const multiCartComponents = Object.values(components);
 
-export const cartFeature: AppFeature = {
+export const multiCartFeature: AppFeature = {
   defaultOptions: { cart: { multi: true } },
   components: multiCartComponents,
 };
