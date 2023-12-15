@@ -56,8 +56,8 @@ export const userHeaderNavigation = {
     },
     {
       type: 'oryx-auth-logout-link',
-      options: { rules: [{ divider: true }] },
+      options: { icon: IconTypes.Logout },
     },
   ],
-  options: { rules: [{ layout: { navigationType: 'dropdown' } }] },
+  options: { rules: [{ layout: { navigationType: 'dropdown2' } }] },
 };

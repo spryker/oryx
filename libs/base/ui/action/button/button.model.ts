@@ -118,4 +118,6 @@ export const enum ButtonType {
    * A button which is rendered as icon.
    */
   Icon = 'icon',
+
+  Tile = 'tile',
 }

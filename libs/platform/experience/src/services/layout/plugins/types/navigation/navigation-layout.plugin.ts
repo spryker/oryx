@@ -21,10 +21,10 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
           : m.horizontalStyles;
 
         // TODO: only load dropdown styles if one of the components requires dropdown
-        const dropdownStyles = m.dropdownStyles;
+        // const dropdownStyles = data.options.dropdown ? m.dropdownStyles : '';
 
         return {
-          styles: `${m.styles.styles}${direction}${dropdownStyles}`,
+          styles: `${m.styles.styles}${direction}`,
         };
       })
     );
@@ -39,25 +39,32 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    const isDropdown =
-      data.options.navigationType === 'dropdown' ||
-      data.experience?.options?.rules?.find(
-        (rule) => (rule.layout as Layouts)?.navigationType === 'dropdown'
-      );
+    const itemLayout = data.experience?.options?.rules?.[0]?.layout as
+      | LayoutProperty
+      | undefined;
 
-    if (isDropdown) {
-      return of({
-        wrapper: html`<oryx-dropdown vertical-align position="start">
-          <span slot="trigger">${data.template}</span>
-          <oryx-composition
-            .uid=${data.experience?.id}
-            .options=${data.experience?.options}
-            close-popover
-          ></oryx-composition>
-        </oryx-dropdown>`,
-      });
-    }
+    if (!itemLayout?.dropdown) return of();
 
-    return of();
+    return of({
+      inner: html`<oryx-dropdown
+        .position=${itemLayout.dropdownPosition}
+        ?vertical-align=${itemLayout.dropdownVerticalAlign}
+      >
+        <span slot="trigger"> ${data.template}</span>
+        <oryx-composition
+          style="--oryx-popover-border-radius: 0;
+              --oryx-content-link-padding: 0 0 0 12px;
+              --oryx-link-padding: 8px 12px 8px 0;
+              --oryx-link-hover-background: var(--oryx-color-neutral-3);
+              --oryx-link-active-background: var(--oryx-color-primary-5);
+              --oryx-link-hover-shadow: none;
+              --oryx-link-active-shadow: none;
+              --oryx-link-current-shadow: none;
+              --oryx-link-current-color: var(--oryx-color-primary-9);"
+          .uid=${data.experience?.id}
+          close-popover
+        ></oryx-composition>
+      </oryx-dropdown>`,
+    });
   }
 }

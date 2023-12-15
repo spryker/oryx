@@ -48,9 +48,6 @@ export const verticalStyles = css`
 export const dropdownStyles = css`
   :host {
     --oryx-popover-border-radius: 0;
-  }
-
-  oryx-composition {
     --oryx-content-link-padding: 0 0 0 12px;
     --oryx-link-padding: 8px 12px 8px 0;
     --oryx-link-hover-background: var(--oryx-color-neutral-3);

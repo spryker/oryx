@@ -102,6 +102,13 @@ export const layoutPluginsProviders: Provider[] = [
         (m) => m.NavigationLayoutPlugin
       ),
   },
+  // {
+  //   provide: DropdownLayoutPluginToken,
+  //   asyncClass: () =>
+  //     import('./types/dropdown/dropdown.plugin').then(
+  //       (m) => m.DropdownLayoutPlugin
+  //     ),
+  // },
   {
     provide: StickyLayoutPluginToken,
     asyncClass: () =>

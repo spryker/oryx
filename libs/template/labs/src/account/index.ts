@@ -3,10 +3,7 @@ import { provideExperienceData } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
-import {
-  accountNavigation,
-  userHeaderNavigation,
-} from './account-navigation.ref.js';
+import { accountNavigation } from './account-navigation.ref.js';
 import { accountRoutes } from './account-routes';
 import { accountPages } from './account.page';
 
@@ -21,12 +18,109 @@ export const accountFeature: AppFeature = {
     provideExperienceData([
       accountNavigation,
       ...accountPages,
+
       {
-        merge: {
-          selector: 'header-actions',
-        },
+        merge: { selector: 'header-actions' },
         components: [
-          userHeaderNavigation,
+          {
+            type: 'oryx-user-navigation-control',
+            options: {
+              rules: [
+                {
+                  layout: {
+                    dropdown: true,
+                    dropdownPosition: 'start',
+                    dropdownVerticalAlign: true,
+                  },
+                },
+              ],
+            },
+            components: [
+              {
+                type: 'oryx-content-link',
+                options: {
+                  type: 'account-overview',
+                  id: 'overview',
+                  icon: IconTypes.User,
+                },
+                content: { data: { text: 'Overview' } },
+              },
+              {
+                type: 'oryx-content-link',
+                options: {
+                  type: 'account-profile',
+                  id: 'profile',
+                  icon: 'badge',
+                },
+                content: { data: { text: 'Profile' } },
+              },
+              {
+                type: 'oryx-content-link',
+                options: {
+                  type: 'account-orders',
+                  id: 'orders',
+                  icon: IconTypes.History,
+                },
+                content: { data: { text: 'Order History' } },
+              },
+              {
+                type: 'oryx-auth-logout-link',
+                options: { icon: IconTypes.Logout },
+              },
+            ],
+          },
+          // {
+          //   type: 'oryx-composition',
+
+          //   options: {
+          //     rules: [
+          //       {
+          //         layout: {
+          //           // type: 'navigation',
+          //           // navigationType: 'dropdown',
+          //           type: 'navigation',
+          //           dropdown: true,
+          //           dropdownTrigger: 'oryx-user-navigation-control',
+          //           //           // dropdownPosition: 'start',
+          //           //           // dropdownVerticalAlign: true,
+          //         },
+          //       },
+          //     ],
+          //   },
+          //   components: [
+          //     {
+          //       type: 'oryx-content-link',
+          //       options: {
+          //         type: 'account-overview',
+          //         id: 'overview',
+          //         icon: IconTypes.User,
+          //       },
+          //       content: { data: { text: 'Overview' } },
+          //     },
+          //     {
+          //       type: 'oryx-content-link',
+          //       options: {
+          //         type: 'account-profile',
+          //         id: 'profile',
+          //         icon: 'badge',
+          //       },
+          //       content: { data: { text: 'Profile' } },
+          //     },
+          //     {
+          //       type: 'oryx-content-link',
+          //       options: {
+          //         type: 'account-orders',
+          //         id: 'orders',
+          //         icon: IconTypes.History,
+          //       },
+          //       content: { data: { text: 'Order History' } },
+          //     },
+          //     {
+          //       type: 'oryx-auth-logout-link',
+          //       options: { icon: IconTypes.Logout },
+          //     },
+          //   ],
+          // },
           {
             type: 'oryx-site-navigation-item',
             options: {
@@ -39,12 +133,12 @@ export const accountFeature: AppFeature = {
         ],
         options: {
           rules: [
-            { colSpan: 3, layout: 'navigation', justify: 'end' },
             {
-              query: { breakpoint: Size.Md },
               colSpan: 2,
+              layout: 'navigation',
+              justify: 'end',
             },
-            { query: { breakpoint: Size.Sm }, colSpan: 2 },
+            { query: { breakpoint: Size.Lg }, colSpan: 3 },
           ],
         },
       },

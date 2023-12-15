@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { HeadingTag, headingUtil } from '../../structure/heading/src';
 
 const baseStyles = css`
   :host {
@@ -259,9 +260,33 @@ const loadingStyles = css`
   }
 `;
 
+const tileStyles = css`
+  :host([type='tile']) {
+    color: var(--oryx-button-color, var(--_text-color));
+  }
+
+  :host([type='tile']) :is(a, button),
+  :host([type='tile']) ::slotted(:is(a, button)) {
+    --oryx-icon-size: 32px;
+
+    ${headingUtil(HeadingTag.Subtitle)}
+
+    text-transform: uppercase;
+    height: 68px;
+    width: 62px;
+    /* max-width: 62px; */
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+    padding: 12px 8px;
+  }
+`;
+
 export const buttonStyles = css`
   ${baseStyles}
   ${sizeStyles}
   ${colorStyles}
   ${loadingStyles}
+  ${tileStyles}
 `;

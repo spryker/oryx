@@ -5,6 +5,7 @@ export const storefrontLinkStyles = css`
     position: relative;
     display: inline-flex;
     width: var(--oryx-link-width);
+    cursor: pointer;
   }
 
   :host([icon]) {

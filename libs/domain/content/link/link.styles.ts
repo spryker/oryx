@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const contentLinkStyles = css`
   :host {
+    display: block;
     padding: var(--oryx-content-link-padding);
   }
 
