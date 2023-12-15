@@ -48,7 +48,7 @@ export class CompositionPreviewComponent extends CompositionComponent {
 
     if (featureVersion >= '1.4') {
       if (targetComponent) {
-        // this.setOutlineRect(targetComponent, interaction);
+        this.setOutlineRect(targetComponent, interaction);
       }
     } else {
       if (
