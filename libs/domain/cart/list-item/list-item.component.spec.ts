@@ -108,26 +108,27 @@ describe('CartListItemComponent', () => {
     expect(element).toContainElement(`oryx-cart-entries[cartId="${cartId}"]`);
   });
 
-  it('should render make default button', () => {
-    expect(element).toContainElement(
-      `.meta > oryx-button[type="outline"][size="${Size.Md}"]`
-    );
-  });
+  //TODO: uncomment when FRW-6905 will be resolved
+  // it('should render make default button', () => {
+  //   expect(element).toContainElement(
+  //     `.meta > oryx-button[type="outline"][size="${Size.Md}"]`
+  //   );
+  // });
 
-  describe('when make default button is clicked', () => {
-    beforeEach(() => {
-      element.renderRoot
-        .querySelector('oryx-button')
-        ?.dispatchEvent(new Event('click'));
-    });
+  // describe('when make default button is clicked', () => {
+  //   beforeEach(() => {
+  //     element.renderRoot
+  //       .querySelector('oryx-button')
+  //       ?.dispatchEvent(new Event('click'));
+  //   });
 
-    it('should call updateCart method of the service with given cartId', () => {
-      expect(service.updateCart).toHaveBeenCalledWith({
-        cartId,
-        isDefault: true,
-      });
-    });
-  });
+  //   it('should call updateCart method of the service with given cartId', () => {
+  //     expect(service.updateCart).toHaveBeenCalledWith({
+  //       cartId,
+  //       isDefault: true,
+  //     });
+  //   });
+  // });
 
   describe('when cart is default', () => {
     beforeEach(async () => {

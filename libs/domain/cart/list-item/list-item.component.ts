@@ -95,15 +95,16 @@ export class CartListItemComponent
             return html`<oryx-button type="outline" size=${size} href=${link}>
               ${this.i18n('carts.open-cart')}
             </oryx-button> `;
-          },
-          () =>
-            html`<oryx-button
-              type="outline"
-              size=${size}
-              @click=${this.setDefault}
-            >
-              ${this.i18n('carts.make-default')}
-            </oryx-button>`
+          }
+          //TODO: uncomment when FRW-6905 will be resolved
+          // () =>
+          //   html`<oryx-button
+          //     type="outline"
+          //     size=${size}
+          //     @click=${this.setDefault}
+          //   >
+          //     ${this.i18n('carts.make-default')}
+          //   </oryx-button>`
         )}
 
         <div class="actions">
