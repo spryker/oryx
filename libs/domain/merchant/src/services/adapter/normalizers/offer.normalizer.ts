@@ -1,11 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
-import {
-  AvailabilityNormalizer,
-  PriceNormalizer,
-  ProductOffer,
-} from '@spryker-oryx/product';
+import { AvailabilityNormalizer, PriceNormalizer } from '@spryker-oryx/product';
 import { Observable, map } from 'rxjs';
-import { ApiMerchantModel } from '../../../models';
+import { ApiMerchantModel, ProductOffer } from '../../../models';
 import { MerchantNormalizer } from '../merchant.adapter';
 
 export const OfferNormalizer = 'oryx.OfferNormalizer*';

@@ -16,7 +16,6 @@ import {
 import { DefaultMerchantService } from './default-merchant.service';
 import { MerchantContextFallback } from './merchant.context';
 import { MerchantService } from './merchant.service';
-import { merchantProductProviders } from './product/providers';
 import { merchantQueries, merchantsEffects } from './state';
 
 export const merchantProviders: Provider[] = [
@@ -52,5 +51,4 @@ export const merchantProviders: Provider[] = [
   MerchantContextFallback,
   ...merchantsEffects,
   ...merchantIncludes,
-  ...merchantProductProviders,
 ];

@@ -41,18 +41,6 @@ export interface Product {
   mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
-  offers?: ProductOffer[];
-  // TODO: Fix by augmentation
-  merchantId?: string;
-}
-
-export interface ProductOffer {
-  id: string;
-  isDefault?: boolean;
-  price: ProductPrices;
-  // TODO: Fix by augmentation
-  merchant: any;
-  availability?: ProductAvailability;
 }
 
 export interface ProductLabel {
