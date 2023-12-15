@@ -12,7 +12,7 @@ const features = [
     ? b2bStorefrontFeatures
     : storefrontFeatures),
   // TODO: use feature flag
-  merchantFeature,
+  ...(env.ORYX_MERCHANT ? [merchantFeature] : []),
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 
