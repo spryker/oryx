@@ -73,7 +73,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {
     const { cart, products, productIndex } = this.getInfo(
       data.cartId!,
-      data.sku
+      data.sku!
     );
 
     if (products.length && productIndex >= 0) {
@@ -84,7 +84,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
         ...productFromCart,
         quantity,
         calculations: this.createCalculations(
-          data.sku,
+          data.sku!,
           quantity,
           this.selectedProductOptions
         ),
@@ -92,12 +92,12 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     } else {
       products.push({
         ...mockCartEntry,
-        sku: data.sku,
-        groupKey: data.sku,
+        sku: data.sku!,
+        groupKey: data.sku!,
         quantity: data.quantity ?? 1,
         selectedProductOptions: this.selectedProductOptions,
         calculations: this.createCalculations(
-          data.sku,
+          data.sku!,
           data.quantity ?? 1,
           this.selectedProductOptions
         ),

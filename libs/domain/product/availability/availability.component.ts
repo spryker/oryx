@@ -2,7 +2,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
   CartItemAvailabilityOptions,
