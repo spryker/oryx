@@ -99,13 +99,6 @@ export const productPage: ExperienceComponent = {
                   type: 'oryx-product-brand',
                   options: { rules: [{ width: '70px' }] },
                 },
-                {
-                  type: 'oryx-merchant-title',
-                  options: {
-                    rules: [{ typography: HeadingTag.Small }],
-                    prefix: 'Sold by:',
-                  },
-                },
                 { type: 'oryx-product-average-rating' },
                 { type: 'oryx-product-id' },
                 {
@@ -114,7 +107,6 @@ export const productPage: ExperienceComponent = {
                 },
                 { type: 'oryx-cart-add' },
                 { type: 'oryx-product-availability' },
-                { type: 'oryx-merchant-offers' },
               ],
             },
           ],

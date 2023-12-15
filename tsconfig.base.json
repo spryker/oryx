@@ -116,22 +116,6 @@
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
       "@spryker-oryx/merchant": ["libs/domain/merchant/src/index.ts"],
-      "@spryker-oryx/merchant/banner": ["libs/domain/merchant/banner/index.ts"],
-      "@spryker-oryx/merchant/contact": [
-        "libs/domain/merchant/contact/index.ts"
-      ],
-      "@spryker-oryx/merchant/description": [
-        "libs/domain/merchant/description/index.ts"
-      ],
-      "@spryker-oryx/merchant/legal": ["libs/domain/merchant/legal/index.ts"],
-      "@spryker-oryx/merchant/logo": ["libs/domain/merchant/logo/index.ts"],
-      "@spryker-oryx/merchant/opening-hours": [
-        "libs/domain/merchant/opening-hours/index.ts"
-      ],
-      "@spryker-oryx/merchant/sold-by": [
-        "libs/domain/merchant/sold-by/index.ts"
-      ],
-      "@spryker-oryx/merchant/title": ["libs/domain/merchant/title/index.ts"],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"
@@ -233,7 +217,6 @@
       "@spryker-oryx/product/list": ["libs/domain/product/list/index.ts"],
       "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
       "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
-      "@spryker-oryx/product/offers": ["libs/domain/product/offers/index.ts"],
       "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
       "@spryker-oryx/product/relations": [
         "libs/domain/product/relations/index.ts"
