@@ -1,11 +1,10 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { MerchantMixin, MerchantScheduleSlot } from '@spryker-oryx/merchant';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { openingHoursStyles } from './opening-hours.styles';
 
-export class MerchantOpeningsHoursComponent extends MerchantMixin(
+export class MerchantOpeningHoursComponent extends MerchantMixin(
   ContentMixin(LitElement)
 ) {
   static styles = openingHoursStyles;
@@ -16,9 +15,7 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
     if (!merchant?.schedule?.opened) return;
 
     return html`
-      <oryx-heading .tag=${HeadingTag.H3}>
-        ${this.i18n('merchant.openings-hours')}
-      </oryx-heading>
+      <h3>${this.i18n('merchant.openings-hours')}</h3>
 
       <ul>
         ${repeat(
@@ -40,12 +37,11 @@ export class MerchantOpeningsHoursComponent extends MerchantMixin(
 
       return html` ${repeat(
         slot.times,
-        (time) =>
-          html` <div>
-            <oryx-site-time .stamp=${this.getDate(time.from)}></oryx-site-time>
-            -
-            <oryx-site-time .stamp=${this.getDate(time.to)}></oryx-site-time>
-          </div>`
+        (time) => html` <div>
+          <oryx-site-time .stamp=${this.getDate(time.from)}></oryx-site-time>
+          -
+          <oryx-site-time .stamp=${this.getDate(time.to)}></oryx-site-time>
+        </div>`
       )}`;
     }
   }

@@ -51,15 +51,15 @@ export const MerchantMixin = <
         : undefined;
     });
 
-    protected $merchantMinimal = computed(() => {
-      const id = (this.merchant as string) ?? this.$merchantContext();
-      return id
-        ? this[MerchantMixinInternals].merchantService?.get({
-            id,
-            scope: 'minimal',
-          })
-        : undefined;
-    });
+    // protected $merchantMinimal = computed(() => {
+    //   const id = (this.merchant as string) ?? this.$merchantContext();
+    //   return id
+    //     ? this[MerchantMixinInternals].merchantService?.get({
+    //         id,
+    //         scope: 'minimal',
+    //       })
+    //     : undefined;
+    // });
   }
   return MerchantMixinClass as unknown as Type<MerchantMixinInterface> & T;
 };

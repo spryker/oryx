@@ -1,4 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
+import { provideExperienceData } from '@spryker-oryx/experience';
+import { merchantPage } from '../presets';
 import {
   DefaultMerchantAdapter,
   MerchantAdapter,
@@ -51,4 +53,5 @@ export const merchantProviders: Provider[] = [
   MerchantContextFallback,
   ...merchantsEffects,
   ...merchantIncludes,
+  provideExperienceData(merchantPage),
 ];

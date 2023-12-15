@@ -5,8 +5,8 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { MerchantService } from '../src';
-import { MerchantOpeningsHoursComponent } from './opening-hours.component';
-import { merchantOpeningsHoursComponent } from './opening-hours.def';
+import { MerchantOpeningHoursComponent } from './opening-hours.component';
+import { merchantOpeningHoursComponent } from './opening-hours.def';
 
 class MockMerchantService implements Partial<MerchantService> {
   get = vi.fn();
@@ -30,12 +30,12 @@ const noTimeSlotMocks = {
   times: [],
 };
 
-describe('MerchantOpeningsHoursComponent', () => {
-  let element: MerchantOpeningsHoursComponent;
+describe('MerchantOpeningHoursComponent', () => {
+  let element: MerchantOpeningHoursComponent;
   let merchantService: MockMerchantService;
 
   beforeAll(async () => {
-    await useComponent(merchantOpeningsHoursComponent);
+    await useComponent(merchantOpeningHoursComponent);
   });
 
   beforeEach(async () => {
@@ -66,9 +66,9 @@ describe('MerchantOpeningsHoursComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-openings-hours
+        html`<oryx-merchant-opening-hours
           merchant="123"
-        ></oryx-merchant-openings-hours>`
+        ></oryx-merchant-opening-hours>`
       );
     });
 
@@ -86,9 +86,9 @@ describe('MerchantOpeningsHoursComponent', () => {
       merchantService.get.mockReturnValue(of({ id: '123' }));
 
       element = await fixture(
-        html`<oryx-merchant-openings-hours
+        html`<oryx-merchant-opening-hours
           merchant="123"
-        ></oryx-merchant-openings-hours>`
+        ></oryx-merchant-opening-hours>`
       );
     });
 
@@ -108,9 +108,9 @@ describe('MerchantOpeningsHoursComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-openings-hours
+        html`<oryx-merchant-opening-hours
           merchant="123"
-        ></oryx-merchant-openings-hours>`
+        ></oryx-merchant-opening-hours>`
       );
     });
 
@@ -130,9 +130,9 @@ describe('MerchantOpeningsHoursComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-openings-hours
+        html`<oryx-merchant-opening-hours
           merchant="123"
-        ></oryx-merchant-openings-hours>`
+        ></oryx-merchant-opening-hours>`
       );
     });
 
@@ -149,9 +149,9 @@ describe('MerchantOpeningsHoursComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-openings-hours
+        html`<oryx-merchant-opening-hours
           merchant="123"
-        ></oryx-merchant-openings-hours>`
+        ></oryx-merchant-opening-hours>`
       );
     });
 
@@ -168,9 +168,9 @@ describe('MerchantOpeningsHoursComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-openings-hours
+        html`<oryx-merchant-opening-hours
           merchant="123"
-        ></oryx-merchant-openings-hours>`
+        ></oryx-merchant-opening-hours>`
       );
     });
 
