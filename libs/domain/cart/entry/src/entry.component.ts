@@ -148,10 +148,6 @@ export class CartEntryComponent
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
       )}
-      <oryx-merchant-title
-        .merchant=${this.$entry()?.merchantReference}
-        .options=${{ prefix: this.i18n('cart.entry.sold-by') }}
-      ></oryx-merchant-title>
     </section>`;
   }
 

@@ -4,7 +4,6 @@ export * from './checkout-page';
 export * from './contact-page';
 export * from './home-page';
 export * from './login-page';
-export * from './merchant-page';
 export * from './my-account';
 export * from './order-confirmation-page';
 export * from './product-page';
