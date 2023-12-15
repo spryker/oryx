@@ -1,7 +1,6 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import {
   AvailabilityNormalizer,
-  DeserializedProduct,
   PriceNormalizer,
   Product,
   ProductOffer,
@@ -9,6 +8,7 @@ import {
 import { Observable, combineLatest, map, of } from 'rxjs';
 import { ApiMerchantModel } from '../../../models';
 import { MerchantNormalizer } from '../merchant.adapter';
+import { DeserializedMerchantProduct } from './models';
 
 export const OfferNormalizer = 'oryx.OfferNormalizer*';
 
@@ -49,7 +49,7 @@ export function offerMerchantNormalizer(
 }
 
 export function productOfferNormalizer(
-  data: DeserializedProduct, // source
+  data: DeserializedMerchantProduct, // source
   transformer: TransformerService
 ): Observable<Partial<Product>> {
   const offers = data.productOffers as any as ApiMerchantModel.ProductOffer[];

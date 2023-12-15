@@ -24,7 +24,6 @@ export module ApiProductModel {
 
   export interface Abstract extends Attributes {
     attributeMap?: string[][];
-    // TODO: Fix by augmentation
     merchantReference?: string;
     superAttributes?: string[];
   }

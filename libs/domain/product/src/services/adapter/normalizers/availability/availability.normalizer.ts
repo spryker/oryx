@@ -12,6 +12,7 @@ export function availabilityNormalizer(
   }
 
   const { id, ...availability } = data;
+
   return {
     ...availability,
     quantity: Number(availability.quantity),

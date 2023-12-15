@@ -41,7 +41,7 @@ export interface Product {
   mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
-  offers: ProductOffer[];
+  offers?: ProductOffer[];
   // TODO: Fix by augmentation
   merchantId?: string;
 }

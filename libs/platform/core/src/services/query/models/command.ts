@@ -48,21 +48,6 @@ export interface CommandOptions<
   onFinish?: QueryEventHandler<ResultType, Qualifier>[];
   onError?: QueryEventHandler<ResultType, Qualifier>[];
   onSuccess?: QueryEventHandler<ResultType, Qualifier>[];
-
-  /**
-   * TODO: add support
-   * Automatically completes a qualifier if some of its fields are missing.
-   * This is especially useful when only a subset of the qualifier is provided and
-   * the rest can be inferred or fetched from elsewhere.
-   */
-  // qualifierEnhancers?: QueryQualifierEnhancer<Qualifier>[];
-
-  /**
-   * TODO: add support
-   * Transforms the data returned by the loader based on the qualifier or the model itself.
-   * Useful for applying context-specific modifications to the model before it's consumed.
-   */
-  // modifiers?: QueryTransformer<ResultType, Qualifier>[];
 }
 
 export interface Command<
