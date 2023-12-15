@@ -3,7 +3,5 @@ export * from '../coupon/coupon.def';
 export * from '../entries/src/entries.def';
 export * from '../entry/src/entry.def';
 export * from '../heading/heading.def';
-export * from '../list-item/list-item.def';
-export * from '../list/list.def';
 export * from '../quantity-input/src/quantity-input.def';
 export * from '../totals/src/totals.def';
