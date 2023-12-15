@@ -20,6 +20,7 @@ import {
   DefaultExperienceDataService,
   ExperienceDataService,
 } from './experience-data';
+import { experienceRoutesProvider } from './experience-data/experience-routes-provider';
 import { ContentBackendUrl } from './experience-tokens';
 import {
   DefaultLayoutBuilder,
@@ -80,6 +81,7 @@ export const experienceProviders: Provider[] = [
     useClass: DefaultExperienceDataService,
   },
   ...layoutProviders,
+  experienceRoutesProvider,
 ];
 
 export const experiencePreviewProviders: Provider[] = [
@@ -115,4 +117,5 @@ export const experiencePreviewProviders: Provider[] = [
     provide: ExperienceDataRevealer,
     useClass: LayoutExperienceDataRevealer,
   },
+  experienceRoutesProvider,
 ];

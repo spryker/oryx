@@ -11,7 +11,6 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
-import { ArticleContext } from '../article-context';
 import { ArticleContent } from '../article.model';
 
 export class ArticlePageTitleMetaResolver implements PageMetaResolver {
@@ -23,7 +22,6 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(null, ArticleContext.Id),
       this.context.get(null, ContentContext.Qualifier),
       combineLatest([
         this.context.get(null, ContentContext.Qualifier),
@@ -33,23 +31,25 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   }
 
   resolve(): Observable<ElementResolver> {
-    return combineLatest([
-      this.context.get<string>(null, ArticleContext.Id),
-      this.context.get<ContentQualifier>(null, ContentContext.Qualifier),
-    ]).pipe(
-      switchMap(([id, content]) => {
-        const type = content?.type;
+    return this.context
+      .get<ContentQualifier>(null, ContentContext.Qualifier)
+      .pipe(
+        switchMap((qualifier) => {
+          const type = qualifier?.type;
+          const id = qualifier?.id;
 
-        if (!id || !type) return of({});
+          if (!id || !type) return of({});
 
-        return this.content
-          .get<ArticleContent>({
-            id,
-            type,
-            entities: [type],
-          })
-          .pipe(map((data) => (data?.heading ? { title: data.heading } : {})));
-      })
-    );
+          return this.content
+            .get<ArticleContent>({
+              id,
+              type,
+              entities: [type],
+            })
+            .pipe(
+              map((data) => (data?.heading ? { title: data.heading } : {}))
+            );
+        })
+      );
   }
 }

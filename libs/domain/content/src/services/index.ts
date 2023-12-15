@@ -1,4 +1,5 @@
 export * from './adapter';
+export * from './cms';
 export * from './content-context';
 export * from './content.providers';
 export * from './content.service';
