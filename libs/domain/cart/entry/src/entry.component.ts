@@ -89,14 +89,14 @@ export class CartEntryComponent
 
   @elementEffect()
   protected setProductContext = (): void => {
-    if (this.$entry()?.sku) {
+    if (this.$entry()?.sku ?? this.sku) {
       this.contextController.provide(
         ProductContext.SKU,
         featureVersion >= '1.3'
           ? {
-              sku: this.$entry()!.sku,
+              sku: this.$entry()?.sku ?? this.sku,
               ...(featureVersion >= '1.4'
-                ? { offer: this.$entry()!.productOfferReference ?? undefined }
+                ? { offer: this.$entry()?.productOfferReference ?? undefined }
                 : {}),
             }
           : this.sku
@@ -262,7 +262,7 @@ export class CartEntryComponent
       @oryx.close=${() => this.revert()}
     >
       ${this.i18n(`cart.entry.confirm-remove-<sku>`, {
-        sku: this.$entry()?.sku,
+        sku: this.$entry()?.sku ?? this.sku,
       })}
 
       <oryx-button
@@ -304,7 +304,10 @@ export class CartEntryComponent
     this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
       next: () => {
         if (this.$options().notifyOnUpdate) {
-          this.notify('cart.cart-entry-updated', this.$entry()?.sku);
+          this.notify(
+            'cart.cart-entry-updated',
+            this.$entry()?.sku ?? this.sku
+          );
         }
       },
       error: (e: Error) => this.revert(e),
@@ -320,7 +323,7 @@ export class CartEntryComponent
     this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
       next: () => {
         if (this.$options().notifyOnRemove) {
-          this.notify('cart.confirm-removed', this.$entry()?.sku);
+          this.notify('cart.confirm-removed', this.$entry()?.sku ?? this.sku);
         }
       },
       error: (e: Error) => this.revert(e),

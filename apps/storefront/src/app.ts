@@ -11,7 +11,6 @@ const features = [
   ...(env.ORYX_PRESET && env.ORYX_PRESET === 'b2b'
     ? b2bStorefrontFeatures
     : storefrontFeatures),
-  // TODO: use feature flag
   ...(env.ORYX_MERCHANT ? [merchantFeature] : []),
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
