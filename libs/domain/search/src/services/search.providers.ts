@@ -40,10 +40,12 @@ export const searchProviders: Provider[] = [
     provide: SuggestionAdapter,
     useClass: DefaultSuggestionAdapter,
   },
-  {
-    provide: SuggestionAdapter,
-    useClass: ContentSuggestionAdapter,
-  },
+  featureVersion >= '1.4'
+    ? {
+        provide: SuggestionAdapter,
+        useClass: ContentSuggestionAdapter,
+      }
+    : ({} as Provider),
   {
     provide: SuggestionService,
     useClass: DefaultSuggestionService,
