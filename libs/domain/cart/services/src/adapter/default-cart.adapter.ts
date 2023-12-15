@@ -6,6 +6,7 @@ import {
   Cart,
   CartAdapter,
   CartEntryQualifier,
+  CartFeatureOptionsKey,
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
@@ -14,7 +15,11 @@ import {
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  FeatureOptionsService,
+  HttpService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   CurrencyService,
@@ -40,7 +45,8 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService),
     protected store = inject(StoreService),
     protected currency = inject(CurrencyService),
-    protected priceMode = inject(PriceModeService)
+    protected priceMode = inject(PriceModeService),
+    protected optionsService = inject(FeatureOptionsService)
   ) {}
 
   getAll(): Observable<Cart[]> {
@@ -291,6 +297,11 @@ export class DefaultCartAdapter implements CartAdapter {
   protected ensureCartName(
     qualifier?: CreateCartQualifier
   ): string | undefined {
-    return qualifier?.name;
+    return this.isMultiCart ? qualifier?.name : undefined;
+  }
+
+  protected get isMultiCart(): boolean {
+    return !!this.optionsService.getFeatureOptions(CartFeatureOptionsKey)
+      ?.multi;
   }
 }

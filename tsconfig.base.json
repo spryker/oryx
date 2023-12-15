@@ -37,6 +37,7 @@
       "@spryker-oryx/cart/list": ["libs/domain/cart/list/index.ts"],
       "@spryker-oryx/cart/list-item": ["libs/domain/cart/list-item/index.ts"],
       "@spryker-oryx/cart/mocks": ["libs/domain/cart/src/mocks/index.ts"],
+      "@spryker-oryx/cart/multi": ["libs/domain/cart/multi/index.ts"],
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
       ],

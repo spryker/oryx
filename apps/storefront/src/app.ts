@@ -1,4 +1,5 @@
 import { appBuilder } from '@spryker-oryx/application';
+import { multiCartFeature } from '@spryker-oryx/cart/multi';
 import { labsFeatures } from '@spryker-oryx/labs';
 import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';
 import { storefrontFeatures } from '@spryker-oryx/presets/storefront';
@@ -9,7 +10,10 @@ const env = import.meta.env;
 const features = [
   ...(env.ORYX_PRESET && env.ORYX_PRESET === 'b2b'
     ? b2bStorefrontFeatures
-    : storefrontFeatures),
+    : [
+        ...storefrontFeatures,
+        ...(env.ORYX_MULTI_CART ? [multiCartFeature] : []),
+      ]),
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 

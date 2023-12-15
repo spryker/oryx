@@ -1,6 +1,7 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { MockAuthFeature } from '@spryker-oryx/auth/mocks';
 import { mockCartFeature } from '@spryker-oryx/cart/mocks';
+import { multiCartFeature } from '@spryker-oryx/cart/multi';
 import { mockCheckoutFeature } from '@spryker-oryx/checkout/mocks';
 import { contentFeature } from '@spryker-oryx/content';
 import { mockCoreFeature } from '@spryker-oryx/core/mocks';
@@ -20,9 +21,9 @@ import { chromaticStyledComponents } from './chromatic-styles';
 import { resource, theme } from './data';
 import { StorybookPlugin } from './plugin';
 import {
-  getActiveData,
   ORYX_STORYBOOK_RESOURCE,
   ORYX_STORYBOOK_THEME,
+  getActiveData,
 } from './utils';
 
 const themeKey = (getActiveData(ORYX_STORYBOOK_THEME) ??
@@ -45,6 +46,7 @@ const builder = appBuilder()
   .withFeature(formFeature)
   .withFeature(mockCoreFeature)
   .withFeature(mockCartFeature)
+  .withFeature(multiCartFeature)
   .withFeature(mockCheckoutFeature)
   .withFeature(mockOrderFeature)
   .withFeature(mockPickingFeature)
