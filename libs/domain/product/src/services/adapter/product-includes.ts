@@ -8,11 +8,6 @@ export const productIncludes = provideIncludes(ProductResource, [
   ApiProductModel.Includes.ConcreteProductAvailabilities,
   ApiProductModel.Includes.Labels,
   ApiProductModel.Includes.AbstractProducts,
-  // TODO: Add from merchant package
-  ApiProductModel.Includes.ProductOffers,
-  ApiProductModel.Includes.ProductOfferPrices,
-  ApiProductModel.Includes.ProductOfferAvailabilities,
-  ApiProductModel.Includes.Merchants,
   {
     include: ApiProductModel.Includes.CategoryNodes,
     fields: [

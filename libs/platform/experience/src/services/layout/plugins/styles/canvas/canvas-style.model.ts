@@ -7,6 +7,13 @@ declare global {
     background?: string;
 
     /**
+     * Sets the overflow behavior of an element's content. If an element's content is larger than
+     * the element itself, the overflow property specifies whether to clip the content or to add
+     * scrollbars to display the content.
+     */
+    overflow?: string;
+
+    /**
      * Sets the fill color of SVG resources. SVG resources can use specific colors which can be overridden
      * with a custom color. For example, a native logo color, say coca-cola red, can be overridden with
      * a neutral color to make the logo less dominant on the page.

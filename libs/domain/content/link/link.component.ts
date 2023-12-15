@@ -90,7 +90,7 @@ export class ContentLinkComponent extends ContentMixin<
 
     if (type === RouteType.Product && (id || qualifier)) {
       return this.productService
-        .get(qualifier ?? { sku: id?.split(',')[0] })
+        .get(qualifier ?? { sku: id })
         .pipe(map((product) => product?.name));
     }
 

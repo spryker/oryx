@@ -13,6 +13,11 @@ export const styles: LayoutStyles = {
         : css`
             flex-wrap: wrap;
           `}
+      ${featureVersion >= `1.4`
+        ? css`
+            flex: auto;
+          `
+        : css``}
     }
 
     *,

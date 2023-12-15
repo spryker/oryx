@@ -1,9 +1,6 @@
 import { provideEffect, QueryService } from '@spryker-oryx/core';
-import {
-  ProductLoaded,
-  ProductOffer,
-  ProductsLoaded,
-} from '@spryker-oryx/product';
+import { ProductLoaded, ProductsLoaded } from '@spryker-oryx/product';
+import { ProductOffer } from '../../models';
 import { MerchantQuery } from './queries';
 
 function setMerchant(query: QueryService, offer: ProductOffer) {

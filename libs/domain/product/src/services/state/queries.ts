@@ -1,4 +1,4 @@
-import { provideQuery, Query } from '@spryker-oryx/core';
+import { provideQuery, Query, QueryOptions } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { CurrencyChanged, PriceModeChanged } from '@spryker-oryx/site';
@@ -10,32 +10,15 @@ export const ProductQuery = 'oryx.productQuery';
 
 export type ProductQuery = Query<Product, ProductQualifier>;
 
-/**
- * This transform is used to update details (like price) of the product when specific offer is requested.
- */
-export function productForOfferTransform(
-  data: Product,
-  qualifier: ProductQualifier
-): Product | void {
-  if (data && data.offers?.length) {
-    const selectedOffer = qualifier.offer
-      ? data.offers?.find((o) => o.id === qualifier.offer)
-      : data.offers?.find((o) => o.isDefault);
-    return {
-      ...data,
-      merchantId: selectedOffer?.merchant?.id ?? undefined,
-      price: selectedOffer?.price ?? data.price,
-      availability: selectedOffer?.availability ?? data.availability,
-    };
-  }
-}
-
-export const productQueries = [
-  provideQuery(ProductQuery, (adapter = inject(ProductAdapter)) => ({
+export function productQueryFactory(
+  adapter = inject(ProductAdapter)
+): QueryOptions<Product, ProductQualifier> {
+  return {
     cacheKey: (q: ProductQualifier) => q?.sku ?? '',
     loader: (q: ProductQualifier) => adapter.get(q),
     onLoad: [ProductLoaded],
     refreshOn: [LocaleChanged, CurrencyChanged, PriceModeChanged],
-    postTransforms: [productForOfferTransform],
-  })),
-];
+  };
+}
+
+export const productQueries = [provideQuery(ProductQuery, productQueryFactory)];

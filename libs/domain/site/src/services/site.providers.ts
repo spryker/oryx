@@ -1,6 +1,7 @@
 import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { PriceModes } from '../models';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
@@ -62,10 +63,9 @@ export const siteProviders: Provider[] = [
     provide: PriceMode,
     useFactory: () => injectEnv('PRICE_MODE', PriceModes.GrossMode),
   },
-  {
-    provide: LinkService,
-    useClass: DefaultLinkService,
-  },
+  ...(featureVersion >= '1.4'
+    ? []
+    : [{ provide: LinkService, useClass: DefaultLinkService }]),
   {
     provide: StoreService,
     useClass: DefaultStoreService,

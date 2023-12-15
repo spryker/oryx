@@ -1,13 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
-import {
-  AvailabilityNormalizer,
-  DeserializedProduct,
-  PriceNormalizer,
-  Product,
-  ProductOffer,
-} from '@spryker-oryx/product';
-import { Observable, combineLatest, map, of } from 'rxjs';
-import { ApiMerchantModel } from '../../../models';
+import { AvailabilityNormalizer, PriceNormalizer } from '@spryker-oryx/product';
+import { Observable, map } from 'rxjs';
+import { ApiMerchantModel, ProductOffer } from '../../../models';
 import { MerchantNormalizer } from '../merchant.adapter';
 
 export const OfferNormalizer = 'oryx.OfferNormalizer*';
@@ -46,25 +40,6 @@ export function offerMerchantNormalizer(
   return transformer
     .transform(data.merchants?.[0], MerchantNormalizer)
     .pipe(map((merchant) => ({ merchant })));
-}
-
-export function productOfferNormalizer(
-  data: DeserializedProduct, // source
-  transformer: TransformerService
-): Observable<Partial<Product>> {
-  const offers = data.productOffers as any as ApiMerchantModel.ProductOffer[];
-
-  if (!offers?.length) return of({});
-
-  return combineLatest(
-    offers.map((offer) => transformer.transform(offer, OfferNormalizer))
-  ).pipe(
-    map((offers) => {
-      const defaultOffer = offers.find((offer) => offer.isDefault);
-      const price = defaultOffer?.price;
-      return { offers, ...(price ? { price } : {}) };
-    })
-  );
 }
 
 declare global {

@@ -4,9 +4,9 @@ import {
   ContextService,
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ProductQualifier } from '../models';
 
 export const enum ProductContext {
@@ -18,10 +18,10 @@ export function productContextFallbackFactory(
   context = inject(ContextService)
 ): Observable<unknown> {
   return router
-    .currentParams()
+    .current()
     .pipe(
-      switchMap((params) =>
-        context.deserialize(ProductContext.SKU, (params?.sku as string) ?? '')
+      map((route) =>
+        route.type === RouteType.Product ? route.params : undefined
       )
     );
 }
@@ -32,17 +32,15 @@ export class ProductContextSerializer
   implements ContextSerializer<ProductQualifier>
 {
   serialize(value: ProductQualifier): Observable<string> {
-    return value?.sku
-      ? of(`${value.sku}${value.offer ? `,${value.offer}` : ''}`)
-      : of('');
+    return value?.sku ? of(value.sku) : of('');
   }
 
   deserialize(value: string): Observable<ProductQualifier | undefined> {
-    const parts = value.split(',');
-    return of({
-      sku: parts[0],
-      ...(parts[1] ? { offer: parts[1] } : {}),
-    });
+    return value
+      ? of({
+          sku: value,
+        })
+      : of(undefined);
   }
 }
 

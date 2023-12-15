@@ -3,16 +3,13 @@ import { HTMLTemplateResult, LitElement, TemplateResult, html } from 'lit';
 
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import {
-  ProductContext,
-  ProductMixin,
-  ProductOffer,
-} from '@spryker-oryx/product';
+import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { computed, effect, signal } from '@spryker-oryx/utilities';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { ProductOffer } from '../src/models';
 import { merchantOffersStyles } from './offers.styles';
 
 export class MerchantOffersComponent extends ProductMixin(

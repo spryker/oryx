@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const orderEntries = (): ExperienceComponent => {
@@ -23,6 +24,7 @@ export const orderConfirmationPage: ExperienceComponent = {
   meta: {
     title: 'Order Confirmation Page',
     route: '/order/:id',
+    routeType: RouteType.Order,
     description: 'Order Page Description',
   },
   components: [
