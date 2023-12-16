@@ -6,6 +6,7 @@ import {
   computed,
   signal,
   signalAware,
+  signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { Merchant, MerchantQualifier } from '../models';
@@ -14,6 +15,7 @@ import { MerchantContext, MerchantService } from '../services';
 export declare class MerchantMixinInterface {
   protected contextController: ContextController;
 
+  merchant?: string;
   protected $merchant: Signal<Merchant | null>;
   protected $merchantMinimal: Signal<Merchant | null>;
 }
@@ -25,6 +27,8 @@ export const MerchantMixin = <T extends Type<LitElement>>(
 ): Type<MerchantMixinInterface> & T => {
   @signalAware()
   class MerchantMixinClass extends superClass {
+    @signalProperty({ reflect: true }) merchant?: string;
+
     protected [MerchantMixinInternals] = {
       merchantService: resolve(MerchantService),
       contextService: resolve(ContextService),
@@ -38,9 +42,11 @@ export const MerchantMixin = <T extends Type<LitElement>>(
     );
 
     protected $merchant = computed(() => {
-      const qualifier = this.$merchantContext();
+      const qualifier = (this.merchant as string) ?? this.$merchantContext();
       return qualifier
-        ? this[MerchantMixinInternals].merchantService?.get(qualifier)
+        ? this[MerchantMixinInternals].merchantService?.get({
+            id: qualifier,
+          })
         : undefined;
     });
 
