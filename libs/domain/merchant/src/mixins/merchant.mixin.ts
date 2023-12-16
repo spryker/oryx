@@ -6,56 +6,49 @@ import {
   computed,
   signal,
   signalAware,
-  signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { Merchant, MerchantComponentProperties } from '../models';
+import { Merchant, MerchantQualifier } from '../models';
 import { MerchantContext, MerchantService } from '../services';
 
-export declare class MerchantMixinInterface
-  implements MerchantComponentProperties
-{
+export declare class MerchantMixinInterface {
   protected contextController: ContextController;
 
-  merchant?: string;
   protected $merchant: Signal<Merchant | null>;
   protected $merchantMinimal: Signal<Merchant | null>;
 }
 
 export const MerchantMixinInternals = Symbol('MerchantMixinInternals');
 
-export const MerchantMixin = <
-  T extends Type<LitElement & MerchantComponentProperties>
->(
+export const MerchantMixin = <T extends Type<LitElement>>(
   superClass: T
 ): Type<MerchantMixinInterface> & T => {
   @signalAware()
   class MerchantMixinClass extends superClass {
-    @signalProperty({ reflect: true }) merchant?: string;
-
     protected [MerchantMixinInternals] = {
-      merchantService: resolve(MerchantService, null),
-      contextService: resolve(ContextService, null),
+      merchantService: resolve(MerchantService),
+      contextService: resolve(ContextService),
     };
 
     protected $merchantContext = signal(
-      this[MerchantMixinInternals].contextService?.get(this, MerchantContext.ID)
+      this[MerchantMixinInternals].contextService.get<MerchantQualifier>(
+        this,
+        MerchantContext.ID
+      )
     );
 
     protected $merchant = computed(() => {
-      const id = (this.merchant as string) ?? this.$merchantContext();
-      return id
-        ? this[MerchantMixinInternals].merchantService?.get({
-            id,
-          })
+      const qualifier = this.$merchantContext();
+      return qualifier
+        ? this[MerchantMixinInternals].merchantService?.get(qualifier)
         : undefined;
     });
 
     // protected $merchantMinimal = computed(() => {
-    //   const id = (this.merchant as string) ?? this.$merchantContext();
-    //   return id
+    //   const qualifier = this.$merchantContext();
+    //   return qualifier
     //     ? this[MerchantMixinInternals].merchantService?.get({
-    //         id,
+    //         ...qualifier,
     //         scope: 'minimal',
     //       })
     //     : undefined;
