@@ -1,9 +1,9 @@
-import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const merchantScheduleStyles = css`
-  h3 {
-    ${headingUtil(HeadingTag.H3)}
+  :host {
+    display: grid;
+    gap: 8px;
   }
 
   ul {
