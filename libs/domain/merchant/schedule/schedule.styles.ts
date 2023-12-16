@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const openingHoursStyles = css`
+export const merchantScheduleStyles = css`
   h3 {
     ${headingUtil(HeadingTag.H3)}
   }

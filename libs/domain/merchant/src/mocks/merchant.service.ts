@@ -43,6 +43,32 @@ export class MockMerchantService implements Partial<MerchantService> {
         ],
       },
     },
+    {
+      id: '3',
+      name: 'Merchant 3',
+      schedule: {
+        opened: [
+          {
+            day: 'monday',
+            times: [
+              {
+                from: '09:00:00',
+                to: '13:00:00',
+              },
+            ],
+          },
+          {
+            date: '2024-01-01',
+            times: [
+              {
+                from: '09:00:00',
+                to: '13:00:00',
+              },
+            ],
+          },
+        ],
+      },
+    },
   ];
 
   get(qualifier: MerchantQualifier): Observable<Merchant | undefined> {

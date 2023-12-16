@@ -42,11 +42,11 @@ export const MerchantMixin = <T extends Type<LitElement>>(
     );
 
     protected $merchant = computed(() => {
-      const qualifier = (this.merchant as string) ?? this.$merchantContext();
+      const qualifier = this.merchant
+        ? { id: this.merchant as string }
+        : this.$merchantContext();
       return qualifier
-        ? this[MerchantMixinInternals].merchantService?.get({
-            id: qualifier,
-          })
+        ? this[MerchantMixinInternals].merchantService?.get(qualifier)
         : undefined;
     });
 

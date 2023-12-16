@@ -1,1 +1,1 @@
-export * from '../opening-hours/opening-hours.def';
+export * from '../schedule/schedule.def';

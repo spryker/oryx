@@ -2,17 +2,17 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { MerchantMixin, MerchantScheduleSlot } from '@spryker-oryx/merchant';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { openingHoursStyles } from './opening-hours.styles';
+import { merchantScheduleStyles } from './schedule.styles';
 
-export class MerchantOpeningHoursComponent extends MerchantMixin(
+export class MerchantScheduleComponent extends MerchantMixin(
   ContentMixin(LitElement)
 ) {
-  static styles = openingHoursStyles;
+  static styles = merchantScheduleStyles;
 
   protected override render(): TemplateResult | void {
     const merchant = this.$merchant();
 
-    if (!merchant?.schedule?.opened) return;
+    if (!merchant?.schedule?.opened) return html`???`;
 
     return html`
       <h3>${this.i18n('merchant.openings-hours')}</h3>

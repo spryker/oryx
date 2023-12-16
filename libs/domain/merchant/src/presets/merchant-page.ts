@@ -6,10 +6,5 @@ export const merchantPage: ExperienceComponent = {
   options: {
     rules: [{ layout: { type: 'split', columnWidthType: 'main' } }],
   },
-  components: [
-    {},
-    {
-      type: 'oryx-merchant-opening-hours',
-    },
-  ],
+  components: [{}, { type: 'oryx-merchant-schedule' }],
 };

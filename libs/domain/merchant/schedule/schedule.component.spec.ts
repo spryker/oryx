@@ -5,8 +5,8 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { MerchantService } from '../src';
-import { MerchantOpeningHoursComponent } from './opening-hours.component';
-import { merchantOpeningHoursComponent } from './opening-hours.def';
+import { MerchantScheduleComponent } from './schedule.component';
+import { merchantOpeningHoursComponent } from './schedule.def';
 
 class MockMerchantService implements Partial<MerchantService> {
   get = vi.fn();
@@ -30,8 +30,8 @@ const noTimeSlotMocks = {
   times: [],
 };
 
-describe('MerchantOpeningHoursComponent', () => {
-  let element: MerchantOpeningHoursComponent;
+describe('MerchantScheduleComponent', () => {
+  let element: MerchantScheduleComponent;
   let merchantService: MockMerchantService;
 
   beforeAll(async () => {
