@@ -36,14 +36,24 @@ export interface MerchantLegal {
 }
 
 export interface MerchantSchedule {
-  opened?: MerchantScheduleSlot[];
-  closed?: MerchantScheduleSlot[];
+  weekdays?: MerchantWeekdaySlot[];
+  dates?: MerchantDateSlot[];
 }
 
-export interface MerchantScheduleSlot {
-  day?: string;
-  date?: string;
+export interface MerchantSlot {
   times?: TimeRange[];
+}
+
+export interface MerchantWeekdaySlot extends MerchantSlot {
+  /**
+   * The day of the week (e.g. Monday, Tuesday, etc.)
+   */
+  day: string;
+}
+
+export interface MerchantDateSlot extends MerchantSlot {
+  date: string;
+  note?: string;
 }
 
 export interface TimeRange {

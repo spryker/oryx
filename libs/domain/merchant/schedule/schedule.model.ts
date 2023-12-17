@@ -10,5 +10,9 @@ export interface MerchantScheduleComponentOptions {
    * Allows to render only a specific type of schedule. If not set, all types
    * will be rendered.
    */
-  type?: 'opening-hours' | 'open-dates' | 'closed-dates';
+  type?: 'weekdays' | 'dates';
+
+  filterBefore?: 'week' | 'month' | 'quarter' | 'year';
+
+  filterAfter?: 'week' | 'month' | 'quarter' | 'year';
 }

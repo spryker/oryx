@@ -31,11 +31,24 @@ export default {
       control: {
         type: 'select',
         options: [
-          'opening-hours',
-          'open-dates',
-          'closed-dates',
+          'weekdays',
+          'dates',
           undefined,
         ] as MerchantScheduleComponentOptions['type'][],
+      },
+    },
+
+    skipBeforeLast: {
+      control: {
+        type: 'select',
+        options: ['week', 'month', 'quarter', 'year', undefined],
+      },
+    },
+
+    skipAfterNext: {
+      control: {
+        type: 'select',
+        options: ['week', 'month', 'quarter', 'year', undefined],
       },
     },
   },
@@ -47,7 +60,7 @@ const Template: Story<MerchantScheduleComponentOptions> = (
 ): TemplateResult => {
   return html` <oryx-merchant-schedule
     merchant="1"
-    .options=${{ tag: props.tag, type: props.type }}
+    .options=${{ ...props }}
   ></oryx-merchant-schedule>`;
 };
 

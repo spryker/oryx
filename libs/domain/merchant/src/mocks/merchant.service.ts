@@ -8,74 +8,103 @@ export class MockMerchantService implements Partial<MerchantService> {
       id: '1',
       name: 'Merchant 1',
       schedule: {
-        opened: [
-          { day: 'monday', times: [{ from: '13:00:00', to: '17:00:00' }] },
-          { day: 'tuesday', times: [{ from: '09:00:00', to: '17:00:00' }] },
-          { day: 'wednesday' },
-          { day: 'thursday', times: [{ from: '09:00:00', to: '21:00:00' }] },
-          { day: 'friday', times: [{ from: '09:00:00', to: '17:00:00' }] },
-          { day: 'saturday', times: [{ from: '09:00:00', to: '17:00:00' }] },
-          { date: '2024-05-05' },
-        ],
-        closed: [
-          { day: 'sunday' },
-          { date: '2024-01-01' },
-          { date: '2024-12-31' },
-        ],
-      },
-    },
-    {
-      id: '2',
-      name: 'Merchant 2',
-      schedule: {
-        opened: [
+        weekdays: [
           {
             day: 'monday',
             times: [
-              { from: '09:00:00', to: '13:00:00' },
-              { from: '14:00:00', to: '18:00:00' },
+              { from: '07:00:00.000000', to: '13:00:00.000000' },
+              { from: '14:00:00.000000', to: '20:00:00.000000' },
             ],
           },
           {
             day: 'tuesday',
-            times: [{ from: '09:00:00', to: '17:00:00' }],
+            times: [{ from: '07:00:00.000000', to: '20:00:00.000000' }],
+          },
+          {
+            day: 'wednesday',
+            times: [{ from: '07:00:00.000000', to: '20:00:00.000000' }],
+          },
+          {
+            day: 'thursday',
+            times: [{ from: '07:00:00.000000', to: '20:00:00.000000' }],
+          },
+          {
+            day: 'friday',
+            times: [{ from: '07:00:00.000000', to: '20:00:00.000000' }],
+          },
+          {
+            day: 'saturday',
+            times: [{ from: '07:00:00.000000', to: '20:00:00.000000' }],
           },
           {
             day: 'sunday',
           },
         ],
-      },
-    },
-    {
-      id: '3',
-      name: 'Merchant 3',
-      schedule: {
-        opened: [
+        dates: [
           {
-            day: 'monday',
+            date: '2023-11-28',
+            // "note": "Sunday Opening",
+            times: [{ from: '13:00:00.000000', to: '18:00:00.000000' }],
+          },
+          {
+            date: '2023-12-31',
             times: [
-              {
-                from: '09:00:00',
-                to: '13:00:00',
-              },
+              { from: '10:00:00.000000', to: '12:00:00.000000' },
+              { from: '13:00:00.000000', to: '16:00:00.000000' },
             ],
           },
+
           {
-            date: '2024-05-05',
-            times: [
-              {
-                from: '11:00:00',
-                to: '15:00:00',
-              },
-            ],
-          },
-        ],
-        closed: [
-          {
-            day: 'sunday',
+            date: '2024-01-01',
+            // "note": "New Year's Day"
           },
           {
-            date: '2024-05-07',
+            date: '2024-04-10',
+            // "note": "Good Friday"
+          },
+          {
+            date: '2024-04-12',
+            // "note": "Easter Sunday"
+          },
+          {
+            date: '2024-04-13',
+            // "note": "Easter Monday"
+          },
+          {
+            date: '2024-05-01',
+            // "note": "May Day"
+          },
+          {
+            date: '2024-05-21',
+            // "note": "Ascension of Christ"
+          },
+          {
+            date: '2024-05-31',
+            // "note": "Whit Sunday"
+          },
+          {
+            date: '2024-06-01',
+            // "note": "Whit Monday"
+          },
+          {
+            date: '2024-06-11',
+            // "note": "Corpus Christi"
+          },
+          {
+            date: '2024-10-03',
+            // "note": "Day of German unity"
+          },
+          {
+            date: '2024-11-01',
+            // "note": "All Saints' Day"
+          },
+          {
+            date: '2024-12-25',
+            // "note": "1st Christmas day"
+          },
+          {
+            date: '2024-12-26',
+            // "note": "2nd Christmas day"
           },
         ],
       },

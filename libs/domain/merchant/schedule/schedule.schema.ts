@@ -23,5 +23,27 @@ export const merchantScheduleComponentSchema: ContentComponentSchema<MerchantSch
           { value: HeadingTag.Subtitle },
         ],
       },
+      type: {
+        type: 'select',
+        options: [{ value: 'weekdays' }, { value: 'dates' }],
+      },
+      filterBefore: {
+        type: 'select',
+        options: [
+          { value: 'week' },
+          { value: 'month' },
+          { value: 'quarter' },
+          { value: 'year' },
+        ],
+      },
+      filterAfter: {
+        type: 'select',
+        options: [
+          { value: 'week' },
+          { value: 'month' },
+          { value: 'quarter' },
+          { value: 'year' },
+        ],
+      },
     },
   };

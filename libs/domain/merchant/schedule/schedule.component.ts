@@ -1,5 +1,9 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { MerchantMixin, MerchantScheduleSlot } from '@spryker-oryx/merchant';
+import {
+  MerchantDateSlot,
+  MerchantMixin,
+  MerchantWeekdaySlot,
+} from '@spryker-oryx/merchant';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
@@ -15,78 +19,120 @@ export class MerchantScheduleComponent extends MerchantMixin(
 
   protected override render(): TemplateResult | void {
     const merchant = this.$merchant();
+
     if (!merchant?.schedule) return;
 
-    return html`
-      ${[
-        this.renderSlots(this.getOpeningHours(), 'opening-hours'),
-        this.renderSlots(this.getOpenDates(), 'open-dates'),
-        this.renderSlots(this.getClosedDates(), 'closed-dates'),
-      ]}
-    `;
+    return html` ${[this.renderWeekdays(), this.renderDates()]} `;
   }
 
-  /**
-   * Get opening hours from the merchant schedule, collecting all slots
-   * without date from the opened and closed schedule.
-   */
-  protected getOpeningHours(): MerchantScheduleSlot[] | undefined {
-    if (this.$options().type && this.$options().type !== 'open-dates') return;
-    return [
-      ...(this.$merchant()?.schedule.opened?.filter((slot) => !slot.date) ??
-        []),
-      ...(this.$merchant()?.schedule.closed?.filter((slot) => !slot.date) ??
-        []),
-    ];
-  }
+  protected renderWeekdays(): TemplateResult | void {
+    if (this.$options().type && this.$options().type !== 'weekdays') return;
+    const weekdays = this.$merchant()?.schedule.weekdays;
 
-  /**
-   * Get open dates from the merchant opened schedule, which are all slots with a date.
-   */
-  protected getOpenDates(): MerchantScheduleSlot[] | undefined {
-    if (this.$options().type && this.$options().type !== 'open-dates') return;
-    return this.$merchant()?.schedule.opened?.filter((slot) => !!slot.date);
-  }
+    if (!weekdays?.length) return;
 
-  /**
-   * Get open dates from the merchant closed schedule, which are all slots with a date.
-   */
-  protected getClosedDates(): MerchantScheduleSlot[] | undefined {
-    if (this.$options().type && this.$options().type !== 'closed-dates') return;
-    return this.$merchant()?.schedule.closed?.filter((slot) => !!slot.date);
-  }
-
-  protected renderSlots(
-    days: MerchantScheduleSlot[] | undefined,
-    type: 'opening-hours' | 'open-dates' | 'closed-dates'
-  ): TemplateResult | void {
-    if (!days?.length) return;
-    return html`
-      <oryx-heading .tag=${this.$options().tag}>
-        ${this.i18n(`merchant.schedule.${type}`)}
+    return html`<oryx-heading .tag=${this.$options().tag}>
+        ${this.i18n(`merchant.schedule.weekdays`)}
       </oryx-heading>
       <ul>
         ${repeat(
-          days,
+          weekdays,
           (weekday) =>
             html`<li>
-              ${when(
-                weekday.date,
-                () => html`<oryx-date .stamp=${weekday.date}></oryx-date>`,
-                () => html`<oryx-site-day .day=${weekday.day}></oryx-site-day>`
-              )}
-              ${when(type === 'opening-hours', () =>
-                this.renderTimeSlots(weekday)
-              )}
+              <oryx-site-day .day=${weekday.day}></oryx-site-day>
+              ${this.renderTimeSlots(weekday)}
             </li>`
         )}
-      </ul>
-    `;
+      </ul>`;
   }
 
-  protected renderTimeSlots(slot: MerchantScheduleSlot): TemplateResult | void {
+  protected renderDates(): TemplateResult | void {
+    if (this.$options().type && this.$options().type !== 'dates') return;
+    const dates = this.getDates();
+    if (!dates?.length) return;
+
+    return html`<oryx-heading .tag=${this.$options().tag}>
+        ${this.i18n(`merchant.schedule.dates`)}
+      </oryx-heading>
+      <ul>
+        ${repeat(
+          dates,
+          (date) =>
+            html`<li>
+              ${when(
+                date.note,
+                () => html` <oryx-date
+                  .stamp=${date.date}
+                  .i18nToken=${'merchant.schedule.<date>-<note>'}
+                  .i18nContext=${{ note: date.note }}
+                ></oryx-date>`,
+                () => html` <oryx-date
+                  .stamp=${date.date}
+                  .i18nToken=${'merchant.schedule.<date>'}
+                ></oryx-date>`
+              )}
+              ${this.renderTimeSlots(date)}
+            </li>`
+        )}
+      </ul>`;
+  }
+  protected getDates(): MerchantDateSlot[] | undefined {
+    const { filterBefore, filterAfter } = this.$options();
+
+    if (!filterBefore && !filterAfter) return this.$merchant()?.schedule.dates;
+
+    const compareBefore = new Date();
+    const compareAfter = new Date();
+    if (filterBefore) {
+      switch (filterBefore) {
+        case 'week':
+          compareBefore.setDate(compareBefore.getDate() - 7);
+          break;
+        case 'month':
+          compareBefore.setMonth(compareBefore.getMonth() - 1);
+          break;
+        case 'quarter':
+          compareBefore.setMonth(compareBefore.getMonth() - 3);
+          break;
+        case 'year':
+          compareBefore.setFullYear(compareBefore.getFullYear() - 1);
+          break;
+      }
+    }
+
+    if (filterAfter) {
+      switch (filterAfter) {
+        case 'week':
+          compareAfter.setDate(compareAfter.getDate() + 7);
+          break;
+        case 'month':
+          compareAfter.setMonth(compareAfter.getMonth() + 1);
+          break;
+        case 'quarter':
+          compareAfter.setMonth(compareAfter.getMonth() + 3);
+          break;
+        case 'year':
+          compareAfter.setFullYear(compareAfter.getFullYear() + 1);
+          break;
+      }
+    }
+
+    return this.$merchant()?.schedule.dates?.filter((slot) => {
+      const matchBefore =
+        !filterBefore ||
+        new Date(slot.date).getTime() >= compareBefore.getTime();
+      const matchAfter =
+        !filterAfter || new Date(slot.date).getTime() <= compareAfter.getTime();
+
+      return matchBefore && matchAfter;
+    });
+  }
+
+  protected renderTimeSlots(
+    slot: MerchantWeekdaySlot | MerchantDateSlot
+  ): TemplateResult | void {
     if (!slot.times?.length)
-      return html`<div>${this.i18n('merchant.closed')}</div>`;
+      return html`<div>${this.i18n('merchant.schedule.closed')}</div>`;
 
     return html` ${repeat(
       slot.times,

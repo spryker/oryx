@@ -11,7 +11,7 @@ export module ApiMerchantModel {
     merchantUrl: string;
     deliveryTime: string;
     legalInformation: MerchantLegal;
-    merchantOpeningHours: MerchantOpeningHours[];
+    merchantOpeningHours: Schedule[];
     logoUrl: string;
     bannerUrl: string;
     publicEmail: string;
@@ -25,14 +25,23 @@ export module ApiMerchantModel {
     imprint?: string;
   }
 
-  export interface MerchantOpeningHours {
-    weekdaySchedule: WeekDaySchedule[];
+  export interface Schedule {
+    weekdaySchedule: WeekDaySlot[];
+    dateSchedule: DateSlot[];
   }
 
-  export interface WeekDaySchedule {
-    day?: string;
+  interface ScheduleSlot {
     timeFrom?: string;
     timeTo?: string;
+  }
+
+  export interface WeekDaySlot extends ScheduleSlot {
+    day: string;
+  }
+
+  export interface DateSlot extends ScheduleSlot {
+    date: string;
+    noteGlossaryKey?: string;
   }
 
   export interface ProductOffer {

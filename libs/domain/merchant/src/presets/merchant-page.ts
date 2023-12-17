@@ -6,5 +6,11 @@ export const merchantPage: ExperienceComponent = {
   options: {
     rules: [{ layout: { type: 'split', columnWidthType: 'main' } }],
   },
-  components: [{}, { type: 'oryx-merchant-schedule' }],
+  components: [
+    {},
+    {
+      type: 'oryx-merchant-schedule',
+      // options: { skipBeforeLast: 'month' },
+    },
+  ],
 };
