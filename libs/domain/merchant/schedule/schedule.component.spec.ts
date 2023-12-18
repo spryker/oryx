@@ -84,6 +84,8 @@ describe('MerchantScheduleComponent', () => {
     });
 
     merchantService = injector.inject<MockMerchantService>(MerchantService);
+    const contextService = injector.inject(ContextService);
+    contextService.provide(document.body, 'merchant', { id: '1' });
   });
 
   afterEach(() => {
@@ -115,7 +117,7 @@ describe('MerchantScheduleComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-merchant-schedule merchant="1"></oryx-merchant-schedule>`
+        html`<oryx-merchant-schedule></oryx-merchant-schedule>`
       );
     });
 
