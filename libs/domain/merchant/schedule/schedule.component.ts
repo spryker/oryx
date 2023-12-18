@@ -15,7 +15,7 @@ import { getWeek } from './util';
 
 @defaultOptions({
   tag: HeadingTag.H3,
-  weeksBefore: -1,
+  weeksBefore: 1,
   weeksAfter: 12,
 })
 export class MerchantScheduleComponent extends MerchantMixin(
