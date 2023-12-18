@@ -1,8 +1,4 @@
-// will be reused by all entity field components
-export interface EntityFieldOptions {
-  entity?: string;
-  field?: string;
-}
+import { EntityFieldOptions } from '../src/models';
 
 export interface EntityImageOptions extends EntityFieldOptions {
   renderFallback?: boolean;

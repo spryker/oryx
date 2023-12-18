@@ -1,8 +1,8 @@
-// will be reused by all entity field components
-export interface EntityFieldOptions {
-  entity?: string;
-  field?: string;
-}
+import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { EntityFieldOptions } from '../src/models';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface EntityTextOptions extends EntityFieldOptions {}
+export interface EntityTextOptions extends EntityFieldOptions {
+  tag?: HeadingTag;
+  prefix?: string;
+  // link?: boolean;
+}

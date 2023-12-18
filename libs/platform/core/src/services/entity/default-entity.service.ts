@@ -2,6 +2,7 @@ import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap, throwError } from 'rxjs';
 import { ContextService } from '../context';
 import { EntityProvider, isCustomEntityProvider } from './entity-provider';
+import { EntityContext } from './entity.context';
 import {
   EntityFieldQualifier,
   EntityQualifier,
@@ -17,33 +18,55 @@ export class DefaultEntityService implements EntityService {
     element,
     type,
   }: EntityQualifier<Q>): Observable<E | undefined> {
-    const config = type ? this.getConfig<E, Q>(type) : null;
+    let type$: Observable<string | undefined>;
 
-    if (!config) {
-      return throwError(
-        () => new Error(`No entity provider found for entity ${type}`)
-      );
-    }
-
-    let qualifier$: Observable<Q | undefined>;
-
-    if (!qualifier) {
-      if (!config.context) {
-        return throwError(
-          () => new Error(`No context or qualifier provided for entity ${type}`)
-        );
-      }
-      qualifier$ = this.context.get(element ?? null, config.context);
+    if (!type) {
+      type$ = this.context.get<string>(element ?? null, EntityContext);
     } else {
-      qualifier$ = of(qualifier);
+      type$ = of(type);
     }
 
-    return qualifier$.pipe(
-      switchMap((qualifier) =>
-        qualifier
-          ? this.resolveServiceOrFactory<E, Q>(config, qualifier)
-          : of(undefined)
-      )
+    return type$.pipe(
+      switchMap((resolvedType) => {
+        if (!resolvedType) {
+          return throwError(
+            () => new Error(`No type resolved and no type provided for entity`)
+          );
+        }
+
+        const config = this.getConfig<E, Q>(resolvedType);
+
+        if (!config) {
+          return throwError(
+            () =>
+              new Error(`No entity provider found for entity ${resolvedType}`)
+          );
+        }
+
+        let qualifier$: Observable<Q | undefined>;
+
+        if (!qualifier) {
+          if (!config.context) {
+            return throwError(
+              () =>
+                new Error(
+                  `No context or qualifier provided for entity ${resolvedType}`
+                )
+            );
+          }
+          qualifier$ = this.context.get<Q>(element ?? null, config.context);
+        } else {
+          qualifier$ = of(qualifier);
+        }
+
+        return qualifier$.pipe(
+          switchMap((qualifier) =>
+            qualifier
+              ? this.resolveServiceOrFactory<E, Q>(config, qualifier)
+              : of(undefined)
+          )
+        );
+      })
     );
   }
 

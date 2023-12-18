@@ -1,25 +1,19 @@
 import { fixture } from '@open-wc/testing-helpers';
-import {
-  ContextService,
-  DefaultEntityService,
-  EntityService,
-  provideEntity,
-} from '@spryker-oryx/core';
+import { EntityService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { ImageComponent } from '@spryker-oryx/ui/image';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of } from 'rxjs';
 import { EntityImageComponent } from './entity-image.component';
 import { entityImage } from './entity-image.def';
 
-class MockDataService {
-  // get = () => of({ image: 'https://myimage.com' });
-  get = vi.fn();
+class MockEntityService implements Partial<EntityService> {
+  getField = vi.fn();
 }
 
-describe('EntityTextComponent', () => {
+describe('EntityImageComponent', () => {
   let element: EntityImageComponent;
-  let mockService: MockDataService;
+  let entityService: MockEntityService;
 
   beforeAll(async () => {
     await useComponent(entityImage);
@@ -27,57 +21,86 @@ describe('EntityTextComponent', () => {
 
   beforeEach(async () => {
     const injector = createInjector({
-      providers: [
-        { provide: EntityService, useClass: DefaultEntityService },
-        {
-          provide: ContextService,
-          useValue: {
-            get: () => of({ sku: '1' }),
-          },
-        },
-        { provide: 'MockDataService', useClass: MockDataService },
-        provideEntity('data', {
-          service: 'MockDataService',
-          context: 'sku',
-        }),
-      ],
+      providers: [{ provide: EntityService, useClass: MockEntityService }],
     });
-    mockService = injector.inject('MockDataService');
+    entityService = injector.inject<MockEntityService>(EntityService);
   });
 
   afterEach(() => destroyInjector());
 
-  describe('when an image is available for the type and field', () => {
+  describe('when an field option is provided', () => {
     beforeEach(async () => {
-      mockService.get.mockReturnValue(of({ image: 'https://myimage.com' }));
       element = await fixture(
         html`<oryx-entity-image
-          .options=${{ entity: 'data', field: 'image' }}
+          .options=${{ entity: 'data', field: 'name' }}
         ></oryx-entity-image>`
       );
     });
 
-    it('passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible();
+    it('should call the entity service to resolve the data', () => {
+      expect(entityService.getField).toHaveBeenCalledWith({
+        element: element,
+        type: 'data',
+        field: 'name',
+      });
     });
 
-    it('should render an image', () => {
-      expect(element).toContainElement('oryx-image');
-    });
-  });
+    describe('and an image is returned', () => {
+      beforeEach(async () => {
+        entityService.getField.mockReturnValue('https://myimage.com');
+        element = await fixture(
+          html`<oryx-entity-image
+            .options=${{ entity: 'data', field: 'name' }}
+          ></oryx-entity-image>`
+        );
+      });
 
-  describe('when an image is not available for the type and field', () => {
-    beforeEach(async () => {
-      mockService.get.mockReturnValue(of());
-      element = await fixture(
-        html`<oryx-entity-image
-          .options=${{ entity: 'data', field: 'image' }}
-        ></oryx-entity-image>`
-      );
+      it('should render the image', () => {
+        const image =
+          element.shadowRoot?.querySelector<ImageComponent>('oryx-image');
+        expect(image?.src).toEqual('https://myimage.com');
+      });
     });
 
-    it('should not render an image', () => {
-      expect(element).not.toContainElement('oryx-image');
+    describe('and no image is returned', () => {
+      beforeEach(async () => {
+        entityService.getField.mockReturnValue(null);
+      });
+
+      describe('and a renderFallback option is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-entity-image
+              .options=${{
+                entity: 'data',
+                field: 'name',
+                renderFallback: true,
+              }}
+            ></oryx-entity-image>`
+          );
+        });
+
+        it('should render the image', () => {
+          expect(element).toContainElement('oryx-image');
+        });
+      });
+
+      describe('and a renderFallback option is not provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-entity-image
+              .options=${{
+                entity: 'data',
+                field: 'name',
+              }}
+            ></oryx-entity-image>`
+          );
+        });
+
+        it('should not render the image', () => {
+          expect(element).not.toContainElement('oryx-image');
+        });
+      });
     });
   });
 });
