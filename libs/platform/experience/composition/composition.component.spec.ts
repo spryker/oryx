@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fixture } from '@open-wc/testing-helpers';
-import { SSRAwaiterService } from '@spryker-oryx/core';
+import { ContentConfig } from '@spryker-oryx/content';
+import { EntityService, SSRAwaiterService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   ComponentTemplate,
@@ -73,6 +74,10 @@ const mockRouter = {
   redirectNotFound: vi.fn(),
 };
 
+const mockEntityService = {
+  getContextKey: vi.fn(),
+};
+
 describe('CompositionComponent', () => {
   let element: CompositionComponent;
 
@@ -106,6 +111,14 @@ describe('CompositionComponent', () => {
         {
           provide: RouterService,
           useValue: mockRouter,
+        },
+        {
+          provide: ContentConfig,
+          useValue: [],
+        },
+        {
+          provide: EntityService,
+          useValue: mockEntityService,
         },
       ],
     });

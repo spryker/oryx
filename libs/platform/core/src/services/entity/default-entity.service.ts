@@ -39,12 +39,11 @@ export class DefaultEntityService implements EntityService {
     }
 
     return qualifier$.pipe(
-      switchMap((qualifier) => {
-        console.log(qualifier, 'qualifierqualifier');
-        return qualifier
+      switchMap((qualifier) =>
+        qualifier
           ? this.resolveServiceOrFactory<E, Q>(config, qualifier)
-          : of(undefined);
-      })
+          : of(undefined)
+      )
     );
   }
 

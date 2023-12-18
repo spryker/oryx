@@ -112,7 +112,7 @@ export class CompositionComponent extends LayoutMixin(
       if (contexts?.[key]) continue;
       this.contextController.remove(key);
     }
-    console.log(contexts, 'contexts');
+
     this.providedContext = [...types];
   });
 
