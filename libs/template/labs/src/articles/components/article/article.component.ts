@@ -1,8 +1,4 @@
-import {
-  ContentContext,
-  ContentQualifier,
-  ContentService,
-} from '@spryker-oryx/content';
+import { ContentContext, ContentService } from '@spryker-oryx/content';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
@@ -22,7 +18,7 @@ export class ArticleComponent extends LitElement {
   protected contextController = new ContextController(this);
 
   protected $articleQualifier = signal(
-    this.contextController.get<ContentQualifier>(ContentContext.Qualifier)
+    this.contextController.get(ContentContext.Qualifier)
   );
 
   protected $data = computed(() => {

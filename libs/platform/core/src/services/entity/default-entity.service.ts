@@ -18,7 +18,7 @@ export class DefaultEntityService implements EntityService {
     type,
   }: EntityQualifier<Q>): Observable<E | undefined> {
     const config = type ? this.getConfig<E, Q>(type) : null;
-
+    console.log(config, 'config');
     if (!config) {
       return throwError(
         () => new Error(`No entity provider found for entity ${type}`)
@@ -39,11 +39,12 @@ export class DefaultEntityService implements EntityService {
     }
 
     return qualifier$.pipe(
-      switchMap((qualifier) =>
-        qualifier
+      switchMap((qualifier) => {
+        console.log(qualifier, 'qualifierqualifier');
+        return qualifier
           ? this.resolveServiceOrFactory<E, Q>(config, qualifier)
-          : of(undefined)
-      )
+          : of(undefined);
+      })
     );
   }
 
@@ -51,8 +52,15 @@ export class DefaultEntityService implements EntityService {
     entity: EntityFieldQualifier<T>
   ): Observable<T | undefined> {
     return this.get(entity).pipe(
-      map((value) => this.pickField(value, entity.field))
+      map((value) => {
+        console.log(value, 'value');
+        return this.pickField(value, entity.field);
+      })
     );
+  }
+
+  getContextKey(type: string): Observable<string | null> {
+    return of(this.injector.inject(`${EntityProvider}${type}`, null)?.context);
   }
 
   protected getConfig<E, Q>(type: string): EntityProvider<E, Q> {

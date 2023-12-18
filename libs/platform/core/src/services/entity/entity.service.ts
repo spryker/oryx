@@ -22,6 +22,7 @@ export interface EntityService {
   getField<T = unknown>(
     entity: EntityFieldQualifier<T>
   ): Observable<T | undefined>;
+  getContextKey(type: string): Observable<string | null>;
 }
 
 declare global {

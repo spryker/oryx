@@ -150,7 +150,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
 
   protected getParams(qualifier: Record<string, unknown>): string {
     return Object.entries(qualifier).reduce((acc, [key, _value]) => {
-      if (key === 'id' || key === 'entities') return acc;
+      if (key === 'id' || key === 'entities' || key === 'name') return acc;
 
       const mapper = {
         [key]: key,

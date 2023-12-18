@@ -3,6 +3,7 @@ import { Breakpoint } from '@spryker-oryx/utilities';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
+  context?: ContextValue & Record<string, unknown>;
   [key: string]: unknown;
 }
 

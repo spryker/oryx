@@ -44,9 +44,10 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
       )
     ) {
       if (featureVersion >= '1.4') {
-        const includes$ = entities?.includes(SuggestionField.Products)
-          ? this.includeService.get({ resource: ProductListResource })
-          : of('');
+        const includes$ =
+          !entities?.length || entities?.includes(SuggestionField.Products)
+            ? this.includeService.get({ resource: ProductListResource })
+            : of('');
 
         return includes$.pipe(
           switchMap((includes) =>

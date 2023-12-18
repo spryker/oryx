@@ -1,22 +1,29 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
+import {
+  ContentSuggestionFieldOptions,
+  ContentSuggestionFieldType,
+} from '@spryker-oryx/experience/composition';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { iconInjectable } from '@spryker-oryx/utilities';
 import { ContentLinkComponent } from './link.component';
 
+/**
+ * @deprecated since 1.4 use ContentSuggestionFieldType from @spryker-oryx/experience.
+ */
 export const ContentSuggestionField = 'ContentSuggestion';
 
 export const linkComponentSchema: ContentComponentSchema<
   ContentLinkComponent,
-  { [ContentSuggestionField]: unknown }
+  ContentSuggestionFieldOptions
 > = {
   name: 'Link',
   group: 'Content',
   icon: IconTypes.Link,
   options: {
-    [ContentSuggestionField]: {
-      type: ContentSuggestionField,
+    [ContentSuggestionFieldType]: {
+      type: ContentSuggestionFieldType,
       width: 100,
     },
     url: { type: FormFieldType.Text },

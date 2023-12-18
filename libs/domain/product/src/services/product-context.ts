@@ -9,6 +9,12 @@ import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map, of } from 'rxjs';
 import { ProductQualifier } from '../models';
 
+declare global {
+  interface ContextValue {
+    [ProductContext.SKU]?: ProductQualifier;
+  }
+}
+
 export const enum ProductContext {
   SKU = 'sku',
 }

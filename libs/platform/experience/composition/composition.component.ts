@@ -1,3 +1,5 @@
+import { ContentConfig, ContentContext } from '@spryker-oryx/content';
+import { ContextController, EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -41,7 +43,10 @@ export class CompositionComponent extends LayoutMixin(
   protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
+  protected contents = resolve(ContentConfig);
+  protected entityService = resolve(EntityService);
 
+  protected contextController = new ContextController(this);
   protected componentsController = new CompositionComponentsController(this);
 
   @elementEffect()
@@ -64,6 +69,51 @@ export class CompositionComponent extends LayoutMixin(
     if (this.uid !== component?.id) {
       this.uid = component.id;
     }
+  });
+
+  protected providedContext: string[] = [];
+
+  @elementEffect()
+  protected $contextProvider = effect(() => {
+    const contexts = this.$options()?.context;
+    const types = [];
+
+    if (!Object.keys(contexts ?? {}).length) {
+      for (const key of this.providedContext) {
+        this.contextController.remove(key);
+      }
+
+      return;
+    }
+
+    for (const [type, context] of Object.entries(contexts ?? {})) {
+      const isContent = this.contents
+        .flat()
+        .some((_contents) =>
+          Object.values(_contents).some((value) => value.types.includes(type))
+        );
+
+      if (isContent) {
+        types.push(ContentContext.Qualifier);
+        this.contextController.provide(ContentContext.Qualifier, context);
+        continue;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const key = signal(this.entityService.getContextKey(type))()!;
+
+      if (key) {
+        types.push(key);
+        this.contextController.provide(key, context);
+      }
+    }
+
+    for (const key of this.providedContext) {
+      if (contexts?.[key]) continue;
+      this.contextController.remove(key);
+    }
+    console.log(contexts, 'contexts');
+    this.providedContext = [...types];
   });
 
   protected $components = signal(this.componentsController.getComponents());

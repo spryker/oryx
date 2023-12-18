@@ -2,11 +2,11 @@ import { resolve } from '@spryker-oryx/di';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import {
   BehaviorSubject,
+  EMPTY,
+  Observable,
   combineLatest,
   distinctUntilChanged,
-  EMPTY,
   map,
-  Observable,
   of,
   skip,
   startWith,
@@ -23,22 +23,27 @@ export class ContextController implements ReactiveController {
     (this.host = host).addController(this);
   }
 
+  get<T extends keyof ContextValue>(
+    key: T,
+    overrideContext$?: Observable<ContextValue[T] | undefined>
+  ): Observable<ContextValue[T] | undefined>;
   get<T>(
     key: string,
-    overrideContext$: Observable<T | undefined> = EMPTY
-  ): Observable<T | undefined> {
+    overrideContext$?: Observable<T | undefined>
+  ): Observable<T | undefined>;
+  get(
+    key: string,
+    overrideContext$: Observable<unknown | undefined> = EMPTY
+  ): Observable<unknown | undefined> {
     return combineLatest([
       overrideContext$.pipe(startWith(undefined)),
       this.triggerContext$.pipe(
         startWith(undefined),
-        switchMap(
-          (): Observable<T | undefined> =>
-            this.context?.get(this.host, key) ?? of(undefined)
-        )
+        switchMap(() => this.context?.get(this.host, key) ?? of(undefined))
       ),
     ]).pipe(
       skip(1),
-      tap(([overrideContext, context]) => {
+      tap(([overrideContext]) => {
         if (overrideContext)
           this.context?.provide(this.host, key, overrideContext);
       }),
