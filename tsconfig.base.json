@@ -99,6 +99,9 @@
       "@spryker-oryx/experience/composition": [
         "libs/platform/experience/composition/index.ts"
       ],
+      "@spryker-oryx/experience/entity-image": [
+        "libs/platform/experience/entity-image/index.ts"
+      ],
       "@spryker-oryx/experience/entity-text": [
         "libs/platform/experience/entity-text/index.ts"
       ],
