@@ -1,11 +1,21 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { marked } from 'marked';
+import { ContentfulAssets } from '../contentful.model';
 
 export interface ContentfulContentField {
   type: string;
   key: string;
   value: unknown;
+  assets?: Record<string, ContentfulAssets>;
+}
+
+export interface ContentfulLinkAsset {
+  sys: {
+    id: string;
+    linkType: string;
+    type: string;
+  };
 }
 
 export const ContentfulFieldNormalizer = 'oryx.ContentfulFieldNormalizer*';
@@ -20,8 +30,21 @@ export function contentfulFieldNormalizer(
     };
   }
 
+  if (isAsset(data.type, data.value)) {
+    return {
+      ...data,
+      value: data.assets?.[data.value.sys.id],
+    };
+  }
+
   return data;
 }
+
+const isAsset = (typ: string, value: unknown): value is ContentfulLinkAsset => {
+  return (
+    typ === 'Link' && (value as ContentfulLinkAsset).sys.linkType === 'Asset'
+  );
+};
 
 export const contentfulFieldNormalizers: Provider[] = [
   {

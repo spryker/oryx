@@ -14,6 +14,7 @@ const mockLocaleService = {
 
 const mockTransformerService = {
   transform: vi.fn(),
+  do: vi.fn(),
 };
 
 const mockHttpService = {
@@ -119,6 +120,7 @@ describe('DefaultContentfulContentAdapter', () => {
       return of(null);
     });
     mockTransformerService.transform.mockImplementation((data) => of(data));
+    mockTransformerService.do.mockImplementation((data) => () => of(null));
   });
 
   afterEach(() => {
@@ -133,8 +135,7 @@ describe('DefaultContentfulContentAdapter', () => {
 
       adapter.getAll(qualifier).subscribe(callback);
 
-      expect(mockHttpService.get).toHaveBeenNthCalledWith(
-        1,
+      expect(mockHttpService.get).toHaveBeenCalledWith(
         `${url}/entries?content_type=${
           qualifier.type
         }&locale=${mockLocales[0].name.replace('_', '-')}`,
@@ -142,50 +143,48 @@ describe('DefaultContentfulContentAdapter', () => {
           headers: { Authorization: `Bearer ${mockToken}` },
         }
       );
-      expect(mockHttpService.get).toHaveBeenNthCalledWith(
-        2,
+      expect(mockHttpService.get).toHaveBeenCalledWith(
         `${url}/content_types?name=${mockEntries.items[0].sys.contentType.sys.id}`,
         {
           headers: { Authorization: `Bearer ${mockToken}` },
         }
       );
-      expect(mockHttpService.get).toHaveBeenNthCalledWith(
-        3,
+      expect(mockHttpService.get).toHaveBeenCalledWith(
         `${url}/content_types?name=${mockEntries.items[1].sys.contentType.sys.id}`,
         {
           headers: { Authorization: `Bearer ${mockToken}` },
         }
       );
-      expect(mockTransformerService.transform).toHaveBeenNthCalledWith(
-        1,
+      expect(mockTransformerService.transform).toHaveBeenCalledWith(
         {
+          assets: null,
           key: 'content',
           value: mockEntries.items[0].fields.content,
           type: mockContentTypes.items[0].fields[1].type,
         },
         ContentfulFieldNormalizer
       );
-      expect(mockTransformerService.transform).toHaveBeenNthCalledWith(
-        2,
+      expect(mockTransformerService.transform).toHaveBeenCalledWith(
         {
+          assets: null,
           key: 'id',
           value: mockEntries.items[0].fields.id,
           type: mockContentTypes.items[0].fields[0].type,
         },
         ContentfulFieldNormalizer
       );
-      expect(mockTransformerService.transform).toHaveBeenNthCalledWith(
-        3,
+      expect(mockTransformerService.transform).toHaveBeenCalledWith(
         {
+          assets: null,
           key: 'content',
           value: mockEntries.items[1].fields.content,
           type: mockContentTypes.items[0].fields[1].type,
         },
         ContentfulFieldNormalizer
       );
-      expect(mockTransformerService.transform).toHaveBeenNthCalledWith(
-        4,
+      expect(mockTransformerService.transform).toHaveBeenCalledWith(
         {
+          assets: null,
           key: 'id',
           value: mockEntries.items[1].fields.id,
           type: mockContentTypes.items[0].fields[0].type,
