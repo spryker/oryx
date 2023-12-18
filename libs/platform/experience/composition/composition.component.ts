@@ -89,7 +89,7 @@ export class CompositionComponent extends LayoutMixin(
     for (const [type, context] of Object.entries(contexts ?? {})) {
       const isContent = this.contents
         .flat()
-        .some((_contents) =>
+        .some((_contents: Record<string, { types: string[] }>) =>
           Object.values(_contents).some((value) => value.types.includes(type))
         );
 
