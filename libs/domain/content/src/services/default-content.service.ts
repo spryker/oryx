@@ -1,7 +1,17 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { catchError, merge, Observable, of, scan, startWith } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  map,
+  merge,
+  Observable,
+  of,
+  scan,
+  skip,
+  startWith,
+} from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
@@ -40,34 +50,37 @@ export class DefaultContentService implements ContentService {
     loader: (q: ContentQualifier) => {
       const adapters = this.getAdapters(q);
       return adapters.length
-        ? merge(
-            ...adapters.map((adapter) =>
+        ? combineLatest(
+            adapters.map((adapter) =>
               adapter.getAll(q).pipe(
                 startWith(null),
                 catchError(() => of(null))
               )
             )
           ).pipe(
-            scan<Content[] | null, Content[] | null>((acc, curr) => {
-              if (!curr?.length) return acc;
+            skip(1),
+            map((data) => {
+              return data?.reduce((acc, curr) => {
+                if (!curr?.length) return acc;
 
-              acc ??= [];
+                acc ??= [];
 
-              for (const item of curr) {
-                const index = acc?.findIndex(
-                  (content) => content.id === item.id
-                );
+                for (const item of curr) {
+                  const index = acc?.findIndex(
+                    (content) => content.id === item.id
+                  );
 
-                if (index !== -1) {
-                  acc?.splice(index, 1, item);
-                  continue;
+                  if (index !== -1) {
+                    acc?.splice(index, 1, item);
+                    continue;
+                  }
+
+                  acc?.push(item);
                 }
 
-                acc?.push(item);
-              }
-
-              return acc;
-            }, null)
+                return acc;
+              }, null);
+            })
           )
         : of(null);
     },
