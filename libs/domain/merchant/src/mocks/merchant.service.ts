@@ -7,6 +7,8 @@ export class MockMerchantService implements Partial<MerchantService> {
     {
       id: '1',
       name: 'Merchant 1',
+      banner:
+        'https://d2s0ynfc62ej12.cloudfront.net/merchant/sonyexperts-banner.png',
       schedule: {
         weekdays: [
           {
