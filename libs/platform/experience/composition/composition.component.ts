@@ -79,6 +79,7 @@ export class CompositionComponent extends LayoutMixin(
     if (!Object.keys(contexts ?? {}).length) {
       for (const key of this.providedContext) {
         this.contextController.remove(key);
+        this.providedContext = [];
       }
 
       return;
@@ -94,7 +95,7 @@ export class CompositionComponent extends LayoutMixin(
     }
 
     for (const key of this.providedContext) {
-      if (contexts?.[key]) continue;
+      if (types.includes(key)) continue;
       this.contextController.remove(key);
     }
 
