@@ -207,13 +207,17 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.getLayoutPluginsRender({ template: this.$template() })
     );
 
-    protected renderLayout(props: LayoutMixinRender): TemplateResult {
+    protected renderLayout(props: LayoutMixinRender): TemplateResult | void {
       const { inlineStyles = '', template } = props;
 
       this.template$.next(template);
-      const layoutStyles = this.layoutStyles() ?? '';
+      const layoutStyles = this.layoutStyles();
       const styles = inlineStyles + layoutStyles;
       const layoutTemplate = this.$layoutRenderElement();
+
+      if (layoutStyles === undefined) {
+        return;
+      }
 
       return html`
         ${layoutTemplate?.pre} ${layoutTemplate?.outer ?? template}
