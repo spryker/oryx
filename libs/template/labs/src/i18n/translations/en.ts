@@ -79,6 +79,13 @@ const search = {
   'search.facet.rating.up': '& up',
 };
 
+const merchant = {
+  'merchant.schedule.weekdays': 'Opening hours',
+  'merchant.schedule.dates': 'Upcoming dates',
+  'merchant.schedule.<note>': '({note})',
+  'merchant.schedule.<date>-<note>': '{date} ({note})',
+};
+
 export default {
   ...product,
   ...cart,
@@ -89,4 +96,5 @@ export default {
   ...picking,
   ...ui,
   ...search,
+  ...merchant,
 };

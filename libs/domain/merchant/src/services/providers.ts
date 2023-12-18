@@ -1,4 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
+import { provideExperienceData } from '@spryker-oryx/experience';
+import { merchantPage } from '../presets';
 import {
   DefaultMerchantAdapter,
   MerchantAdapter,
@@ -14,7 +16,7 @@ import {
   offerPriceNormalizer,
 } from './adapter/normalizers/offer.normalizer';
 import { DefaultMerchantService } from './default-merchant.service';
-import { MerchantContextFallback } from './merchant.context';
+import { merchantContextProviders } from './merchant.context';
 import { MerchantService } from './merchant.service';
 import { merchantQueries, merchantsEffects } from './state';
 
@@ -48,7 +50,8 @@ export const merchantProviders: Provider[] = [
     useValue: merchantNormalizer,
   },
   ...merchantQueries,
-  MerchantContextFallback,
   ...merchantsEffects,
   ...merchantIncludes,
+  ...merchantContextProviders,
+  provideExperienceData(merchantPage),
 ];
