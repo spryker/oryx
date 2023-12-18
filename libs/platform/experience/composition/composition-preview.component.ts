@@ -176,7 +176,6 @@ export class CompositionPreviewComponent extends CompositionComponent {
         el.style.removeProperty('--ebp-left');
         el.style.removeProperty('--ebp-width');
         el.style.removeProperty('--ebp-height');
-        console.log('remove', el.style.getPropertyValue('--ebp-top'));
       }
     } else {
       const { position } = getComputedStyle(element);
