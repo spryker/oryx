@@ -128,17 +128,17 @@ describe('DefaultContentService', () => {
       const callback = vi.fn();
       const qualifier = { id: '123', entities: ['a', 'b'] };
       mockContentAdapterA.getAll.mockReturnValue(
-        of([{ nameA: 'adapter 123' }])
+        of([{ nameA: 'adapter 123', id: 'A' }])
       );
       mockContentAdapterB.getAll.mockReturnValue(
-        of([{ nameB: 'adapter 321' }])
+        of([{ nameB: 'adapter 321', id: 'B' }])
       );
       service.getAll(qualifier).subscribe(callback);
       expect(mockContentAdapterA.getAll).toHaveBeenCalledWith(qualifier);
       expect(mockContentAdapterB.getAll).toHaveBeenCalledWith(qualifier);
       expect(callback).toHaveBeenCalledWith([
-        { nameA: 'adapter 123' },
-        { nameB: 'adapter 321' },
+        { nameA: 'adapter 123', id: 'A' },
+        { nameB: 'adapter 321', id: 'B' },
       ]);
     });
 

@@ -58,7 +58,7 @@ export class DefaultContentService implements ContentService {
                   (content) => content.id === item.id
                 );
 
-                if (index !== undefined) {
+                if (index !== -1) {
                   acc?.splice(index, 1, item);
                   continue;
                 }
