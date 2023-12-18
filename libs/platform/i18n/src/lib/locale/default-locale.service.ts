@@ -45,13 +45,7 @@ export class DefaultLocaleService implements LocaleService {
       .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
     this.dateFormat$ = this.get().pipe(
-      map((locale) =>
-        Intl.DateTimeFormat(locale.replace('_', '-'), {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        })
-      ),
+      map((locale) => Intl.DateTimeFormat(locale.replace('_', '-'))),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
 
