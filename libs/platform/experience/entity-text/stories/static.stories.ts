@@ -4,13 +4,10 @@ import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { EntityTextOptions } from '../entity-text.model';
 
 export default {
   title: `${storybookPrefix}/Entity Text`,
 };
-
-type Props = EntityTextOptions /*& FieldComponentProperties*/;
 
 const Template: Story = (): TemplateResult => {
   resolve(ContextService).provide(document.body, 'sku', {

@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/router';
 import { TextMixin } from '@spryker-oryx/ui/text';
-import { Signal, computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { UnsafeHTMLDirective } from 'lit/directives/unsafe-html';
@@ -18,12 +18,10 @@ export class EntityTextComponent extends TextMixin(
   protected linkService = resolve(LinkService);
   protected contextService = resolve(ContextService);
 
-  protected $data: Signal<string | undefined> = computed<string | undefined>(
-    () => {
-      const { entity: type, field } = this.$options();
-      return this.entityService.getField({ element: this, type, field });
-    }
-  );
+  protected $data = computed<string | undefined>(() => {
+    const { entity: type, field } = this.$options();
+    return this.entityService.getField({ element: this, type, field });
+  });
 
   protected $text = computed(() => {
     const text = this.$data();
@@ -44,13 +42,10 @@ export class EntityTextComponent extends TextMixin(
 
   protected override render(): TemplateResult | void {
     const content = this.renderContent();
-    if (!content) return;
     const { tag } = this.$options();
-    if (tag) {
-      return html`<oryx-heading .tag=${tag}>${content}</oryx-heading>`;
-    } else {
-      return content;
-    }
+    return tag && content
+      ? html`<oryx-heading .tag=${tag}>${content}</oryx-heading>`
+      : content;
   }
 
   protected renderContent(): TemplateResult | void {
@@ -78,10 +73,9 @@ export class EntityTextComponent extends TextMixin(
 
   protected renderPrefix(): TemplateResult | void {
     const { prefix } = this.$options();
-    if (prefix) {
-      return html`<span part="prefix" styling="padding-inline-end: 8px;"
-        >${this.$options()?.prefix}</span
-      >`;
-    }
+    if (!prefix) return;
+    return html`<span part="prefix" styling="padding-inline-end: 8px;">
+      ${prefix}
+    </span>`;
   }
 }
