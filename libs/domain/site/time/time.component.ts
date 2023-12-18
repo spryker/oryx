@@ -1,12 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
-import {
-  computed,
-  hydrate,
-  signalAware,
-  signalProperty,
-} from '@spryker-oryx/utilities';
+import { computed, hydrate, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { SiteTimeComponentAttributes } from './time.model';
@@ -19,7 +14,7 @@ export class SiteTimeComponent
 {
   protected localeService = resolve(LocaleService);
 
-  @signalProperty() stamp?: string | number | Date;
+  @property() stamp?: string | number | Date;
   @property() i18nToken?: string;
 
   protected $time = computed(() =>
