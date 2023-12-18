@@ -3,3 +3,4 @@ export * from './default-router.service';
 export * from './link';
 export * from './router-hydration';
 export * from './router.service';
+export * from './route-entity-context-fallback';
