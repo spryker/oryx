@@ -41,7 +41,7 @@ export const experienceArticlePages = [
             id: `${tag}-list`,
             meta: {
               title: `${tag} List`,
-              route: `/${tag}`,
+              route: `/${tag}/:id`,
               routeType: tag,
             },
             components: [
