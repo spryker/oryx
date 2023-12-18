@@ -74,8 +74,8 @@ export class EntityTextComponent extends TextMixin(
   protected renderPrefix(): TemplateResult | void {
     const { prefix } = this.$options();
     if (!prefix) return;
-    return html`<span part="prefix" styling="padding-inline-end: 8px;">
-      ${prefix}
-    </span>`;
+    return html`<span part="prefix" styling="padding-inline-end: 8px;"
+      >${prefix}</span
+    >`;
   }
 }
