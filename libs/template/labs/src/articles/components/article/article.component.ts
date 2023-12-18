@@ -18,7 +18,7 @@ export class ArticleComponent extends LitElement {
   protected contextController = new ContextController(this);
 
   protected $articleQualifier = signal(
-    this.contextController.get(ContentContext.Qualifier)
+    this.contextController.get(ContentContext.Content)
   );
 
   protected $data = computed(() => {

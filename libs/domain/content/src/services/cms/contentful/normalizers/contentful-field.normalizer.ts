@@ -1,6 +1,7 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { marked } from 'marked';
+import { ContentfulCmsModel } from '../contentful.api.model';
 import { ContentfulAssets } from '../contentful.model';
 
 export interface ContentfulContentField {
@@ -8,14 +9,6 @@ export interface ContentfulContentField {
   key: string;
   value: unknown;
   assets?: Record<string, ContentfulAssets>;
-}
-
-export interface ContentfulLinkAsset {
-  sys: {
-    id: string;
-    linkType: string;
-    type: string;
-  };
 }
 
 export const ContentfulFieldNormalizer = 'oryx.ContentfulFieldNormalizer*';
@@ -40,9 +33,13 @@ export function contentfulFieldNormalizer(
   return data;
 }
 
-const isAsset = (typ: string, value: unknown): value is ContentfulLinkAsset => {
+const isAsset = (
+  type: string,
+  value: unknown
+): value is ContentfulCmsModel.LinkAsset => {
   return (
-    typ === 'Link' && (value as ContentfulLinkAsset).sys.linkType === 'Asset'
+    type === 'Link' &&
+    (value as ContentfulCmsModel.LinkAsset).sys.linkType === 'Asset'
   );
 };
 

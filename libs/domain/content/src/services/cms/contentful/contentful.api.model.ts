@@ -1,4 +1,12 @@
 export module ContentfulCmsModel {
+  export interface LinkAsset {
+    sys: {
+      id: string;
+      linkType: 'Asset';
+      type: string;
+    };
+  }
+
   export interface Type {
     disabled: boolean;
     id: string;

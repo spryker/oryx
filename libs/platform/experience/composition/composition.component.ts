@@ -42,8 +42,6 @@ export class CompositionComponent extends LayoutMixin(
   protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
-  // TODO: Temporary cause of circular dependency.
-  protected contents = resolve('oryx.ContentConfig*', []);
   protected entityService = resolve(EntityService);
 
   protected contextController = new ContextController(this);
@@ -87,19 +85,6 @@ export class CompositionComponent extends LayoutMixin(
     }
 
     for (const [type, context] of Object.entries(contexts ?? {})) {
-      const isContent = this.contents
-        .flat()
-        .some((_contents: Record<string, { types: string[] }>) =>
-          Object.values(_contents).some((value) => value.types.includes(type))
-        );
-
-      if (isContent) {
-        types.push('content-qualifier');
-        this.contextController.provide('content-qualifier', context);
-        continue;
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const key = signal(this.entityService.getContextKey(type))()!;
 
       if (key) {
