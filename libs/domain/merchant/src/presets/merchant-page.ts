@@ -60,7 +60,6 @@ export const merchantPage: ExperienceComponent = {
             },
           ],
         },
-
         {
           type: 'oryx-composition',
           options: { rules: [{ layout: { type: 'list' } }] },
