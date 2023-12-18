@@ -1,3 +1,5 @@
+import { ContextService } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
@@ -36,8 +38,8 @@ export default {
 const Template: Story<MerchantScheduleComponentOptions> = (
   props: MerchantScheduleComponentOptions
 ): TemplateResult => {
+  resolve(ContextService).provide(document.body, 'merchant', { id: '1' });
   return html` <oryx-merchant-schedule
-    merchant="1"
     .options=${{ ...props }}
   ></oryx-merchant-schedule>`;
 };

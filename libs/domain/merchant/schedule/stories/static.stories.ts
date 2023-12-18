@@ -1,3 +1,5 @@
+import { ContextService } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
@@ -10,7 +12,8 @@ export default {
 };
 
 const Template: Story = (): TemplateResult => {
-  return html` <oryx-merchant-schedule merchant="1"></oryx-merchant-schedule> `;
+  resolve(ContextService).provide(document.body, 'merchant', { id: '1' });
+  return html` <oryx-merchant-schedule></oryx-merchant-schedule> `;
 };
 
 export const Static = Template.bind({});
