@@ -12,18 +12,15 @@ export class EntityImageComponent extends ContentMixin<EntityImageOptions>(
 ) {
   protected entityService = resolve(EntityService);
 
-  protected $entityField: Signal<string | undefined> = computed<
-    string | undefined
-  >(() => {
-    return this.entityService.getField<string>({
-      element: this,
-      type: this.$options().entity,
-      field: this.$options().field,
-    });
-  });
+  protected $data: Signal<string | undefined> = computed<string | undefined>(
+    () => {
+      const { entity: type, field } = this.$options();
+      return this.entityService.getField({ element: this, type, field });
+    }
+  );
 
   protected override render(): TemplateResult | void {
-    const imageUrl = this.$entityField();
+    const imageUrl = this.$data();
 
     if (!imageUrl && !this.$options().renderFallback) return;
 
