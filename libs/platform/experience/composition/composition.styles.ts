@@ -3,7 +3,7 @@ import { css } from 'lit';
 
 const compositionPreviewStylesNew = css`
   :host {
-    --eb-preview-color: var(--oryx-color-info-9);
+    --eb-preview-color: var(--oryx-color-info-11);
     --eb-preview-radius: 4px;
   }
 
@@ -29,11 +29,6 @@ const compositionPreviewStylesNew = css`
     inset-inline-start: 0;
   }
 
-  .eb-preview-focus:is(.ebp-absolute, ebp-sticky)::after {
-    inset-block-start: -26px;
-    inset-inline-start: 0;
-  }
-
   .eb-preview-focus::after {
     content: attr(name);
     inset-block-start: calc(
@@ -47,8 +42,13 @@ const compositionPreviewStylesNew = css`
     z-index: var(--oryx-overlay-z-index, 3);
     background-color: var(--eb-preview-color);
     font: 500 16px/22px Montserrat, sans-serif;
-    color: black;
+    color: var(--oryx-color-info-1);
     box-sizing: border-box;
+  }
+
+  .eb-preview-focus:is(.ebp-absolute, ebp-sticky)::after {
+    inset-block-start: -26px;
+    inset-inline-start: 0;
   }
 `;
 
