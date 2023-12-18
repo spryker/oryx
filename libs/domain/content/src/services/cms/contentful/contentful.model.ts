@@ -15,3 +15,9 @@ declare global {
     [ContentfulSpace]: string;
   }
 }
+
+export interface ContentfulAssets {
+  description: string;
+  title: string;
+  url: string;
+}
