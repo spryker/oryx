@@ -31,13 +31,11 @@ export const entityTextSchema: ContentComponentSchema<EntityTextComponent> = {
         { value: HeadingTag.Caption },
       ],
     },
-
     prefix: {
       type: FormFieldType.Text,
     },
-
-    link: {
-      type: FormFieldType.Boolean,
-    },
+    // link: {
+    //   type: FormFieldType.Boolean,
+    // },
   },
 };
