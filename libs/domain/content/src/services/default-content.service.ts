@@ -1,7 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { catchError, merge, Observable, of, scan } from 'rxjs';
+import { catchError, merge, Observable, of, scan, startWith } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
@@ -42,13 +42,32 @@ export class DefaultContentService implements ContentService {
       return adapters.length
         ? merge(
             ...adapters.map((adapter) =>
-              adapter.getAll(q).pipe(catchError(() => of(null)))
+              adapter.getAll(q).pipe(
+                startWith(null),
+                catchError(() => of(null))
+              )
             )
           ).pipe(
-            scan<Content[] | null, Content[] | null>(
-              (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
-              null
-            )
+            scan<Content[] | null, Content[] | null>((acc, curr) => {
+              if (!curr?.length) return acc;
+
+              acc ??= [];
+
+              for (const item of curr) {
+                const index = acc?.findIndex(
+                  (content) => content.id === item.id
+                );
+
+                if (index !== undefined) {
+                  acc?.splice(index, 1, item);
+                  continue;
+                }
+
+                acc?.push(item);
+              }
+
+              return acc;
+            }, null)
           )
         : of(null);
     },
