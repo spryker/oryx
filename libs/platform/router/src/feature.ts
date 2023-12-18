@@ -1,12 +1,13 @@
-import { AppFeature } from '@spryker-oryx/core';
+import { AppFeature, ContextFallback, EntityContext } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import {
   DefaultLinkService,
   DefaultRouterService,
   LinkService,
-  routerHydration,
   RouterService,
+  routeEntityContextFallbackFactory,
+  routerHydration,
 } from './services';
 
 export class RouterFeature implements AppFeature {
@@ -19,6 +20,10 @@ export class RouterFeature implements AppFeature {
         ? [{ provide: LinkService, useClass: DefaultLinkService }]
         : []),
       routerHydration,
+      {
+        provide: `${ContextFallback}${EntityContext}`,
+        useFactory: routeEntityContextFallbackFactory,
+      },
     ];
   }
 }
