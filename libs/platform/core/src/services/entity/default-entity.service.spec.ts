@@ -1,4 +1,4 @@
-import { provideEntity } from '@spryker-oryx/core';
+import { EntityContext, provideEntity } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { firstValueFrom, of } from 'rxjs';
 import { ContextService } from '../context';
@@ -93,6 +93,23 @@ describe('DefaultEntityService', () => {
         service.get({ type: 'customType', qualifier: 'someQualifier' })
       );
       expect(result).toEqual({ customData: 'someQualifier' });
+    });
+  });
+
+  describe('get method with type inference', () => {
+    it('should fetch type from context and return entity data', async () => {
+      mockContextService.get.mockImplementation((element, context) => of('testType'));
+      const data = await firstValueFrom(service.get({ element: 'someElement' as any }));
+      expect(mockContextService.get).toHaveBeenCalledWith('someElement', EntityContext);
+      expect(data).toEqual(mockResult);
+    });
+
+    it('should throw an error when type cannot be resolved from context', async () => {
+      mockContextService.get.mockImplementation((element, context) => of(undefined as any));
+
+      await expect(
+        firstValueFrom(service.get({ element: 'unknownElement' as any}))
+      ).rejects.toThrow('No type resolved and no type provided for entity');
     });
   });
 });
