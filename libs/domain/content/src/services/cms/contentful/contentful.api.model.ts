@@ -9,6 +9,23 @@ export module ContentfulCmsModel {
     type: string;
   }
 
+  export interface Asset {
+    description: string;
+    title: string;
+    file: {
+      contentType: string;
+      details: {
+        size: number;
+        image?: {
+          width: number;
+          height: number;
+        };
+      };
+      fileName: string;
+      url: string;
+    };
+  }
+
   export interface Locale {
     code: string;
     contentDeliveryApi: boolean;
@@ -37,5 +54,6 @@ export module ContentfulCmsModel {
 
   export type TypesResponse = Response<Type[]>;
   export type EntriesResponse = Response<Entry>;
+  export type AssetsResponse = Response<Asset>;
   export type LocalesResponse = { items: Locale[] };
 }

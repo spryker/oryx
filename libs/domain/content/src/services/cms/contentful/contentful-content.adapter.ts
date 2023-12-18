@@ -14,8 +14,13 @@ import {
 import { Content, ContentMeta, ContentQualifier } from '../../../models';
 import { ContentAdapter } from '../../adapter';
 import { ContentfulCmsModel } from './contentful.api.model';
-import { ContentfulSpace, ContentfulToken } from './contentful.model';
 import {
+  ContentfulAssets,
+  ContentfulSpace,
+  ContentfulToken,
+} from './contentful.model';
+import {
+  ContentfulAssetsNormalizer,
   ContentfulContentField,
   ContentfulFieldNormalizer,
 } from './normalizers';
@@ -50,8 +55,8 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   }
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
-    return this.getEntries(qualifier).pipe(
-      switchMap((records) => {
+    return combineLatest([this.getEntries(qualifier), this.getAssets()]).pipe(
+      switchMap(([records]) => {
         return from(records).pipe(
           switchMap((record) => this.parseEntryItem(record)),
           reduce((a, c) => [...a, c], [] as Content[])
@@ -84,36 +89,38 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   ): Observable<ContentfulEntry[]> {
     return this.getLocalLocale().pipe(
       switchMap((locale) =>
-        this.http
-          .get<ContentfulCmsModel.EntriesResponse>(
+        combineLatest([
+          this.http.get<ContentfulCmsModel.EntriesResponse>(
             `${this.url}/entries?${this.getParams({ ...qualifier, locale })}`,
             { headers: { Authorization: `Bearer ${this.token}` } }
-          )
-          .pipe(
-            switchMap(({ items }) => {
-              const types$: Record<
-                string,
-                Observable<Record<string, ContentfulCmsModel.Type>>
-              > = {};
+          ),
+          this.getAssets(),
+        ]).pipe(
+          switchMap(([{ items }, assets]) => {
+            const types$: Record<
+              string,
+              Observable<Record<string, ContentfulCmsModel.Type>>
+            > = {};
 
-              for (const entry of items) {
-                const type = entry.sys.contentType.sys.id;
-                types$[type] ??= this.getContentFields(type);
-              }
+            for (const entry of items) {
+              const type = entry.sys.contentType.sys.id;
+              types$[type] ??= this.getContentFields(type);
+            }
 
-              return combineLatest([of(items), forkJoin(types$)]);
-            }),
-            map(([items, types]) =>
-              items.map((record) =>
-                this.parseEntry(
-                  record,
-                  types[record.sys.contentType.sys.id],
-                  locale,
-                  qualifier
-                )
+            return combineLatest([of(items), forkJoin(types$), of(assets)]);
+          }),
+          map(([items, types, assets]) => {
+            return items.map((record) =>
+              this.parseEntry(
+                record,
+                types[record.sys.contentType.sys.id],
+                locale,
+                qualifier,
+                assets
               )
-            )
-          )
+            );
+          })
+        )
       )
     );
   }
@@ -123,10 +130,11 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     types: Record<string, ContentfulCmsModel.Type>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     locale: string,
-    qualifier: ContentQualifier
+    qualifier: ContentQualifier,
+    assets: Record<string, ContentfulAssets>
   ): ContentfulEntry {
     return {
-      fields: this.parseEntryFields(record.fields, types, locale),
+      fields: this.parseEntryFields(record.fields, types, locale, assets),
       _meta: {
         id: record.sys.id,
         type: qualifier.type ?? record.sys.contentType.sys.id,
@@ -139,12 +147,14 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     fields: ContentfulCmsModel.Entry,
     types: Record<string, ContentfulCmsModel.Type>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    locale: string
+    locale: string,
+    assets: Record<string, ContentfulAssets>
   ): ContentfulContentField[] {
     return Object.entries(fields).map(([key, value]) => ({
       key,
       value,
       type: types[key]?.type ?? '',
+      assets,
     }));
   }
 
@@ -195,6 +205,14 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
           )
         )
       );
+  }
+
+  protected getAssets(): Observable<Record<string, ContentfulAssets>> {
+    return this.http
+      .get<ContentfulCmsModel.Asset>(`${this.url}/assets`, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
+      .pipe(this.transformer.do(ContentfulAssetsNormalizer));
   }
 
   protected getCmsLocales(): Observable<ContentfulCmsModel.Locale[]> {
