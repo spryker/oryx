@@ -26,11 +26,11 @@ export interface LayoutService {
   getStyles(
     sheets: ResponsiveLayoutInfo,
     options?: LayoutProperties
-  ): Observable<string>;
+  ): Observable<string | undefined>;
   getRender(
     config: LayoutIncomingConfig
   ): Observable<LayoutPluginRender | undefined>;
-  getStylesFromOptions(data: LayoutStyleConfig): Observable<string>;
+  getStylesFromOptions(data: LayoutStyleConfig): Observable<string | undefined>;
 }
 
 declare global {

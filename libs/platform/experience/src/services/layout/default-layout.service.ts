@@ -39,7 +39,7 @@ export class DefaultLayoutService implements LayoutService {
   getStyles(
     layoutInfo: ResponsiveLayoutInfo,
     layoutOptions: LayoutProperties
-  ): Observable<string> {
+  ): Observable<string | undefined> {
     const observables: Observable<string>[] = [];
 
     const keys = Object.keys(layoutInfo);
@@ -59,11 +59,19 @@ export class DefaultLayoutService implements LayoutService {
     });
 
     return observables.length > 0
-      ? merge(...observables).pipe(reduce((acc, curr) => acc + curr, ''))
-      : of('');
+      ? merge(...observables).pipe(
+          reduce(
+            (acc: string | undefined, curr) =>
+              curr ? (acc ?? '') + curr : acc,
+            undefined
+          )
+        )
+      : of(undefined);
   }
 
-  getStylesFromOptions(data: LayoutStyleConfig): Observable<string> {
+  getStylesFromOptions(
+    data: LayoutStyleConfig
+  ): Observable<string | undefined> {
     const { activeHostOptions, id, rules, composition, screen } = data;
 
     if (composition) {

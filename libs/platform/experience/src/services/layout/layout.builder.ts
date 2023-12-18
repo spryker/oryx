@@ -43,8 +43,12 @@ export interface LayoutBuilder {
    *
    * The concatenated styles can be used inside a `<style>` tag.
    */
-  getCompositionStyles(data: CompositionStylesParams): Observable<string>;
-  getStylesFromOptions(params: StylesFromOptionsParams): Observable<string>;
+  getCompositionStyles(
+    data: CompositionStylesParams
+  ): Observable<string | undefined>;
+  getStylesFromOptions(
+    params: StylesFromOptionsParams
+  ): Observable<string | undefined>;
   getActiveLayoutRules(
     rules?: StyleRuleSet[],
     screen?: string

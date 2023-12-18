@@ -52,7 +52,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     protected injector = inject(INJECTOR)
   ) {}
 
-  getCompositionStyles(data: CompositionStylesParams): Observable<string> {
+  getCompositionStyles(
+    data: CompositionStylesParams
+  ): Observable<string | undefined> {
     const { activeHostOptions, screen, composition } = data;
 
     return from(composition).pipe(
@@ -64,14 +66,19 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
           screen,
         })
       ),
-      reduce((acc, curr) => `${acc}${curr}`, '')
+      reduce(
+        (acc: string | undefined, curr) => (curr ? `${acc ?? ''}${curr}` : acc),
+        undefined
+      )
     );
   }
 
-  getStylesFromOptions(data: StylesFromOptionsParams): Observable<string> {
+  getStylesFromOptions(
+    data: StylesFromOptionsParams
+  ): Observable<string | undefined> {
     const { rules, id, activeHostOptions, screen } = data;
 
-    if (!rules?.length) return of('');
+    if (!rules?.length) return of(undefined);
 
     return this.getActiveLayoutRules(rules, screen).pipe(
       map((rulesOptions) => ({ ...rulesOptions, ...activeHostOptions })),
@@ -85,8 +92,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
             )
           ),
           reduce(
-            (acc, curr) => (acc.includes(curr) ? acc : `${acc}${curr}`),
-            ''
+            (acc: string | undefined, curr) =>
+              acc?.includes(curr) ? acc : `${acc}${curr}`,
+            undefined
           )
         )
       )

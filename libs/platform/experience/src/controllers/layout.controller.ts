@@ -46,7 +46,7 @@ export class LayoutController {
     properties: string[],
     rules: StyleRuleSet[] = [],
     screen?: string
-  ): Observable<string> {
+  ): Observable<string | undefined> {
     return featureVersion >= '1.2'
       ? this.getStandardStyles(properties, rules, screen)
       : this.getLegacyStyles(properties, rules);
@@ -56,7 +56,7 @@ export class LayoutController {
     properties: string[],
     rules: StyleRuleSet[],
     screen?: string
-  ): Observable<string> {
+  ): Observable<string | undefined> {
     const props = this.normalizeProperties(properties, rules);
     const infos = this.getLayoutInfos(props, rules);
 
@@ -70,8 +70,10 @@ export class LayoutController {
         this.getComponentStyles(props, rules, this.host.uid),
       ])
     ).pipe(
-      map(
-        ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
+      map(([layoutStyles, componentStyles]) =>
+        layoutStyles || componentStyles
+          ? `${layoutStyles}${componentStyles}`
+          : undefined
       )
     );
   }
@@ -253,7 +255,7 @@ export class LayoutController {
     layoutProperties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = [],
     uid?: string
-  ): Observable<string> {
+  ): Observable<string | undefined> {
     let styles = '';
 
     if (layoutProperties.length === 1 && !this.hasLayout(rules)) {
@@ -262,7 +264,11 @@ export class LayoutController {
 
     return this.layoutService
       .getStylesFromOptions({ rules, id: uid })
-      .pipe(map((optionsStyles) => `${styles}${optionsStyles}`));
+      .pipe(
+        map((optionsStyles) =>
+          optionsStyles || styles ? `${styles}${optionsStyles}` : undefined
+        )
+      );
   }
 
   protected normalizeProperties(
