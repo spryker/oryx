@@ -1,6 +1,6 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const merchantOpeningHoursComponent = componentDef({
+export const merchantScheduleComponent = componentDef({
   name: 'oryx-merchant-schedule',
   impl: () =>
     import('./schedule.component').then((m) => m.MerchantScheduleComponent),

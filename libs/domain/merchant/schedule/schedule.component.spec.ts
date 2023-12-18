@@ -6,7 +6,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { Merchant, MerchantService } from '../src';
 import { MerchantScheduleComponent } from './schedule.component';
-import { merchantOpeningHoursComponent } from './schedule.def';
+import { merchantScheduleComponent } from './schedule.def';
 
 class MockMerchantService implements Partial<MerchantService> {
   get = vi.fn();
@@ -16,17 +16,6 @@ const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14));
 const oneWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 7));
 const oneWeeksAhead = new Date(new Date().setDate(new Date().getDate() + 7));
 const twoWeeksAhead = new Date(new Date().setDate(new Date().getDate() + 14));
-
-// const lastWeek = new Date(new Date().setDate(new Date().getDate() - 6));
-// const lastMonth = new Date(new Date().setDate(new Date().getDate() - 20));
-// const lastQuarter = new Date(new Date().setDate(new Date().getDate() - 40));
-// const lastYear = new Date(new Date().setDate(new Date().getDate() - 190));
-// const twoYearsBack = new Date(new Date().setDate(new Date().getDate() - 400));
-// const aWeekAhead = new Date(new Date().setDate(new Date().getDate() + 4));
-// const aMonthAhead = new Date(new Date().setDate(new Date().getDate() + 20));
-// const aQuarterAhead = new Date(new Date().setDate(new Date().getDate() + 40));
-// const aYearAhead = new Date(new Date().setDate(new Date().getDate() + 180));
-// const twoYearsAhead = new Date(new Date().setDate(new Date().getDate() + 400));
 
 const mockMerchant: Partial<Merchant> = {
   id: '1',
@@ -77,7 +66,7 @@ describe('MerchantScheduleComponent', () => {
   let merchantService: MockMerchantService;
 
   beforeAll(async () => {
-    await useComponent(merchantOpeningHoursComponent);
+    await useComponent(merchantScheduleComponent);
   });
 
   beforeEach(async () => {
