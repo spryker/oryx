@@ -78,6 +78,10 @@ export class DefaultEntityService implements EntityService {
     );
   }
 
+  getContextKey(type: string): Observable<string | null> {
+    return of(this.injector.inject(`${EntityProvider}${type}`, null)?.context);
+  }
+
   protected getConfig<E, Q>(type: string): EntityProvider<E, Q> {
     return this.injector.inject(`${EntityProvider}${type}`, null);
   }

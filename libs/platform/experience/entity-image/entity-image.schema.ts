@@ -4,7 +4,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { EntityImageComponent } from './entity-image.component';
 
 export const entityImageSchema: ContentComponentSchema<EntityImageComponent> = {
-  name: 'Entity text',
+  name: 'Entity image',
   group: 'Experience',
   icon: IconTypes.Image,
   options: {

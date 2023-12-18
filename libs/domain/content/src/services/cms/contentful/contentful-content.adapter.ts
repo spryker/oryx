@@ -10,6 +10,7 @@ import {
   of,
   reduce,
   switchMap,
+  withLatestFrom,
 } from 'rxjs';
 import { Content, ContentMeta, ContentQualifier } from '../../../models';
 import { ContentAdapter } from '../../adapter';
@@ -89,38 +90,38 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   ): Observable<ContentfulEntry[]> {
     return this.getLocalLocale().pipe(
       switchMap((locale) =>
-        combineLatest([
-          this.http.get<ContentfulCmsModel.EntriesResponse>(
+        this.http
+          .get<ContentfulCmsModel.EntriesResponse>(
             `${this.url}/entries?${this.getParams({ ...qualifier, locale })}`,
             { headers: { Authorization: `Bearer ${this.token}` } }
-          ),
-          this.getAssets(),
-        ]).pipe(
-          switchMap(([{ items }, assets]) => {
-            const types$: Record<
-              string,
-              Observable<Record<string, ContentfulCmsModel.Type>>
-            > = {};
+          )
+          .pipe(
+            switchMap(({ items }) => {
+              const types$: Record<
+                string,
+                Observable<Record<string, ContentfulCmsModel.Type>>
+              > = {};
 
-            for (const entry of items) {
-              const type = entry.sys.contentType.sys.id;
-              types$[type] ??= this.getContentFields(type);
-            }
+              for (const entry of items) {
+                const type = entry.sys.contentType.sys.id;
+                types$[type] ??= this.getContentFields(type);
+              }
 
-            return combineLatest([of(items), forkJoin(types$), of(assets)]);
-          }),
-          map(([items, types, assets]) => {
-            return items.map((record) =>
-              this.parseEntry(
-                record,
-                types[record.sys.contentType.sys.id],
-                locale,
-                qualifier,
-                assets
-              )
-            );
-          })
-        )
+              return combineLatest([of(items), forkJoin(types$)]);
+            }),
+            withLatestFrom(this.getAssets()),
+            map(([[items, types], assets]) => {
+              return items.map((record) =>
+                this.parseEntry(
+                  record,
+                  types[record.sys.contentType.sys.id],
+                  locale,
+                  qualifier,
+                  assets
+                )
+              );
+            })
+          )
       )
     );
   }
@@ -160,7 +161,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
 
   protected getParams(qualifier: Record<string, unknown>): string {
     return Object.entries(qualifier).reduce((acc, [key, _value]) => {
-      if (key === 'id' || key === 'entities') return acc;
+      if (key === 'id' || key === 'entities' || key === 'name') return acc;
 
       const mapper = {
         [key]: key,

@@ -5,7 +5,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { combineLatest, map } from 'rxjs';
 
 export const ArticleQualifierContextFallback: Provider = {
-  provide: `${ContextFallback}${ContentContext.Qualifier}`,
+  provide: `${ContextFallback}${ContentContext.Content}`,
   useFactory: () =>
     combineLatest([
       inject(RouterService).currentRoute(),

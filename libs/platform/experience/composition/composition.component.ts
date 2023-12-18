@@ -1,3 +1,4 @@
+import { ContextController, EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -41,7 +42,9 @@ export class CompositionComponent extends LayoutMixin(
   protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
+  protected entityService = resolve(EntityService);
 
+  protected contextController = new ContextController(this);
   protected componentsController = new CompositionComponentsController(this);
 
   @elementEffect()
@@ -64,6 +67,39 @@ export class CompositionComponent extends LayoutMixin(
     if (this.uid !== component?.id) {
       this.uid = component.id;
     }
+  });
+
+  protected providedContext: string[] = [];
+
+  @elementEffect()
+  protected $contextProvider = effect(() => {
+    const contexts = this.$options()?.context;
+    const types = [];
+
+    if (!Object.keys(contexts ?? {}).length) {
+      for (const key of this.providedContext) {
+        this.contextController.remove(key);
+        this.providedContext = [];
+      }
+
+      return;
+    }
+
+    for (const [type, context] of Object.entries(contexts ?? {})) {
+      const key = signal(this.entityService.getContextKey(type))()!;
+
+      if (key) {
+        types.push(key);
+        this.contextController.provide(key, context);
+      }
+    }
+
+    for (const key of this.providedContext) {
+      if (types.includes(key)) continue;
+      this.contextController.remove(key);
+    }
+
+    this.providedContext = [...types];
   });
 
   protected $components = signal(this.componentsController.getComponents());
