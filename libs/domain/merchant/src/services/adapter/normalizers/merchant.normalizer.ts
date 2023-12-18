@@ -1,24 +1,23 @@
 import {
   ApiMerchantModel,
   Merchant,
+  MerchantDateSlot,
   MerchantLegal,
   MerchantSchedule,
-  MerchantScheduleSlot,
+  MerchantWeekdaySlot,
 } from '../../../models';
 
-function normalizeOpeningHours(
-  hours: ApiMerchantModel.MerchantOpeningHours
+function normalizeSchedule(
+  hours: ApiMerchantModel.Schedule
 ): MerchantSchedule | undefined {
   if (!hours) return undefined;
 
-  const uniqueDays: MerchantScheduleSlot[] = [];
+  const weekdays: MerchantWeekdaySlot[] = [];
   for (const entry of hours.weekdaySchedule) {
-    let dayEntry = uniqueDays.find(
-      (day) => day.day === entry.day?.toLowerCase()
-    );
+    let dayEntry = weekdays.find((day) => day.day === entry.day?.toLowerCase());
     if (!dayEntry) {
-      dayEntry = { day: entry.day?.toLowerCase() };
-      uniqueDays.push(dayEntry);
+      dayEntry = { day: entry.day.toLowerCase() };
+      weekdays.push(dayEntry);
     }
     if (entry.timeFrom && entry.timeTo) {
       if (!dayEntry.times) dayEntry.times = [];
@@ -26,10 +25,23 @@ function normalizeOpeningHours(
     }
   }
 
-  return {
-    opened: uniqueDays,
-    closed: [],
-  };
+  const dates: MerchantDateSlot[] = [];
+  for (const entry of hours.dateSchedule) {
+    let dateEntry = dates.find((date) => date.date === entry.date);
+    if (!dateEntry) {
+      dateEntry = {
+        date: entry.date,
+        note: entry.noteGlossaryKey,
+      };
+      dates.push(dateEntry);
+    }
+    if (entry.timeFrom && entry.timeTo) {
+      if (!dateEntry.times) dateEntry.times = [];
+      dateEntry.times.push({ from: entry.timeFrom, to: entry.timeTo });
+    }
+  }
+
+  return { weekdays, dates };
 }
 
 function normalizeLegal(
@@ -57,7 +69,7 @@ export function merchantNormalizer(
     url: data.merchantUrl,
     deliveryTime: data.deliveryTime,
     legal: normalizeLegal(data.legalInformation),
-    schedule: normalizeOpeningHours(data.merchantOpeningHours?.[0]),
+    schedule: normalizeSchedule(data.merchantOpeningHours?.[0]),
     logo: data.logoUrl,
     banner: data.bannerUrl,
     contact: {
