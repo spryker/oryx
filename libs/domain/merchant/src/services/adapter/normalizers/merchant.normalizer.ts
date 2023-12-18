@@ -29,7 +29,10 @@ function normalizeSchedule(
   for (const entry of hours.dateSchedule) {
     let dateEntry = dates.find((date) => date.date === entry.date);
     if (!dateEntry) {
-      dateEntry = { date: entry.date, note: entry.noteGlossaryKey };
+      dateEntry = {
+        date: entry.date,
+        note: entry.noteGlossaryKey,
+      };
       dates.push(dateEntry);
     }
     if (entry.timeFrom && entry.timeTo) {
@@ -38,7 +41,6 @@ function normalizeSchedule(
     }
   }
 
-  console.log({ weekdays, dates });
   return { weekdays, dates };
 }
 

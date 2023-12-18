@@ -112,10 +112,10 @@ export class MockMerchantService implements Partial<MerchantService> {
   ];
 
   get(qualifier: MerchantQualifier): Observable<Merchant | undefined> {
-    const product = MockMerchantService.mockMerchants.find(
-      (p) => p.id === qualifier.id
+    const merchant = MockMerchantService.mockMerchants.find(
+      (m) => m.id === qualifier.id
     ) as Merchant;
 
-    return of(product);
+    return of(merchant);
   }
 }

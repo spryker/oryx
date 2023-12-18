@@ -81,7 +81,8 @@ const search = {
 
 const merchant = {
   'merchant.schedule.weekdays': 'Opening hours',
-  'merchant.schedule.dates': 'Changed opening hours',
+  'merchant.schedule.dates': 'Upcoming dates',
+  'merchant.schedule.<note>': '({note})',
   'merchant.schedule.<date>-<note>': '{date} ({note})',
 };
 

@@ -27,30 +27,8 @@ export default {
         ],
       },
     },
-    type: {
-      control: {
-        type: 'select',
-        options: [
-          'weekdays',
-          'dates',
-          undefined,
-        ] as MerchantScheduleComponentOptions['type'][],
-      },
-    },
-
-    skipBeforeLast: {
-      control: {
-        type: 'select',
-        options: ['week', 'month', 'quarter', 'year', undefined],
-      },
-    },
-
-    skipAfterNext: {
-      control: {
-        type: 'select',
-        options: ['week', 'month', 'quarter', 'year', undefined],
-      },
-    },
+    weeksBefore: { control: { type: 'number' } },
+    weeksAfter: { control: { type: 'number' } },
   },
   parameters: { chromatic: { disableSnapshot: true } },
 };

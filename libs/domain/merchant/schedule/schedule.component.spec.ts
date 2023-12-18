@@ -7,22 +7,26 @@ import { of } from 'rxjs';
 import { Merchant, MerchantService } from '../src';
 import { MerchantScheduleComponent } from './schedule.component';
 import { merchantOpeningHoursComponent } from './schedule.def';
-import { MerchantScheduleComponentOptions } from './schedule.model';
 
 class MockMerchantService implements Partial<MerchantService> {
   get = vi.fn();
 }
 
-const lastWeek = new Date(new Date().setDate(new Date().getDate() - 6));
-const lastMonth = new Date(new Date().setDate(new Date().getDate() - 20));
-const lastQuarter = new Date(new Date().setDate(new Date().getDate() - 40));
-const lastYear = new Date(new Date().setDate(new Date().getDate() - 190));
-const twoYearsBack = new Date(new Date().setDate(new Date().getDate() - 400));
-const aWeekAhead = new Date(new Date().setDate(new Date().getDate() + 4));
-const aMonthAhead = new Date(new Date().setDate(new Date().getDate() + 20));
-const aQuarterAhead = new Date(new Date().setDate(new Date().getDate() + 40));
-const aYearAhead = new Date(new Date().setDate(new Date().getDate() + 180));
-const twoYearsAhead = new Date(new Date().setDate(new Date().getDate() + 400));
+const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14));
+const oneWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 7));
+const oneWeeksAhead = new Date(new Date().setDate(new Date().getDate() + 7));
+const twoWeeksAhead = new Date(new Date().setDate(new Date().getDate() + 14));
+
+// const lastWeek = new Date(new Date().setDate(new Date().getDate() - 6));
+// const lastMonth = new Date(new Date().setDate(new Date().getDate() - 20));
+// const lastQuarter = new Date(new Date().setDate(new Date().getDate() - 40));
+// const lastYear = new Date(new Date().setDate(new Date().getDate() - 190));
+// const twoYearsBack = new Date(new Date().setDate(new Date().getDate() - 400));
+// const aWeekAhead = new Date(new Date().setDate(new Date().getDate() + 4));
+// const aMonthAhead = new Date(new Date().setDate(new Date().getDate() + 20));
+// const aQuarterAhead = new Date(new Date().setDate(new Date().getDate() + 40));
+// const aYearAhead = new Date(new Date().setDate(new Date().getDate() + 180));
+// const twoYearsAhead = new Date(new Date().setDate(new Date().getDate() + 400));
 
 const mockMerchant: Partial<Merchant> = {
   id: '1',
@@ -60,16 +64,10 @@ const mockMerchant: Partial<Merchant> = {
       },
     ],
     dates: [
-      { date: lastWeek.toString() },
-      { date: lastMonth.toString() },
-      { date: lastQuarter.toString() },
-      { date: lastYear.toString() },
-      { date: twoYearsBack.toString() },
-      { date: aWeekAhead.toString() },
-      { date: aMonthAhead.toString() },
-      { date: aQuarterAhead.toString() },
-      { date: aYearAhead.toString() },
-      { date: twoYearsAhead.toString() },
+      { date: twoWeeksAgo.toString() },
+      { date: oneWeeksAgo.toString() },
+      { date: oneWeeksAhead.toString() },
+      { date: twoWeeksAhead.toString() },
     ],
   },
 };
@@ -126,238 +124,143 @@ describe('MerchantScheduleComponent', () => {
       merchantService.get.mockReturnValue(of(mockMerchant));
     });
 
-    describe('and the component is not configured to render a specific schedule type', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-merchant-schedule merchant="1"></oryx-merchant-schedule>`
-        );
-      });
-
-      it('should render the weekdays heading', () => {
-        const headings = element.shadowRoot?.querySelectorAll('oryx-heading');
-        expect(headings?.[0].textContent).toContain(
-          i18n('merchant.schedule.weekdays')
-        );
-      });
-
-      it('should render oryx-site-day elements', () => {
-        expect(element).toContainElement('ul li oryx-site-day');
-      });
-
-      it('should render the dates heading', () => {
-        const headings = element.shadowRoot?.querySelectorAll('oryx-heading');
-        expect(headings?.[1].textContent).toContain(
-          i18n('merchant.schedule.dates')
-        );
-      });
-
-      it('should render oryx-site-date elements', () => {
-        expect(element).toContainElement('ul li oryx-date');
-      });
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-merchant-schedule merchant="1"></oryx-merchant-schedule>`
+      );
     });
 
-    describe('and the component is configured to render weekdays', () => {
+    it('should render the weekdays heading', () => {
+      const headings = element.shadowRoot?.querySelectorAll('oryx-heading');
+      expect(headings?.[0].textContent).toContain(
+        i18n('merchant.schedule.weekdays')
+      );
+    });
+
+    it('should render oryx-site-day elements', () => {
+      expect(element).toContainElement('ul li oryx-site-day');
+    });
+
+    it('should render the dates heading', () => {
+      const headings = element.shadowRoot?.querySelectorAll('oryx-heading');
+      expect(headings?.[1].textContent).toContain(
+        i18n('merchant.schedule.dates')
+      );
+    });
+
+    it('should render oryx-site-date elements', () => {
+      expect(element).toContainElement('ul li oryx-date');
+    });
+
+    describe('when the weeksBefore = 0 and weeksAfter = 2', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-merchant-schedule
-            merchant="1"
-            .options=${{ type: 'weekdays' }}
+            merchant="0"
+            .options=${{ weeksBefore: 0, weeksAfter: 2 }}
           ></oryx-merchant-schedule>`
         );
       });
 
-      it('should render only the weekdays heading', () => {
-        const headings = element.shadowRoot?.querySelectorAll('oryx-heading');
-        expect(headings?.length).toBe(1);
-        expect(headings?.[0].textContent).toContain(
-          i18n('merchant.schedule.weekdays')
-        );
-      });
-
-      it('should render oryx-site-day elements', () => {
-        expect(element).toContainElement('ul li oryx-site-day');
+      it('should render only the future dates', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(2);
       });
     });
 
-    describe('and the component is configured to render dates', () => {
-      describe('and the component is not configured to filter any dates', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-merchant-schedule
-              merchant="1"
-              .options=${{ type: 'dates' }}
-            ></oryx-merchant-schedule>`
-          );
-        });
-
-        it('should render only the weekdays heading', () => {
-          const headings = element.shadowRoot?.querySelectorAll('oryx-heading');
-          expect(headings?.length).toBe(1);
-          expect(headings?.[0].textContent).toContain(
-            i18n('merchant.schedule.dates')
-          );
-        });
-
-        it('should render oryx-site-date elements for all dates', () => {
-          const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-          expect(dates?.length).toBe(10);
-        });
+    describe('when the weeksBefore = 1 and weeksAfter = 2', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-merchant-schedule
+            merchant="1"
+            .options=${{ weeksBefore: 1 }}
+          ></oryx-merchant-schedule>`
+        );
       });
 
-      describe('filterBefore', () => {
-        describe('and the component is configured to filter before last week', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterBefore: 'week',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
+      it('should render 1 past date and 2 future', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(3);
+      });
+    });
 
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(6);
-          });
-        });
-
-        describe('and the component is configured to filter before last month', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterBefore: 'month',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
-
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(7);
-          });
-        });
-
-        describe('and the component is configured to filter before last quarter', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterBefore: 'quarter',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
-
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(8);
-          });
-        });
-
-        describe('and the component is configured to filter before last year', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterBefore: 'year',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
-
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(9);
-          });
-        });
+    describe('when the weeksBefore = 2 and weeksAfter = 2', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-merchant-schedule
+            merchant="1"
+            .options=${{ weeksBefore: 2 }}
+          ></oryx-merchant-schedule>`
+        );
       });
 
-      describe('filterAfter ', () => {
-        describe('and the component is configured to filter after next week', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterAfter: 'week',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
+      it('should render 2 past date and 2 future', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(4);
+      });
+    });
 
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(6);
-          });
-        });
+    describe('when the weeksBefore = 0 and weeksBefore = 0', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-merchant-schedule
+            merchant="0"
+            .options=${{ weeksBefore: 0, weeksAfter: 0 }}
+          ></oryx-merchant-schedule>`
+        );
+      });
 
-        describe('and the component is configured to filter after next month', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterAfter: 'month',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
+      it('should render only the future dates', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(0);
+      });
+    });
 
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(7);
-          });
-        });
+    describe('when the weeksBefore = 0 and weeksAfter = 2', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-merchant-schedule
+            merchant="1"
+            .options=${{ weeksBefore: 0, weeksAfter: 2 }}
+          ></oryx-merchant-schedule>`
+        );
+      });
 
-        describe('and the component is configured to filter after next quarter', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterAfter: 'quarter',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
+      it('should render 2 past date and 2 future', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(2);
+      });
+    });
 
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(8);
-          });
-        });
+    describe('when the weeksBefore = 0 and weeksAfter = 1', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-merchant-schedule
+            merchant="1"
+            .options=${{ weeksBefore: 0, weeksAfter: 1 }}
+          ></oryx-merchant-schedule>`
+        );
+      });
 
-        describe('and the component is configured to filter after next year', () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-merchant-schedule
-                merchant="1"
-                .options=${{
-                  type: 'dates',
-                  filterAfter: 'year',
-                } as MerchantScheduleComponentOptions}
-              ></oryx-merchant-schedule>`
-            );
-          });
+      it('should render 2 past date and 2 future', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(1);
+      });
+    });
 
-          it('should render oryx-site-date elements for all dates', () => {
-            const dates = element.shadowRoot?.querySelectorAll('oryx-date');
-            expect(dates?.length).toBe(9);
-          });
-        });
+    describe('when the weeksBefore = 1 and weeksAfter = 1', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-merchant-schedule
+            merchant="1"
+            .options=${{ weeksBefore: 1, weeksAfter: 1 }}
+          ></oryx-merchant-schedule>`
+        );
+      });
+
+      it('should render 2 past date and 2 future', () => {
+        const dates = element.shadowRoot?.querySelectorAll('oryx-date');
+        expect(dates?.length).toBe(2);
       });
     });
   });

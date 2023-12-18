@@ -10,35 +10,7 @@ export default {
 };
 
 const Template: Story = (): TemplateResult => {
-  return html`
-    <h3>All</h3>
-    <oryx-merchant-schedule merchant="1"></oryx-merchant-schedule>
-  `;
+  return html` <oryx-merchant-schedule merchant="1"></oryx-merchant-schedule> `;
 };
 
 export const Static = Template.bind({});
-
-// <h3>weekdays only</h3>
-// <oryx-merchant-schedule
-//   merchant="1"
-//   .options=${{
-//     type: 'weekdays',
-//     skipBeforeLast: undefined,
-//     skipAfterNext: undefined,
-//   } as MerchantScheduleComponentOptions}
-// ></oryx-merchant-schedule>
-
-// <h3>Dates only</h3>
-// <oryx-merchant-schedule
-//   merchant="1"
-//   .options=${{ type: 'dates' } as MerchantScheduleComponentOptions}
-// ></oryx-merchant-schedule>
-
-// <h3>Subtitle tag (h4)</h3>
-// <oryx-merchant-schedule
-//   merchant="1"
-//   .options=${{ tag: HeadingTag.H4 }}
-// ></oryx-merchant-schedule>
-
-// <h3>unknown merchant, no schedule</h3>
-// <oryx-merchant-schedule merchant="unknown"></oryx-merchant-schedule>
