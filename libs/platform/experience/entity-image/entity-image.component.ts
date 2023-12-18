@@ -4,10 +4,10 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { computed, hydrate, Signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { EntityTextOptions } from './entity-text.model';
+import { EntityImageOptions } from './entity-image.model';
 
 @hydrate()
-export class EntityTextComponent extends ContentMixin<EntityTextOptions>(
+export class EntityImageComponent extends ContentMixin<EntityImageOptions>(
   LitElement
 ) {
   protected entityService = resolve(EntityService);
@@ -23,6 +23,10 @@ export class EntityTextComponent extends ContentMixin<EntityTextOptions>(
   });
 
   protected override render(): TemplateResult | void {
-    return html`${this.$entityField()}`;
+    const imageUrl = this.$entityField();
+
+    if (!imageUrl && !this.$options().renderFallback) return;
+
+    return html`<oryx-image .src=${imageUrl}></oryx-image>`;
   }
 }

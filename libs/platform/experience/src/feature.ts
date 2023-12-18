@@ -12,6 +12,7 @@ import {
 export const experienceComponents = [
   components.compositionComponent,
   components.entityText,
+  components.entityImage,
 ];
 
 export const layoutFeature: AppFeature = {

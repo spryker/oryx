@@ -1,5 +1,9 @@
-import { AppFeature } from '@spryker-oryx/core';
-import { MerchantService, merchantComponents } from '@spryker-oryx/merchant';
+import { AppFeature, provideEntity } from '@spryker-oryx/core';
+import {
+  MerchantContext,
+  MerchantService,
+  merchantComponents,
+} from '@spryker-oryx/merchant';
 import { MockMerchantService } from './merchant.service';
 
 export const mockMerchantFeature: AppFeature = {
@@ -9,5 +13,9 @@ export const mockMerchantFeature: AppFeature = {
       provide: MerchantService,
       useClass: MockMerchantService,
     },
+    provideEntity('merchant', {
+      service: MerchantService,
+      context: MerchantContext.ID,
+    }),
   ],
 };
