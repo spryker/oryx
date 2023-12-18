@@ -18,7 +18,7 @@ export class DefaultEntityService implements EntityService {
     type,
   }: EntityQualifier<Q>): Observable<E | undefined> {
     const config = type ? this.getConfig<E, Q>(type) : null;
-    console.log(config, 'config');
+
     if (!config) {
       return throwError(
         () => new Error(`No entity provider found for entity ${type}`)
@@ -52,10 +52,7 @@ export class DefaultEntityService implements EntityService {
     entity: EntityFieldQualifier<T>
   ): Observable<T | undefined> {
     return this.get(entity).pipe(
-      map((value) => {
-        console.log(value, 'value');
-        return this.pickField(value, entity.field);
-      })
+      map((value) => this.pickField(value, entity.field))
     );
   }
 
