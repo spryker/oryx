@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fixture } from '@open-wc/testing-helpers';
-import { ContentConfig } from '@spryker-oryx/content';
 import { EntityService, SSRAwaiterService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
@@ -111,10 +110,6 @@ describe('CompositionComponent', () => {
         {
           provide: RouterService,
           useValue: mockRouter,
-        },
-        {
-          provide: ContentConfig,
-          useValue: [],
         },
         {
           provide: EntityService,

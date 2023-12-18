@@ -1,4 +1,3 @@
-import { ContentConfig, ContentContext } from '@spryker-oryx/content';
 import { ContextController, EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
@@ -43,7 +42,8 @@ export class CompositionComponent extends LayoutMixin(
   protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
-  protected contents = resolve(ContentConfig);
+  // TODO: Temporary cause of circular dependency.
+  protected contents = resolve('oryx.ContentConfig*', []);
   protected entityService = resolve(EntityService);
 
   protected contextController = new ContextController(this);
@@ -94,8 +94,8 @@ export class CompositionComponent extends LayoutMixin(
         );
 
       if (isContent) {
-        types.push(ContentContext.Qualifier);
-        this.contextController.provide(ContentContext.Qualifier, context);
+        types.push('content-qualifier');
+        this.contextController.provide('content-qualifier', context);
         continue;
       }
 
