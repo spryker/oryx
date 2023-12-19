@@ -59,28 +59,25 @@ export class DefaultContentService implements ContentService {
             )
           ).pipe(
             skip(1),
-            map((data) => {
-              return data?.reduce((acc, curr) => {
-                if (!curr?.length) return acc;
+            map((data) =>
+              data.flat()?.reduce((acc, curr) => {
+                if (!curr) return acc;
 
                 acc ??= [];
 
-                for (const item of curr) {
-                  const index = acc?.findIndex(
-                    (content) => content.id === item.id
-                  );
+                const index = acc?.findIndex(
+                  (content) => content.id === curr.id
+                );
 
-                  if (index !== -1) {
-                    acc?.splice(index, 1, item);
-                    continue;
-                  }
-
-                  acc?.push(item);
+                if (index !== -1) {
+                  acc?.splice(index, 1, curr);
+                } else {
+                  acc?.push(curr);
                 }
-
+                console.log(acc);
                 return acc;
-              }, null);
-            })
+              }, null as Content[] | null)
+            )
           )
         : of(null);
     },
