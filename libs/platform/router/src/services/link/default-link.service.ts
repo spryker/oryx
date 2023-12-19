@@ -106,7 +106,7 @@ export class DefaultLinkService implements LinkService {
     if (!qualifier) return true;
     const requiredSegments = path.match(/:\w+/g) || [];
     return requiredSegments.every(
-      (segment) => qualifier[segment.substring(1)] !== undefined
+      (segment) => qualifier[(segment as string).substring(1)] !== undefined
     );
   }
 

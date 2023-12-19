@@ -213,7 +213,10 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
       .get<ContentfulCmsModel.Asset>(`${this.url}/assets`, {
         headers: { Authorization: `Bearer ${this.token}` },
       })
-      .pipe(this.transformer.do(ContentfulAssetsNormalizer));
+      .pipe(
+        withLatestFrom(this.getLocalLocale()),
+        map(([data, locale]) => ({data, locale})),
+        this.transformer.do(ContentfulAssetsNormalizer));
   }
 
   protected getCmsLocales(): Observable<ContentfulCmsModel.Locale[]> {
