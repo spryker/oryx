@@ -84,6 +84,7 @@ export const experienceArticlePages = [
             meta: {
               title: tag,
               route: `/${tag}/:id`,
+              routeType: 'content',
             },
             components: [
               { ref: 'header' },
@@ -97,7 +98,14 @@ export const experienceArticlePages = [
                     type: 'oryx-site-breadcrumb',
                     options: { rules: [{ colSpan: 2 }] },
                   },
-                  { type: 'oryx-content-article' },
+
+                  {
+                    type: 'oryx-entity-text',
+                    options: {
+                      field: 'content',
+                    },
+                  },
+                  // { type: 'oryx-content-article' },
                 ],
               },
               { ref: 'footer' },
