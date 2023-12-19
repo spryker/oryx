@@ -1,5 +1,6 @@
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { INJECTOR, inject } from '@spryker-oryx/di';
+import { ContentAsset } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   Observable,
@@ -15,11 +16,7 @@ import {
 import { Content, ContentMeta, ContentQualifier } from '../../../models';
 import { ContentAdapter } from '../../adapter';
 import { ContentfulCmsModel } from './contentful.api.model';
-import {
-  ContentfulAssets,
-  ContentfulSpace,
-  ContentfulToken,
-} from './contentful.model';
+import { ContentfulSpace, ContentfulToken } from './contentful.model';
 import {
   ContentfulAssetsNormalizer,
   ContentfulContentField,
@@ -132,7 +129,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     locale: string,
     qualifier: ContentQualifier,
-    assets: Record<string, ContentfulAssets>
+    assets: Record<string, ContentAsset>
   ): ContentfulEntry {
     return {
       fields: this.parseEntryFields(record.fields, types, locale, assets),
@@ -149,7 +146,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     types: Record<string, ContentfulCmsModel.Type>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     locale: string,
-    assets: Record<string, ContentfulAssets>
+    assets: Record<string, ContentAsset>
   ): ContentfulContentField[] {
     return Object.entries(fields).map(([key, value]) => ({
       key,
@@ -208,7 +205,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
       );
   }
 
-  protected getAssets(): Observable<Record<string, ContentfulAssets>> {
+  protected getAssets(): Observable<Record<string, ContentAsset>> {
     return this.http
       .get<ContentfulCmsModel.Asset>(`${this.url}/assets`, {
         headers: { Authorization: `Bearer ${this.token}` },
