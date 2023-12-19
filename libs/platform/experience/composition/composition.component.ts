@@ -28,7 +28,17 @@ import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { Observable, concatMap, from, map, of, reduce, tap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  concatMap,
+  from,
+  map,
+  of,
+  reduce,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -74,28 +84,29 @@ export class CompositionComponent extends LayoutMixin(
 
   @subscribe()
   protected $contextProvider = this.contentController.getOptions().pipe(
-    tap((options) => {
+    switchMap((options) => {
       const contexts = options?.context;
-      const types = [];
+      const types: string[] = [];
+      const data = Object.entries(contexts ?? {});
 
-      if (!Object.keys(contexts ?? {}).length) {
-        for (const key of this.providedContext) {
-          this.contextController.remove(key);
-          this.providedContext = [];
-        }
+      return data.length
+        ? combineLatest(
+            data.map(([type, context]) =>
+              this.entityService.getContextKey(type).pipe(
+                map((key) => {
+                  if (key) {
+                    types.push(key);
+                    this.contextController.provide(key, context);
+                  }
 
-        return;
-      }
-
-      for (const [type, context] of Object.entries(contexts ?? {})) {
-        const key = signal(this.entityService.getContextKey(type))()!;
-
-        if (key) {
-          types.push(key);
-          this.contextController.provide(key, context);
-        }
-      }
-
+                  return key;
+                })
+              )
+            )
+          ).pipe(map(() => types))
+        : of([]);
+    }),
+    tap((types) => {
       for (const key of this.providedContext) {
         if (types.includes(key)) continue;
         this.contextController.remove(key);
