@@ -8,6 +8,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { UnsafeHTMLDirective } from 'lit/directives/unsafe-html';
 import { html } from 'lit/static-html.js';
+import { of } from 'rxjs';
 import { EntityTextOptions } from './entity-text.model';
 
 @hydrate()
@@ -20,6 +21,7 @@ export class EntityTextComponent extends TextMixin(
 
   protected $data = computed<string | undefined>(() => {
     const { entity: type, field } = this.$options();
+    if (!type || !field) return of();
     return this.entityService.getField({ element: this, type, field });
   });
 
