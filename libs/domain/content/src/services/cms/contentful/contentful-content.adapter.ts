@@ -215,8 +215,9 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
       })
       .pipe(
         withLatestFrom(this.getLocalLocale()),
-        map(([data, locale]) => ({data, locale})),
-        this.transformer.do(ContentfulAssetsNormalizer));
+        map(([data, locale]) => ({ data, locale })),
+        this.transformer.do(ContentfulAssetsNormalizer)
+      );
   }
 
   protected getCmsLocales(): Observable<ContentfulCmsModel.Locale[]> {
