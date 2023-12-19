@@ -4,11 +4,12 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ImageComponent } from '@spryker-oryx/ui/image';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
+import { of } from 'rxjs';
 import { EntityImageComponent } from './entity-image.component';
 import { entityImage } from './entity-image.def';
 
 class MockEntityService implements Partial<EntityService> {
-  getField = vi.fn();
+  getField = vi.fn().mockReturnValue(of());
 }
 
 describe('EntityImageComponent', () => {
@@ -47,7 +48,7 @@ describe('EntityImageComponent', () => {
 
     describe('and an image is returned', () => {
       beforeEach(async () => {
-        entityService.getField.mockReturnValue('https://myimage.com');
+        entityService.getField.mockReturnValue(of('https://myimage.com'));
         element = await fixture(
           html`<oryx-entity-image
             .options=${{ entity: 'data', field: 'name' }}
@@ -64,7 +65,7 @@ describe('EntityImageComponent', () => {
 
     describe('and no image is returned', () => {
       beforeEach(async () => {
-        entityService.getField.mockReturnValue(null);
+        entityService.getField.mockReturnValue(of(null));
       });
 
       describe('and a renderFallback option is provided', () => {
