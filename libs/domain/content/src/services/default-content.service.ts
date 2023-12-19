@@ -74,7 +74,7 @@ export class DefaultContentService implements ContentService {
                 } else {
                   acc?.push(curr);
                 }
-                console.log(acc);
+
                 return acc;
               }, null as Content[] | null)
             )
