@@ -443,7 +443,12 @@ export class LayoutController {
     layoutProperties: (keyof LayoutProperties)[] = []
   ): boolean {
     if (featureVersion >= '1.2') {
-      return !!this.host.layout || rules?.some((rule) => rule.layout);
+      return (
+        !!this.host.layout ||
+        rules?.some((rule) =>
+          typeof rule.layout === 'object' ? rule.layout.type : rule.layout
+        )
+      );
     }
 
     return this.legacyHasLayout(rules, layoutProperties);

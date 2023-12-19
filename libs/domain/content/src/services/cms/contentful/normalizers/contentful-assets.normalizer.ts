@@ -5,20 +5,28 @@ import { ContentfulAssets } from '../contentful.model';
 
 export const ContentfulAssetsNormalizer = 'oryx.ContentfulAssetsNormalizer*';
 
-export function contentfulAssetsNormalizer(
-  data: ContentfulCmsModel.AssetsResponse
-): Record<string, ContentfulAssets> {
-  return data.items.reduce(
-    (acc, asset) => ({
+export function contentfulAssetsNormalizer({
+  data,
+  locale,
+}: {
+  data: ContentfulCmsModel.AssetsResponse;
+  locale: string;
+}): Record<string, ContentfulAssets> {
+  return data.items.reduce((acc, asset) => {
+    const file =
+      (asset.fields.file as Record<string, ContentfulCmsModel.File>)?.[
+        locale
+      ] ?? asset.fields.file;
+
+    return {
       ...acc,
       [asset.sys.id]: {
         description: asset.fields.description,
         title: asset.fields.title,
-        url: asset.fields.file.url,
+        url: file?.url,
       },
-    }),
-    {} as Record<string, ContentfulAssets>
-  );
+    };
+  }, {}) as Record<string, ContentfulAssets>;
 }
 
 export const contentfulAssetsNormalizers: Provider[] = [

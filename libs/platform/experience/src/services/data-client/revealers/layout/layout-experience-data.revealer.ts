@@ -67,7 +67,7 @@ export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
           for (const [key, selected] of Object.entries(layout ?? {})) {
             const isLayout = key === 'type';
             const hasOptions = isLayout
-              ? types[selected as string].options
+              ? types[selected as string]?.options
               : properties[key]?.options;
 
             if (!selected || !hasOptions) continue;
