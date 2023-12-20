@@ -3,7 +3,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/List Item/Static`,
+  title: `${storybookPrefix}/List Item`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
@@ -34,4 +34,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const Variants = Template.bind({});
+export const Static = Template.bind({});

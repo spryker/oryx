@@ -101,7 +101,7 @@ describe('CartListItemComponent', () => {
     const priceMode = element.renderRoot.querySelector(
       'oryx-site-price + span'
     );
-    expect(priceMode?.textContent).toContain(i18n('cart.mode.gross'));
+    expect(priceMode?.textContent).toContain(i18n('carts.price-mode.gross'));
   });
 
   it('should render entries with cart id', () => {
@@ -163,7 +163,7 @@ describe('CartListItemComponent', () => {
       const priceMode = element.renderRoot.querySelector(
         'oryx-site-price + span'
       );
-      expect(priceMode?.textContent).toContain(i18n('cart.mode.net'));
+      expect(priceMode?.textContent).toContain(i18n('carts.price-mode.net'));
     });
   });
 

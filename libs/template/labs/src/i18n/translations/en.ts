@@ -15,6 +15,8 @@ const carts = {
     '({count, plural, 0 {empty} one {1 item} other {{count} items}})',
   'carts.list.no-cart-entries':
     'There are no cart entries for this cart available.',
+  'carts.price-mode.gross': '( Gross )',
+  'carts.price-mode.net': '( Net )',
 };
 
 const cart = {

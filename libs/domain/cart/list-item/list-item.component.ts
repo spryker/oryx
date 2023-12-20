@@ -1,7 +1,6 @@
 import { CartComponentMixin, CartService, PriceMode } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
-import { RouteType } from '@spryker-oryx/router';
-import { LinkService } from '@spryker-oryx/site';
+import { LinkService, RouteType } from '@spryker-oryx/router';
 import { AlertType } from '@spryker-oryx/ui';
 import { I18nMixin, Size, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -69,15 +68,13 @@ export class CartListItemComponent
         .currency=${cart.currency}
       ></oryx-site-price>
 
-      <span slot="heading"
-        >(
+      <span slot="heading">
         ${this.i18n(
           cart.priceMode === PriceMode.GrossMode
-            ? 'cart.mode.gross'
-            : 'cart.mode.net'
+            ? 'carts.price-mode.gross'
+            : 'carts.price-mode.net'
         )}
-        )</span
-      >
+      </span>
     `;
   }
 
@@ -108,7 +105,7 @@ export class CartListItemComponent
         )}
 
         <div class="actions">
-          <oryx-button icon="edit" type="icon" .size=${size}></oryx-button>
+          <!-- <oryx-button icon="edit" type="icon" .size=${size}></oryx-button>
           <oryx-button
             icon="content_copy"
             type="icon"
@@ -128,7 +125,7 @@ export class CartListItemComponent
             .size=${size}
             ?disabled=${!disabled}
           ></oryx-button>
-          <oryx-button icon="delete" type="icon" .size=${size}></oryx-button>
+          <oryx-button icon="delete" type="icon" .size=${size}></oryx-button> -->
         </div>
       </div>
     `;
