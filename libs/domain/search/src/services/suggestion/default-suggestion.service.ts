@@ -14,16 +14,7 @@ export class DefaultSuggestionService implements SuggestionService {
   protected suggestionsQuery = createQuery<Suggestion, SuggestionQualifier>({
     loader: (qualifier) =>
       merge(...this.adapters.map((adapter) => adapter.get(qualifier))).pipe(
-        scan((acc, curr) => {
-          const value = Object.fromEntries(
-            Object.entries(curr).map(([key, value]) => [
-              key,
-              [...(value ?? []), ...(acc[key as keyof Suggestion] ?? [])],
-            ])
-          );
-
-          return { ...acc, ...value };
-        })
+        scan((acc, curr) => ({ ...acc, ...curr }))
       ),
     onLoad: [ProductsLoaded],
     refreshOn: [LocaleChanged, CurrencyChanged, PriceModeChanged],
