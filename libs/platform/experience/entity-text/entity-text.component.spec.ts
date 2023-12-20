@@ -5,11 +5,12 @@ import { LinkService } from '@spryker-oryx/router';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
+import { of } from 'rxjs';
 import { EntityTextComponent } from './entity-text.component';
 import { entityText } from './entity-text.def';
 
 class MockEntityService implements Partial<EntityService> {
-  getField = vi.fn();
+  getField = vi.fn().mockReturnValue(of());
 }
 
 describe('EntityTextComponent', () => {
@@ -53,7 +54,7 @@ describe('EntityTextComponent', () => {
 
   describe('when text is resolved for the field', () => {
     beforeEach(async () => {
-      entityService.getField.mockReturnValue('foo bar');
+      entityService.getField.mockReturnValue(of('foo bar'));
       element = await fixture(
         html`<oryx-entity-text
           .options=${{ entity: 'data', field: 'name' }}
@@ -84,7 +85,7 @@ describe('EntityTextComponent', () => {
 
   describe('when a tag option is configured', () => {
     beforeEach(async () => {
-      entityService.getField.mockReturnValue('foo bar');
+      entityService.getField.mockReturnValue(of('foo bar'));
       element = await fixture(
         html`<oryx-entity-text
           .options=${{ entity: 'data', field: 'name', tag: HeadingTag.H3 }}

@@ -21,8 +21,7 @@ import {
   hydrate,
   signal,
   signalAware,
-  signalProperty,
-  subscribe,
+  signalProperty
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
@@ -30,14 +29,11 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import {
   Observable,
-  combineLatest,
   concatMap,
   from,
   map,
   of,
-  reduce,
-  switchMap,
-  tap,
+  reduce
 } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
@@ -82,35 +78,33 @@ export class CompositionComponent extends LayoutMixin(
 
   protected providedContext: string[] = [];
 
-  @subscribe()
-  protected $contextProvider = this.contentController.getOptions().pipe(
-    switchMap((options) => {
-      const contexts = options?.context;
-      const types: string[] = [];
-      const data = Object.entries(contexts ?? {});
+  @elementEffect()
+  protected $contextProvider = effect(() => {
+    const contexts = this.$options()?.context;
+    const types = [];
 
-      return data.length
-        ? combineLatest(
-            data.map(([type, context]) =>
-              this.entityService.getContextKey(type).pipe(
-                map((key) => {
-                  if (key) {
-                    types.push(key);
-                    this.contextController.provide(key, context);
-                  }
-
-                  return key;
-                })
-              )
-            )
-          ).pipe(map(() => types))
-        : of([]);
-    }),
-    tap((types) => {
+    if (!Object.keys(contexts ?? {}).length) {
       for (const key of this.providedContext) {
-        if (types.includes(key)) continue;
         this.contextController.remove(key);
+        this.providedContext = [];
       }
+
+      return;
+    }
+
+    for (const [type, context] of Object.entries(contexts ?? {})) {
+      const key = signal(this.entityService.getContextKey(type))()!;
+
+      if (key) {
+        types.push(key);
+        this.contextController.provide(key, context);
+      }
+    }
+
+    for (const key of this.providedContext) {
+      if (types.includes(key)) continue;
+      this.contextController.remove(key);
+    }
 
       this.providedContext = [...types];
     })
