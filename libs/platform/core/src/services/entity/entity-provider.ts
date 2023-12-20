@@ -18,7 +18,10 @@ export type EntityProvider<E = unknown, Q = unknown> =
   | ServiceEntityProvider<E, Q>
   | CustomEntityProvider<E, Q>;
 
-export function provideEntity(type: string, config: EntityProvider): Provider {
+export function provideEntity<E = unknown, Q = unknown>(
+  type: string,
+  config: EntityProvider<E, Q>
+): Provider {
   return {
     provide: `${EntityProvider}${type}`,
     useValue: config,

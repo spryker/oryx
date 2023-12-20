@@ -28,22 +28,25 @@ export const homePage: ExperienceComponent = {
       type: 'oryx-composition',
       options: {
         context: {
-          content: {
-            type: 'article',
+          article: {
             id: 'Gift Guide Tue',
           },
-          entity: 'content',
+          // content: {
+          //   type: 'content type',
+          //   id: 'Gift Guide Tue',
+          // },
+          entity: 'article',
         },
       },
       components: [
         {
           type: 'oryx-entity-text',
-          options: { entity: 'content', field: 'content' },
+          options: { entity: 'article', field: 'content' },
         },
-        {
-          type: 'oryx-entity-image',
-          options: { entity: 'content', field: 'picture', rules: [] },
-        },
+        // {
+        //   type: 'oryx-entity-text',
+        //   options: { entity: 'content', field: 'picture', rules: [] },
+        // },
       ],
     },
     {

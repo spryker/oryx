@@ -1,4 +1,4 @@
-import { ContextController, EntityService } from '@spryker-oryx/core';
+import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -22,12 +22,13 @@ import {
   signal,
   signalAware,
   signalProperty,
+  subscribe,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { Observable, concatMap, from, map, of, reduce } from 'rxjs';
+import { Observable, concatMap, from, map, of, reduce, tap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -42,7 +43,6 @@ export class CompositionComponent extends LayoutMixin(
   protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
-  protected entityService = resolve(EntityService);
 
   protected contextController = new ContextController(this);
   protected componentsController = new CompositionComponentsController(this);
@@ -71,36 +71,27 @@ export class CompositionComponent extends LayoutMixin(
 
   protected providedContext: string[] = [];
 
-  @elementEffect()
-  protected $contextProvider = effect(() => {
-    const contexts = this.$options()?.context;
-    const types = [];
+  // TODO: change to elementEffect when SSR issue will be fixed
+  @subscribe()
+  private $contextProvider = this.contentController.getOptions().pipe(
+    tap((options) => {
+      const contexts = options?.context;
+      const types: string[] = [];
+      const data = Object.entries(contexts ?? {});
 
-    if (!Object.keys(contexts ?? {}).length) {
+      for (const [type, context] of data) {
+        types.push(type);
+        this.contextController.provide(type, context);
+      }
+
       for (const key of this.providedContext) {
+        if (types.includes(key)) continue;
         this.contextController.remove(key);
-        this.providedContext = [];
       }
 
-      return;
-    }
-
-    for (const [type, context] of Object.entries(contexts ?? {})) {
-      const key = signal(this.entityService.getContextKey(type))()!;
-
-      if (key) {
-        types.push(key);
-        this.contextController.provide(key, context);
-      }
-    }
-
-    for (const key of this.providedContext) {
-      if (types.includes(key)) continue;
-      this.contextController.remove(key);
-    }
-
-    this.providedContext = [...types];
-  });
+      this.providedContext = [...types];
+    })
+  );
 
   protected $components = signal(this.componentsController.getComponents());
   protected $componentsStyles = computed(() => {
