@@ -1,9 +1,11 @@
 import { INJECTOR, inject, resolve } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { combineLatest, map, of } from 'rxjs';
+import { Observable, combineLatest, map, of } from 'rxjs';
 import {
+  ResolvedResult,
   ResolvedToken,
   TokenResolver,
+  TokenResolverConfig,
   TokenResourceResolver,
   TokenResourceResolvers,
 } from './token-resolver.service';
@@ -15,19 +17,28 @@ export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
   protected injector = inject(INJECTOR);
 
-  resolveToken(token: string): ResolvedToken {
+  /** @deprecated since 1.4. Use TokenResolverConfig instead of string token */
+  resolveToken(token: string): ResolvedToken;
+  resolveToken(tokenConfig: TokenResolverConfig): Observable<ResolvedResult>;
+  resolveToken(
+    tokenConfig: TokenResolverConfig | string
+  ): Observable<ResolvedResult> {
+    const { token } = this.getTokenConfig(tokenConfig);
     if (this.isConditionalToken(token)) {
-      return this.resolveConditionalToken(token);
+      return this.resolveConditionalToken(tokenConfig);
     }
 
     if (!this.isToken(token)) {
       return of(token);
     }
 
-    return this.resolveSimpleToken(token);
+    return this.resolveSimpleToken(tokenConfig);
   }
 
-  protected resolveConditionalToken(token: string): ResolvedToken {
+  protected resolveConditionalToken(
+    tokenConfig: TokenResolverConfig | string
+  ): ResolvedToken {
+    const { token, ...options } = this.getTokenConfig(tokenConfig);
     const tokens = token.split('||').map((token) => token.trim());
 
     const invalidTokens = tokens.filter(
@@ -44,7 +55,10 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     const resolvedTokens = tokensToResolve.map((token) =>
-      this.resolveToken(token)
+      this.resolveToken({
+        ...(options ?? {}),
+        token,
+      })
     );
 
     return combineLatest(resolvedTokens).pipe(
@@ -52,7 +66,10 @@ export class DefaultTokenService implements TokenResolver {
     );
   }
 
-  protected resolveSimpleToken(token: string): ResolvedToken {
+  protected resolveSimpleToken(
+    tokenConfig: TokenResolverConfig | string
+  ): ResolvedToken {
+    const { token, ...options } = this.getTokenConfig(tokenConfig);
     const [resourceResolver, rawResolver] = token.split('.');
     const isNegative = this.isNegative(rawResolver);
     const resolver = rawResolver.slice(isNegative ? 1 : 0);
@@ -64,7 +81,7 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     return tokenResolver
-      .resolve(resolver)
+      .resolve({ resolver, ...(options ?? {}) })
       .pipe(
         map((resolvedValue) => (isNegative ? !resolvedValue : resolvedValue))
       );
@@ -106,5 +123,11 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     return this.resolvers.get(key);
+  }
+
+  protected getTokenConfig(
+    config: TokenResolverConfig | string
+  ): TokenResolverConfig {
+    return typeof config === 'object' ? config : { token: config };
   }
 }

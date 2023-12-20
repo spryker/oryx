@@ -34,7 +34,8 @@ const blockAppearance = css`
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
-  :host(${blockSelector}:active) {
+  :host(${blockSelector}:active),
+  :host(${blockSelector}[open]) {
     border-color: var(--oryx-color-primary-10);
   }
 

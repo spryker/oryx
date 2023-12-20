@@ -1,3 +1,4 @@
+import { cartContextProviders } from '@spryker-oryx/cart/services';
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
@@ -121,4 +122,5 @@ export const cartProviders: Provider[] =
               (m) => m.CartTotalsResolver
             ),
         },
+        ...cartContextProviders,
       ];

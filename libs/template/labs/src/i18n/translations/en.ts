@@ -8,6 +8,15 @@ const product = {
     'Available online ({stock, plural, one {one product} other {{stock} products}})',
 };
 
+const carts = {
+  'carts.totals.<count>-carts':
+    'My carts ({count, plural, one {1 cart} other {{count} carts}})',
+  'carts.totals.<count>-items':
+    '({count, plural, 0 {empty} one {1 item} other {{count} items}})',
+  'carts.list.no-cart-entries':
+    'There are no cart entries for this cart available.',
+};
+
 const cart = {
   'cart.totals.<count>-items':
     'My cart ({count, plural, one {one item} other {{count} items}})',
@@ -91,6 +100,7 @@ const merchant = {
 export default {
   ...product,
   ...cart,
+  ...carts,
   ...coupon,
   ...checkout,
   ...order,
