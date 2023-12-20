@@ -68,7 +68,6 @@ export class EntityTextComponent extends TextMixin(
     | void {
     const text = this.$text();
     const link = this.$link();
-    console.log(link);
 
     if (!link) return text;
 
