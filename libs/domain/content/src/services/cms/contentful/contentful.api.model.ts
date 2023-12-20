@@ -17,21 +17,23 @@ export module ContentfulCmsModel {
     type: string;
   }
 
+  export interface File {
+    contentType: string;
+    details: {
+      size: number;
+      image?: {
+        width: number;
+        height: number;
+      };
+    };
+    fileName: string;
+    url: string;
+  }
+
   export interface Asset {
     description: string;
     title: string;
-    file: {
-      contentType: string;
-      details: {
-        size: number;
-        image?: {
-          width: number;
-          height: number;
-        };
-      };
-      fileName: string;
-      url: string;
-    };
+    file: File | Record<string, File>;
   }
 
   export interface Locale {

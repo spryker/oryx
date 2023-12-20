@@ -86,7 +86,7 @@ export class CompositionComponent extends LayoutMixin(
     }
 
     for (const [type, context] of Object.entries(contexts ?? {})) {
-      const key = signal(this.entityService.getContextKey(type))()!;
+      const key = signal(this.entityService.getContextKey(type))()! ?? type;
 
       if (key) {
         types.push(key);
