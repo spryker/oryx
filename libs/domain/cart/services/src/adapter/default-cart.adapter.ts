@@ -6,14 +6,20 @@ import {
   Cart,
   CartAdapter,
   CartEntryQualifier,
+  CartFeatureOptionsKey,
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  FeatureOptionsService,
+  HttpService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   CurrencyService,
@@ -39,7 +45,8 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService),
     protected store = inject(StoreService),
     protected currency = inject(CurrencyService),
-    protected priceMode = inject(PriceModeService)
+    protected priceMode = inject(PriceModeService),
+    protected optionsService = inject(FeatureOptionsService)
   ) {}
 
   getAll(): Observable<Cart[]> {
@@ -107,11 +114,25 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
+        const options = {
+          headers: { 'If-Match': '*' },
+        };
+
         return this.http
-          .patch<ApiCartModel.Response>(url, body)
+          .patch<ApiCartModel.Response>(url, body, options)
           .pipe(this.transformer.do(CartNormalizer));
       })
     );
+  }
+
+  delete(data: CartQualifier): Observable<Cart> {
+    if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
+
+    return this.http
+      .delete<ApiCartModel.Response>(
+        `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}/${data.cartId}`
+      )
+      .pipe(this.transformer.do(CartNormalizer));
   }
 
   addCoupon(data: CouponQualifier): Observable<Cart> {
@@ -181,15 +202,7 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  protected createCartIfNeeded(
-    identity: AuthIdentity,
-    cartId: string | undefined
-  ): Observable<[AuthIdentity, string | undefined]> {
-    if (!identity.isAuthenticated || cartId) {
-      return of([identity, cartId]);
-    }
-
-    // if we are a registered user and we do not have a cartId, we need to create a cart first
+  create(qualifier?: CreateCartQualifier): Observable<Cart> {
     return combineLatest([
       this.store.get(),
       this.currency.get(),
@@ -203,7 +216,7 @@ export class DefaultCartAdapter implements CartAdapter {
             data: {
               type: 'carts',
               attributes: {
-                name: 'My Cart',
+                name: this.ensureCartName(qualifier),
                 priceMode,
                 currency,
                 store: store?.id,
@@ -212,9 +225,20 @@ export class DefaultCartAdapter implements CartAdapter {
           }
         )
       ),
-      this.transformer.do(CartNormalizer),
-      map((result) => [identity, result.id])
+      this.transformer.do(CartNormalizer)
     );
+  }
+
+  protected createCartIfNeeded(
+    identity: AuthIdentity,
+    cartId: string | undefined
+  ): Observable<[AuthIdentity, string | undefined]> {
+    if (!identity.isAuthenticated || cartId) {
+      return of([identity, cartId]);
+    }
+
+    // if we are a registered user and we do not have a cartId, we need to create a cart first
+    return this.create().pipe(map(({ id }) => [identity, id]));
   }
 
   updateEntry(data: UpdateCartEntryQualifier): Observable<Cart> {
@@ -263,11 +287,22 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  protected generateUrl(path: string, isAnonymous: boolean): string {
+  protected generateUrl(path: string, isAnonymous?: boolean): string {
     const includes = isAnonymous
       ? [ApiCartModel.Includes.GuestCartItems, ApiCartModel.Includes.Coupons]
       : [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons];
 
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
+  }
+
+  protected ensureCartName(
+    qualifier?: CreateCartQualifier
+  ): string | undefined {
+    return this.isMultiCart ? qualifier?.name : undefined;
+  }
+
+  protected get isMultiCart(): boolean {
+    return !!this.optionsService.getFeatureOptions(CartFeatureOptionsKey)
+      ?.multi;
   }
 }

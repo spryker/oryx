@@ -17,6 +17,7 @@ import {
   CartsUpdated,
   Coupon,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -111,6 +112,20 @@ export class DefaultCartService implements CartService {
     ...this.cartCommandBase,
     action: (qualifier: UpdateCartQualifier) => {
       return this.adapter.update(qualifier);
+    },
+  });
+
+  protected createCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: CreateCartQualifier) => {
+      return this.adapter.create(qualifier);
+    },
+  });
+
+  protected deleteCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartQualifier) => {
+      return this.adapter.delete(qualifier);
     },
   });
 
@@ -219,6 +234,10 @@ export class DefaultCartService implements CartService {
     );
   }
 
+  getCarts(): Observable<Cart[] | undefined> {
+    return this.cartsQuery$.get();
+  }
+
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {
     return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
   }
@@ -270,6 +289,14 @@ export class DefaultCartService implements CartService {
 
   updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
+  }
+
+  createCart(qualifier: CreateCartQualifier): Observable<unknown> {
+    return this.createCartCommand$.execute(qualifier);
+  }
+
+  deleteCart(qualifier: CartQualifier): Observable<unknown> {
+    return this.deleteCartCommand$.execute(qualifier);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {
