@@ -102,6 +102,9 @@
       "@spryker-oryx/experience/entity-image": [
         "libs/platform/experience/entity-image/index.ts"
       ],
+      "@spryker-oryx/experience/entity-link": [
+        "libs/platform/experience/entity-link/index.ts"
+      ],
       "@spryker-oryx/experience/entity-text": [
         "libs/platform/experience/entity-text/index.ts"
       ],
