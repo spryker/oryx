@@ -40,4 +40,3 @@ const svg = (svg, ...values) => {
     return template;
 };
 exports.svg = svg;
-//# sourceMappingURL=mock-svg-lit.js.map

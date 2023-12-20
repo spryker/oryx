@@ -39,7 +39,7 @@ async function vitestExecutor(options, context) {
             '**/*.def.ts',
             '**/*.model.ts',
             '**/mocks/**/*',
-            '**/*.mixin.ts',
+            '**/mixins/*',
             '**/constants.ts',
             '**/feature.ts',
         ]);
@@ -59,4 +59,3 @@ async function vitestExecutor(options, context) {
     return new Promise(() => { });
 }
 exports.default = vitestExecutor;
-//# sourceMappingURL=impl.js.map

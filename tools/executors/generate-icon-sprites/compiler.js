@@ -33,4 +33,3 @@ function compile(fileName, options) {
     return !emitResult.emitSkipped;
 }
 exports.compile = compile;
-//# sourceMappingURL=compiler.js.map

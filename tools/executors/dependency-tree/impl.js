@@ -30,4 +30,3 @@ async function depsExecutor(options, context) {
     return { success: true };
 }
 exports.default = depsExecutor;
-//# sourceMappingURL=impl.js.map

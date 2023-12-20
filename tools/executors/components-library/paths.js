@@ -49,4 +49,3 @@ async function componentsLibraryPathsExecutor(options, context) {
     return { success: true };
 }
 exports.default = componentsLibraryPathsExecutor;
-//# sourceMappingURL=paths.js.map
