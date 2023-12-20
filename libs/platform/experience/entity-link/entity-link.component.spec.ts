@@ -104,7 +104,7 @@ describe('EntityLinkComponent', () => {
     '+81 3 1234 5678',
     '+55 11 1234 5678',
   ].map((mockPhone) => {
-    describe.only('when a phone number is resolved for the field', () => {
+    describe('when a phone number is resolved for the field', () => {
       beforeEach(async () => {
         entityService.getField.mockReturnValue(of(mockPhone));
         element = await fixture(
