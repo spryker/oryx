@@ -17,9 +17,9 @@ export default {
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
-type Props = EntityLinkOptions;
-
-const Template: Story<Props> = (props: Props): TemplateResult => {
+const Template: Story<EntityLinkOptions> = (
+  props: EntityLinkOptions
+): TemplateResult => {
   const { ...options } = props;
   resolve(ContextService).provide(document.body, 'merchant', {
     id: '1',

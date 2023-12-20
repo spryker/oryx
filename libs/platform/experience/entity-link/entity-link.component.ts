@@ -1,7 +1,12 @@
 import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import {
+  computed,
+  emailRegex,
+  hydrate,
+  phoneRegex,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { catchError, of } from 'rxjs';
@@ -38,13 +43,8 @@ export class EntityLinkComponent extends ContentMixin<EntityLinkOptions>(
    * Phone numbers will get the `tel:` protocol, email addresses the `mailto:` protocol.
    */
   protected resolveProtocol(url: string): string {
-    const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9()]*$/im;
-
     if (phoneRegex.test(url)) return `tel:${url}`;
-
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/im;
     if (emailRegex.test(url)) return `mailto:${url}`;
-
     return url;
   }
 }

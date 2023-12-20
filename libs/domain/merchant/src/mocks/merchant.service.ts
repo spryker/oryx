@@ -9,11 +9,10 @@ export class MockMerchantService implements Partial<MerchantService> {
       name: 'Merchant 1',
       banner:
         'https://d2s0ynfc62ej12.cloudfront.net/merchant/sonyexperts-banner.png',
-      url: 'https://www.sony.de/experts',
+      url: 'https://www.foobarbrand.com',
       contact: {
-        phone: '+49 123 456 789',
-        fax: '+49 123 456 789',
-        email: 'info@spryker.com',
+        phone: '+49 111 222 333',
+        email: 'info@foobarbrand.com',
       },
       schedule: {
         weekdays: [
