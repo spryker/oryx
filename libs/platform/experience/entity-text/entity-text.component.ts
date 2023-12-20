@@ -8,7 +8,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { UnsafeHTMLDirective } from 'lit/directives/unsafe-html';
 import { html } from 'lit/static-html.js';
-import { catchError, of, switchMap } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { EntityTextOptions } from './entity-text.model';
 
 @hydrate()
@@ -31,18 +31,15 @@ export class EntityTextComponent extends TextMixin(
     return this.convertText(text);
   });
 
-  protected $link = computed(() => {
-    const { entity: type } = this.$options();
+  protected $linkQualifier = computed(() =>
+    this.entityService
+      .getQualifier({ element: this, type: this.$options().entity })
+      .pipe(catchError(() => of()))
+  );
 
-    return this.entityService.getQualifier({ element: this, type }).pipe(
-      switchMap(({ type, qualifier }) =>
-        this.linkService.get({
-          type,
-          qualifier,
-        })
-      ),
-      catchError(() => of())
-    );
+  protected $link = computed(() => {
+    const qualifier = this.$linkQualifier();
+    return qualifier ? this.linkService.get(qualifier) : undefined;
   });
 
   protected override render(): TemplateResult | void {
