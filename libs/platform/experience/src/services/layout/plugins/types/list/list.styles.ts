@@ -6,6 +6,10 @@ export const styles: LayoutStyles = {
     :host {
       display: flex;
       flex-direction: column;
+      align-items: var(--align);
+      align-content: var(--align);
+      justify-content: var(--justify);
+      justify-items: var(--justify);
     }
 
     *,

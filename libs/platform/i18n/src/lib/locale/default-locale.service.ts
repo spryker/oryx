@@ -24,6 +24,7 @@ export class DefaultLocaleService implements LocaleService {
   protected dateFormat$: Observable<Intl.DateTimeFormat>;
   protected timeFormat$: Observable<Intl.DateTimeFormat>;
   protected dateTimeFormat$: Observable<Intl.DateTimeFormat>;
+  protected weekDayFormat$: Observable<Intl.DateTimeFormat>;
 
   constructor(
     protected adapter = inject(LocaleAdapter, null) ??
@@ -70,6 +71,16 @@ export class DefaultLocaleService implements LocaleService {
       ),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
+
+    this.weekDayFormat$ = this.get().pipe(
+      map((locale) =>
+        Intl.DateTimeFormat(locale.replace('_', '-'), {
+          weekday: 'long',
+          timeZone: 'UTC',
+        })
+      ),
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
   }
 
   getAll(): Observable<Locale[]> {
@@ -110,6 +121,30 @@ export class DefaultLocaleService implements LocaleService {
       map((dateTimeFormat) =>
         dateTimeFormat.format(stamp instanceof Date ? stamp : new Date(stamp))
       )
+    );
+  }
+
+  formatDay(dayName: string): Observable<string> {
+    return this.weekDayFormat$.pipe(
+      map((formatter) => {
+        const date = new Date();
+        const now = date.getDay();
+        const days = [
+          'sunday',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+        ];
+        const day = days.indexOf(dayName.toLowerCase());
+
+        let diff = day - now;
+        diff = diff < 1 ? 7 + diff : diff;
+
+        return formatter.format(date.setDate(date.getDate() + diff));
+      })
     );
   }
 }

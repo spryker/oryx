@@ -5,7 +5,7 @@ export interface PopoverOptions {
    * Indicates that the user must explicitly select to show the popover,
    * using either the mousedown or enter/space keys.
    *
-   * Defaults to true.
+   * Defaults to false.
    */
   showOnFocus?: boolean;
 

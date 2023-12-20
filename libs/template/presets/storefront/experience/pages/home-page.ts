@@ -1,4 +1,8 @@
-import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import {
+  ExperienceComponent,
+  ObjectFit,
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
@@ -23,6 +27,22 @@ export const homePage: ExperienceComponent = {
     {
       type: 'oryx-composition',
       id: 'home-hero',
+      options: {
+        rules: [
+          {
+            height: '550px',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'split',
+                    bleed: true,
+                  }
+                : 'split',
+            align: 'end',
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
+          },
+        ],
+      },
       components: [
         {
           type: 'oryx-content-image',
@@ -36,12 +56,15 @@ export const homePage: ExperienceComponent = {
             },
           },
           options: {
-            position: 'center 20%',
+            ...(featureVersion >= '1.4' ? {} : { position: 'center 20%' }),
             rules: [
               {
                 width: '100%',
                 height: 'inherit',
                 style: 'position:absolute;left:0',
+                ...(featureVersion >= '1.4'
+                  ? { objectFit: ObjectFit.Cover, objectPosition: 'center 20%' }
+                  : {}),
               },
             ],
           },
@@ -71,22 +94,6 @@ export const homePage: ExperienceComponent = {
           },
         },
       ],
-      options: {
-        rules: [
-          {
-            height: '550px',
-            layout:
-              featureVersion >= '1.2'
-                ? {
-                    type: 'split',
-                    bleed: true,
-                  }
-                : 'split',
-            align: 'end',
-            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
-          },
-        ],
-      },
     },
     {
       type: 'oryx-product-list',

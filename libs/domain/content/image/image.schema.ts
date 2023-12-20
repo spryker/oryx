@@ -1,6 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { ContentImageComponent } from './image.component';
 
 export const contentImageComponentSchema: ContentComponentSchema<ContentImageComponent> =
@@ -8,13 +9,20 @@ export const contentImageComponentSchema: ContentComponentSchema<ContentImageCom
     name: 'Image',
     group: 'Content',
     icon: IconTypes.Image,
-    options: {
-      fit: {
-        type: FormFieldType.Select,
-        options: [{ value: 'none' }, { value: 'contain' }, { value: 'cover' }],
-      },
-      position: { type: FormFieldType.Text },
-    },
+    options:
+      featureVersion >= '1.4'
+        ? {}
+        : {
+            fit: {
+              type: FormFieldType.Select,
+              options: [
+                { value: 'none' },
+                { value: 'contain' },
+                { value: 'cover' },
+              ],
+            },
+            position: { type: FormFieldType.Text },
+          },
     content: {
       alt: { type: FormFieldType.Text },
       link: { type: FormFieldType.Text },

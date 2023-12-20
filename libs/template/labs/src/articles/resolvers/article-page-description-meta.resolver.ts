@@ -1,4 +1,8 @@
-import { ContentService } from '@spryker-oryx/content';
+import {
+  ContentContext,
+  ContentQualifier,
+  ContentService,
+} from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -7,7 +11,6 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
-import { ArticleContext } from '../article-context';
 import { ArticleContent } from '../article.model';
 
 export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
@@ -19,37 +22,36 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(null, ArticleContext.Id),
-      this.context.get(null, ArticleContext.Type),
+      this.context.get(null, ContentContext.Content),
       combineLatest([
-        this.context.get(null, ArticleContext.Type),
+        this.context.get(null, ContentContext.Content),
         this.router.currentRoute(),
       ]).pipe(map(([type, route]) => route.includes(`/${type}/`))),
     ]);
   }
 
   resolve(): Observable<ElementResolver> {
-    return combineLatest([
-      this.context.get<string>(null, ArticleContext.Id),
-      this.context.get<string>(null, ArticleContext.Type),
-    ]).pipe(
-      switchMap(([id, type]) => {
-        if (!id || !type) return of({});
+    return this.context
+      .get<ContentQualifier>(null, ContentContext.Content)
+      .pipe(
+        switchMap((qualifier) => {
+          const type = qualifier?.type;
+          const id = qualifier?.id;
 
-        return this.content
-          .get<ArticleContent>({
-            id,
-            type,
-            entities: [type],
-          })
-          .pipe(
-            map((data) =>
-              data?.fields?.description
-                ? { description: data.fields.description }
-                : {}
-            )
-          );
-      })
-    );
+          if (!id || !type) return of({});
+
+          return this.content
+            .get<ArticleContent>({
+              id,
+              type,
+              entities: [type],
+            })
+            .pipe(
+              map((data) =>
+                data?.description ? { description: data.description } : {}
+              )
+            );
+        })
+      );
   }
 }

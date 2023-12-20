@@ -62,7 +62,7 @@ export class CartEntryComponent
   static styles = [cartEntryStyles];
 
   @signalProperty({ type: Number }) quantity?: number;
-  @property() key?: string;
+  @signalProperty() key?: string;
   @property({ type: Number }) price?: number;
   @property({ type: Number }) itemPrice?: number;
   @property({ type: Number }) unitPrice?: number;
@@ -82,12 +82,24 @@ export class CartEntryComponent
       : availability?.quantity ?? Infinity;
   });
 
+  /* TODO: use entry context instead of key property */
+  protected $entry = computed(() =>
+    this.$entries()?.find((entry) => entry.groupKey === this.key)
+  );
+
   @elementEffect()
   protected setProductContext = (): void => {
-    if (this.sku) {
+    if (this.$entry()?.sku ?? this.sku) {
       this.contextController.provide(
         ProductContext.SKU,
-        featureVersion >= '1.3' ? { sku: this.sku } : this.sku
+        featureVersion >= '1.3'
+          ? {
+              sku: this.$entry()?.sku ?? this.sku,
+              ...(featureVersion >= '1.4'
+                ? { offer: this.$entry()?.productOfferReference ?? undefined }
+                : {}),
+            }
+          : this.sku
       );
     }
   };
@@ -99,7 +111,8 @@ export class CartEntryComponent
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
       type: RouteType.Product,
-      id: this.$product()?.sku,
+      id: featureVersion >= '1.4' ? undefined : this.$product()?.sku,
+      qualifier: this.$productQualifier() as Record<string, string>,
     });
   });
 
@@ -131,7 +144,6 @@ export class CartEntryComponent
           maxLines: featureVersion >= '1.4' ? 1 : undefined,
         } as ProductTitleOptions}
       ></oryx-product-title>
-
       ${when(
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
@@ -249,7 +261,9 @@ export class CartEntryComponent
       heading=${this.i18n('cart.entry.confirm')}
       @oryx.close=${() => this.revert()}
     >
-      ${this.i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
+      ${this.i18n(`cart.entry.confirm-remove-<sku>`, {
+        sku: this.$entry()?.sku ?? this.sku,
+      })}
 
       <oryx-button
         slot="footer-more"
@@ -290,7 +304,10 @@ export class CartEntryComponent
     this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
       next: () => {
         if (this.$options().notifyOnUpdate) {
-          this.notify('cart.cart-entry-updated', this.sku);
+          this.notify(
+            'cart.cart-entry-updated',
+            this.$entry()?.sku ?? this.sku
+          );
         }
       },
       error: (e: Error) => this.revert(e),
@@ -306,7 +323,7 @@ export class CartEntryComponent
     this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
       next: () => {
         if (this.$options().notifyOnRemove) {
-          this.notify('cart.confirm-removed', this.sku);
+          this.notify('cart.confirm-removed', this.$entry()?.sku ?? this.sku);
         }
       },
       error: (e: Error) => this.revert(e),

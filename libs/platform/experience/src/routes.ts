@@ -41,22 +41,26 @@ export const defaultExperienceRoutes: RouteConfig[] = [
       ]
     : []),
   {
-    path: '/:page',
+    path: featureVersion >= '1.4' ? '/*' : '/:page',
     type: RouteType.Page,
     ...(featureVersion >= '1.3'
       ? {
-          afterEnter: ({ page }) =>
+          afterEnter: (params) =>
             resolve(ExperienceService)
-              .getComponent({ route: `/${page}` })
+              .getComponent({
+                route: `/${featureVersion >= '1.4' ? params[0] : params.page}`,
+              })
               .pipe(
                 take(1),
                 map((component) => (component.id ? void 0 : RouteType.NotFound))
               ),
         }
       : {
-          enter: ({ page }) =>
+          enter: (params) =>
             resolve(ExperienceService)
-              .getComponent({ route: `/${page}` })
+              .getComponent({
+                route: `/${featureVersion >= '1.4' ? params[0] : params.page}`,
+              })
               .pipe(
                 take(1),
                 map((component) => (component.id ? true : RouteType.NotFound))
@@ -64,7 +68,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
         }),
   },
   {
-    path: '/*',
+    path: featureVersion >= '1.4' ? '404' : '/*',
     type: RouteType.NotFound,
     render: (): TemplateResult =>
       html`<oryx-heading><h1>Error 404</h1></oryx-heading>

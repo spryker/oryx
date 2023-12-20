@@ -78,7 +78,9 @@ export class PreviewExperienceService extends DefaultExperienceService {
     map((data) => data.data?.structure),
     filter(isDefined),
     tap((structure) => {
-      this.storeData('dataRoutes', structure.meta?.route, structure.id);
+      ([] as string[])
+        .concat(structure.meta?.route ?? [])
+        .forEach((route) => this.storeData('dataRoutes', route, structure.id));
       this.processComponent(structure);
     })
   );

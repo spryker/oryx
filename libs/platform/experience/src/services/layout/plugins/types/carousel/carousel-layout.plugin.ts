@@ -53,10 +53,10 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
         if (
           options.showIndicators &&
           options.indicatorsPosition === CarouselIndicatorPosition.Below
-        )
-          props['--indicator-area-height'] = '50px;';
-
-        props['margin-block-end'] = 'var(--indicator-area-height)';
+        ) {
+          props['--indicator-area-height'] = '50px';
+          props['margin-block-end'] = 'var(--indicator-area-height)';
+        }
 
         return props;
       })

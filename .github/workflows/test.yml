@@ -131,10 +131,11 @@ jobs:
   test-e2e-storefront:
     runs-on: ubuntu-latest
     needs: [test-format, test-lint, test-stylelint, test-tsconfig]
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        parallelism: [1, 2, 3]
+    #    # Commented out while we are still having long unit test runs
+    #    strategy:
+    #      matrix:
+    #        os: [ubuntu-latest]
+    #        parallelism: [1, 2, 3]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -175,7 +176,6 @@ jobs:
           isDev: ${{ env.IS_DEV }}
 
   test-e2e-fulfillment:
-    if: ${{ false }}
     runs-on: ubuntu-latest
     needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
@@ -191,6 +191,7 @@ jobs:
           ORYX_FULFILLMENT_BACKEND_URL: ${{ secrets.ORYX_FULFILLMENT_BACKEND_URL }}
           ORYX_FULFILLMENT_PUBLIC_VAPID_KEY: ${{ secrets.ORYX_FULFILLMENT_PUBLIC_VAPID_KEY }}
           ORYX_FULFILLMENT_CLIENT_ID: ${{ secrets.ORYX_FULFILLMENT_CLIENT_ID }}
+          ORYX_FEATURE_VERSION: latest
         with:
           cmd: npm run fa:e2e:headless:ci
           affectedCmd: npm run fa:e2e:headless:ci:affected

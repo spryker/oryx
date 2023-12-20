@@ -28,6 +28,9 @@ export class DefaultExperienceService implements ExperienceService {
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
+    /**
+     * @deprecated Since version 1.1. Use provided `ExperienceAdapter` instead.
+     */
     protected http = inject(HttpService),
     protected experienceDataService = inject(ExperienceDataService),
     protected experienceAdapter = inject(ExperienceAdapter, null)
@@ -61,7 +64,9 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected processData(component: Component | ExperienceComponent): void {
     if (component.meta?.route) {
-      this.storeData('dataRoutes', component.meta.route, component.id);
+      ([] as string[])
+        .concat(component.meta?.route ?? [])
+        .forEach((route) => this.storeData('dataRoutes', route, component.id));
     }
 
     this.storeData('dataComponent', component.id, component);
@@ -108,10 +113,15 @@ export class DefaultExperienceService implements ExperienceService {
       this.contentBackendUrl
     }/components/${encodeURIComponent(uid)}`;
 
-    this.http
-      .get<Component>(componentsUrl)
+    const adapter = this.experienceAdapter
+      ? this.experienceAdapter
+          .get({ id: uid })
+          .pipe(map((result) => result ?? ({} as Component)))
+      : this.http.get<Component>(componentsUrl);
+
+    adapter
       .pipe(
-        tap((component) => {
+        tap((component: Component) => {
           this.dataComponent[uid].next(component);
           this.experienceDataService.registerComponent(component, (c) =>
             this.processData(c)
@@ -146,9 +156,6 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponentByRoute(route: string): void {
-    /**
-     * @deprecated Since version 1.1. Use provided `ExperienceAdapter.get` method.
-     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;

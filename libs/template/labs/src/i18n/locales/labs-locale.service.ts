@@ -8,6 +8,7 @@ export class LabsLocaleService extends DefaultLocaleService {
         const result = [...locales];
         if (!locales.find((locale) => locale.code === 'ar')) {
           result.push({ code: 'ar', name: 'ar_AR' });
+          result.push({ code: 'nl', name: 'nl_NL' });
         }
         return result;
       })

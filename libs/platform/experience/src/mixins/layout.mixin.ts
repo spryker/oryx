@@ -17,7 +17,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { LayoutController, LayoutControllerRender } from '../controllers';
 import {
   CompositionLayout,
@@ -199,19 +199,28 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       });
     }
 
+    protected template$ = new Subject<TemplateResult>();
+    protected $template = computed(() => this.template$, {
+      equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+    });
     protected $layoutRenderElement = computed(() =>
-      this.getLayoutPluginsRender()
+      this.getLayoutPluginsRender({ template: this.$template() })
     );
 
-    protected renderLayout(props: LayoutMixinRender): TemplateResult {
+    protected renderLayout(props: LayoutMixinRender): TemplateResult | void {
       const { inlineStyles = '', template } = props;
 
-      const layoutStyles = this.layoutStyles() ?? '';
+      this.template$.next(template);
+      const layoutStyles = this.layoutStyles();
       const styles = inlineStyles + layoutStyles;
       const layoutTemplate = this.$layoutRenderElement();
 
+      if (layoutStyles === undefined) {
+        return;
+      }
+
       return html`
-        ${layoutTemplate?.pre} ${template}
+        ${layoutTemplate?.pre} ${layoutTemplate?.outer ?? template}
         ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
         ${layoutTemplate?.post}
       `;

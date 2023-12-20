@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
-import { ImageComponent } from '@spryker-oryx/ui/image';
+import { OBJECT_POSITION } from '@spryker-oryx/ui';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -222,7 +222,7 @@ describe('ContentImageComponent', () => {
     });
 
     it(`should position to the styles'`, () => {
-      expect(getImage().style.getPropertyValue('--image-position')).toBe(
+      expect(getImage().style.getPropertyValue(OBJECT_POSITION)).toBe(
         'center 30%'
       );
     });
