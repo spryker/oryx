@@ -26,31 +26,6 @@ export const homePage: ExperienceComponent = {
     featureVersion >= '1.2' ? { ref: 'header' } : {},
     {
       type: 'oryx-composition',
-      options: {
-        context: {
-          article: {
-            id: 'Gift Guide Tue',
-          },
-          // content: {
-          //   type: 'content type',
-          //   id: 'Gift Guide Tue',
-          // },
-          entity: 'article',
-        },
-      },
-      components: [
-        {
-          type: 'oryx-entity-text',
-          options: { entity: 'article', field: 'content' },
-        },
-        // {
-        //   type: 'oryx-entity-text',
-        //   options: { entity: 'content', field: 'picture', rules: [] },
-        // },
-      ],
-    },
-    {
-      type: 'oryx-composition',
       id: 'home-hero',
       options: {
         rules: [
