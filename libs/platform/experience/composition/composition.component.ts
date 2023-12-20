@@ -69,7 +69,7 @@ export class CompositionComponent extends LayoutMixin(
     }
   });
 
-  protected providedContext: string[] = [];
+  private providedContext: string[] = [];
 
   // TODO: change to elementEffect when SSR issue will be fixed
   @subscribe()
