@@ -33,15 +33,15 @@ export class EntityTextComponent extends TextMixin(
 
   protected $link = computed(() => {
     const { entity: type } = this.$options();
-    if (!type) return;
 
     return this.entityService.getQualifier({ element: this, type }).pipe(
-      switchMap((qualifier) =>
-        this.linkService.get({
+      switchMap(({ type, qualifier }) => {
+        console.log(qualifier, type);
+        return this.linkService.get({
           type,
           qualifier,
-        })
-      ),
+        });
+      }),
       catchError(() => of())
     );
   });
@@ -69,6 +69,7 @@ export class EntityTextComponent extends TextMixin(
     | void {
     const text = this.$text();
     const link = this.$link();
+    console.log(link);
 
     if (!link) return text;
 

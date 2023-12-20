@@ -133,7 +133,7 @@ describe('DefaultEntityService', () => {
           element: 'someElement' as any,
         })
       );
-      expect(qualifier).toBe('mockContext');
+      expect(qualifier).toEqual({ type: 'testType', qualifier: 'mockContext' });
       expect(mockContextService.get).toHaveBeenCalledTimes(1);
       expect(mockContextService.get).toHaveBeenCalledWith(
         'someElement',
@@ -146,7 +146,7 @@ describe('DefaultEntityService', () => {
         of(context === 'entity' ? 'testType' : 'mockContext')
       );
       const qualifier = await firstValueFrom(service.getQualifier({}));
-      expect(qualifier).toBe('mockContext');
+      expect(qualifier).toEqual({ type: 'testType', qualifier: 'mockContext' });
       expect(mockContextService.get).toHaveBeenCalledTimes(2);
       expect(mockContextService.get).toHaveBeenCalledWith(null, 'entity');
       expect(mockContextService.get).toHaveBeenCalledWith(null, 'mockContext');

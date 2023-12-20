@@ -24,7 +24,7 @@ export interface EntityService {
   ): Observable<T | undefined>;
   getQualifier<T = unknown>(
     entity: Omit<EntityQualifier<T>, 'qualifier'>
-  ): Observable<T | undefined>;
+  ): Observable<{ type: string; qualifier: T | undefined }>;
   getContextKey(type: string): Observable<string | null>;
 }
 

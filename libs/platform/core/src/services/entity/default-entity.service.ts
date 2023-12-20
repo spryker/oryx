@@ -46,10 +46,15 @@ export class DefaultEntityService implements EntityService {
   getQualifier<E = unknown, Q = unknown>({
     element,
     type,
-  }: Omit<EntityQualifier<Q>, 'qualifier'>): Observable<Q | undefined> {
+  }: Omit<EntityQualifier<Q>, 'qualifier'>): Observable<{
+    type: string;
+    qualifier: Q | undefined;
+  }> {
     return this.resolveConfig<E, Q>({ element, type }).pipe(
       switchMap(({ config, type }) => {
-        return this.resolveQualifier({ type, element }, config);
+        return this.resolveQualifier({ type, element }, config).pipe(
+          map((qualifier) => ({ type, qualifier }))
+        );
       })
     );
   }
