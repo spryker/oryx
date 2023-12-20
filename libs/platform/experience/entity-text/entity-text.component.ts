@@ -8,7 +8,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { UnsafeHTMLDirective } from 'lit/directives/unsafe-html';
 import { html } from 'lit/static-html.js';
-import { catchError, of } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { EntityTextOptions } from './entity-text.model';
 
 @hydrate()
@@ -33,14 +33,17 @@ export class EntityTextComponent extends TextMixin(
   });
 
   protected $link = computed(() => {
-    const { entity, field } = this.$options();
-    if (!entity || !field) return;
+    const { entity: type } = this.$options();
+    if (!type) return;
 
-    const qualifier = this.contextService.get(this, field);
-    return this.linkService.get({
-      type: entity,
-      qualifier,
-    });
+    return this.entityService.getQualifier({ element: this, type }).pipe(
+      switchMap((qualifier) =>
+        this.linkService.get({
+          type,
+          qualifier,
+        })
+      )
+    );
   });
 
   protected override render(): TemplateResult | void {
@@ -54,12 +57,10 @@ export class EntityTextComponent extends TextMixin(
   protected renderContent(): TemplateResult | void {
     const text = this.$text();
     if (!text) return;
-    // const { link } = this.$options();
-    // const content = html`${this.renderPrefix()}${link
-    //   ? this.renderLink()
-    //   : this.$text()} `;
-
-    return html`${this.renderPrefix()}${this.$text()}`;
+    const { link } = this.$options();
+    return html`${this.renderPrefix()}${link
+      ? this.renderLink()
+      : this.$text()} `;
   }
 
   protected renderLink():
