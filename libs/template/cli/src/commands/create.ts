@@ -1,9 +1,9 @@
 import {
   intro,
   isCancel,
-  log,
+  log, multiselect,
   note,
-  outro,
+  outro, select,
   spinner,
   text,
 } from '@clack/prompts';
@@ -11,29 +11,15 @@ import { inject } from '@spryker-oryx/di';
 import fs from 'fs';
 import path from 'path';
 import c from 'picocolors';
-import url from 'url';
 import { CliCommand, CliCommandOption } from '../models';
-import { CliArgsService, NodeUtilService } from '../services';
-``;
+import {AppTemplateBuilderService, AppTemplateLoaderService, CliArgsService, NodeUtilService} from '../services';
 
 export class CreateCliCommand implements CliCommand {
-  protected repoUrl =
-    'https://github.com/spryker/oryx-starter/archive/refs/{ref}.zip';
-  protected repoRefs = {
-    [OryxTemplateRef.Latest]: 'heads/master',
-  };
-  protected repoPaths = {
-    [OryxTemplateRef.Latest]: 'oryx-starter-master',
-  };
-  protected packageRoot = path.resolve(this.dirPath, '../..');
-  protected repoPath = path.resolve(this.packageRoot, 'template');
-
   constructor(
     protected argsService = inject(CliArgsService),
+    protected appTemplateLoaderService = inject(AppTemplateLoaderService),
+    // protected appTemplateBuilderService = inject(AppTemplateBuilderService),
     protected nodeUtilService = inject(NodeUtilService),
-    protected dirPath = typeof __dirname === 'undefined'
-      ? url.fileURLToPath(new URL('.', import.meta.url))
-      : path.resolve(__dirname, '.')
   ) {}
 
   getName(): string {
@@ -45,7 +31,11 @@ export class CreateCliCommand implements CliCommand {
   }
 
   getOptions(): CliCommandOption[] {
-    return [{ name: 'name', short: 'n', type: 'string' }];
+    return [
+      { name: 'name', short: 'n', type: 'string' },
+      { name: 'theme', short: 't', type: 'string' },
+      { name: 'feature', short: 'f', type: 'string' },
+    ];
   }
 
   getHelp(): string {
@@ -63,6 +53,7 @@ Options:
   async execute(): Promise<void> {
     const options: CreateAppOptions = {
       name: this.argsService.get('name') as string,
+      appType: this.argsService.get('type') as string,
     };
 
     await this.createApp(options);
@@ -75,31 +66,49 @@ Options:
     if (!options.name) {
       options.name = await this.promptName();
     } else {
-      log.info(`App name: ${c.bold(options.name)}`);
+      log.info(`Application name: ${c.bold(options.name)}`);
     }
 
-    const startTime = new Date().getTime();
+    const appPath = path.resolve(process.cwd(), options.name);
 
-    const config: CreateAppConfig = {
-      ...(options as Required<CreateAppOptions>),
-      path: path.resolve(process.cwd(), options.name),
-    };
-
-    if (fs.existsSync(config.path)) {
+    if (fs.existsSync(appPath)) {
       throw new Error(
         `Directory '${options.name}' already exists!
 Please make sure to not use an existing directory name.`
       );
     }
 
+    if (!options.appType) {
+      options.appType = await this.promptType();
+    } else {
+      log.info(`Application type: ${c.bold(options.appType)}`);
+    }
+
+    if (!options.preset) {
+      options.preset = await this.promptPreset();
+    } else {
+      log.info(`Preset: ${c.bold(options.preset)}`);
+    }
+
+    if (!options.feature) {
+      options.feature = await this.promptFeature();
+    } else {
+      log.info(`Features: ${c.bold(options.feature)}`);
+    }
+
+    const startTime = new Date().getTime();
+
     const s = spinner();
 
-    s.start('Installing application...');
-    await this.downloadTemplate();
-    await this.copyTemplate(config);
-    s.stop('Application installed');
+    s.start('Copying template...');
+    await this.appTemplateLoaderService.copyTemplate(appPath, options.appType);
+    s.stop('Template copied');
 
-    await this.npmInstall(config.path);
+    // s.start('Configuring application...');
+    // const appTemplate = this.appTemplateBuilderService.create(appPath);
+    // s.stop('Application configured!');
+
+    // await this.npmInstall(appPath);
 
     const totalTime = (new Date().getTime() - startTime) / 1000;
 
@@ -111,39 +120,6 @@ Please make sure to not use an existing directory name.`
     outro(`Oryx App "${options.name}" created in ${Math.floor(totalTime)}s`);
   }
 
-  protected async downloadTemplate(
-    ref: OryxTemplateRef = OryxTemplateRef.Latest
-  ): Promise<void> {
-    const repoPath = path.resolve(this.repoPath, ref);
-    if (fs.existsSync(repoPath)) {
-      await fs.rmSync(repoPath, { recursive: true });
-    }
-
-    const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
-
-    await this.nodeUtilService.downloadFile(
-      this.getTempalteUrl(ref),
-      archivePath
-    );
-
-    await this.nodeUtilService.extractZip(archivePath, repoPath);
-  }
-
-  protected async copyTemplate(
-    options: CreateAppConfig,
-    ref: OryxTemplateRef = OryxTemplateRef.Latest
-  ): Promise<void> {
-    const repoPath = path.resolve(this.repoPath, ref, this.repoPaths[ref]);
-
-    if (!fs.existsSync(repoPath)) {
-      throw new Error(
-        'Application template is not found! Please re-run the command again.'
-      );
-    }
-
-    await this.nodeUtilService.copyFolder(repoPath, options.path);
-  }
-
   protected async npmInstall(path: string): Promise<void> {
     const s = spinner();
 
@@ -152,16 +128,48 @@ Please make sure to not use an existing directory name.`
     s.stop('Dependencies installed');
   }
 
-  protected getTempalteUrl(ref: OryxTemplateRef): string {
-    return this.repoUrl.replace('{ref}', this.repoRefs[ref]);
-  }
-
   protected promptName(): Promise<string> {
     return this.promptValue(
       text({
-        message: `What is the name of your app?`,
+        message: `What is the name of your application?`,
         placeholder: 'oryx-app',
         defaultValue: 'oryx-app',
+      })
+    );
+  }
+
+  protected promptType(): Promise<string> {
+    return this.promptValue(
+      select({
+        message: 'Select application type',
+        options: [
+          { value: AppTypeOptions.Storefront, label: AppTypeOptions.Storefront, hint: 'Default Storefront-oriented setup' },
+          { value: AppTypeOptions.Fulfillment, label: AppTypeOptions.Fulfillment, hint: 'PWA setup fpr Fulfillment application' },
+        ],
+      })
+    );
+  }
+
+  protected promptPreset(): Promise<string> {
+    return this.promptValue(
+      select({
+        message: 'Select preset',
+        options: [
+          { value: PresetOptions.B2C, label: PresetOptions.B2C },
+          { value: PresetOptions.B2B, label: PresetOptions.B2B },
+        ],
+      })
+    );
+  }
+
+  protected promptFeature(): Promise<string> {
+    return this.promptValue(
+      multiselect({
+        message: 'Select features',
+        options: [
+          { value: FeatureOptions.Labs, label: FeatureOptions.Labs },
+        ],
+        required: false,
       })
     );
   }
@@ -181,18 +189,25 @@ interface CreateAppConfig extends Required<CreateAppOptions> {
   path: string;
 }
 
-export interface CreateAppOptions {
+export interface CreateAppOptions extends OryxOptions {
   name?: string;
-  options?: OryxOption[];
 }
 
-export enum OryxTemplateRef {
-  Latest = 'latest',
+export interface OryxOptions {
+  appType?: AppTypeOptions,
+  preset?: PresetOptions,
+  feature?: FeatureOptions,
 }
 
-export enum OryxOption {
-  Labs = 'Labs',
-  Ssr = 'SSR',
-  Sw = 'service-worker',
-  Fa = 'fulfillment-application',
+export enum AppTypeOptions {
+  Storefront = 'storefront',
+  Fulfillment = 'fulfillment',
+}
+
+export enum PresetOptions {
+  B2C = 'b2c',
+  B2B = 'b2b'
+}
+export enum FeatureOptions {
+  Labs = 'labs'
 }
