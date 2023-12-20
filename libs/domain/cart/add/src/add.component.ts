@@ -112,15 +112,15 @@ export class CartAddComponent extends ProductMixin(
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
     e.preventDefault();
     e.stopPropagation();
-    const sku = this.$product()?.sku;
-    if (!sku || !this.button) return;
+    const productQualifier = this.$productQualifier();
+    if (!productQualifier || !this.button) return;
 
     const quantity =
       (e as CustomEvent).detail?.quantity ?? this.input?.value ?? this.$min();
     const button = this.button;
 
     this.button.loading = true;
-    this.cartService.addEntry({ sku, quantity }).subscribe({
+    this.cartService.addEntry({ ...productQualifier, quantity }).subscribe({
       next: () => {
         button.confirmed = true;
         setTimeout(() => {

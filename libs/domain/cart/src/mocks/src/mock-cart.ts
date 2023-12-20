@@ -11,7 +11,7 @@ import {
 
 export const mockCartEntry: CartEntry = {
   sku: '1',
-  groupKey: 'groupKey',
+  groupKey: '1',
   abstractSku: 'abstractSku',
   quantity: 1,
   calculations: {
@@ -23,7 +23,7 @@ export const mockCartEntry: CartEntry = {
 
 export const mockCartEntry2: CartEntry = {
   sku: '2',
-  groupKey: 'groupKey',
+  groupKey: '2',
   abstractSku: 'abstractSku',
   quantity: 1,
   calculations: {
@@ -35,7 +35,7 @@ export const mockCartEntry2: CartEntry = {
 
 export const mockCartEntry3: CartEntry = {
   sku: '3',
-  groupKey: 'groupKey',
+  groupKey: '3',
   abstractSku: 'abstractSku',
   quantity: 7,
   calculations: {
@@ -47,7 +47,7 @@ export const mockCartEntry3: CartEntry = {
 
 export const mockCartEntry4: CartEntry = {
   sku: '4',
-  groupKey: 'groupKey',
+  groupKey: '4',
   abstractSku: 'abstractSku',
   quantity: 150,
   calculations: {

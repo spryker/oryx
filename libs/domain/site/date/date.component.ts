@@ -7,7 +7,7 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { DateComponentAttributes } from './date.model';
 
 @hydrate()

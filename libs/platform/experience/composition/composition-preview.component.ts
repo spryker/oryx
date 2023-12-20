@@ -47,51 +47,8 @@ export class CompositionPreviewComponent extends CompositionComponent {
     );
 
     if (featureVersion >= '1.4') {
-      this.focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
-      this.focusedComponent?.removeAttribute(focusedNameAttr);
-      this.focusedComponent?.style.removeProperty('--ebp-top');
-      this.focusedComponent?.style.removeProperty('--ebp-left');
-      this.focusedComponent?.style.removeProperty('--ebp-width');
-      this.focusedComponent?.style.removeProperty('--ebp-height');
-
       if (targetComponent) {
-        const { left, top, width, height } =
-          targetComponent.getBoundingClientRect();
-        const { scrollTop, scrollLeft } = window.document.documentElement;
-
-        const { position } = getComputedStyle(targetComponent);
-
-        // TODO: when display: contents, we need to get the top/left and width/height from the first and last element
-
-        targetComponent.style.setProperty('--ebp-top', `${top + scrollTop}px`);
-        targetComponent.style.setProperty(
-          '--ebp-left',
-          `${left + scrollLeft}px`
-        );
-        targetComponent.style.setProperty('--ebp-width', `${width}px`);
-        targetComponent.style.setProperty('--ebp-height', `${height}px`);
-
-        if (interaction.action !== 'mouseout') {
-          targetComponent?.classList.add(EB_PREVIEW_FOCUS_CLASS);
-          if (position === 'absolute') {
-            targetComponent?.classList.add('ebp-absolute');
-          }
-          if (position === 'sticky') {
-            targetComponent?.classList.add('ebp-sticky');
-            targetComponent.style.setProperty(
-              '--ebp-rel-top',
-              `${top + scrollTop}px`
-            );
-            targetComponent.style.setProperty(
-              '--ebp-rel-left',
-              `${left + scrollLeft}px`
-            );
-          }
-          targetComponent?.setAttribute(
-            focusedNameAttr,
-            interaction.component.name
-          );
-        }
+        this.setOutlineRect(targetComponent, interaction);
       }
     } else {
       if (
@@ -163,6 +120,77 @@ export class CompositionPreviewComponent extends CompositionComponent {
       return component;
     })
   );
+
+  /**
+   * Sets CSS class and variables for the preview outline. The
+   * outline is used to highlight the currently selected component.
+   * The rect is calculated based on the element's bounding rect, which
+   * is different for different display types, such as `display:contents`
+   * or `position:absolute`.
+   */
+  protected setOutlineRect(element: HTMLElement, interaction: any): void {
+    const { display } = window.getComputedStyle(element);
+
+    let { left, top, width, height } = element.getBoundingClientRect();
+    const { scrollTop, scrollLeft } = window.document.documentElement;
+
+    if (display === 'contents') {
+      const children = element.shadowRoot?.querySelectorAll('*:not(style)');
+
+      let outerLeft = Infinity;
+      let outerTop = Infinity;
+      let outerRight = 0;
+      let outerBottom = 0;
+
+      Array.from(children ?? []).forEach((e) => {
+        const {
+          left: l,
+          top: t,
+          right: r,
+          bottom: b,
+        } = e.getBoundingClientRect();
+        if (l < outerLeft) outerLeft = l;
+        if (t < outerTop) outerTop = t;
+        if (r > outerRight) outerRight = r;
+        if (b > outerBottom) outerBottom = b;
+      });
+
+      if (outerLeft !== Infinity) left = outerLeft;
+      if (outerTop !== Infinity) top = outerTop;
+      if (outerRight !== Infinity) width = outerRight - outerLeft;
+      if (outerBottom !== Infinity) height = outerBottom - outerTop;
+    }
+
+    element.style.setProperty('--ebp-top', `${top + scrollTop}px`);
+    element.style.setProperty('--ebp-left', `${left + scrollLeft}px`);
+    element.style.setProperty('--ebp-width', `${width}px`);
+    element.style.setProperty('--ebp-height', `${height}px`);
+
+    if (interaction.action === 'mouseout') {
+      if (this.focusedComponent) {
+        // assign the element before it's removed from cache
+        const el = this.focusedComponent;
+        el.classList.remove(EB_PREVIEW_FOCUS_CLASS);
+        el.removeAttribute('name');
+        el.style.removeProperty('--ebp-top');
+        el.style.removeProperty('--ebp-left');
+        el.style.removeProperty('--ebp-width');
+        el.style.removeProperty('--ebp-height');
+      }
+    } else {
+      const { position } = getComputedStyle(element);
+      if (position === 'sticky') {
+        element.classList.add('ebp-sticky');
+        element.style.setProperty('--ebp-rel-top', `${top + scrollTop}px`);
+        element.style.setProperty('--ebp-rel-left', `${left + scrollLeft}px`);
+      }
+      if (position === 'absolute') {
+        element.classList.add('ebp-absolute');
+      }
+      element.classList.add(EB_PREVIEW_FOCUS_CLASS);
+      element.setAttribute('name', interaction.component.name);
+    }
+  }
 
   protected override $components = signal(this.components$);
 }

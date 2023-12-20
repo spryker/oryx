@@ -44,6 +44,7 @@ const Template: Story<CartEntryAttributes & CartEntryOptions> = (
   return html`
     <oryx-cart-entry
       .sku=${props.sku}
+      .key=${props.sku}
       .quantity=${props.quantity}
       .price=${props.price}
       .unitPrice=${props.unitPrice}

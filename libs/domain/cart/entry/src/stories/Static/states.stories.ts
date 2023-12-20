@@ -13,6 +13,7 @@ const createEntry = (
 ): TemplateResult => {
   return html`<oryx-cart-entry
     .sku=${props.sku ?? '1'}
+    .key=${props.sku ?? '1'}
     .quantity=${props.quantity ?? '1'}
     .price=${props.price ?? (props.quantity ?? 1) * 1879}
     .unitPrice=${props.price ?? (props.quantity ?? 1) * 2879}

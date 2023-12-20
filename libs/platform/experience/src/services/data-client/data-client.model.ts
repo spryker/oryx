@@ -25,6 +25,7 @@ export const enum MessageType {
   Suggestions = 'oryx.suggestions',
   StylesOptions = 'oryx.styles-options',
   SelectedStyles = 'oryx.selected-styles',
+  ContentConfig = 'oryx.content-config',
 }
 
 /**
@@ -85,6 +86,8 @@ export type ExperienceMessageData<T> = {
     ? ExperienceLayoutData
     : T extends MessageType.SelectedStyles
     ? LayoutTypeStyles
+    : T extends MessageType.ContentConfig
+    ? Record<string, { types: string[] }>
     : never;
 };
 

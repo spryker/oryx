@@ -1,14 +1,20 @@
+import { provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { ExperienceAdapter } from '@spryker-oryx/experience';
+import {
+  ExperienceAdapter,
+  ExperienceDataRevealer,
+} from '@spryker-oryx/experience';
 import { ContentExperienceAdapter } from './adapter';
 import {
   contentfulProviders,
   storyblokProviders,
   strapiProviders,
 } from './cms';
+import { ContentContext } from './content-context';
 import { ContentService } from './content.service';
 import { DefaultContentService } from './default-content.service';
 import { DefaultFontService, FontService } from './font';
+import { ContentConfigExperienceDataRevealer } from './revealers';
 
 export const contentProviders: Provider[] = [
   {
@@ -26,4 +32,15 @@ export const contentProviders: Provider[] = [
   ...contentfulProviders,
   ...storyblokProviders,
   ...strapiProviders,
+  provideEntity('content', {
+    service: ContentService,
+    context: ContentContext.Content,
+  }),
+];
+
+export const contentPreviewProviders: Provider[] = [
+  {
+    provide: ExperienceDataRevealer,
+    useClass: ContentConfigExperienceDataRevealer,
+  },
 ];

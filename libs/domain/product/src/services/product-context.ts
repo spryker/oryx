@@ -4,10 +4,16 @@ import {
   ContextService,
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ProductQualifier } from '../models';
+
+declare global {
+  interface ContextValue {
+    [ProductContext.SKU]?: ProductQualifier;
+  }
+}
 
 export const enum ProductContext {
   SKU = 'sku',
@@ -18,10 +24,10 @@ export function productContextFallbackFactory(
   context = inject(ContextService)
 ): Observable<unknown> {
   return router
-    .currentParams()
+    .current()
     .pipe(
-      switchMap((params) =>
-        context.deserialize(ProductContext.SKU, (params?.sku as string) ?? '')
+      map((route) =>
+        route.type === RouteType.Product ? route.params : undefined
       )
     );
 }

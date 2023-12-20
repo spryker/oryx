@@ -4,7 +4,6 @@ import {
   computed,
   featureVersion,
   Signal,
-  signal,
   signalAware,
   signalProperty,
   Type,
@@ -36,17 +35,20 @@ export const ProductMixin = <
 
     protected contextController = new ContextController(this);
 
-    protected $productQualifier: Signal<ProductQualifier | undefined> = signal(
-      this.contextController.get<ProductQualifier>(ProductContext.SKU).pipe(
-        // TODO: deprecated since 1.3, mapping won't be needed as context will always return qualifier in 1.3+
-        map((sku) =>
-          featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
-        )
-      )
-    );
+    protected $productQualifier: Signal<ProductQualifier | undefined> =
+      computed(() =>
+        this.sku
+          ? of({ sku: this.sku } as ProductQualifier)
+          : this.contextController.get(ProductContext.SKU).pipe(
+              // TODO: deprecated since 1.3, mapping won't be needed as context will always return qualifier in 1.3+
+              map((sku) =>
+                featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
+              )
+            )
+      );
 
     protected $product = computed(() => {
-      const qualifier = this.sku ? { sku: this.sku } : this.$productQualifier();
+      const qualifier = this.$productQualifier();
       return qualifier ? this.productService?.get(qualifier) : of(null);
     });
   }

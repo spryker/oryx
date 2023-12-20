@@ -1,3 +1,5 @@
+import { ProductQualifier } from '@spryker-oryx/product';
+
 export interface CartQualifier {
   cartId?: string;
 }
@@ -6,8 +8,7 @@ export interface CartEntryQualifier extends CartQualifier {
   groupKey?: string;
 }
 
-export interface AddCartEntryQualifier extends CartQualifier {
-  sku: string;
+export interface AddCartEntryQualifier extends CartQualifier, ProductQualifier {
   quantity?: number;
 }
 
