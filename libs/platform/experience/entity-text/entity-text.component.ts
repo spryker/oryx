@@ -35,13 +35,12 @@ export class EntityTextComponent extends TextMixin(
     const { entity: type } = this.$options();
 
     return this.entityService.getQualifier({ element: this, type }).pipe(
-      switchMap(({ type, qualifier }) => {
-        console.log(qualifier, type);
-        return this.linkService.get({
+      switchMap(({ type, qualifier }) =>
+        this.linkService.get({
           type,
           qualifier,
-        });
-      }),
+        })
+      ),
       catchError(() => of())
     );
   });
