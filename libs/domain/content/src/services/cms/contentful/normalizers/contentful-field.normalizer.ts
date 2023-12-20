@@ -1,14 +1,14 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { ContentAsset } from '@spryker-oryx/experience';
 import { marked } from 'marked';
 import { ContentfulCmsModel } from '../contentful.api.model';
-import { ContentfulAssets } from '../contentful.model';
 
 export interface ContentfulContentField {
   type: string;
   key: string;
   value: unknown;
-  assets?: Record<string, ContentfulAssets>;
+  assets?: Record<string, ContentAsset>;
 }
 
 export const ContentfulFieldNormalizer = 'oryx.ContentfulFieldNormalizer*';

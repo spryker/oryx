@@ -26,6 +26,28 @@ export const homePage: ExperienceComponent = {
     featureVersion >= '1.2' ? { ref: 'header' } : {},
     {
       type: 'oryx-composition',
+      options: {
+        context: {
+          content: {
+            type: 'article',
+            id: 'Gift Guide Tue',
+          },
+          entity: 'content',
+        },
+      },
+      components: [
+        {
+          type: 'oryx-entity-text',
+          options: { entity: 'content', field: 'content' },
+        },
+        {
+          type: 'oryx-entity-image',
+          options: { entity: 'content', field: 'picture', rules: [] },
+        },
+      ],
+    },
+    {
+      type: 'oryx-composition',
       id: 'home-hero',
       options: {
         rules: [
