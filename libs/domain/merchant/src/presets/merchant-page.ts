@@ -1,5 +1,6 @@
 import { ExperienceComponent, ObjectFit } from '@spryker-oryx/experience';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const merchantPage: ExperienceComponent = {
   id: 'merchant-page-content',
@@ -73,6 +74,31 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             { type: 'oryx-merchant-schedule' },
+            {
+              type: 'oryx-content-text',
+              content: {
+                data: { text: 'Contact' },
+              },
+              options: {
+                rules: [{ typography: HeadingTag.H3 }],
+              },
+            },
+            {
+              type: 'oryx-entity-link',
+              options: {
+                entity: 'merchant',
+                field: 'contact.email',
+                icon: IconTypes.Email,
+              },
+            },
+            {
+              type: 'oryx-entity-link',
+              options: {
+                entity: 'merchant',
+                field: 'contact.phone',
+                icon: IconTypes.Phone,
+              },
+            },
           ],
         },
       ],
