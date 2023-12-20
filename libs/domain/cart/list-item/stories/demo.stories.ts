@@ -9,9 +9,6 @@ import {
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { CartListItemProperties } from '../list-item.model';
-
-type Props = CartListItemProperties & CartComponentAttributes;
 
 const cartIds = [
   mockDefaultCart,
@@ -40,10 +37,10 @@ export default {
   },
 } as Meta;
 
-const Template: Story<Props> = ({ cartId, open }): TemplateResult => {
-  return html`
-    <oryx-cart-list-item ?open=${open} cartId=${cartId}></oryx-cart-list-item>
-  `;
+const Template: Story<CartComponentAttributes> = ({
+  cartId,
+}): TemplateResult => {
+  return html` <oryx-cart-list-item .cartId=${cartId}></oryx-cart-list-item> `;
 };
 
 export const Demo = Template.bind({});

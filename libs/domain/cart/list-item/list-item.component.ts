@@ -4,23 +4,18 @@ import { LinkService, RouteType } from '@spryker-oryx/router';
 import { AlertType } from '@spryker-oryx/ui';
 import { I18nMixin, Size, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { CartListItemProperties } from './list-item.model';
 import { cartListItemStyles } from './list-item.styles';
 
 const size = Size.Md;
 
-export class CartListItemComponent
-  extends CartComponentMixin(I18nMixin(LitElement))
-  implements CartListItemProperties
-{
+export class CartListItemComponent extends CartComponentMixin(
+  I18nMixin(LitElement)
+) {
   static styles = cartListItemStyles;
 
   protected cartService = resolve(CartService);
   protected linkService = resolve(LinkService);
-
-  @property({ type: Boolean }) open?: boolean;
 
   protected setDefault(): void {
     this.cartService.updateCart({
@@ -35,7 +30,7 @@ export class CartListItemComponent
     if (!cart) return;
 
     return html`
-      <oryx-collapsible ?open=${this.open}>
+      <oryx-collapsible>
         ${this.renderHeading()} ${this.renderEntries()} ${this.renderControls()}
       </oryx-collapsible>
     `;
