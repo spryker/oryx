@@ -21,20 +21,13 @@ import {
   hydrate,
   signal,
   signalAware,
-  signalProperty
+  signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import {
-  Observable,
-  concatMap,
-  from,
-  map,
-  of,
-  reduce
-} from 'rxjs';
+import { Observable, concatMap, from, map, of, reduce } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -106,9 +99,8 @@ export class CompositionComponent extends LayoutMixin(
       this.contextController.remove(key);
     }
 
-      this.providedContext = [...types];
-    })
-  );
+    this.providedContext = [...types];
+  });
 
   protected $components = signal(this.componentsController.getComponents());
   protected $componentsStyles = computed(() => {
