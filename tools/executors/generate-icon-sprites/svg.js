@@ -29,7 +29,7 @@ async function echoExecutor(options, context) {
             console.error(`Error while compiling ${input} input`);
             return { success: false };
         }
-        const unsortedIcons = await Promise.resolve().then(() => require(compiled));
+        const unsortedIcons = await import(compiled);
         const icons = (0, utils_1.sortObjectByKeys)(unsortedIcons);
         const svgTemplate = (id, value) => `<symbol id="${id}">${value}</symbol>`;
         const aliasTemplate = (id, alias) => `<symbol id="${id}"><use href="#${alias}"/></symbol>`;
@@ -62,3 +62,4 @@ async function echoExecutor(options, context) {
     return { success: true };
 }
 exports.default = echoExecutor;
+//# sourceMappingURL=svg.js.map
