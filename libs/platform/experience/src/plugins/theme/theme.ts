@@ -80,16 +80,16 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
 
-    if (!isServer) {
-      const hydratable = unsafeCSS(`[${hydratableAttribute}]`);
-      const deferHydration = unsafeCSS(`[${deferHydrationAttribute}]`);
+    // if (!isServer) {
+    //   const hydratable = unsafeCSS(`[${hydratableAttribute}]`);
+    //   const deferHydration = unsafeCSS(`[${deferHydrationAttribute}]`);
 
-      implementations.push(css`
-        :not(${deferHydration}):not(${hydratable}):not(:defined) {
-          display: none;
-        }
-      `);
-    }
+    //   implementations.push(css`
+    //     :not(${deferHydration}):not(${hydratable}):not(:defined) {
+    //       display: none;
+    //     }
+    //   `);
+    // }
 
     for (const styles of stylesheets) {
       if (!styles.theme) {

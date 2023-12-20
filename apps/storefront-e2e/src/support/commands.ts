@@ -49,7 +49,7 @@ Cypress.Commands.add(
   (
     name: string,
     options = {
-      widths: [1280],
+      widths: [1024],
       enableJavaScript: true,
     }
   ) => {

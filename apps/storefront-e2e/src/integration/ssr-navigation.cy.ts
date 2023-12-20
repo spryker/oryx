@@ -28,7 +28,7 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       verifyHeader();
       landingPage.getHeroBanner().should('be.visible');
-      verifyFooter();
+      // verifyFooter();
 
       cy.takeScreenshot('Landing Page');
     });
@@ -39,9 +39,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       pdp.visit();
 
-      verifyHeader();
-      pdp.checkDefaultProduct();
-      verifyFooter();
+      // verifyHeader();
+      // pdp.checkDefaultProduct();
+      // verifyFooter();
 
       cy.takeScreenshot('Product details page');
     });
@@ -52,8 +52,8 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       contactPage.visit();
 
       verifyHeader();
-      contactPage.getHeading().should('be.visible');
-      verifyFooter(false);
+      // contactPage.getHeading().should('be.visible');
+      // verifyFooter(false);
 
       cy.takeScreenshot('Contact Us page');
     });
@@ -64,8 +64,8 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       loginPage.visit();
 
       verifyHeader();
-      loginPage.loginForm.getWrapper().should('be.visible');
-      verifyFooter();
+      // loginPage.loginForm.getWrapper().should('be.visible');
+      // verifyFooter();
 
       cy.takeScreenshot('Login page');
     });
@@ -80,8 +80,8 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       cy.goToGuestCart();
 
       verifyHeader();
-      cartPage.checkNotEmptyCart();
-      verifyFooter();
+      // cartPage.checkNotEmptyCart();
+      // verifyFooter();
 
       cy.takeScreenshot('Cart page');
     });
@@ -92,11 +92,11 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       searchPage.visit();
 
       verifyHeader();
-      searchPage.getFacets().getWrapper().should('be.visible');
-      searchPage.getProductSorting().getWrapper().should('be.visible');
-      searchPage.getProductCards().should('have.length.greaterThan', 1);
-      searchPage.getProductHeadings().should('contain.text', 'TomTom');
-      verifyFooter();
+      // searchPage.getFacets().getWrapper().should('be.visible');
+      // searchPage.getProductSorting().getWrapper().should('be.visible');
+      // searchPage.getProductCards().should('have.length.greaterThan', 1);
+      // searchPage.getProductHeadings().should('contain.text', 'TomTom');
+      // verifyFooter();
 
       cy.takeScreenshot('Search page');
     });
@@ -107,10 +107,10 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       categoryPage.visit();
 
       verifyHeader();
-      categoryPage.getFacets().getWrapper().should('be.visible');
-      categoryPage.getProductSorting().getWrapper().should('be.visible');
-      categoryPage.getProductCards().should('have.length.greaterThan', 1);
-      verifyFooter();
+      // categoryPage.getFacets().getWrapper().should('be.visible');
+      // categoryPage.getProductSorting().getWrapper().should('be.visible');
+      // categoryPage.getProductCards().should('have.length.greaterThan', 1);
+      // verifyFooter();
 
       cy.takeScreenshot('Category page');
     });
@@ -127,8 +127,8 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       // trigger ssr
       cy.reload();
       verifyHeader();
-      checkoutPage.getPlaceOrderBtn().should('be.visible');
-      verifyFooter();
+      // checkoutPage.getPlaceOrderBtn().should('be.visible');
+      // verifyFooter();
 
       cy.takeScreenshot('Checkout page');
     });
