@@ -5,6 +5,7 @@ import { FooterTemplate } from './footer';
 import { HeaderTemplate } from './header';
 import {
   addressBookPage,
+  cartCreatePage,
   cartPage,
   cartsPage,
   categoryPage,
@@ -40,7 +41,7 @@ export const StaticExperienceFeature: AppFeature = {
       editAddressPage,
       merchantPage,
       ...(featureVersion >= '1.1' ? [registrationPage] : []),
-      ...(featureVersion >= '1.4' ? [cartsPage] : []),
+      ...(featureVersion >= '1.4' ? [cartsPage, cartCreatePage] : []),
     ]),
   ],
 };

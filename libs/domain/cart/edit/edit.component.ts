@@ -1,4 +1,4 @@
-import { CartComponentMixin } from '@spryker-oryx/cart';
+import { CartComponentMixin, CreateCartQualifier, UpdateCartQualifier } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
@@ -111,7 +111,7 @@ export class CartEditComponent extends CartComponentMixin(
     const fields = this.getFields();
     const values = this.$values();
 
-    return html`<form @submit=${this.onSubmit}>
+    return html`<form @oryx.submit=${this.onSubmit}>
       <oryx-layout
         layout="grid"
         style="--oryx-column-count:2;--column-gap: 20px;"
@@ -125,16 +125,22 @@ export class CartEditComponent extends CartComponentMixin(
     </form>`;
   }
 
-  protected onSubmit(e: SubmitEvent): void {
-    e.preventDefault();
-
+  protected onSubmit(e: CustomEvent<FormValues>): void {
     const form = e.target as HTMLFormElement;
 
-    const cart = Object.fromEntries(new FormData(form).entries());
-    cart.store = this.$store()!.id;
+    const values = Object.fromEntries(new FormData(form).entries());
+    const data = {
+      ...values as CreateCartQualifier,
+      store: this.$store()!.id,
+      isDefault: values.isDefault
+    };
+    // const data = 
+    // cart.store = this.$store()!.id;
+    // cart.isDefault = cart.isDefault === 'true';
+
 
     //TODO: replace with cart create service call
     //implemented in list story
-    console.log(cart);
+    console.log(values);
   }
 }
