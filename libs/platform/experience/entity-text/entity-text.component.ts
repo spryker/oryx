@@ -1,4 +1,4 @@
-import { ContextService, EntityService } from '@spryker-oryx/core';
+import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/router';
@@ -17,7 +17,6 @@ export class EntityTextComponent extends TextMixin(
 ) {
   protected entityService = resolve(EntityService);
   protected linkService = resolve(LinkService);
-  protected contextService = resolve(ContextService);
 
   protected $data = computed<string | undefined>(() => {
     const { entity: type, field } = this.$options();
@@ -42,7 +41,8 @@ export class EntityTextComponent extends TextMixin(
           type,
           qualifier,
         })
-      )
+      ),
+      catchError(() => of())
     );
   });
 
