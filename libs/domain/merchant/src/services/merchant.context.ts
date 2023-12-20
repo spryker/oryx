@@ -22,10 +22,10 @@ function merchantContextFallbackFactory(
   context = inject(ContextService),
   product = inject(ProductService)
 ): Observable<unknown> {
-  return router.currentParams().pipe(
-    switchMap((params) =>
-      params?.merchant
-        ? context.deserialize(MerchantContext.ID, params?.merchant as string)
+  return router.current().pipe(
+    switchMap((route) =>
+      route.type === 'merchant'
+        ? of(route.params)
         : context.get<ProductQualifier>(null, ProductContext.SKU).pipe(
             switchMap((qualifier: ProductQualifier | undefined) =>
               qualifier ? product.get(qualifier) : of(undefined)
