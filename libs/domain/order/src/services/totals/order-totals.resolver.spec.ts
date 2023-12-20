@@ -3,6 +3,7 @@ import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { OrderData } from '../../models';
+import { OrderContext } from '../order-context';
 import { OrderService } from '../order.service';
 import {
   OrderTotalsProvider,
@@ -53,13 +54,23 @@ describe('OrderTotalsResolver', () => {
   });
 
   describe('when a qualifier is provided', () => {
-    const qualifier = { id: 'some-order-id' };
+    const element = {} as HTMLElement;
+    const id = 'mock';
+
     beforeEach(() => {
-      resolver.getTotals(qualifier).subscribe();
+      contextService.get = vi.fn().mockReturnValue(of(id));
+      resolver.getTotals({ element }).subscribe();
+    });
+
+    it('should pass the context element to the get context call', () => {
+      expect(contextService.get).toHaveBeenCalledWith(
+        element,
+        OrderContext.OrderId
+      );
     });
 
     it('should call the order service with the qualifier', () => {
-      expect(orderService.get).toHaveBeenCalledWith(qualifier);
+      expect(orderService.get).toHaveBeenCalledWith({ id });
     });
 
     describe('and when the orderService returns results with discounts', () => {
@@ -85,7 +96,7 @@ describe('OrderTotalsResolver', () => {
       });
 
       it('should normalize the order totals', () => {
-        resolver.getTotals(qualifier).subscribe((value) => {
+        resolver.getTotals({ element }).subscribe((value) => {
           expect(value?.currency).toBe(mock.currencyIsoCode);
           expect(value?.grandTotal).toBe(mock.totals.grandTotal);
           expect(value?.subtotal).toBe(mock.totals.subtotal);
@@ -123,7 +134,7 @@ describe('OrderTotalsResolver', () => {
       });
 
       it('should not normalize the discount', () => {
-        resolver.getTotals(qualifier).subscribe((value) => {
+        resolver.getTotals({ element }).subscribe((value) => {
           expect(value?.currency).toBe(mock.currencyIsoCode);
           expect(value?.grandTotal).toBe(mock.totals.grandTotal);
           expect(value?.priceMode).toBe(mock.priceMode);

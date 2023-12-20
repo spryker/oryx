@@ -1,5 +1,6 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { MockAuthFeature } from '@spryker-oryx/auth/mocks';
+import { multiCartFeature } from '@spryker-oryx/cart';
 import { mockCartFeature } from '@spryker-oryx/cart/mocks';
 import { mockCheckoutFeature } from '@spryker-oryx/checkout/mocks';
 import { contentFeature } from '@spryker-oryx/content';
@@ -46,6 +47,7 @@ const builder = appBuilder()
   .withFeature(formFeature)
   .withFeature(mockCoreFeature)
   .withFeature(mockCartFeature)
+  .withFeature(multiCartFeature)
   .withFeature(mockCheckoutFeature)
   .withFeature(mockOrderFeature)
   .withFeature(mockPickingFeature)
