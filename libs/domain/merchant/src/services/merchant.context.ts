@@ -22,7 +22,7 @@ function merchantContextFallbackFactory(
   router = inject(RouterService),
   context = inject(ContextService),
   product = inject(ProductService)
-): ContextFallbackHandler<unknown> {
+): ContextFallbackHandler<MerchantQualifier | undefined> {
   return ({ element }) =>
     router.current().pipe(
       switchMap((route) =>
