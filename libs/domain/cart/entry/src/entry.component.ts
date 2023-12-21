@@ -2,6 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
+  Product,
   ProductContext,
   ProductMediaContainerSize,
   ProductMixin,
@@ -144,7 +145,8 @@ export class CartEntryComponent
           maxLines: featureVersion >= '1.4' ? 1 : undefined,
         } as ProductTitleOptions}
       ></oryx-product-title>
-      ${featureVersion >= '1.4' && this.$product().merchantId
+      ${featureVersion >= '1.4' &&
+      (this.$product() as Product & { merchantId: string })?.merchantId
         ? html`<oryx-entity-text
             .options=${{
               entity: 'merchant',
