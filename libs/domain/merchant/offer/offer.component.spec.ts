@@ -6,10 +6,11 @@ import { html } from 'lit';
 import { MerchantOfferComponent } from './offer.component';
 import { merchantOfferComponent } from './offer.def';
 
-describe.only('MerchantOfferComponent', () => {
+describe('MerchantOfferComponent', () => {
   let element: MerchantOfferComponent;
 
   beforeAll(async () => {
+    mockFeatureVersion('1.4');
     await useComponent(merchantOfferComponent);
   });
 

@@ -12,7 +12,7 @@ import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { ProductOffer } from '../src/models';
 import { merchantOffersStyles } from './offer-list.styles';
 
@@ -53,7 +53,8 @@ export class MerchantOfferListComponent extends ProductMixin(
 
   protected $offers = computed(() => {
     const product = this.$product();
-    if (!product?.offers?.length) return;
+    if (!product?.offers?.length)
+      return undefined as unknown as Observable<undefined>;
 
     return combineLatest(
       product.offers.map((offer) =>
@@ -68,9 +69,9 @@ export class MerchantOfferListComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult | void {
-    console.log(this.$offers());
-    const offers = this.$product()?.offers ?? [];
-    if (offers.length < 2) return;
+    const offers = this.$offers();
+
+    if (!offers || offers.length < 2) return;
 
     return html` <oryx-collapsible>
       <oryx-heading
@@ -82,21 +83,20 @@ export class MerchantOfferListComponent extends ProductMixin(
           count: this.$product()?.offers?.length,
         })}
       </oryx-heading>
-      <oryx-product-media slot="heading"></oryx-product-media>
-
       ${repeat(
         offers,
         (offer) => offer.id,
         (offer) => this.renderOffer(offer)
-      )}</oryx-collapsible
-    >`;
+      )}
+    </oryx-collapsible>`;
   }
 
-  protected renderOffer(offer: ProductOffer): HTMLTemplateResult | void {
-    //href=${this.$link()}
+  protected renderOffer(
+    offer: ProductOffer & { link: string | undefined }
+  ): HTMLTemplateResult | void {
     return html`
       <a
-        tabindex="-1"
+        href=${offer.link}
         aria-label=${this.i18n('merchant.link-to-<offer>', {
           offer: offer.id,
         })}
@@ -110,10 +110,20 @@ export class MerchantOfferListComponent extends ProductMixin(
             })}
             value=${offer.id}
             ?checked=${offer.id === this.$current()?.id}
+            @click=${this.onClick}
           />
           <oryx-merchant-offer .offerId=${offer.id}></oryx-merchant-offer>
         </oryx-radio>
       </a>
     `;
+  }
+
+  protected onClick(ev: MouseEvent): void {
+    if (ev.metaKey) {
+      ev.preventDefault();
+      (ev.target as HTMLInputElement)
+        ?.closest('a')
+        ?.dispatchEvent(new MouseEvent('click', { metaKey: true }));
+    }
   }
 }

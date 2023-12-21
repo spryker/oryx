@@ -1,13 +1,13 @@
 import { css } from 'lit';
 
 export const merchantOffersStyles = css`
-  :host {
-    container-type: inline-size;
-  }
-
   oryx-collapsible::part(content) {
     display: grid;
-    gap: 8px;
+    gap: 16px;
+  }
+
+  a {
+    text-decoration: none;
   }
 
   oryx-radio {
@@ -15,18 +15,11 @@ export const merchantOffersStyles = css`
     margin-block-start: 2px;
   }
 
-  @container (max-width: 430px) {
-    oryx-product-media {
-      display: none;
-    }
-  }
-
-  oryx-product-media {
-    height: 50px;
-    margin-inline-start: auto;
-  }
-
   input {
     margin-block-start: 2px;
+  }
+
+  input::after {
+    z-index: 1;
   }
 `;

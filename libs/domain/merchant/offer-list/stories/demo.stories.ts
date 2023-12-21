@@ -1,3 +1,5 @@
+import { ContextService } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
@@ -14,9 +16,12 @@ type Props = { offerId?: string } & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { sku } = props;
+  resolve(ContextService).provide(document.body, 'sku', {
+    sku,
+  });
   return html`
     <oryx-merchant-offer-list .sku=${sku}></oryx-merchant-offer-list>
   `;
 };
 
-export const OfferListDemo = Template.bind({});
+export const Static = Template.bind({});

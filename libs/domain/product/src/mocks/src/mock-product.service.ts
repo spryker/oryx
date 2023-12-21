@@ -6,6 +6,7 @@ import {
   ProductQualifier,
   ProductService,
 } from '@spryker-oryx/product';
+
 import { Observable, of } from 'rxjs';
 
 const img1 = {
@@ -332,7 +333,7 @@ export class MockProductService implements Partial<ProductService> {
             deliveryTime: '1-3 days',
           },
           price: {
-            defaultPrice: { value: 1879, isNet: true, currency: 'EUR' },
+            defaultPrice: { value: 1579, isNet: true, currency: 'EUR' },
           },
         },
         {
@@ -343,6 +344,23 @@ export class MockProductService implements Partial<ProductService> {
           },
           price: {
             defaultPrice: { value: 1879, isNet: true, currency: 'EUR' },
+          },
+          availability: {
+            quantity: 5,
+          },
+        },
+        {
+          id: 'offer-3',
+          merchant: {
+            id: 'MER000005',
+            name: 'Sony',
+            deliveryTime: '2-4 days',
+          },
+          price: {
+            defaultPrice: { value: 1279, isNet: true, currency: 'EUR' },
+          },
+          availability: {
+            isNeverOutOfStock: true,
           },
         },
       ],
@@ -382,6 +400,24 @@ export class MockProductService implements Partial<ProductService> {
       (p) => p.sku === qualifier.sku
     ) as Product;
 
-    return of(product);
+    return of(productForOfferTransform(product, qualifier) as Product);
+  }
+}
+
+// copied from merchant query to avoid cycle deps
+function productForOfferTransform(
+  data: Product,
+  qualifier: ProductQualifier
+): Product | void {
+  if (data && data.offers?.length) {
+    const selectedOffer = qualifier.offer
+      ? data.offers?.find((o) => o.id === qualifier.offer)
+      : data.offers?.find((o) => o.isDefault);
+    return {
+      ...data,
+      merchantId: selectedOffer?.merchant?.id ?? undefined,
+      price: selectedOffer?.price ?? data.price,
+      availability: selectedOffer?.availability ?? data.availability,
+    };
   }
 }

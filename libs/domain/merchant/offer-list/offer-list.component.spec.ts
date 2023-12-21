@@ -13,7 +13,7 @@ class MockLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/product/123'));
 }
 
-describe.skip('MerchantOfferListComponent', () => {
+describe('MerchantOfferListComponent', () => {
   let element: MerchantOfferListComponent;
 
   beforeAll(async () => {
@@ -62,12 +62,12 @@ describe.skip('MerchantOfferListComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render a link with radio input and offer-list-item for each offer', () => {
+    it('should render a link with radio input and offer for each offer', () => {
       expect(element).toContainElement(
-        'a input[value="offer-1"] + oryx-merchant-offer-list-item'
+        'a input[value="offer-1"] + oryx-merchant-offer'
       );
       expect(element).toContainElement(
-        'a input[value="offer-2"] + oryx-merchant-offer-list-item'
+        'a input[value="offer-2"] + oryx-merchant-offer'
       );
     });
   });

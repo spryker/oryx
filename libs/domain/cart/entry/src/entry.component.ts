@@ -139,11 +139,14 @@ export class CartEntryComponent
   protected renderDetails(): TemplateResult | void {
     return html`<section class="details">
       <oryx-product-title
-        .options=${{
-          linkType: LinkType.Neutral,
-          maxLines: featureVersion >= '1.4' ? 1 : undefined,
-        } as ProductTitleOptions}
+        .options=${
+          {
+            linkType: LinkType.Neutral,
+            maxLines: featureVersion >= '1.4' ? 1 : undefined,
+          } as ProductTitleOptions
+        }
       ></oryx-product-title>
+      </oryx-entity-text>
       ${when(
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`

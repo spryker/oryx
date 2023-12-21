@@ -27,6 +27,10 @@ export const merchantOfferStyles = css`
     oryx-product-availability {
       justify-self: end;
     }
+
+    oryx-product-availability {
+      grid-column: 2;
+    }
   }
 
   oryx-product-price {
