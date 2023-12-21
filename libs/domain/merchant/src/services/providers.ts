@@ -1,7 +1,11 @@
 import { provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { merchantPage } from '../presets';
+import {
+  merchantOffersOnPDP,
+  merchantPage,
+  merchantSoldToOnPDP,
+} from '../presets';
 import {
   DefaultMerchantAdapter,
   MerchantAdapter,
@@ -58,5 +62,9 @@ export const merchantProviders: Provider[] = [
     service: MerchantService,
     context: MerchantContext.ID,
   }),
-  provideExperienceData(merchantPage),
+  provideExperienceData([
+    merchantPage,
+    merchantOffersOnPDP,
+    merchantSoldToOnPDP,
+  ]),
 ];

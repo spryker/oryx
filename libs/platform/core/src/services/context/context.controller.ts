@@ -53,7 +53,8 @@ export class ContextController implements ReactiveController {
   }
 
   provide(key: string, value: unknown): void {
-    if (value === undefined) {
+    if (this.context?.get(this.host, key) === value) return;
+    if (!key || value === undefined) {
       this.context?.remove(this.host, key);
 
       return;

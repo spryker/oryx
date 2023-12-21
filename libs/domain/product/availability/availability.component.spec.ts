@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
 import { SwatchComponent } from '@spryker-oryx/ui/swatch';
-import { useComponent } from '@spryker-oryx/utilities';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 import { ProductAvailabilityComponent } from './availability.component';
 import { productAvailabilityComponent } from './availability.def';
@@ -55,15 +55,136 @@ describe('ProductAvailabilityComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when the component is used in the DOM', () => {
+  describe('when the stock has a quantity of 100', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-product-availability></oryx-product-availability>`
+      productService.get.mockReturnValue(
+        of({ availability: { quantity: 100 } })
       );
     });
 
-    it('pass the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible();
+    describe('and no options are provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-availability sku="1"></oryx-product-availability>`
+        );
+      });
+
+      it('should render available message', () => {
+        expect(element.renderRoot.textContent?.trim()).contain(
+          i18n('product.availability.available')
+        );
+      });
+
+      it('should render oryx-swatch with type success', () => {
+        const swatch =
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch');
+        expect(swatch?.type).toBe(AlertType.Success);
+      });
+    });
+
+    describe('and the enableIndicator option is false', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-availability
+            sku="1"
+            .options=${{ enableIndicator: false }}
+          ></oryx-product-availability>`
+        );
+      });
+
+      it('should not render oryx-swatch with type success', () => {
+        expect(element).not.toContainElement('oryx-swatch');
+      });
+
+      it('should render available message', () => {
+        expect(element.renderRoot.textContent?.trim()).contain(
+          i18n('product.availability.available')
+        );
+      });
+    });
+
+    describe('and the hideInStock option is true', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-availability
+            sku="1"
+            .options=${{ hideInStock: true }}
+          ></oryx-product-availability>`
+        );
+      });
+
+      it('should not render anything', () => {
+        expect(element).not.toContainElement('*:not(style)');
+      });
+    });
+
+    describe('and the threshold is equal to the quantity', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-availability
+            sku="1"
+            .options=${{ threshold: 100 }}
+          ></oryx-product-availability>`
+        );
+      });
+
+      it('should render oryx-swatch with type warning', () => {
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Warning);
+      });
+
+      it('should render the "Limited" message', () => {
+        expect(element.renderRoot.textContent?.trim()).contain(
+          i18n('product.availability.limited')
+        );
+      });
+    });
+
+    describe('and the threshold is larger than the quantity', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-availability
+            sku="1"
+            .options=${{ threshold: 101 }}
+          ></oryx-product-availability>`
+        );
+      });
+
+      it('should render oryx-swatch with type warning', () => {
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Warning);
+      });
+
+      it('should render "Limited"', () => {
+        expect(element.renderRoot.textContent?.trim()).contain(
+          i18n('product.availability.limited')
+        );
+      });
+    });
+
+    describe('and the threshold is lower then the quantity', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-availability
+            sku="1"
+            .options=${{ threshold: 50 }}
+          ></oryx-product-availability>`
+        );
+      });
+
+      it('should render oryx-swatch with type Success', () => {
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Success);
+      });
+
+      it('should render "None"', () => {
+        expect(element.renderRoot.textContent?.trim()).contain(
+          i18n('product.availability.available')
+        );
+      });
     });
   });
 
