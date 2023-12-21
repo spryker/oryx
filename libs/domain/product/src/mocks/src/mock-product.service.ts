@@ -316,6 +316,65 @@ export class MockProductService implements Partial<ProductService> {
       },
       mediaSet: [],
     },
+
+    {
+      sku: 'mp-1',
+      price: {
+        defaultPrice: { value: 1879, isNet: true, currency: 'EUR' },
+        originalPrice: { value: 1779, isNet: true, currency: 'EUR' },
+      },
+      offers: [
+        {
+          id: 'offer-1',
+          merchant: {
+            id: 'MER000005',
+            name: 'Budget Cameras',
+            deliveryTime: '1-3 days',
+          },
+          price: {
+            defaultPrice: { value: 1879, isNet: true, currency: 'EUR' },
+          },
+        },
+        {
+          id: 'offer-2',
+          merchant: {
+            id: 'MER000005',
+            name: 'Video King',
+          },
+          price: {
+            defaultPrice: { value: 1879, isNet: true, currency: 'EUR' },
+          },
+        },
+      ],
+    },
+    {
+      sku: 'mp-2',
+      price: {
+        defaultPrice: { value: 1879, isNet: true, currency: 'EUR' },
+      },
+      availability: {
+        isNeverOutOfStock: true,
+        quantity: 0,
+        availability: false,
+      },
+      offers: [
+        {
+          id: 'offer-2',
+          merchant: {
+            id: 'MER000005',
+            name: 'Video King',
+            deliveryTime: '2-4 days',
+          },
+          price: {
+            defaultPrice: {
+              value: 1879,
+              isNet: true,
+              currency: 'EUR',
+            },
+          },
+        },
+      ],
+    },
   ];
 
   get(qualifier: ProductQualifier): Observable<Product> {

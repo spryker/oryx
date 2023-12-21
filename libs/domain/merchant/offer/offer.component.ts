@@ -12,14 +12,15 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { merchantOfferListItemStyles } from './offer-list-item.styles';
+import { when } from 'lit/directives/when.js';
+import { merchantOfferStyles } from './offer.styles';
 
 @hydrate({ context: ProductContext.SKU })
 @signalAware()
-export class MerchantOfferListItemComponent extends ProductMixin(
+export class MerchantOfferComponent extends ProductMixin(
   ContentMixin(LitElement)
 ) {
-  static styles = merchantOfferListItemStyles;
+  static styles = merchantOfferStyles;
 
   @signalProperty() protected offerId?: string;
 
@@ -49,10 +50,15 @@ export class MerchantOfferListItemComponent extends ProductMixin(
         .options=${{ enableTaxMessage: false }}
       ></oryx-product-price>
 
-      <span class="delivery-time">
-        <oryx-icon .type=${IconTypes.Carrier} .size=${Size.Md}></oryx-icon>
-        ${offer.merchant.deliveryTime}
-      </span>
+      ${when(
+        offer.merchant.deliveryTime,
+        () => html`
+          <span class="delivery-time">
+            <oryx-icon .type=${IconTypes.Carrier} .size=${Size.Md}></oryx-icon>
+            ${offer.merchant.deliveryTime}
+          </span>
+        `
+      )}
 
       <oryx-product-availability
         .options=${{ hideInStock: true }}

@@ -105,7 +105,6 @@ export class MerchantOfferListComponent extends ProductMixin(
         aria-label=${this.i18n('merchant.link-to-<offer>', {
           offer: offer.id,
         })}
-        @focusin=${this.onFocusin}
       >
         <oryx-radio>
           <input
@@ -117,24 +116,9 @@ export class MerchantOfferListComponent extends ProductMixin(
             value=${offer.id}
             ?checked=${offer.id === this.$current()?.id}
           />
-          <oryx-merchant-offer-list-item
-            .offerId=${offer.id}
-          ></oryx-merchant-offer-list-item>
+          <oryx-merchant-offer .offerId=${offer.id}></oryx-merchant-offer>
         </oryx-radio>
       </a>
     `;
-  }
-
-  // @input=${(e: Event) => this.onSelect(e, offer.id)}
-  private onSelect(e: Event, offerId: string): void {
-    console.log('select');
-  }
-
-  // @focus=${(e: Event) => this.onFocusin(e, offer.id)}
-  private onFocusin(e: Event, offerId: string): void {
-    console.log(e.target);
-    this.shadowRoot
-      ?.querySelector<HTMLInputElement>(`input[value="${offerId}"`)
-      ?.focus();
   }
 }

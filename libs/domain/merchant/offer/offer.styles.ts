@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const merchantOfferListItemStyles = css`
+export const merchantOfferStyles = css`
   :host {
     container-type: inline-size;
     display: grid;
