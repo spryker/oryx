@@ -4,5 +4,5 @@ import { EntityFieldOptions } from '../src/models';
 export interface EntityTextOptions extends EntityFieldOptions {
   tag?: HeadingTag;
   prefix?: string;
-  // link?: boolean;
+  link?: boolean;
 }

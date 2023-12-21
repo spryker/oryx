@@ -1,9 +1,7 @@
 import { ContentMixin } from '@spryker-oryx/experience';
-import { Size, hydrate, signal, signalAware } from '@spryker-oryx/utilities';
+import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { TotalsController } from '../../src/controllers';
-
-const size = Size.Lg;
 
 @hydrate({ event: 'window:load' })
 @signalAware()

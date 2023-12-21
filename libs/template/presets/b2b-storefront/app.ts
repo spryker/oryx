@@ -1,4 +1,4 @@
-import { multiCartFeature } from '@spryker-oryx/cart/multi';
+import { multiCartFeature } from '@spryker-oryx/cart';
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { storefrontFeatures } from '@spryker-oryx/presets/storefront';

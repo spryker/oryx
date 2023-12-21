@@ -1,27 +1,21 @@
 import { CartComponentMixin, CartService, PriceMode } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
-import { RouteType } from '@spryker-oryx/router';
-import { LinkService } from '@spryker-oryx/site';
+import { LinkService, RouteType } from '@spryker-oryx/router';
 import { AlertType } from '@spryker-oryx/ui';
 import { I18nMixin, Size, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { CartListItemProperties } from './list-item.model';
 import { cartListItemStyles } from './list-item.styles';
 
 const size = Size.Md;
 
-export class CartListItemComponent
-  extends CartComponentMixin(I18nMixin(LitElement))
-  implements CartListItemProperties
-{
+export class CartListItemComponent extends CartComponentMixin(
+  I18nMixin(LitElement)
+) {
   static styles = cartListItemStyles;
 
   protected cartService = resolve(CartService);
   protected linkService = resolve(LinkService);
-
-  @property({ type: Boolean }) open?: boolean;
 
   protected setDefault(): void {
     this.cartService.updateCart({
@@ -36,7 +30,7 @@ export class CartListItemComponent
     if (!cart) return;
 
     return html`
-      <oryx-collapsible ?open=${this.open}>
+      <oryx-collapsible>
         ${this.renderHeading()} ${this.renderEntries()} ${this.renderControls()}
       </oryx-collapsible>
     `;
@@ -69,15 +63,13 @@ export class CartListItemComponent
         .currency=${cart.currency}
       ></oryx-site-price>
 
-      <span slot="heading"
-        >(
+      <span slot="heading">
         ${this.i18n(
           cart.priceMode === PriceMode.GrossMode
-            ? 'cart.mode.gross'
-            : 'cart.mode.net'
+            ? 'carts.price-mode.gross'
+            : 'carts.price-mode.net'
         )}
-        )</span
-      >
+      </span>
     `;
   }
 
@@ -108,7 +100,8 @@ export class CartListItemComponent
         )}
 
         <div class="actions">
-          <oryx-button icon="edit" type="icon" .size=${size}></oryx-button>
+          <!-- TODO: uncomment during implementation of button's logic -->
+          <!-- <oryx-button icon="edit" type="icon" .size=${size}></oryx-button>
           <oryx-button
             icon="content_copy"
             type="icon"
@@ -128,7 +121,7 @@ export class CartListItemComponent
             .size=${size}
             ?disabled=${!disabled}
           ></oryx-button>
-          <oryx-button icon="delete" type="icon" .size=${size}></oryx-button>
+          <oryx-button icon="delete" type="icon" .size=${size}></oryx-button> -->
         </div>
       </div>
     `;

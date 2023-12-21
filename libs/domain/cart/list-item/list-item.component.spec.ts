@@ -71,8 +71,8 @@ describe('CartListItemComponent', () => {
     vi.clearAllMocks();
   });
 
-  it('should render closed collapsible', () => {
-    expect(element).toContainElement('oryx-collapsible:not([open])');
+  it('should render collapsible', () => {
+    expect(element).toContainElement('oryx-collapsible');
   });
 
   it('should render cart name and items count', () => {
@@ -101,7 +101,7 @@ describe('CartListItemComponent', () => {
     const priceMode = element.renderRoot.querySelector(
       'oryx-site-price + span'
     );
-    expect(priceMode?.textContent).toContain(i18n('cart.mode.gross'));
+    expect(priceMode?.textContent).toContain(i18n('carts.price-mode.gross'));
   });
 
   it('should render entries with cart id', () => {
@@ -163,7 +163,7 @@ describe('CartListItemComponent', () => {
       const priceMode = element.renderRoot.querySelector(
         'oryx-site-price + span'
       );
-      expect(priceMode?.textContent).toContain(i18n('cart.mode.net'));
+      expect(priceMode?.textContent).toContain(i18n('carts.price-mode.net'));
     });
   });
 
@@ -186,18 +186,6 @@ describe('CartListItemComponent', () => {
 
     it('should not render entries', () => {
       expect(element).not.toContainElement('oryx-cart-entries');
-    });
-  });
-
-  describe('when opened', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-cart-list-item open cartId=${cartId}></oryx-cart-list-item>`
-      );
-    });
-
-    it('should opened collapsible', () => {
-      expect(element).toContainElement('oryx-collapsible[open]');
     });
   });
 

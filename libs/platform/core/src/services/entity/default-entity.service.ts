@@ -18,46 +18,11 @@ export class DefaultEntityService implements EntityService {
     element,
     type,
   }: EntityQualifier<Q>): Observable<E | undefined> {
-    let type$: Observable<string | undefined>;
-
-    if (!type) {
-      type$ = this.context.get<string>(element ?? null, EntityContext);
-    } else {
-      type$ = of(type);
-    }
-
-    return type$.pipe(
-      switchMap((resolvedType) => {
-        if (!resolvedType) {
-          return throwError(
-            () => new Error(`No type resolved and no type provided for entity`)
-          );
-        }
-
-        const config = this.getConfig<E, Q>(resolvedType);
-
-        if (!config) {
-          return throwError(
-            () =>
-              new Error(`No entity provider found for entity ${resolvedType}`)
-          );
-        }
-
-        let qualifier$: Observable<Q | undefined>;
-
-        if (!qualifier) {
-          if (!config.context) {
-            return throwError(
-              () =>
-                new Error(
-                  `No context or qualifier provided for entity ${resolvedType}`
-                )
-            );
-          }
-          qualifier$ = this.context.get<Q>(element ?? null, config.context);
-        } else {
-          qualifier$ = of(qualifier);
-        }
+    return this.resolveConfig<E, Q>({ element, type }).pipe(
+      switchMap(({ config, type }) => {
+        const qualifier$: Observable<Q | undefined> = qualifier
+          ? of(qualifier)
+          : this.resolveQualifier({ type, element }, config);
 
         return qualifier$.pipe(
           switchMap((qualifier) =>
@@ -78,8 +43,67 @@ export class DefaultEntityService implements EntityService {
     );
   }
 
+  getQualifier<E = unknown, Q = unknown>({
+    element,
+    type,
+  }: Omit<EntityQualifier<Q>, 'qualifier'>): Observable<{
+    type: string;
+    qualifier: Q | undefined;
+  }> {
+    return this.resolveConfig<E, Q>({ element, type }).pipe(
+      switchMap(({ config, type }) => {
+        return this.resolveQualifier({ type, element }, config).pipe(
+          map((qualifier) => ({ type, qualifier }))
+        );
+      })
+    );
+  }
+
   getContextKey(type: string): Observable<string | null> {
     return of(this.injector.inject(`${EntityProvider}${type}`, null)?.context);
+  }
+
+  protected resolveConfig<E = unknown, Q = unknown>({
+    element,
+    type,
+  }: Pick<EntityQualifier<Q>, 'element' | 'type'>): Observable<{
+    config: EntityProvider<E, Q>;
+    type: string;
+  }> {
+    let type$: Observable<string | undefined>;
+
+    if (!type) {
+      type$ = this.context.get<string>(element ?? null, EntityContext);
+    } else {
+      type$ = of(type);
+    }
+
+    return type$.pipe(
+      map((type) => {
+        if (!type) {
+          throw new Error(`No type resolved and no type provided for entity`);
+        }
+
+        const config = this.getConfig<E, Q>(type);
+
+        if (!config) {
+          throw new Error(`No entity provider found for entity ${type}`);
+        }
+        return { config, type };
+      })
+    );
+  }
+
+  protected resolveQualifier<E = unknown, Q = unknown>(
+    { type, element }: Pick<EntityQualifier<Q>, 'type' | 'element'>,
+    { context }: EntityProvider<E, Q>
+  ): Observable<Q | undefined> {
+    if (!context) {
+      return throwError(
+        () => new Error(`No context or qualifier provided for entity ${type}`)
+      );
+    }
+    return this.context.get<Q>(element ?? null, context);
   }
 
   protected getConfig<E, Q>(type: string): EntityProvider<E, Q> {

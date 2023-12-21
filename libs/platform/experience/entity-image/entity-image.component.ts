@@ -1,6 +1,6 @@
 import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentAsset, ContentMixin } from '@spryker-oryx/experience';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
@@ -13,7 +13,7 @@ export class EntityImageComponent extends ContentMixin<EntityImageOptions>(
 ) {
   protected entityService = resolve(EntityService);
 
-  protected $data = computed<string | undefined>(() => {
+  protected $data = computed<string | ContentAsset | undefined>(() => {
     const { entity: type, field } = this.$options();
     return this.entityService
       .getField<string>({ element: this, type, field })
@@ -21,10 +21,13 @@ export class EntityImageComponent extends ContentMixin<EntityImageOptions>(
   });
 
   protected override render(): TemplateResult | void {
-    const imageUrl = this.$data();
+    const image = this.$data();
 
-    if (!imageUrl && !this.$options().renderFallback) return;
+    if (!image && !this.$options().renderFallback) return;
 
-    return html`<oryx-image .src=${imageUrl}></oryx-image>`;
+    return html`<oryx-image
+      .src=${(image as ContentAsset)?.src ?? image}
+      .alt=${(image as ContentAsset)?.alt}
+    ></oryx-image>`;
   }
 }

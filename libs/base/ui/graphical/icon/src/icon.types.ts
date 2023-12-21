@@ -6,6 +6,7 @@ export enum IconTypes {
   Close = 'close',
   DropUp = 'expand_less',
   Dropdown = 'expand_more',
+  Email = 'alternate_email',
   Image = 'photo_library',
   Info = 'info',
   InputError = 'report', // merge with error
@@ -25,6 +26,7 @@ export enum IconTypes {
   ModeDark = 'dark_mode',
   ModeLight = 'light_mode',
   Orders = 'shop_two',
+  Phone = 'call',
   History = 'history',
   Parcel = 'deployed_code',
   Printer = 'print',

@@ -35,7 +35,6 @@ export const cartListItemStyles = css`
   }
 
   p {
-    text-wrap: initial;
     margin-block-start: 0;
   }
 

@@ -41,7 +41,7 @@ export const StaticExperienceFeature: AppFeature = {
       editAddressPage,
       merchantPage,
       ...(featureVersion >= '1.1' ? [registrationPage] : []),
-      ...(featureVersion >= '1.4' ? [cartsPage, cartCreatePage] : []),
+      ...(featureVersion >= '1.4' ? [cartsPage] : []),
     ]),
   ],
 };

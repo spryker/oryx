@@ -35,7 +35,7 @@ const indexedDBStorageName = 'oryx-local-db-storage';
 export const defaultUser = {
   email: 'harald@spryker.com',
   password: 'change123',
-  warehouseName: 'Spryker MER000001 Warehouse 1',
+  warehouseName: 'Warehouse1',
 };
 
 Cypress.Commands.add('login', (user = defaultUser) => {
@@ -102,7 +102,7 @@ Cypress.Commands.add('glueApiCreateOrder', (numberOfItems = 1) => {
       // add product that is always available in the stock
       // 086_30521602 adjusted manually in backoffice, we have to
       // find another product to use here later
-      .postGuestCartsItems('086_30521602', numberOfItems)
+      .postGuestCartsItems('141_29380410', numberOfItems)
       .then(() => guestCartsApi.getGuestCarts())
       .then((res) => res.body.data[0].id)
       .then((idCart) => checkoutApi.checkout(idCart))

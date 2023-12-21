@@ -12,10 +12,12 @@ export class CartListComponent extends LayoutMixin(ContentMixin(LitElement)) {
   protected override render(): TemplateResult | void {
     const carts = this.$carts();
 
+    if (!carts?.length) return;
+
     return this.renderLayout({
       template: html`
         ${repeat(
-          carts ?? [],
+          carts,
           ({ id }) => id,
           ({ id }) =>
             html`<oryx-cart-list-item cartId=${id}></oryx-cart-list-item>`
