@@ -5,7 +5,8 @@
     "module": "commonjs",
     "lib": ["ESNext"],
     "types": ["node"],
-    "importHelpers": false
+    "importHelpers": false,
+    "sourceMap": false
   },
   "include": ["executors/**/*.ts"]
 }
