@@ -1,4 +1,5 @@
 export * from './carousel';
+export * from './collapsible';
 export * from './column';
 export * from './flex';
 export * from './grid';

@@ -16,6 +16,8 @@ export * from './styles/transform/transform-style.plugin';
 export * from './styles/typography/typography-style.plugin';
 export * from './types/carousel/carousel-layout.plugin';
 export * as carouselLayout from './types/carousel/carousel-layout.styles';
+export * from './types/collapsible/collapsible.plugin';
+export * as collapsibleLayout from './types/collapsible/collapsible.styles';
 export * from './types/column/column-layout.plugin';
 export * as columnLayout from './types/column/column-layout.styles';
 export * from './types/flex/flex-layout.plugin';

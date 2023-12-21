@@ -63,7 +63,9 @@ export const merchantPage: ExperienceComponent = {
         },
         {
           type: 'oryx-composition',
-          options: { rules: [{ layout: { type: 'list' } }] },
+          id: 'abc',
+          name: 'open/close',
+          options: { rules: [{ layout: { type: 'collapsible' } }] },
           components: [
             {
               type: 'oryx-entity-image',
