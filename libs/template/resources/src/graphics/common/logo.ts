@@ -2,7 +2,10 @@ import { featureVersion } from '@spryker-oryx/utilities';
 
 const darkMode =
   featureVersion >= '1.4'
-    ? `<style>@media (prefers-color-scheme: dark) { g { fill: var(--oryx-fill, white); }}</style>`
+    ? `<style>
+    @media (prefers-color-scheme: light) { g { fill: var(--oryx-fill, currentcolor); }}
+    @media (prefers-color-scheme: dark) { g { fill: var(--oryx-fill, white); }}
+    </style>`
     : '';
 
 const symbol = `<g part="symbol">
