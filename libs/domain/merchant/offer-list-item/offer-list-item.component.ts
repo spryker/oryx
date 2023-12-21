@@ -38,24 +38,6 @@ export class MerchantOfferListItemComponent extends ProductMixin(
     return this.$product()?.offers?.find((offer) => offer.id === this.offerId);
   });
 
-  // protected linkService = resolve(LinkService);
-
-  // protected $link = computed(() => {
-  //   const offer = this.$product()?.offers?.find(
-  //     (offer) => offer.id === this.offerId //&& !offer.isDefault
-  //   );
-
-  //   const qualifier = {
-  //     sku: this.$product()?.sku,
-  //     offer: offer?.id,
-  //   };
-
-  //   return this.linkService.get({
-  //     type: RouteType.Product,
-  //     qualifier,
-  //   });
-  // });
-
   protected override render(): TemplateResult | void {
     const offer = this.$offer();
     if (!offer) return;
@@ -76,13 +58,5 @@ export class MerchantOfferListItemComponent extends ProductMixin(
         .options=${{ hideInStock: true }}
       ></oryx-product-availability>
     `;
-  }
-
-  private onMouseDown(): void {
-    console.log('mousedown link');
-  }
-
-  private onFocusin(): void {
-    console.log('focus in link');
   }
 }

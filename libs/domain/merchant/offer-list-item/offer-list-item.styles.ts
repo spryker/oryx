@@ -2,12 +2,6 @@ import { css } from 'lit';
 
 export const merchantOfferListItemStyles = css`
   :host {
-    display: contents;
-    pointer-events: none;
-  }
-
-  a {
-    pointer-events: all;
     container-type: inline-size;
     display: grid;
     grid-template-columns: auto auto;
