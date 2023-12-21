@@ -2,7 +2,6 @@ import { appBuilder } from '@spryker-oryx/application';
 import { MockAuthFeature } from '@spryker-oryx/auth/mocks';
 import { multiCartFeature } from '@spryker-oryx/cart';
 import { mockCartFeature } from '@spryker-oryx/cart/mocks';
-import { multiCartFeature } from '@spryker-oryx/cart/multi';
 import { mockCheckoutFeature } from '@spryker-oryx/checkout/mocks';
 import { contentFeature } from '@spryker-oryx/content';
 import { mockCoreFeature } from '@spryker-oryx/core/mocks';

@@ -1,6 +1,6 @@
 import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteWithParams, RouterService } from '@spryker-oryx/router';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import {
   ExperienceComponent,
@@ -16,13 +16,19 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   ) {}
 
   protected experienceData = this.experienceDataService.getData();
-  protected getMeta$ = this.router.currentRoute().pipe(
-    switchMap((route) => {
-      const staticMeta = this.getData(route);
+  protected getMeta$ = this.router.current().pipe(
+    switchMap((routeConfig) => {
+      const staticMeta = this.getData(routeConfig);
 
       if (staticMeta) {
         return of(staticMeta);
       }
+
+      //routeConfig can be PathRouteConfig or URLPatternRouteConfig
+      const route =
+        'path' in routeConfig
+          ? routeConfig.path
+          : routeConfig?.pattern?.pathname;
 
       return (
         this.experienceService
@@ -68,19 +74,32 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     );
   }
 
-  protected getData(route: string): ExperienceComponent['meta'] | undefined {
-    const routePath = route.split('/').filter(Boolean)[0];
+  /** @deprecated since 1.4. use RouteWithParams as parameter  */
+  protected getData(route: string): ExperienceComponent['meta'] | undefined;
+  protected getData(
+    route: RouteWithParams
+  ): ExperienceComponent['meta'] | undefined;
+  protected getData(
+    route: RouteWithParams | string
+  ): ExperienceComponent['meta'] | undefined {
+    if (typeof route === 'string') {
+      const routePath = route.split('/').filter(Boolean)[0];
 
-    return this.experienceData.find((data) => {
-      // support for routes being either a string or an array of strings
-      const routes = Array.isArray(data.meta?.route)
-        ? data.meta?.route
-        : [data.meta?.route];
+      return this.experienceData.find((data) => {
+        // support for routes being either a string or an array of strings
+        const routes = Array.isArray(data.meta?.route)
+          ? data.meta?.route
+          : [data.meta?.route];
 
-      return routes?.some((route) => {
-        const metaPath = route?.split('/').filter(Boolean)[0];
-        return routePath === metaPath;
-      });
-    })?.meta;
+        return routes?.some((route) => {
+          const metaPath = route?.split('/').filter(Boolean)[0];
+          return routePath === metaPath;
+        });
+      })?.meta;
+    }
+
+    return this.experienceData.find(
+      ({ meta }) => meta?.routeType === route.type
+    )?.meta;
   }
 }

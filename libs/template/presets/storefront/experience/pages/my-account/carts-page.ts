@@ -11,12 +11,19 @@ export const cartsPage: ExperienceComponent = {
     description: 'Carts Page',
     routeType: RouteType.Carts,
   },
-  options: { rules: [{ layout: 'list', padding: '30px 0' }] },
   components: [
+    { ref: 'header' },
     {
-      type: 'oryx-site-breadcrumb',
-      options: { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] },
+      type: 'oryx-composition',
+      options: { rules: [{ layout: 'list', padding: '30px 0' }] },
+      components: [
+        {
+          type: 'oryx-site-breadcrumb',
+          options: { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] },
+        },
+        { ref: 'carts-page-content' },
+      ],
     },
-    { ref: 'carts-page-content' },
+    { ref: 'footer' },
   ],
 };

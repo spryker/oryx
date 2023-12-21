@@ -9,13 +9,13 @@ export const cartCreatePage: ExperienceComponent = {
     title: 'Create Cart',
     routeType: RouteType.CartCreate,
     route: '/my-account/create-cart',
+    description: 'Create Cart Page',
   },
   components: [
-    {
-      ref: 'header',
-    },
+    { ref: 'header' },
     {
       type: 'oryx-composition',
+      options: { rules: [{ layout: 'list', padding: '30px 0' }] },
       components: [
         {
           type: 'oryx-site-breadcrumb',
@@ -23,24 +23,9 @@ export const cartCreatePage: ExperienceComponent = {
             rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
           },
         },
-        {
-          type: 'oryx-content-text',
-          content: {
-            data: {
-              text: `
-                <oryx-heading tag="h1" typography="h3">Create cart</oryx-heading>
-                <p style="margin-block: 20px 0;">
-                  You can create multiple carts to organize your running orders
-                </p>
-              `,
-            },
-          },
-        },
-        { type: 'oryx-cart-edit' },
+        { ref: 'cart-create-page-content' },
       ],
-      options: {
-        rules: [{ layout: 'list', gap: '20px', padding: '30px 0 0' }],
-      },
     },
+    { ref: 'footer' },
   ],
 };

@@ -1,4 +1,4 @@
-import { CartComponentMixin, CartService, CreateCartQualifier, UpdateCartQualifier } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
@@ -8,14 +8,17 @@ import {
   FormRenderer,
   FormValues,
 } from '@spryker-oryx/form';
+import { LinkService, RouteType, RouterService } from '@spryker-oryx/router';
 import {
   CurrencyService,
+  NotificationService,
   PriceModeService,
   PriceModes,
-  StoreService,
 } from '@spryker-oryx/site';
+import { AlertType } from '@spryker-oryx/ui';
 import { computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
+import { state } from 'lit/decorators.js';
 import { CartEditComponentOptions } from './edit.model';
 
 @defaultOptions({ isDefault: true })
@@ -24,6 +27,16 @@ export class CartEditComponent extends CartComponentMixin(
 ) {
   protected fieldRenderer = resolve(FormRenderer);
   protected cartService = resolve(CartService);
+  protected notificationService = resolve(NotificationService);
+  protected routerService = resolve(RouterService);
+  protected linkService = resolve(LinkService);
+
+  @state()
+  protected isLoading = false;
+
+  protected $redirectLink = signal(
+    this.linkService.get({ type: RouteType.Carts })
+  );
 
   protected $cartValues = computed(() => {
     const cart = this.$cart();
@@ -31,7 +44,6 @@ export class CartEditComponent extends CartComponentMixin(
     return cart
       ? {
           name: cart.name,
-          isDefault: cart.isDefault,
           priceMode: cart.priceMode,
           currency: cart.currency,
         }
@@ -85,12 +97,6 @@ export class CartEditComponent extends CartComponentMixin(
         required: true,
         options: priceModeOptions,
       },
-      {
-        id: 'isDefault',
-        type: FormFieldType.Boolean,
-        label: this.i18n('cart.edit.set-default'),
-        width: 100,
-      },
     ];
   }
 
@@ -115,7 +121,7 @@ export class CartEditComponent extends CartComponentMixin(
       >
         ${this.fieldRenderer.buildForm(fields, values)}
 
-        <oryx-button @click=${() => this.submit()}
+        <oryx-button ?loading=${this.isLoading} @click=${() => this.submit()}
           >${this.i18n('create')}</oryx-button
         >
       </oryx-layout>
@@ -123,13 +129,23 @@ export class CartEditComponent extends CartComponentMixin(
   }
 
   protected onSubmit(e: CustomEvent): void {
-    const data = {
-      ...e.detail.values,
-      isDefault: !!e.detail.values.isDefault
-    };
+    this.isLoading = true;
 
-    this.cartService.createCart(data).pipe(
-      
-    );
+    this.cartService.createCart(e.detail.values).subscribe({
+      next: (cart) => {
+        this.notificationService.push({
+          type: AlertType.Success,
+          //TODO: use translation string when issue with resolving of translated result
+          //outside components render is fixed
+          // content: this.i18n('carts.create.cart-<name>-created', { name: cart.name }) as string
+          content: `Cart: ${cart.name} was created`,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.routerService.navigate(this.$redirectLink()!);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }

@@ -25,9 +25,11 @@ export interface CreateCartQualifier {
   store?: string;
   currency: string;
   priceMode: string;
-  isDefault?: boolean;
 }
 
-export interface UpdateCartQualifier extends CartEntryQualifier, Partial<CreateCartQualifier> {
+export interface UpdateCartQualifier
+  extends CartEntryQualifier,
+    Partial<CreateCartQualifier> {
   version?: string;
+  isDefault?: boolean;
 }

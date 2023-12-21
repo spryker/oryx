@@ -17,6 +17,7 @@ const carts = {
     'There are no cart entries for this cart available.',
   'carts.price-mode.gross': '(Gross)',
   'carts.price-mode.net': '(Net)',
+  'carts.create.cart-<name>-created': 'Cart "{name}" was successfully created',
 };
 
 const cart = {

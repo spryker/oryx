@@ -1,6 +1,6 @@
+import { featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { FormMixinProperties, SUBMIT_EVENT } from '../models';
-import { featureVersion } from '@spryker-oryx/utilities';
 
 export class FormController implements ReactiveController {
   constructor(protected host: LitElement & FormMixinProperties) {
@@ -28,7 +28,7 @@ export class FormController implements ReactiveController {
       new FormData(e.target as HTMLFormElement).entries()
     );
 
-    (featureVersion >= '1.4' ? this.host.getForm(): this.host)?.dispatchEvent(
+    (featureVersion >= '1.4' ? this.host.getForm() : this.host)?.dispatchEvent(
       new CustomEvent(SUBMIT_EVENT, {
         composed: true,
         bubbles: true,

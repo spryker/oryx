@@ -6,9 +6,7 @@ import { contactPage } from './experience/contact-page';
 import { HeaderTemplate } from './experience/header';
 
 const StaticB2BExperienceFeature: AppFeature = {
-  providers: [
-    provideExperienceData([contactPage, HeaderTemplate]),
-  ],
+  providers: [provideExperienceData([contactPage, HeaderTemplate])],
 };
 
 export const b2bStorefrontFeatures: AppFeature[] = [

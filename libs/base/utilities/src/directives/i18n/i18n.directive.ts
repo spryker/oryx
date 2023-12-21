@@ -71,6 +71,8 @@ export function i18n<T extends string | readonly string[]>(
 
   const $text = signal(text);
 
+  console.log(token, $text());
+
   i18nMap.set(hash, $text);
 
   return $text();
