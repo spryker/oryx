@@ -28,7 +28,7 @@ function merchantContextFallbackFactory(
       switchMap((route) =>
         route.type === 'merchant'
           ? of(route.params)
-          : context.get<ProductQualifier>(element, ProductContext.SKU).pipe(
+          : context.get(element, ProductContext.SKU).pipe(
               switchMap((qualifier: ProductQualifier | undefined) =>
                 qualifier ? product.get(qualifier) : of(undefined)
               ),
