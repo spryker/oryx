@@ -5,11 +5,11 @@ export interface MerchantQualifier {
 
 export interface Merchant {
   id: string;
-  name: string;
-  description: string;
-  url: string;
-  deliveryTime: string;
-  schedule: MerchantSchedule;
+  name?: string;
+  description?: string;
+  url?: string;
+  deliveryTime?: string;
+  schedule?: MerchantSchedule;
   /** A url of the logo. */
   logo?: string;
   /** A url of the banner. */

@@ -209,20 +209,20 @@ export interface ProductAvailability {
    * available and will never go out of stock. If the value is false, it means that the
    * product can go out of stock.
    */
-  isNeverOutOfStock: boolean;
+  isNeverOutOfStock?: boolean;
 
   /**
    * This property represents the availability status of the product. It is a boolean value,
    * where true indicates that the product is currently available for purchase, and false
    * indicates that it is not available.
    */
-  availability: boolean;
+  availability?: boolean;
 
   /**
    * The quantity property provides a more granular understanding of the quantity of the
    * product that can be fulfilled.
    */
-  quantity: number;
+  quantity?: number;
 }
 
 export interface ProductCategory {

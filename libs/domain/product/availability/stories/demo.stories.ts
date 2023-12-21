@@ -1,7 +1,6 @@
-import { ProductComponentProperties } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { CartItemAvailabilityOptions } from '../availability.model';
 
@@ -12,6 +11,7 @@ export default {
     threshold: 5,
     enableIndicator: true,
     enableExactStock: true,
+    hideInStock: false,
   },
   argTypes: {
     sku: {
@@ -27,7 +27,7 @@ export default {
   },
 } as Meta;
 
-type Props = CartItemAvailabilityOptions & ProductComponentProperties;
+type Props = CartItemAvailabilityOptions & { sku: string };
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { sku, ...options } = props;
