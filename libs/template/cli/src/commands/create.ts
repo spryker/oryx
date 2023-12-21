@@ -1,9 +1,11 @@
 import {
   intro,
   isCancel,
-  log, multiselect,
+  log,
+  multiselect,
   note,
-  outro, select,
+  outro,
+  select,
   spinner,
   text,
 } from '@clack/prompts';
@@ -11,15 +13,28 @@ import { inject } from '@spryker-oryx/di';
 import fs from 'fs';
 import path from 'path';
 import c from 'picocolors';
-import { CliCommand, CliCommandOption } from '../models';
-import {AppTemplateBuilderService, AppTemplateLoaderService, CliArgsService, NodeUtilService} from '../services';
+import {
+  ApplicationType,
+  CliCommand,
+  CliCommandOption,
+  Feature,
+  Preset,
+} from '../models';
+import {
+  AppTemplateBuilderService,
+  AppTemplateLoaderService,
+  CliArgsService,
+  NodeUtilService,
+} from '../services';
+import { ApplicationCliService } from '../services/application-cli.service';
 
 export class CreateCliCommand implements CliCommand {
   constructor(
     protected argsService = inject(CliArgsService),
     protected appTemplateLoaderService = inject(AppTemplateLoaderService),
-    // protected appTemplateBuilderService = inject(AppTemplateBuilderService),
-    protected nodeUtilService = inject(NodeUtilService),
+    protected applicationCliService = inject(ApplicationCliService),
+    protected appTemplateBuilderService = inject(AppTemplateBuilderService),
+    protected nodeUtilService = inject(NodeUtilService)
   ) {}
 
   getName(): string {
@@ -33,8 +48,9 @@ export class CreateCliCommand implements CliCommand {
   getOptions(): CliCommandOption[] {
     return [
       { name: 'name', short: 'n', type: 'string' },
+      { name: 'preset', short: 'p', type: 'string' },
       { name: 'theme', short: 't', type: 'string' },
-      { name: 'feature', short: 'f', type: 'string' },
+      { name: 'features', short: 'f', type: 'string' },
     ];
   }
 
@@ -47,6 +63,9 @@ Aliases: ${c.bold('c')}
 
 Options:
   ${c.dim('-n, --name')}    The name of the app and the directory to create.
+  ${c.dim('-p, --preset')}  A preset to use.
+  ${c.dim('-t, --theme')}   A theme to use.
+  ${c.dim('-t, --features')}   A list of features to use.
 `;
   }
 
@@ -54,6 +73,8 @@ Options:
     const options: CreateAppOptions = {
       name: this.argsService.get('name') as string,
       appType: this.argsService.get('type') as string,
+      preset: this.argsService.get('preset') as string,
+      features: this.argsService.get('features') as string,
     };
 
     await this.createApp(options);
@@ -85,15 +106,15 @@ Please make sure to not use an existing directory name.`
     }
 
     if (!options.preset) {
-      options.preset = await this.promptPreset();
+      options.preset = await this.promptPreset(options.appType);
     } else {
       log.info(`Preset: ${c.bold(options.preset)}`);
     }
 
-    if (!options.feature) {
-      options.feature = await this.promptFeature();
+    if (!options.features) {
+      options.features = await this.promptFeatures(options.appType);
     } else {
-      log.info(`Features: ${c.bold(options.feature)}`);
+      log.info(`Features: ${c.bold(options.features)}`);
     }
 
     const startTime = new Date().getTime();
@@ -104,11 +125,18 @@ Please make sure to not use an existing directory name.`
     await this.appTemplateLoaderService.copyTemplate(appPath, options.appType);
     s.stop('Template copied');
 
-    // s.start('Configuring application...');
-    // const appTemplate = this.appTemplateBuilderService.create(appPath);
-    // s.stop('Application configured!');
+    s.start('Configuring application...');
 
-    // await this.npmInstall(appPath);
+    const appTemplate = this.appTemplateBuilderService.create(appPath);
+
+    await appTemplate
+      .setPreset(options.preset)
+      .setFeatures(options.features)
+      .update();
+
+    s.stop('Application configured!');
+
+    await this.npmInstall(appPath);
 
     const totalTime = (new Date().getTime() - startTime) / 1000;
 
@@ -139,39 +167,60 @@ Please make sure to not use an existing directory name.`
   }
 
   protected promptType(): Promise<string> {
+    const types = this.getTypes();
+
+    if (!types.length) {
+      throw new Error('No application types found!');
+    }
+
     return this.promptValue(
       select({
         message: 'Select application type',
-        options: [
-          { value: AppTypeOptions.Storefront, label: AppTypeOptions.Storefront, hint: 'Default Storefront-oriented setup' },
-          { value: AppTypeOptions.Fulfillment, label: AppTypeOptions.Fulfillment, hint: 'PWA setup fpr Fulfillment application' },
-        ],
+        options: this.getPromptOptions(types),
       })
     );
   }
 
-  protected promptPreset(): Promise<string> {
+  protected promptPreset(
+    appType: ApplicationType
+  ): Promise<string> | undefined {
+    const presets = this.getPresets(appType);
+
+    if (!presets.length) {
+      log.info(`No presets found!`);
+      return;
+    }
+
     return this.promptValue(
       select({
         message: 'Select preset',
-        options: [
-          { value: PresetOptions.B2C, label: PresetOptions.B2C },
-          { value: PresetOptions.B2B, label: PresetOptions.B2B },
-        ],
+        options: this.getPromptOptions(presets),
       })
     );
   }
 
-  protected promptFeature(): Promise<string> {
+  protected promptFeatures(appType: ApplicationType): Promise<string> {
+    const features = this.getFeatures(appType);
+
+    if (!features.length) {
+      log.info(`No features found!`);
+      return;
+    }
+
     return this.promptValue(
       multiselect({
         message: 'Select features',
-        options: [
-          { value: FeatureOptions.Labs, label: FeatureOptions.Labs },
-        ],
+        options: this.getPromptOptions(features),
         required: false,
       })
     );
+  }
+
+  protected getPromptOptions(options) {
+    return options.map((value) => ({
+      value,
+      label: value,
+    }));
   }
 
   protected async promptValue<T>(input: Promise<T | symbol>): Promise<T> {
@@ -183,31 +232,23 @@ Please make sure to not use an existing directory name.`
 
     return value;
   }
+
+  protected getTypes(): string[] {
+    return this.applicationCliService.getApplicationTypes();
+  }
+
+  protected getPresets(appType: ApplicationType): string[] {
+    return this.applicationCliService.getPresets(appType);
+  }
+
+  protected getFeatures(appType: ApplicationType): string[] {
+    return this.applicationCliService.getFeatures(appType);
+  }
 }
 
-interface CreateAppConfig extends Required<CreateAppOptions> {
-  path: string;
-}
-
-export interface CreateAppOptions extends OryxOptions {
-  name?: string;
-}
-
-export interface OryxOptions {
-  appType?: AppTypeOptions,
-  preset?: PresetOptions,
-  feature?: FeatureOptions,
-}
-
-export enum AppTypeOptions {
-  Storefront = 'storefront',
-  Fulfillment = 'fulfillment',
-}
-
-export enum PresetOptions {
-  B2C = 'b2c',
-  B2B = 'b2b'
-}
-export enum FeatureOptions {
-  Labs = 'labs'
+export interface CreateAppOptions {
+  name: string;
+  appType: ApplicationType;
+  preset?: Preset;
+  features?: Feature[];
 }

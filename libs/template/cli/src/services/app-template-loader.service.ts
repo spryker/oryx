@@ -1,31 +1,32 @@
-import {inject} from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import path from 'path';
-import {NodeUtilService} from './node-util.service';
-import {AppTypeOptions} from "../commands";
+import { ApplicationType } from '../models';
+import { NodeUtilService } from './node-util.service';
 
 export class AppTemplateLoaderService {
+  protected repoName = 'oryx-starter';
   protected readonly repoUrl =
-    'https://github.com/spryker/composable-frontend/archive/{ref}.zip';
+    'https://github.com/spryker/oryx-starter/archive/{ref}.zip';
 
   protected readonly repoRefs = {
-    [AppTypeOptions.Storefront]: 'master',
-    [AppTypeOptions.Fulfillment]: 'fulfillment',
+    [ApplicationType.Storefront]: 'master',
+    [ApplicationType.Fulfillment]: 'fulfillment',
   };
 
-  protected readonly TemplateRef = {
-    [AppTypeOptions.Storefront]: 'latest',
-    [AppTypeOptions.Fulfillment]: 'fulfillment',
+  protected readonly templateRef = {
+    [ApplicationType.Storefront]: 'latest',
+    [ApplicationType.Fulfillment]: 'fulfillment',
   };
 
   constructor(
     protected dirPath = path.resolve(process.cwd()),
-    protected nodeUtilService = inject(NodeUtilService),
+    protected nodeUtilService = inject(NodeUtilService)
   ) {}
 
-  async copyTemplate(path: string, ref = this.TemplateRef): Promise<void> {
+  async copyTemplate(path: string, ref = this.templateRef): Promise<void> {
     await this.downloadTemplate(ref);
 
-    const templatePath = this.getTemplatePath(ref);
+    const templatePath = this.getTemplateRepoPath(ref);
 
     try {
       await this.nodeUtilService.copyFolder(templatePath, path);
@@ -34,7 +35,9 @@ export class AppTemplateLoaderService {
     }
   }
 
-  async downloadTemplate(ref = this.TemplateRef[AppTypeOptions.Storefront]): Promise<void> {
+  async downloadTemplate(
+    ref = this.templateRef[ApplicationType.Storefront]
+  ): Promise<void> {
     const templatePath = this.getTemplatePath(ref);
     const archivePath = this.getArchivePath(ref);
 
@@ -58,11 +61,23 @@ export class AppTemplateLoaderService {
     return this.repoUrl.replace('{ref}', this.repoRefs[ref]);
   }
 
-  protected getTemplatePath(ref = this.TemplateRef[AppTypeOptions.Storefront]): Promise<string> {
+  protected getTemplateRepoPath(ref): string {
+    return path.resolve(
+      this.getTemplateDir(),
+      ref,
+      `${this.repoName}-${this.repoRefs[ref]}`
+    );
+  }
+
+  protected getTemplatePath(
+    ref = this.templateRef[ApplicationType.Storefront]
+  ): Promise<string> {
     return path.resolve(this.getTemplateDir(), ref);
   }
 
-  protected getArchivePath(ref = this.TemplateRef[AppTypeOptions.Storefront]): Promise<string> {
+  protected getArchivePath(
+    ref = this.templateRef[ApplicationType.Storefront]
+  ): Promise<string> {
     return path.resolve(this.getTemplateDir(), `template-${ref}.zip`);
   }
 

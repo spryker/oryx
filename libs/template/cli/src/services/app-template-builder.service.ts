@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-// import { OryxFeature, OryxIdentifier, OryxTheme } from '../models';
+import { Feature, Preset } from '../models';
 
 export class AppTemplateBuilderService {
   create(appPath: string): AppTemplateBuilder {
@@ -9,89 +9,90 @@ export class AppTemplateBuilderService {
 }
 
 export class AppTemplateBuilder {
-  protected readonly mainPath = path.resolve(this.appPath, 'src/main.ts');
-  protected features: OryxFeature[] = [];
-  protected preset?: OryxPreset;
-  protected theme?: OryxTheme;
+  protected readonly appPath = path.resolve(this.appPath, 'src/app.ts');
+  protected features?: Feature[];
+  protected preset?: Preset;
 
   constructor(protected readonly appPath: string) {}
 
-  setFeatures(features: OryxFeature[]): this {
+  setPreset(preset: Preset): this {
+    this.preset = preset;
+    return this;
+  }
+
+  setFeatures(features: Feature[]): this {
     this.features = features;
     return this;
   }
 
-  setTheme(theme: OryxTheme): this {
-    this.theme = theme;
-    return this;
-  }
-
   async update(): Promise<void> {
-    let mainFile = await this.readMainFile();
+    let appFile = await this.readAppFile();
 
-    mainFile = this.updateFeatures(mainFile);
-    mainFile = this.updateTheme(mainFile);
+    appFile = this.updatePreset(appFile);
+    appFile = this.updateFeatures(appFile);
 
-    await this.writeMainFile(mainFile);
+    await this.writeAppFile(appFile);
   }
 
-  protected updateFeatures(content: string): string {
-    const featuresImports = this.features
-      .map(
-        (feature) =>
-          `import { ${feature.identifier} } from '${feature.package}';`
-      )
-      .join('\n');
+  protected updatePreset(content: string): string {
+    if (!this.preset || this.preset === Preset.B2C) {
+      return content;
+    }
 
-    const featuresList = this.features
-      .map((feature) => `.withFeature(${this.getIdentifierInstance(feature)})`)
-      .join(`\n  `);
+    if (this.preset === Preset.B2B) {
+      content = content.replace(
+        `import { storefrontFeatures } from '@spryker-oryx/presets/storefront';`,
+        `import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';`
+      );
 
-    content = content.replace(
-      `import { b2cFeatures } from '@spryker-oryx/presets';`,
-      `${featuresImports}`
-    );
+      content = content.replace(
+        `.withFeature(storefrontFeatures)`,
+        `.withFeature(b2bStorefrontFeatures)`
+      );
 
-    content = content.replace(`.withFeature(b2cFeatures)`, `${featuresList}`);
-
-    return content;
-  }
-
-  protected updateTheme(content: string): string {
-    if (!this.theme) {
       return content;
     }
 
     content = content.replace(
-      `import { storefrontTheme } from '@spryker-oryx/themes';`,
-      `import { ${this.theme.identifier} } from '${this.theme.package}';`
+      `import { storefrontFeatures } from '@spryker-oryx/presets/storefront';`,
+      `import { ${this.preset}Features } from '@spryker-oryx/presets/${this.preset}';`
     );
 
     content = content.replace(
-      `.withTheme(storefrontTheme)`,
-      `.withTheme(${this.getIdentifierInstance(this.theme)})`
+      `withFeature(storefrontFeatures)`,
+      `.withFeature(${this.preset})`
     );
 
     return content;
   }
 
-  protected getIdentifierInstance(identifier: OryxIdentifier): string {
-    if (identifier.isCallable) {
-      return `${identifier.identifier}()`;
-    }
+  protected updateFeatures(content: string): string {
+    const featuresImports = this.features
+      ?.map(
+        (feature) =>
+          `import { ${feature}Features } from '@spryker-oryx/${feature}';`
+      )
+      .join('\n');
 
-    if (identifier.isClass) {
-      return `new ${identifier.identifier}()`;
-    }
+    const featuresList = this.features
+      ?.map((feature) => `.withFeature(${feature}Features)`)
+      .join(`\n  `);
 
-    return identifier.identifier;
+    content = `${featuresImports}\n${content}`;
+
+    content = content.replace(
+      `appBuilder()`,
+      `appBuilder()\n  ${featuresList}`
+    );
+
+    return content;
   }
 
-  protected readMainFile(): Promise<string> {
-    return fs.readFile(this.mainPath, 'utf-8');
+  protected readAppFile(): Promise<string> {
+    return fs.readFile(this.appPath, 'utf-8');
   }
 
-  protected writeMainFile(content: string): Promise<void> {
-    return fs.writeFile(this.mainPath, content);
+  protected writeAppFile(content: string): Promise<void> {
+    return fs.writeFile(this.appPath, content);
   }
 }
