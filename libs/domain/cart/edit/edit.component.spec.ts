@@ -7,7 +7,6 @@ import {
   PriceModeService,
   PriceModes,
   PricingService,
-  StoreService,
 } from '@spryker-oryx/site';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -30,10 +29,6 @@ class MockCurrencyService implements Partial<CurrencyService> {
 
 class MockPriceModeService implements Partial<PriceModeService> {
   get = vi.fn().mockReturnValue(of(PriceModes.GrossMode));
-}
-
-class MockStoreService implements Partial<StoreService> {
-  get = vi.fn().mockReturnValue(of('Mock'));
 }
 
 class mockPricingService {
@@ -102,10 +97,6 @@ describe('CartEditComponent', () => {
         {
           provide: CartService,
           useClass: MockCartService,
-        },
-        {
-          provide: StoreService,
-          useClass: MockStoreService,
         },
         {
           provide: PriceModeService,

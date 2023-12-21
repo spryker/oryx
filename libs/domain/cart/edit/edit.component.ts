@@ -1,4 +1,4 @@
-import { CartComponentMixin, CreateCartQualifier, UpdateCartQualifier } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartService, CreateCartQualifier, UpdateCartQualifier } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
@@ -23,6 +23,7 @@ export class CartEditComponent extends CartComponentMixin(
   FormMixin(ContentMixin<CartEditComponentOptions>(LitElement))
 ) {
   protected fieldRenderer = resolve(FormRenderer);
+  protected cartService = resolve(CartService);
 
   protected $cartValues = computed(() => {
     const cart = this.$cart();
@@ -33,7 +34,6 @@ export class CartEditComponent extends CartComponentMixin(
           isDefault: cart.isDefault,
           priceMode: cart.priceMode,
           currency: cart.currency,
-          store: cart.store,
         }
       : {};
   });
@@ -46,9 +46,6 @@ export class CartEditComponent extends CartComponentMixin(
 
   protected priceModeService = resolve(PriceModeService);
   protected $priceMode = signal(this.priceModeService.get());
-
-  protected storeService = resolve(StoreService);
-  protected $store = signal(this.storeService.get());
 
   protected getFields(): FormFieldDefinition[] {
     const priceModeOptions = [PriceModes.GrossMode, PriceModes.NetMode].map(
@@ -125,22 +122,14 @@ export class CartEditComponent extends CartComponentMixin(
     </form>`;
   }
 
-  protected onSubmit(e: CustomEvent<FormValues>): void {
-    const form = e.target as HTMLFormElement;
-
-    const values = Object.fromEntries(new FormData(form).entries());
+  protected onSubmit(e: CustomEvent): void {
     const data = {
-      ...values as CreateCartQualifier,
-      store: this.$store()!.id,
-      isDefault: values.isDefault
+      ...e.detail.values,
+      isDefault: !!e.detail.values.isDefault
     };
-    // const data = 
-    // cart.store = this.$store()!.id;
-    // cart.isDefault = cart.isDefault === 'true';
 
-
-    //TODO: replace with cart create service call
-    //implemented in list story
-    console.log(values);
+    this.cartService.createCart(data).pipe(
+      
+    );
   }
 }

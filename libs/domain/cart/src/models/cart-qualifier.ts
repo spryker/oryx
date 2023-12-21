@@ -22,14 +22,12 @@ export interface UpdateCartEntryQualifier extends CartEntryQualifier {
 
 export interface CreateCartQualifier {
   name?: string;
-  store: string;
+  store?: string;
+  currency: string;
   priceMode: string;
   isDefault?: boolean;
 }
 
-export interface UpdateCartQualifier extends CartEntryQualifier {
-  name?: string;
-  priceMode?: string;
+export interface UpdateCartQualifier extends CartEntryQualifier, Partial<CreateCartQualifier> {
   version?: string;
-  isDefault?: boolean;
 }
