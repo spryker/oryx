@@ -1,7 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
-
-const experienceArticleTags = ['article', 'faq', 'about'];
+import { articleTypes } from './article-types';
 
 export const experienceArticlePages = [
   {
@@ -32,17 +31,17 @@ export const experienceArticlePages = [
       },
     ],
   },
-  ...experienceArticleTags
+  ...articleTypes
     .map(
-      (tag) =>
+      (type) =>
         [
           {
             type: 'Page',
-            id: `${tag}-list`,
+            id: `${type}-list`,
             meta: {
-              title: `${tag} List`,
-              route: `/${tag}/:id`,
-              routeType: tag,
+              title: `${type} List`,
+              route: `/${type}/:id`,
+              routeType: type,
             },
             components: [
               { ref: 'header' },
@@ -64,7 +63,7 @@ export const experienceArticlePages = [
                       [SuggestionField.Categories]: null,
                       [SuggestionField.Contents]: null,
                       [SuggestionField.Products]: null,
-                      [tag]: { max: 8 },
+                      [type]: { max: 8 },
                     },
                   },
                   {
@@ -80,10 +79,10 @@ export const experienceArticlePages = [
           },
           {
             type: 'Page',
-            id: tag,
+            id: type,
             meta: {
-              title: tag,
-              route: `/${tag}/:id`,
+              title: type,
+              route: `/${type}/:id`,
               routeType: 'content',
             },
             components: [
@@ -105,7 +104,6 @@ export const experienceArticlePages = [
                       field: 'content',
                     },
                   },
-                  // { type: 'oryx-content-article' },
                 ],
               },
               { ref: 'footer' },

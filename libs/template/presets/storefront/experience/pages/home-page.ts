@@ -28,21 +28,20 @@ export const homePage: ExperienceComponent = {
       type: 'oryx-composition',
       options: {
         context: {
-          content: {
-            type: 'article',
+          article: {
             id: 'Gift Guide Tue',
           },
-          entity: 'content',
+          entity: 'article',
         },
       },
       components: [
         {
           type: 'oryx-entity-text',
-          options: { entity: 'content', field: 'content' },
+          options: { field: 'content' },
         },
         {
           type: 'oryx-entity-image',
-          options: { entity: 'content', field: 'picture', rules: [] },
+          options: { field: 'picture', rules: [] },
         },
       ],
     },
