@@ -12,7 +12,7 @@ import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { from, map, mergeMap, tap, toArray } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { ProductOffer } from '../src/models';
 import { merchantOffersStyles } from './offer-list.styles';
 
@@ -53,22 +53,17 @@ export class MerchantOfferListComponent extends ProductMixin(
 
   protected $offers = computed(() => {
     const product = this.$product();
-    if (!product) return;
+    if (!product?.offers?.length) return;
 
-    return from(product.offers ?? []).pipe(
-      mergeMap((offer) => {
-        const qualifier = {
-          sku: product.sku,
-          offer: offer.id,
-        };
-        return this.linkService
-          .get({ type: RouteType.Product, qualifier })
-          .pipe(
-            map((link) => ({ ...offer, link })) // Add the link to the offer object
-          );
-      }),
-      tap(console.log),
-      toArray()
+    return combineLatest(
+      product.offers.map((offer) =>
+        this.linkService
+          .get({
+            type: RouteType.Product,
+            qualifier: { sku: product.sku, offer: offer.id },
+          })
+          .pipe(map((link) => ({ ...offer, link })))
+      )
     );
   });
 
