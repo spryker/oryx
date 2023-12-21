@@ -10,6 +10,7 @@ export * from './intersect-arrays';
 export * from './next-tick';
 export * from './query.util';
 export * from './random-string';
+export * from './regex';
 export * from './require-at-least-one-prop';
 export * from './screen-css';
 export * from './subscribe-replay';

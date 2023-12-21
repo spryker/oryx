@@ -6,7 +6,7 @@ export const merchantPage: ExperienceComponent = {
   type: 'Page',
   meta: {
     title: 'Merchant',
-    route: '/merchant/:merchant',
+    route: '/merchant/:id',
     routeType: 'merchant',
     description: 'Default Merchant Page Description',
   },

@@ -1,4 +1,4 @@
-import { ContextService, EntityService } from '@spryker-oryx/core';
+import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/router';
@@ -17,7 +17,6 @@ export class EntityTextComponent extends TextMixin(
 ) {
   protected entityService = resolve(EntityService);
   protected linkService = resolve(LinkService);
-  protected contextService = resolve(ContextService);
 
   protected $data = computed<string | undefined>(() => {
     const { entity: type, field } = this.$options();
@@ -32,15 +31,15 @@ export class EntityTextComponent extends TextMixin(
     return this.convertText(text);
   });
 
-  protected $link = computed(() => {
-    const { entity, field } = this.$options();
-    if (!entity || !field) return;
+  protected $linkQualifier = computed(() =>
+    this.entityService
+      .getQualifier({ element: this, type: this.$options().entity })
+      .pipe(catchError(() => of()))
+  );
 
-    const qualifier = this.contextService.get(this, field);
-    return this.linkService.get({
-      type: entity,
-      qualifier,
-    });
+  protected $link = computed(() => {
+    const qualifier = this.$linkQualifier();
+    return qualifier ? this.linkService.get(qualifier) : undefined;
   });
 
   protected override render(): TemplateResult | void {
@@ -54,12 +53,10 @@ export class EntityTextComponent extends TextMixin(
   protected renderContent(): TemplateResult | void {
     const text = this.$text();
     if (!text) return;
-    // const { link } = this.$options();
-    // const content = html`${this.renderPrefix()}${link
-    //   ? this.renderLink()
-    //   : this.$text()} `;
-
-    return html`${this.renderPrefix()}${this.$text()}`;
+    const { link } = this.$options();
+    return html`${this.renderPrefix()}${link
+      ? this.renderLink()
+      : this.$text()} `;
   }
 
   protected renderLink():

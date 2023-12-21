@@ -121,4 +121,56 @@ describe('DefaultEntityService', () => {
       ).rejects.toThrow('No type resolved and no type provided for entity');
     });
   });
+
+  describe('getQualifier method', () => {
+    it('should return the correct qualifier', async () => {
+      mockContextService.get.mockImplementation((element, context) =>
+        of('mockContext')
+      );
+      const qualifier = await firstValueFrom(
+        service.getQualifier({
+          type: 'testType',
+          element: 'someElement' as any,
+        })
+      );
+      expect(qualifier).toEqual({ type: 'testType', qualifier: 'mockContext' });
+      expect(mockContextService.get).toHaveBeenCalledTimes(1);
+      expect(mockContextService.get).toHaveBeenCalledWith(
+        'someElement',
+        'mockContext'
+      );
+    });
+
+    it('should return the correct qualifier inferring type', async () => {
+      mockContextService.get.mockImplementation((element, context) =>
+        of(context === 'entity' ? 'testType' : 'mockContext')
+      );
+      const qualifier = await firstValueFrom(service.getQualifier({}));
+      expect(qualifier).toEqual({ type: 'testType', qualifier: 'mockContext' });
+      expect(mockContextService.get).toHaveBeenCalledTimes(2);
+      expect(mockContextService.get).toHaveBeenCalledWith(null, 'entity');
+      expect(mockContextService.get).toHaveBeenCalledWith(null, 'mockContext');
+    });
+
+    it('should throw an error if type is missing and cannot be resolved', async () => {
+      mockContextService.get.mockImplementation((element, context) =>
+        of(undefined as any)
+      );
+
+      await expect(
+        firstValueFrom(
+          service.getQualifier({ element: 'unknownElement' as any })
+        )
+      ).rejects.toThrow('No type resolved and no type provided for entity');
+    });
+
+    it('should throw an error if context is missing for the qualifier', async () => {
+      // Assuming there is no context defined for 'typeWithoutContext'
+      await expect(
+        firstValueFrom(service.getQualifier({ type: 'typeWithoutContext' }))
+      ).rejects.toThrow(
+        'No entity provider found for entity typeWithoutContext'
+      );
+    });
+  });
 });

@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextService, EntityService } from '@spryker-oryx/core';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { Injector, createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LinkService } from '@spryker-oryx/router';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { useComponent } from '@spryker-oryx/utilities';
@@ -11,22 +11,28 @@ import { entityText } from './entity-text.def';
 
 class MockEntityService implements Partial<EntityService> {
   getField = vi.fn().mockReturnValue(of());
+  getQualifier = vi.fn().mockReturnValue(of());
+}
+
+class MockLinkService implements Partial<LinkService> {
+  get = vi.fn().mockReturnValue(of());
 }
 
 describe('EntityTextComponent', () => {
   let element: EntityTextComponent;
   let entityService: MockEntityService;
+  let injector: Injector;
 
   beforeAll(async () => {
     await useComponent(entityText);
   });
 
   beforeEach(async () => {
-    const injector = createInjector({
+    injector = createInjector({
       providers: [
         { provide: EntityService, useClass: MockEntityService },
         { provide: ContextService, useValue: {} },
-        { provide: LinkService, useValue: {} },
+        { provide: LinkService, useClass: MockLinkService },
       ],
     });
     entityService = injector.inject<MockEntityService>(EntityService);
@@ -122,18 +128,26 @@ describe('EntityTextComponent', () => {
     });
   });
 
-  // describe('when a link option is configured', () => {
-  //   beforeEach(async () => {
-  //     entityService.getField.mockReturnValue('foo bar');
-  //     element = await fixture(
-  //       html`<oryx-entity-text
-  //         .options=${{ entity: 'data', field: 'name', link: true }}
-  //       ></oryx-entity-text>`
-  //     );
-  //   });
+  describe('when a link option is configured', () => {
+    beforeEach(async () => {
+      entityService.getField.mockReturnValue(of('foo bar'));
+      entityService.getQualifier.mockReturnValue(of('some-qualifier'));
 
-  //   it('should render the heading component', () => {
-  //     expect(element).toContainElement('oryx-link');
-  //   });
-  // });
+      const linkService = injector.inject<MockLinkService>(LinkService);
+      linkService.get.mockReturnValue(of('some-url'));
+
+      element = await fixture(
+        html`<oryx-entity-text
+          .options=${{ entity: 'data', field: 'name', link: true }}
+        ></oryx-entity-text>`
+      );
+    });
+
+    it('should render the link component', () => {
+      expect(element).toContainElement('oryx-link');
+      const linkElement = element.shadowRoot?.querySelector('oryx-link');
+      expect(linkElement?.innerHTML).toContain('<a href="some-url">');
+      expect(linkElement?.textContent).toContain('foo bar');
+    });
+  });
 });

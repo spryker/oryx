@@ -2,14 +2,13 @@ import { ExperienceComponent } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const cartEntries = (): ExperienceComponent => {
-  const components: ExperienceComponent[] = [];
-  if (featureVersion >= '1.2') components.push({ type: 'oryx-cart-heading' });
-  components.push({ type: 'oryx-cart-entries' });
-
   return {
     type: 'oryx-composition',
     id: 'cart-entries',
-    components,
+    components: [
+      ...(featureVersion >= '1.2' ? [{ type: 'oryx-cart-heading' }] : []),
+      { type: 'oryx-cart-entries' },
+    ],
     options: { rules: [{ layout: 'list' }] },
   };
 };

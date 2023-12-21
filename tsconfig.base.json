@@ -35,6 +35,8 @@
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
       "@spryker-oryx/cart/entry": ["libs/domain/cart/entry/index.ts"],
       "@spryker-oryx/cart/heading": ["libs/domain/cart/heading/index.ts"],
+      "@spryker-oryx/cart/list": ["libs/domain/cart/list/index.ts"],
+      "@spryker-oryx/cart/list-item": ["libs/domain/cart/list-item/index.ts"],
       "@spryker-oryx/cart/mocks": ["libs/domain/cart/src/mocks/index.ts"],
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
@@ -102,6 +104,9 @@
       ],
       "@spryker-oryx/experience/entity-image": [
         "libs/platform/experience/entity-image/index.ts"
+      ],
+      "@spryker-oryx/experience/entity-link": [
+        "libs/platform/experience/entity-link/index.ts"
       ],
       "@spryker-oryx/experience/entity-text": [
         "libs/platform/experience/entity-text/index.ts"

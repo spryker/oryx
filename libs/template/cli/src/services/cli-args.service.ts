@@ -7,7 +7,7 @@ import { CliCommand } from '../models';
 export class CliArgsService {
   protected options =
     this.featureOptionsService.getFeatureOptions(CliFeatureOptions);
-  protected args = [...(this.options.args ?? [])];
+  protected args = [...(this.options?.args ?? [])];
   protected command = this.args.shift();
   protected parsedArgs?: ReturnType<typeof parseArgs>;
 
@@ -17,7 +17,7 @@ export class CliArgsService {
   ) {}
 
   getRawArgs(): string[] {
-    return [...(this.options.args ?? [])];
+    return [...(this.options?.args ?? [])];
   }
 
   getCommand(): string | undefined {
@@ -103,7 +103,7 @@ export const CliFeatureOptions = 'cli';
 
 declare global {
   interface FeatureOptions {
-    [CliFeatureOptions]: CliFeatureOptions;
+    [CliFeatureOptions]?: CliFeatureOptions;
   }
 }
 
