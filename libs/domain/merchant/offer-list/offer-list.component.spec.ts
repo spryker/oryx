@@ -1,11 +1,13 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { ProductService } from '@spryker-oryx/product';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { LinkService } from '@spryker-oryx/site';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { MockMerchantProductService } from '../src/mocks';
 import { MerchantOfferListComponent } from './offer-list.component';
 import { merchantOfferListComponent } from './offer-list.def';
 
@@ -25,6 +27,10 @@ describe('MerchantOfferListComponent', () => {
     createInjector({
       providers: [
         ...mockProductProviders,
+        {
+          provide: ProductService,
+          useClass: MockMerchantProductService,
+        },
         {
           provide: ContextService,
           useClass: DefaultContextService,

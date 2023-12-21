@@ -1,8 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { ProductService } from '@spryker-oryx/product';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
+import { MockMerchantProductService } from '../src/mocks/product.service';
 import { MerchantOfferComponent } from './offer.component';
 import { merchantOfferComponent } from './offer.def';
 
@@ -15,7 +17,16 @@ describe('MerchantOfferComponent', () => {
   });
 
   beforeEach(async () => {
-    createInjector({ providers: [...mockProductProviders] });
+    createInjector({
+      providers: [
+        ...mockProductProviders,
+
+        {
+          provide: ProductService,
+          useClass: MockMerchantProductService,
+        },
+      ],
+    });
   });
 
   afterEach(() => destroyInjector());
