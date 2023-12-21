@@ -144,6 +144,17 @@ export class CartEntryComponent
           maxLines: featureVersion >= '1.4' ? 1 : undefined,
         } as ProductTitleOptions}
       ></oryx-product-title>
+      ${featureVersion >= '1.4'
+        ? html`<oryx-entity-text
+            .options=${{
+              entity: 'merchant',
+              field: 'name',
+              prefix: 'Sold by: ',
+              link: true,
+            }}
+            >}
+          </oryx-entity-text>`
+        : html``}
       ${when(
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
