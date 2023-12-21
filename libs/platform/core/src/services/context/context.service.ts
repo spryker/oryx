@@ -35,10 +35,18 @@ export interface ContextSerializer<T = unknown> {
   deserialize(value: string): Observable<T | undefined>;
 }
 
+export interface ContextFallbackParams {
+  element: Element | null;
+}
+
+export type ContextFallbackHandler<Q = unknown> = ((params: ContextFallbackParams) => Observable<Q>);
+
 declare global {
   interface InjectionTokensContractMap {
     [ContextService]: ContextService;
-    [ContextFallback]: Observable<unknown>;
+    [ContextFallback]:
+      | Observable<unknown>
+      | ContextFallbackHandler;
     [ContextSerializer]: ContextSerializer;
   }
 }
