@@ -8,7 +8,7 @@ export const productPage: ExperienceComponent = {
   type: 'Page',
   meta: {
     title: 'Product Page',
-    route: ['/product/:sku', '/product/:sku/offers/:offer'],
+    route: ['/product/:sku', '/product/:sku,:offer'],
     routeType: RouteType.Product,
     description: 'Default Product Page Description',
   },
