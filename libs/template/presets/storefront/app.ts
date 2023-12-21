@@ -5,7 +5,7 @@ import {
 import { SapiAuthComponentsFeature, SapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
-import { contentFeature, contentPreviewProviders } from '@spryker-oryx/content';
+import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
@@ -65,7 +65,6 @@ export const storefrontFeatures: AppFeature[] = [
   userFeature,
   isServer ? { providers: coreServerProviders } : {},
   isPreview ? { providers: searchPreviewProviders } : {},
-  isPreview ? { providers: contentPreviewProviders } : {},
   featureVersion >= '1.3'
     ? {
         providers: [
