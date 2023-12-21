@@ -124,7 +124,6 @@ export class DefaultContextService implements ContextService {
             return isObservable(contextFallback)
               ? contextFallback
               : contextFallback({ element });
-
           } catch (_) {
             return of(undefined);
           }

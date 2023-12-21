@@ -39,14 +39,14 @@ export interface ContextFallbackParams {
   element: Element | null;
 }
 
-export type ContextFallbackHandler<Q = unknown> = ((params: ContextFallbackParams) => Observable<Q>);
+export type ContextFallbackHandler<Q = unknown> = (
+  params: ContextFallbackParams
+) => Observable<Q>;
 
 declare global {
   interface InjectionTokensContractMap {
     [ContextService]: ContextService;
-    [ContextFallback]:
-      | Observable<unknown>
-      | ContextFallbackHandler;
+    [ContextFallback]: Observable<unknown> | ContextFallbackHandler;
     [ContextSerializer]: ContextSerializer;
   }
 }
