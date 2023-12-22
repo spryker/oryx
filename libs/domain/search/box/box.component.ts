@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { PRODUCTS } from '@spryker-oryx/product';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import {
   Suggestion,
@@ -15,6 +16,7 @@ import {
   Size,
   computed,
   debounce,
+  featureVersion,
   hydrate,
   signalAware,
   signalProperty,

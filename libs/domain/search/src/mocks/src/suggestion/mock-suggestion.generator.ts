@@ -1,4 +1,4 @@
-import { Product } from '@spryker-oryx/product';
+import { Product, PRODUCTS } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
   Suggestion,
@@ -6,6 +6,7 @@ import {
   SuggestionQualifier,
   SuggestionResource,
 } from '@spryker-oryx/search';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const dummyUrl = (): string => '#';
 const makeTheNameGreatAgain = (name: string): string =>

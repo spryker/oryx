@@ -1,13 +1,13 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { PRODUCT, ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { featureVersion, hydrate, ssrShim } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
 import { productAttributeStyles } from './attributes.styles';
 
 @ssrShim('style')
 @defaultOptions({ columnCount: '2' })
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU })
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {

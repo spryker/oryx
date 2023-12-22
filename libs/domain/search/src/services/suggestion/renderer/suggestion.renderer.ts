@@ -1,7 +1,7 @@
-import { Product } from '@spryker-oryx/product';
+import { Product, PRODUCTS } from '@spryker-oryx/product';
 import { ProductCardOptions } from '@spryker-oryx/product/card';
 import { RouteType } from '@spryker-oryx/router';
-import { i18n } from '@spryker-oryx/utilities';
+import { featureVersion, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { SuggestionResource } from '../../../models';

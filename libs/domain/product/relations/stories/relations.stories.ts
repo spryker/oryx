@@ -25,7 +25,7 @@ interface Props {
 const Template: Story<Props> = ({ sku }: Props): TemplateResult => {
   resolve(ContextService).provide(
     document.body,
-    ProductContext.SKU,
+    featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
     featureVersion >= '1.3' ? { sku } : sku
   );
 

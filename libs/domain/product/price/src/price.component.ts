@@ -1,5 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
+  PRODUCT,
   ProductContext,
   ProductMixin,
   ProductPrice,
@@ -32,7 +33,7 @@ import { ProductPriceStyles, productPriceStyles } from './price.styles';
   enableOriginalPrice: true,
   enableTaxMessage: true,
 })
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU })
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {

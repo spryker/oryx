@@ -1,4 +1,4 @@
-import { CartQualifier, CartService } from '@spryker-oryx/cart';
+import { CART, CartQualifier, CartService } from '@spryker-oryx/cart';
 import {
   BaseResolver,
   ContextService,

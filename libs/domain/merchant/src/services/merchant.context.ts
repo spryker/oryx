@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
 import {
-  ProductContext,
+  PRODUCT,
   ProductQualifier,
   ProductService,
 } from '@spryker-oryx/product';
@@ -25,7 +25,7 @@ function merchantContextFallbackFactory(
       switchMap((route) =>
         route.type === MERCHANT
           ? of(route.params)
-          : context.get(element, ProductContext.SKU).pipe(
+          : context.get(element, PRODUCT).pipe(
               switchMap((qualifier: ProductQualifier | undefined) =>
                 qualifier ? product.get(qualifier) : of(undefined)
               ),

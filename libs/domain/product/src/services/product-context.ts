@@ -13,13 +13,14 @@ import { ProductQualifier } from '../models';
 declare global {
   interface ContextValue {
     [ProductContext.SKU]?: ProductQualifier;
+    [PRODUCT]?: ProductQualifier;
   }
 }
 
 /** @deprecated since 1.4, use PRODUCT instead */
 export enum ProductContext {
   /** @deprecated since 1.4, use PRODUCT instead */
-  SKU = featureVersion >= '1.4' ? PRODUCT : 'sku',
+  SKU = 'sku',
 }
 
 export function productContextFallbackFactory(
@@ -35,7 +36,9 @@ export function productContextFallbackFactory(
     );
 }
 
-export const ProductContextSerializerToken = `${ContextSerializer}${ProductContext.SKU}`;
+export const ProductContextSerializerToken = `${ContextSerializer}${
+  featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU
+}`;
 
 export class ProductContextSerializer
   implements ContextSerializer<ProductQualifier>
@@ -55,7 +58,9 @@ export class ProductContextSerializer
 
 /** @deprecated since 1.3, use productContextProviders instead */
 export const ProductContextFallback: Provider = {
-  provide: `${ContextFallback}${ProductContext.SKU}`,
+  provide: `${ContextFallback}${
+    featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU
+  }`,
   useFactory: productContextFallbackFactory,
 };
 
@@ -63,7 +68,9 @@ export const productContextProviders: Provider[] =
   featureVersion >= '1.3'
     ? [
         {
-          provide: `${ContextFallback}${ProductContext.SKU}`,
+          provide: `${ContextFallback}${
+            featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU
+          }`,
           useFactory: productContextFallbackFactory,
         },
         {

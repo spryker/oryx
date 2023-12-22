@@ -1,22 +1,17 @@
-import { ContentMixin } from '@spryker-oryx/experience';
-import { HTMLTemplateResult, LitElement, TemplateResult, html } from 'lit';
-
 import { resolve } from '@spryker-oryx/di';
-import {
-  ProductContext,
-  ProductMixin,
-  ProductService,
-} from '@spryker-oryx/product';
+import { ContentMixin } from '@spryker-oryx/experience';
+import { PRODUCT, ProductMixin, ProductService } from '@spryker-oryx/product';
 import { LinkService, RouteType } from '@spryker-oryx/router';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
+import { HTMLTemplateResult, LitElement, TemplateResult, html } from 'lit';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { Observable, combineLatest, map } from 'rxjs';
 import { ProductOffer } from '../src/models';
 import { merchantOffersStyles } from './offer-list.styles';
 
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: PRODUCT })
 export class MerchantOfferListComponent extends ProductMixin(
   ContentMixin(LitElement)
 ) {

@@ -4,9 +4,11 @@ import { Provider } from '@spryker-oryx/di';
 import {
   ApiProductModel,
   ConcreteProductsNormalizer,
+  PRODUCTS,
   Product,
 } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map } from 'rxjs';
 import { Suggestion } from '../../../../models';
 import { SuggestionField } from '../../suggestion.adapter';

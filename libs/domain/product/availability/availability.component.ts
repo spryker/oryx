@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { PRODUCT, ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
@@ -10,7 +10,7 @@ import {
 } from './availability.model';
 import { availabilityStyles } from './availability.styles';
 
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU })
 @defaultOptions({ threshold: 5, enableIndicator: true })
 export class ProductAvailabilityComponent extends ProductMixin(
   ContentMixin<CartItemAvailabilityOptions>(LitElement)
