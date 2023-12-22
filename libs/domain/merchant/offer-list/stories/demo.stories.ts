@@ -1,6 +1,6 @@
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ProductComponentProperties } from '@spryker-oryx/product';
+import { PRODUCT, ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
@@ -16,7 +16,7 @@ type Props = { offerId?: string } & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { sku } = props;
-  resolve(ContextService).provide(document.body, 'PRODUCT', {
+  resolve(ContextService).provide(document.body, PRODUCT, {
     sku,
   });
   return html`
