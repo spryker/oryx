@@ -147,7 +147,7 @@ export class CartEntryComponent
       ></oryx-product-title>
       ${featureVersion >= '1.4' &&
       (this.$product() as Product & { merchantId: string })?.merchantId
-        ? html`<oryx-entity-text
+        ? html`<oryx-data-text
             .options=${{
               entity: 'merchant',
               field: 'name',
@@ -155,7 +155,7 @@ export class CartEntryComponent
               link: true,
             }}
             >}
-          </oryx-entity-text>`
+          </oryx-data-text>`
         : html``}
       ${when(
         this.$options()?.enableItemId,
