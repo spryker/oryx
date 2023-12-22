@@ -6,7 +6,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Entity Text`,
+  title: `${storybookPrefix}/Data/Text`,
 };
 
 const Template: Story = (): TemplateResult => {
@@ -16,22 +16,22 @@ const Template: Story = (): TemplateResult => {
   const options = { entity: 'product', field: 'name' };
   return html`
     <h3>Plain Text</h3>
-    <oryx-entity-text .options=${options}></oryx-entity-text>
+    <oryx-data-text .options=${options}></oryx-data-text>
 
     <h3>With prefix</h3>
-    <oryx-entity-text
+    <oryx-data-text
       .options=${{ ...options, prefix: 'prefix: ' }}
-    ></oryx-entity-text>
+    ></oryx-data-text>
 
     <h3>With tag</h3>
-    <oryx-entity-text
+    <oryx-data-text
       .options=${{ ...options, tag: HeadingTag.H1 }}
-    ></oryx-entity-text>
+    ></oryx-data-text>
 
     <h3>With prefix and tag</h3>
-    <oryx-entity-text
+    <oryx-data-text
       .options=${{ ...options, prefix: 'prefix: ', tag: HeadingTag.H1 }}
-    ></oryx-entity-text>
+    ></oryx-data-text>
   `;
 };
 

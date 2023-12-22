@@ -36,11 +36,11 @@ export const homePage: ExperienceComponent = {
       },
       components: [
         {
-          type: 'oryx-entity-text',
+          type: 'oryx-data-text',
           options: { field: 'content' },
         },
         {
-          type: 'oryx-entity-image',
+          type: 'oryx-data-image',
           options: { field: 'picture', rules: [] },
         },
       ],

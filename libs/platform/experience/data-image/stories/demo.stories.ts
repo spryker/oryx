@@ -1,30 +1,28 @@
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { EntityLinkOptions } from '../entity-link.model';
+import { DataImageComponentOptions } from '../data-image.model';
 
 export default {
-  title: `${storybookPrefix}/Entity Link`,
+  title: `${storybookPrefix}/Data/Image`,
   args: {
     entity: 'merchant',
-    field: 'contact.phone',
-    icon: IconTypes.Phone,
-    label: 'Call us',
+    field: 'banner',
+    renderFallback: false,
   },
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
-const Template: Story<EntityLinkOptions> = (
-  props: EntityLinkOptions
+const Template: Story<DataImageComponentOptions> = (
+  props: DataImageComponentOptions
 ): TemplateResult => {
   const { ...options } = props;
   resolve(ContextService).provide(document.body, 'merchant', {
     id: '1',
   });
-  return html` <oryx-entity-link .options=${options}></oryx-entity-link> `;
+  return html` <oryx-data-image .options=${options}></oryx-data-image> `;
 };
 
 export const Demo = Template.bind({});
