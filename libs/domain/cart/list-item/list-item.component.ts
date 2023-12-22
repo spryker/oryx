@@ -100,7 +100,7 @@ export class CartListItemComponent extends CartComponentMixin(
         )}
 
         <div class="actions">
-          <!-- TODO: uncomment during implementation of button's logic -->
+          <!-- TODO: uncomment during implementation of buttons logic -->
           <!-- <oryx-button icon="edit" type="icon" .size=${size}></oryx-button>
           <oryx-button
             icon="content_copy"

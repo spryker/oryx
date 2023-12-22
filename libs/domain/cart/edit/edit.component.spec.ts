@@ -1,16 +1,20 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
+import { FormFieldType, FormRenderer, SUBMIT_EVENT } from '@spryker-oryx/form';
+import { LinkService, RouteType, RouterService } from '@spryker-oryx/router';
 import {
   CurrencyService,
+  NotificationService,
   PriceModeService,
   PriceModes,
   PricingService,
 } from '@spryker-oryx/site';
+import { AlertType } from '@spryker-oryx/ui';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { mockDefaultCart } from '../src/mocks/src';
 import { CartEditComponent } from './edit.component';
 import { cartEditComponent } from './edit.def';
 
@@ -20,6 +24,15 @@ class MockFormRenderer implements Partial<FormRenderer> {
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of());
+  createCart = vi.fn().mockReturnValue(of(mockDefaultCart));
+}
+
+class MockRouterService implements Partial<RouterService> {
+  navigate = vi.fn();
+}
+
+class MockLinkService implements Partial<LinkService> {
+  get = vi.fn().mockReturnValue(of('/mock'));
 }
 
 class MockCurrencyService implements Partial<CurrencyService> {
@@ -31,7 +44,11 @@ class MockPriceModeService implements Partial<PriceModeService> {
   get = vi.fn().mockReturnValue(of(PriceModes.GrossMode));
 }
 
-class mockPricingService {
+class MockNotificationService implements Partial<NotificationService> {
+  push = vi.fn();
+}
+
+class MockPricingService {
   format = vi.fn().mockReturnValue(of('price'));
 }
 
@@ -61,16 +78,9 @@ const expectedFields = [
       { value: PriceModes.NetMode, text: 'net' },
     ],
   },
-  {
-    id: 'isDefault',
-    type: FormFieldType.Boolean,
-    label: i18n('cart.edit.set-default'),
-    width: 100,
-  },
 ];
 
 const expectedValues = {
-  isDefault: true,
   priceMode: PriceModes.GrossMode,
   currency: 'MOCK',
 };
@@ -78,6 +88,10 @@ const expectedValues = {
 describe('CartEditComponent', () => {
   let renderer: MockFormRenderer;
   let element: CartEditComponent;
+  let routerService: MockRouterService;
+  let linkService: MockLinkService;
+  let cartService: MockCartService;
+  let notificationService: MockNotificationService;
 
   beforeAll(async () => {
     await useComponent(cartEditComponent);
@@ -104,11 +118,28 @@ describe('CartEditComponent', () => {
         },
         {
           provide: PricingService,
-          useClass: mockPricingService,
+          useClass: MockPricingService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
+        },
+        {
+          provide: LinkService,
+          useClass: MockLinkService,
+        },
+        {
+          provide: NotificationService,
+          useClass: MockNotificationService,
         },
       ],
     });
     renderer = testInjector.inject<MockFormRenderer>(FormRenderer);
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    linkService = testInjector.inject<MockLinkService>(LinkService);
+    cartService = testInjector.inject<MockCartService>(CartService);
+    notificationService =
+      testInjector.inject<MockNotificationService>(NotificationService);
     element = await fixture(html`<oryx-cart-edit></oryx-cart-edit>`);
   });
 
@@ -130,5 +161,34 @@ describe('CartEditComponent', () => {
       expectedFields,
       expectedValues
     );
+  });
+
+  it('should build redirect url to the carts page', () => {
+    expect(linkService.get).toHaveBeenCalledWith({ type: RouteType.Carts });
+  });
+
+  describe('when form is submitted', () => {
+    beforeEach(() => {
+      element.renderRoot
+        .querySelector('form')
+        ?.dispatchEvent(
+          new CustomEvent(SUBMIT_EVENT, { detail: { values: mockDefaultCart } })
+        );
+    });
+
+    it('should create the cart with form values', () => {
+      expect(cartService.createCart).toHaveBeenCalledWith(mockDefaultCart);
+    });
+
+    it('should push a notification with created cart name', () => {
+      expect(notificationService.push).toHaveBeenCalledWith({
+        type: AlertType.Success,
+        content: `Cart: ${mockDefaultCart.name} was created`,
+      });
+    });
+
+    it('should redirect', () => {
+      expect(routerService.navigate).toHaveBeenCalledWith('/mock');
+    });
   });
 });

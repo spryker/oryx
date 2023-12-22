@@ -27,6 +27,10 @@ class FakeFormComponent extends LitElement implements FormMixinProperties {
 describe('FormController', () => {
   let element: FakeFormComponent;
 
+  afterEach(() => {
+    mockFeatureVersion('1.0');
+  });
+
   describe('when form is submitted', () => {
     const callback = vi.fn();
 
@@ -45,6 +49,21 @@ describe('FormController', () => {
           }),
         })
       );
+    });
+
+    describe('featureVersion >= 1.4', () => {
+      const callback = vi.fn();
+
+      beforeEach(async () => {
+        mockFeatureVersion('1.4');
+        element = await fixture(html`<fake-form></fake-form>`);
+        element.getForm()?.addEventListener('oryx.submit', callback);
+        element.getForm()?.dispatchEvent(new Event('submit'));
+      });
+
+      it('should dispatch oryx.submit event by the form element', () => {
+        expect(callback).toHaveBeenCalled();
+      });
     });
   });
 

@@ -1,6 +1,5 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   FormFieldDefinition,
   FormFieldType,
@@ -16,14 +15,12 @@ import {
   PriceModes,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
-import { computed, signal } from '@spryker-oryx/utilities';
+import { I18nMixin, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
-import { CartEditComponentOptions } from './edit.model';
 
-@defaultOptions({ isDefault: true })
 export class CartEditComponent extends CartComponentMixin(
-  FormMixin(ContentMixin<CartEditComponentOptions>(LitElement))
+  FormMixin(I18nMixin(LitElement))
 ) {
   protected fieldRenderer = resolve(FormRenderer);
   protected cartService = resolve(CartService);
@@ -104,7 +101,6 @@ export class CartEditComponent extends CartComponentMixin(
     return {
       priceMode: this.$priceMode(),
       currency: this.$currency(),
-      isDefault: !!this.$options().isDefault,
       //TODO: uncomment and add additional check for edit cart mode
       // ...this.$cartValues(),
     };

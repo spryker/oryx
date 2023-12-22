@@ -13,7 +13,7 @@ export class CartTotalsComponent extends ContentMixin(LitElement) {
   protected override render(): TemplateResult | void {
     if (this.$totals()) {
       return html`<h2>${this.i18n('cart.totals.summary')}</h2>
-        <oryx-composition .uid=${this.uid}></oryx-composition> `;
+        <oryx-composition .uid=${this.uid}></oryx-composition>`;
     }
   }
 }
