@@ -11,7 +11,7 @@ import {
 
 export const experienceComponents = [
   components.compositionComponent,
-  components.entityText,
+  components.dataText,
   components.dataImage,
   components.dataLink,
 ];

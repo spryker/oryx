@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-export const entityText = componentDef({
+export const dataText = componentDef({
   name: 'oryx-data-text',
   impl: () => import('./data-text.component').then((m) => m.DataTextComponent),
   schema: () => import('./data-text.schema').then((m) => m.dataTextSchema),

@@ -7,7 +7,7 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { DataTextComponent } from './data-text.component';
-import { entityText } from './data-text.def';
+import { dataText } from './data-text.def';
 
 class MockEntityService implements Partial<EntityService> {
   getField = vi.fn().mockReturnValue(of());
@@ -24,7 +24,7 @@ describe('DataTextComponent', () => {
   let injector: Injector;
 
   beforeAll(async () => {
-    await useComponent(entityText);
+    await useComponent(dataText);
   });
 
   beforeEach(async () => {
