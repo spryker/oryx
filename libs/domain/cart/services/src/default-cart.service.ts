@@ -4,6 +4,7 @@ import {
   AddCartEntryQualifier,
   Cart,
   CartAdapter,
+  CartCreated,
   CartEntry,
   CartEntryQualifier,
   CartEntryRemoved,
@@ -60,6 +61,13 @@ export class DefaultCartService implements CartService {
     onError: [CartModificationFail],
   };
 
+  protected cartsCommandBase = {
+    onStart: [CartModificationStart],
+    onFinish: [CartModificationEnd],
+    onSuccess: [CartModificationSuccess],
+    onError: [CartModificationFail],
+  };
+
   protected cartsQuery$ = createQuery({
     loader: () => this.adapter.getAll(),
     onLoad: [
@@ -70,7 +78,7 @@ export class DefaultCartService implements CartService {
       },
     ],
     resetOn: [this.identity.get().pipe(skip(1))],
-    refreshOn: [CartsUpdated],
+    refreshOn: [CartsUpdated, CartCreated],
   });
 
   protected cartQuery$ = createQuery({
@@ -116,10 +124,10 @@ export class DefaultCartService implements CartService {
   });
 
   protected createCartCommand$ = createCommand({
-    ...this.cartCommandBase,
     action: (qualifier: CreateCartQualifier) => {
       return this.adapter.create(qualifier);
     },
+    onSuccess: [CartCreated],
   });
 
   protected deleteCartCommand$ = createCommand({
@@ -287,11 +295,11 @@ export class DefaultCartService implements CartService {
     return this.executeWithOptionalCart(qualifier, this.updateEntryCommand$);
   }
 
-  updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+  updateCart(qualifier: UpdateCartQualifier): Observable<Cart> {
     return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
   }
 
-  createCart(qualifier: CreateCartQualifier): Observable<unknown> {
+  createCart(qualifier: CreateCartQualifier): Observable<Cart> {
     return this.createCartCommand$.execute(qualifier);
   }
 

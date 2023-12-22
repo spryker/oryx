@@ -1,6 +1,5 @@
-import { CartComponentMixin } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   FormFieldDefinition,
   FormFieldType,
@@ -8,21 +7,33 @@ import {
   FormRenderer,
   FormValues,
 } from '@spryker-oryx/form';
+import { LinkService, RouteType, RouterService } from '@spryker-oryx/router';
 import {
   CurrencyService,
+  NotificationService,
   PriceModeService,
   PriceModes,
-  StoreService,
 } from '@spryker-oryx/site';
-import { computed, signal } from '@spryker-oryx/utilities';
+import { AlertType } from '@spryker-oryx/ui';
+import { I18nMixin, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { CartEditComponentOptions } from './edit.model';
+import { state } from 'lit/decorators.js';
 
-@defaultOptions({ isDefault: true })
 export class CartEditComponent extends CartComponentMixin(
-  FormMixin(ContentMixin<CartEditComponentOptions>(LitElement))
+  FormMixin(I18nMixin(LitElement))
 ) {
   protected fieldRenderer = resolve(FormRenderer);
+  protected cartService = resolve(CartService);
+  protected notificationService = resolve(NotificationService);
+  protected routerService = resolve(RouterService);
+  protected linkService = resolve(LinkService);
+
+  @state()
+  protected isLoading = false;
+
+  protected $redirectLink = signal(
+    this.linkService.get({ type: RouteType.Carts })
+  );
 
   protected $cartValues = computed(() => {
     const cart = this.$cart();
@@ -30,10 +41,8 @@ export class CartEditComponent extends CartComponentMixin(
     return cart
       ? {
           name: cart.name,
-          isDefault: cart.isDefault,
           priceMode: cart.priceMode,
           currency: cart.currency,
-          store: cart.store,
         }
       : {};
   });
@@ -46,9 +55,6 @@ export class CartEditComponent extends CartComponentMixin(
 
   protected priceModeService = resolve(PriceModeService);
   protected $priceMode = signal(this.priceModeService.get());
-
-  protected storeService = resolve(StoreService);
-  protected $store = signal(this.storeService.get());
 
   protected getFields(): FormFieldDefinition[] {
     const priceModeOptions = [PriceModes.GrossMode, PriceModes.NetMode].map(
@@ -88,12 +94,6 @@ export class CartEditComponent extends CartComponentMixin(
         required: true,
         options: priceModeOptions,
       },
-      {
-        id: 'isDefault',
-        type: FormFieldType.Boolean,
-        label: this.i18n('cart.edit.set-default'),
-        width: 100,
-      },
     ];
   }
 
@@ -101,7 +101,6 @@ export class CartEditComponent extends CartComponentMixin(
     return {
       priceMode: this.$priceMode(),
       currency: this.$currency(),
-      isDefault: !!this.$options().isDefault,
       //TODO: uncomment and add additional check for edit cart mode
       // ...this.$cartValues(),
     };
@@ -111,30 +110,38 @@ export class CartEditComponent extends CartComponentMixin(
     const fields = this.getFields();
     const values = this.$values();
 
-    return html`<form @submit=${this.onSubmit}>
+    return html`<form @oryx.submit=${this.onSubmit}>
       <oryx-layout
         layout="grid"
         style="--oryx-column-count:2;--column-gap: 20px;"
       >
         ${this.fieldRenderer.buildForm(fields, values)}
 
-        <oryx-button @click=${() => this.submit()}
+        <oryx-button ?loading=${this.isLoading} @click=${() => this.submit()}
           >${this.i18n('create')}</oryx-button
         >
       </oryx-layout>
     </form>`;
   }
 
-  protected onSubmit(e: SubmitEvent): void {
-    e.preventDefault();
+  protected onSubmit(e: CustomEvent): void {
+    this.isLoading = true;
 
-    const form = e.target as HTMLFormElement;
-
-    const cart = Object.fromEntries(new FormData(form).entries());
-    cart.store = this.$store()!.id;
-
-    //TODO: replace with cart create service call
-    //implemented in list story
-    console.log(cart);
+    this.cartService.createCart(e.detail.values).subscribe({
+      next: (cart) => {
+        this.notificationService.push({
+          type: AlertType.Success,
+          //TODO: use translation string when issue with resolving of translated result
+          //outside components render is fixed
+          // content: this.i18n('carts.create.cart-<name>-created', { name: cart.name }) as string
+          content: `Cart: ${cart.name} was created`,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.routerService.navigate(this.$redirectLink()!);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }

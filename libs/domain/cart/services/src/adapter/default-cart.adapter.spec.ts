@@ -528,6 +528,8 @@ describe('DefaultCartAdapter', () => {
   describe('create', () => {
     const qualifier = {
       name: 'test',
+      currency: 'EUR',
+      priceMode: 'GROSS_MODE',
     };
 
     beforeEach(() => {
@@ -540,22 +542,12 @@ describe('DefaultCartAdapter', () => {
       expect(storeService.get).toHaveBeenCalled();
     });
 
-    it('should get the currency', () => {
-      expect(currencyService.get).toHaveBeenCalled();
-    });
-
-    it('should get the price mode', () => {
-      expect(priceModeService.get).toHaveBeenCalled();
-    });
-
     it('should make a post request', () => {
       expect(http.post).toHaveBeenCalledWith(`${mockApiUrl}/carts`, {
         data: {
           type: 'carts',
           attributes: {
-            name: qualifier.name,
-            priceMode: 'GROSS_MODE',
-            currency: 'EUR',
+            ...qualifier,
             store: 'DE',
           },
         },
@@ -569,6 +561,14 @@ describe('DefaultCartAdapter', () => {
     describe('when qualifier is not provided', () => {
       beforeEach(() => {
         adapter.create().subscribe();
+      });
+
+      it('should get the currency', () => {
+        expect(currencyService.get).toHaveBeenCalled();
+      });
+
+      it('should get the price mode', () => {
+        expect(priceModeService.get).toHaveBeenCalled();
       });
 
       it('should not provide the name', () => {
