@@ -2,14 +2,14 @@ import { ExperienceComponent } from '@spryker-oryx/experience';
 import { RouteType } from '@spryker-oryx/router';
 import { Size } from '@spryker-oryx/utilities';
 
-export const cartsPage: ExperienceComponent = {
-  id: 'carts-page',
+export const cartCreatePage: ExperienceComponent = {
+  id: 'cart-create-page',
   type: 'Page',
   meta: {
-    title: 'Carts',
-    route: '/my-account/carts',
-    description: 'Carts Page',
-    routeType: RouteType.Carts,
+    title: 'Create Cart',
+    routeType: RouteType.CartCreate,
+    route: '/my-account/create-cart',
+    description: 'Create Cart Page',
   },
   components: [
     { ref: 'header' },
@@ -19,9 +19,11 @@ export const cartsPage: ExperienceComponent = {
       components: [
         {
           type: 'oryx-site-breadcrumb',
-          options: { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] },
+          options: {
+            rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+          },
         },
-        { ref: 'carts-page-content' },
+        { ref: 'cart-create-page-content' },
       ],
     },
     { ref: 'footer' },

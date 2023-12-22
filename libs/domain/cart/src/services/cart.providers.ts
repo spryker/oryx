@@ -2,7 +2,7 @@ import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { cartsPage } from '../presets';
+import { cartCreatePage, cartsPage } from '../presets';
 import {
   CartResolver,
   CartTotalsResolver,
@@ -125,5 +125,5 @@ export const cartProviders: Provider[] =
             ),
         },
         ...cartContextProviders,
-        provideExperienceData(cartsPage),
+        provideExperienceData([cartsPage, cartCreatePage]),
       ];

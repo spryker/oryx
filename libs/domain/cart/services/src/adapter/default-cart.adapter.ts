@@ -203,27 +203,32 @@ export class DefaultCartAdapter implements CartAdapter {
   }
 
   create(qualifier?: CreateCartQualifier): Observable<Cart> {
-    return combineLatest([
-      this.store.get(),
-      this.currency.get(),
-      this.priceMode.get(),
-    ]).pipe(
+    const request = (attributes: CreateCartQualifier) =>
+      this.http.post<ApiCartModel.Response>(
+        `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
+        {
+          data: {
+            type: 'carts',
+            attributes,
+          },
+        }
+      );
+
+    return this.store.get().pipe(
       take(1),
-      switchMap(([store, currency, priceMode]) =>
-        this.http.post<ApiCartModel.Response>(
-          `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
-          {
-            data: {
-              type: 'carts',
-              attributes: {
-                name: this.ensureCartName(qualifier),
-                priceMode,
-                currency,
-                store: store?.id,
-              },
-            },
-          }
-        )
+      switchMap((store) =>
+        qualifier
+          ? request({
+              store: store?.id,
+              ...qualifier,
+              name: this.ensureCartName(qualifier),
+            })
+          : combineLatest([this.currency.get(), this.priceMode.get()]).pipe(
+              take(1),
+              switchMap(([currency, priceMode]) =>
+                request({ store: store?.id, currency, priceMode })
+              )
+            )
       ),
       this.transformer.do(CartNormalizer)
     );
