@@ -2,6 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
+  PRODUCT,
   Product,
   ProductContext,
   ProductMediaContainerSize,
@@ -92,7 +93,7 @@ export class CartEntryComponent
   protected setProductContext = (): void => {
     if (this.$entry()?.sku ?? this.sku) {
       this.contextController.provide(
-        ProductContext.SKU,
+        featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
         featureVersion >= '1.3'
           ? {
               sku: this.$entry()?.sku ?? this.sku,

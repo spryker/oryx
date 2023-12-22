@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { PRODUCTS } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 
@@ -8,7 +9,7 @@ export const searchPage: ExperienceComponent = {
   meta: {
     title: 'Search',
     route: '/search',
-    routeType: RouteType.ProductList,
+    routeType: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
   },
   components: [
     featureVersion >= '1.2'

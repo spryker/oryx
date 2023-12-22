@@ -22,7 +22,7 @@ const Template: Story<DataTextComponentOptions> = (
   props: DataTextComponentOptions
 ): TemplateResult => {
   const { ...options } = props;
-  resolve(ContextService).provide(document.body, 'sku', {
+  resolve(ContextService).provide(document.body, 'product', {
     sku: '1',
   });
   return html` <oryx-data-text .options=${options}></oryx-data-text> `;

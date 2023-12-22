@@ -1,4 +1,4 @@
-import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
+import { CartComponentMixin, CARTS, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import {
   FormFieldDefinition,
@@ -7,16 +7,16 @@ import {
   FormRenderer,
   FormValues,
 } from '@spryker-oryx/form';
-import { LinkService, RouteType, RouterService } from '@spryker-oryx/router';
+import { LinkService, RouterService } from '@spryker-oryx/router';
 import {
   CurrencyService,
   NotificationService,
-  PriceModeService,
   PriceModes,
+  PriceModeService,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
-import { I18nMixin, computed, signal } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, html } from 'lit';
+import { computed, I18nMixin, signal } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 
 export class CartEditComponent extends CartComponentMixin(
@@ -31,9 +31,7 @@ export class CartEditComponent extends CartComponentMixin(
   @state()
   protected isLoading = false;
 
-  protected $redirectLink = signal(
-    this.linkService.get({ type: RouteType.Carts })
-  );
+  protected $redirectLink = signal(this.linkService.get({ type: CARTS }));
 
   protected $cartValues = computed(() => {
     const cart = this.$cart();

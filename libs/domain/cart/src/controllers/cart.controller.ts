@@ -1,4 +1,4 @@
-import { CartContext, CartService } from '@spryker-oryx/cart';
+import { CART, CartService } from '@spryker-oryx/cart';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { PricingService } from '@spryker-oryx/site';
@@ -34,7 +34,7 @@ export class CartController {
         switchMap((cartId) =>
           cartId
             ? of({ cartId })
-            : this.contextController.get<CartQualifier>(CartContext.CartID)
+            : this.contextController.get<CartQualifier>(CART)
         )
       );
   }

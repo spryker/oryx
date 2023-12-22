@@ -10,7 +10,7 @@ export default {
 };
 
 const Template: Story = (): TemplateResult => {
-  resolve(ContextService).provide(document.body, 'sku', {
+  resolve(ContextService).provide(document.body, 'product', {
     sku: '1',
   });
   const options = { entity: 'product', field: 'name' };

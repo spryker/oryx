@@ -6,16 +6,14 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, switchMap } from 'rxjs';
+import { PRODUCTS } from '../../../entity';
 import {
   ApiProductModel,
   ProductList,
   ProductListQualifier,
 } from '../../../models';
 import { ProductListNormalizer } from '../../adapter';
-import {
-  ProductListAdapter,
-  ProductListResource,
-} from './product-list.adapter';
+import { ProductListAdapter } from './product-list.adapter';
 
 export class DefaultProductListAdapter implements ProductListAdapter {
   protected queryEndpoint = 'catalog-search';
@@ -64,7 +62,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
 
   get(qualifier: ProductListQualifier): Observable<ProductList> {
     if (featureVersion >= '1.4') {
-      return this.includeService.get({ resource: ProductListResource }).pipe(
+      return this.includeService.get({ resource: PRODUCTS }).pipe(
         switchMap((includes) =>
           this.http.get<ApiProductModel.Response>(
             `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
