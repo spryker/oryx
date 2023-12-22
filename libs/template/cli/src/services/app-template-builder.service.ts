@@ -67,6 +67,12 @@ export class AppTemplateBuilder {
   }
 
   protected updateFeatures(content: string): string {
+    console.log('Features: ', this.features);
+
+    if (!this.features) {
+      return content;
+    }
+
     const featuresImports = this.features
       ?.map(
         (feature) =>

@@ -1,4 +1,5 @@
 import { inject } from '@spryker-oryx/di';
+import fs from 'fs';
 import path from 'path';
 import { ApplicationType } from '../models';
 import { NodeUtilService } from './node-util.service';
@@ -24,7 +25,9 @@ export class AppTemplateLoaderService {
   ) {}
 
   async copyTemplate(path: string, ref = this.templateRef): Promise<void> {
+    console.log('downloadTemplate');
     await this.downloadTemplate(ref);
+    console.log('copyTemplate');
 
     const templatePath = this.getTemplateRepoPath(ref);
 
@@ -38,8 +41,13 @@ export class AppTemplateLoaderService {
   async downloadTemplate(
     ref = this.templateRef[ApplicationType.Storefront]
   ): Promise<void> {
+    const templateDir = this.getTemplateDir();
     const templatePath = this.getTemplatePath(ref);
     const archivePath = this.getArchivePath(ref);
+
+    if (!(await fs.existsSync(templateDir))) {
+      await this.nodeUtilService.createFolder(templateDir);
+    }
 
     try {
       await this.nodeUtilService.downloadFile(
@@ -57,11 +65,11 @@ export class AppTemplateLoaderService {
     }
   }
 
-  protected getTemplateUrl(ref): string {
+  protected getTemplateUrl(ref: string): string {
     return this.repoUrl.replace('{ref}', this.repoRefs[ref]);
   }
 
-  protected getTemplateRepoPath(ref): string {
+  protected getTemplateRepoPath(ref: string): string {
     return path.resolve(
       this.getTemplateDir(),
       ref,
