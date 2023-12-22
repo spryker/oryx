@@ -11,12 +11,9 @@ import {
 } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, of, switchMap } from 'rxjs';
+import { MERCHANT } from '../entity';
 import { MerchantQualifier } from '../models';
 
-export const enum MerchantContext {
-  ID = 'merchant',
-}
-// TODO: resolve merchant context from the element
 function merchantContextFallbackFactory(
   router = inject(RouterService),
   context = inject(ContextService),
@@ -24,24 +21,21 @@ function merchantContextFallbackFactory(
 ): Observable<unknown> {
   return router.current().pipe(
     switchMap((route) =>
-      route.type === 'merchant'
+      route.type === MERCHANT
         ? of(route.params)
         : context.get<ProductQualifier>(null, ProductContext.SKU).pipe(
             switchMap((qualifier: ProductQualifier | undefined) =>
               qualifier ? product.get(qualifier) : of(undefined)
             ),
             switchMap((product) =>
-              context.deserialize(
-                MerchantContext.ID,
-                product?.merchantId as string
-              )
+              context.deserialize(MERCHANT, product?.merchantId as string)
             )
           )
     )
   );
 }
 
-export const MerchantContextSerializerToken = `${ContextSerializer}${MerchantContext.ID}`;
+export const MerchantContextSerializerToken = `${ContextSerializer}${MERCHANT}`;
 
 export class MerchantContextSerializer
   implements ContextSerializer<MerchantQualifier>
@@ -57,7 +51,7 @@ export class MerchantContextSerializer
 
 export const merchantContextProviders: Provider[] = [
   {
-    provide: `${ContextFallback}${MerchantContext.ID}`,
+    provide: `${ContextFallback}${MERCHANT}`,
     useFactory: merchantContextFallbackFactory,
   },
   {
