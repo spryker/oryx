@@ -3,6 +3,7 @@ import {
   ProductContextSerializerToken,
   ProductNormalizer,
 } from '@spryker-oryx/product';
+import { offerResolvers } from '../resolvers/offer.resolver';
 import { ProductWithOfferContextSerializer } from './product-context';
 import { productOfferNormalizer } from './product.normalizer';
 import { productOfferQueries } from './query';
@@ -17,4 +18,5 @@ export const merchantProductProviders: Provider[] = [
     useClass: ProductWithOfferContextSerializer,
   },
   ...productOfferQueries,
+  ...offerResolvers,
 ];
