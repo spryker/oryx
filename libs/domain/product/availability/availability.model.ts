@@ -4,11 +4,13 @@ export interface CartItemAvailabilityOptions {
    * the stock is indicated as "low stock".
    */
   threshold?: number;
+
   /**
    * The indicator shows an alert color based on the stock vs threshold. Green, amber, and red
    * are associated with in-stock, low-stock, and out-of-stock.
    */
   enableIndicator?: boolean;
+
   /**
    * Whenever the exact stock is known, it can be provided. The stock count can be freely used in
    * the location message (e.g. "Available (5 items)").
@@ -16,6 +18,11 @@ export interface CartItemAvailabilityOptions {
    * The exact stock is omitted in case of out-of-stock status.
    */
   enableExactStock?: boolean;
+
+  /**
+   * Hide the stock availability when the product is in stock.
+   */
+  hideInStock?: boolean;
 }
 
 export enum StockAvailability {

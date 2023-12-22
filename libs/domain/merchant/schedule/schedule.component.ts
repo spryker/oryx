@@ -26,12 +26,12 @@ export class MerchantScheduleComponent extends MerchantMixin(
   protected $dates = computed(() => {
     const { weeksBefore, weeksAfter } = this.$options();
     if (weeksBefore === undefined && weeksAfter === undefined)
-      return this.$merchant()?.schedule.dates;
+      return this.$merchant()?.schedule?.dates;
     const start = getWeek(-(weeksBefore ?? 0)).start;
     const end =
       weeksAfter && weeksAfter >= 0 ? getWeek(weeksAfter).end : getWeek().end;
 
-    return this.$merchant()?.schedule.dates?.filter((slot) => {
+    return this.$merchant()?.schedule?.dates?.filter((slot) => {
       const matchStart = new Date(slot.date).getTime() >= start.getTime();
       const matchEnd = new Date(slot.date).getTime() <= end.getTime();
 
@@ -48,7 +48,7 @@ export class MerchantScheduleComponent extends MerchantMixin(
   }
 
   protected renderWeekdays(): TemplateResult | void {
-    const weekdays = this.$merchant()?.schedule.weekdays;
+    const weekdays = this.$merchant()?.schedule?.weekdays;
 
     if (!weekdays?.length) return;
 

@@ -128,6 +128,10 @@
       "@spryker-oryx/merchant/mocks": [
         "libs/domain/merchant/src/mocks/index.ts"
       ],
+      "@spryker-oryx/merchant/offer": ["libs/domain/merchant/offer/index.ts"],
+      "@spryker-oryx/merchant/offer-list": [
+        "libs/domain/merchant/offer-list/index.ts"
+      ],
       "@spryker-oryx/merchant/schedule": [
         "libs/domain/merchant/schedule/index.ts"
       ],
