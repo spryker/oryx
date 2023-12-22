@@ -1,4 +1,3 @@
-import { CART, CartQualifier } from '@spryker-oryx/cart';
 import {
   ContextFallback,
   ContextSerializer,
@@ -7,6 +6,8 @@ import {
 import { Provider, inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, of, switchMap } from 'rxjs';
+import { CART } from '../entity';
+import { CartQualifier } from '../models';
 
 export function cartContextFallbackFactory(
   router = inject(RouterService),

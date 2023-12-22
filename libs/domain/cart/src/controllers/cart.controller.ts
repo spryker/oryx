@@ -1,10 +1,10 @@
-import { CART, CartService } from '@spryker-oryx/cart';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { PricingService } from '@spryker-oryx/site';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { Observable, combineLatest, filter, map, of, switchMap } from 'rxjs';
+import { CART } from '../entity';
 import {
   Cart,
   CartComponentAttributes,
@@ -15,6 +15,7 @@ import {
   FormattedCartTotals,
   FormattedDiscount,
 } from '../models';
+import { CartService } from '../services';
 
 export class CartController {
   protected observe: ObserveController<LitElement & CartComponentAttributes>;
