@@ -12,16 +12,23 @@ import { ProductQualifier } from '../models';
 
 declare global {
   interface ContextValue {
-    [ProductContext.SKU]?: ProductQualifier;
+    [ProductOldContext.SKU]?: ProductQualifier;
     [PRODUCT]?: ProductQualifier;
   }
 }
 
 /** @deprecated since 1.4, use PRODUCT instead */
-export enum ProductContext {
+enum ProductOldContext {
   /** @deprecated since 1.4, use PRODUCT instead */
   SKU = 'sku',
 }
+enum ProductNewContext {
+  SKU = PRODUCT,
+}
+
+/** @deprecated since 1.4, use PRODUCT instead */
+export const ProductContext =
+  featureVersion >= '1.4' ? ProductNewContext : ProductOldContext;
 
 export function productContextFallbackFactory(
   router = inject(RouterService),

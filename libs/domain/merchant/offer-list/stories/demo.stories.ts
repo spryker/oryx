@@ -16,7 +16,7 @@ type Props = { offerId?: string } & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { sku } = props;
-  resolve(ContextService).provide(document.body, 'sku', {
+  resolve(ContextService).provide(document.body, 'PRODUCT', {
     sku,
   });
   return html`

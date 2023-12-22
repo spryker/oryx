@@ -1,6 +1,6 @@
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ProductContext } from '@spryker-oryx/product';
+import { PRODUCT, ProductContext } from '@spryker-oryx/product';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
