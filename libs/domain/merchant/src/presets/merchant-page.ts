@@ -1,6 +1,35 @@
-import { ExperienceComponent, ObjectFit } from '@spryker-oryx/experience';
+import {
+  ExperienceComponent,
+  ExperienceDataMergeType,
+  ObjectFit,
+} from '@spryker-oryx/experience';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+
+/**
+ * Appends the merchant product offers component at the end of the list
+ */
+export const merchantOffersOnPDP: ExperienceComponent = {
+  merge: {
+    selector: 'product-info',
+    type: ExperienceDataMergeType.Append,
+  },
+  type: 'oryx-merchant-offer-list',
+};
+
+export const merchantSoldToOnPDP: ExperienceComponent = {
+  merge: {
+    selector: 'oryx-product-brand',
+    type: ExperienceDataMergeType.After,
+  },
+  type: 'oryx-data-text',
+  options: {
+    entity: 'merchant',
+    field: 'name',
+    link: true,
+    prefix: 'Sold by: ',
+  },
+};
 
 export const merchantPage: ExperienceComponent = {
   id: 'merchant-page-content',
@@ -8,7 +37,7 @@ export const merchantPage: ExperienceComponent = {
   options: { rules: [{ layout: { type: 'list' } }] },
   components: [
     {
-      type: 'oryx-entity-image',
+      type: 'oryx-data-image',
       options: {
         entity: 'merchant',
         field: 'banner',
@@ -26,7 +55,7 @@ export const merchantPage: ExperienceComponent = {
           options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: 'merchant',
                 field: 'name',
@@ -34,29 +63,29 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: 'merchant',
                 field: 'description',
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: 'merchant', field: 'legal.dataPrivacy' },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: 'merchant',
                 field: 'legal.cancellationPolicy',
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: 'merchant', field: 'legal.terms' },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: 'merchant', field: 'legal.imprint' },
             },
           ],
@@ -66,7 +95,7 @@ export const merchantPage: ExperienceComponent = {
           options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
-              type: 'oryx-entity-image',
+              type: 'oryx-data-image',
               options: {
                 entity: 'merchant',
                 field: 'logo',
@@ -84,7 +113,7 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-link',
+              type: 'oryx-data-link',
               options: {
                 entity: 'merchant',
                 field: 'contact.email',
@@ -92,7 +121,7 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-link',
+              type: 'oryx-data-link',
               options: {
                 entity: 'merchant',
                 field: 'contact.phone',
