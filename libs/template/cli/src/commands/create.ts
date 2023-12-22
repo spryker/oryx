@@ -216,7 +216,7 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected getPromptOptions(options) {
+  protected getPromptOptions(options: string[]): string[] {
     return options.map((value) => ({
       value,
       label: value,
