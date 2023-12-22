@@ -31,7 +31,7 @@ export class ServerContextService extends DefaultContextService {
       }
 
       return of(undefined);
-    }).pipe(this.contextFallback(key));
+    }).pipe(this.contextFallback(key, element));
   }
 
   remove(element: Element, key: string): void {
