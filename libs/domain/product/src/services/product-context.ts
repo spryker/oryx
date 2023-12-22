@@ -7,6 +7,7 @@ import { Provider, inject } from '@spryker-oryx/di';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map, of } from 'rxjs';
+import { PRODUCT } from '../entity';
 import { ProductQualifier } from '../models';
 
 declare global {
@@ -15,8 +16,10 @@ declare global {
   }
 }
 
-export const enum ProductContext {
-  SKU = 'sku',
+/** @deprecated since 1.4, use PRODUCT instead */
+export enum ProductContext {
+  /** @deprecated since 1.4, use PRODUCT instead */
+  SKU = featureVersion >= '1.4' ? PRODUCT : 'sku',
 }
 
 export function productContextFallbackFactory(
