@@ -1,11 +1,11 @@
 import { Product } from '@spryker-oryx/product';
 import { ProductCardOptions } from '@spryker-oryx/product/card';
+import { RouteType } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { SuggestionResource } from '../../../models';
 import { SuggestionRenderer } from './suggestion-renderer.service';
-import { RouteType } from '@spryker-oryx/router';
 
 export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
   products,
@@ -18,7 +18,7 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
 
         <oryx-content-link
           .options=${{
-            type: RouteType.ProductList,
+            type: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
             params: { q: query },
             button: true,
           }}

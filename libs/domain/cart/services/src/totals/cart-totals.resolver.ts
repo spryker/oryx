@@ -8,7 +8,6 @@ import {
 import { ContextService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { CartContext } from '../cart-context';
 
 export class CartTotalsResolver implements TotalsResolver {
   constructor(
@@ -20,10 +19,7 @@ export class CartTotalsResolver implements TotalsResolver {
     options?: TotalsResolverOptions
   ): Observable<CartQualifier | undefined> {
     return options?.element
-      ? this.contextService.get<CartQualifier>(
-          options.element,
-          CartContext.CartID
-        )
+      ? this.contextService.get<CartQualifier>(options.element, CART)
       : of(undefined);
   }
 

@@ -1,5 +1,4 @@
 import { RouteConfig } from '@spryker-oryx/router/lit';
-import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 
 export interface RouterService {
@@ -35,21 +34,21 @@ export const enum RouterEventType {
 
 export enum RouteType {
   Page = 'page',
-  /** deprecated since 1.4, use Products instead */
-  ProductList = featureVersion >= '1.4' ? 'products' : 'search',
-  /** deprecated since 1.4, use Product instead */
+  /** deprecated since 1.4, use PRODUCTS instead */
+  ProductList = 'search',
+  /** deprecated since 1.4, use PRODUCT instead */
   Product = 'product',
   Category = 'category',
   Checkout = 'checkout',
   CheckoutLogin = 'checkoutLogin',
   Order = 'order',
+  /** deprecated since 1.4, use CART instead */
   Cart = 'cart',
   Login = 'login',
   NotFound = 'not-found',
   AddressList = 'address-list',
   AddressBookCreate = 'address-book-create',
   AddressBookEdit = 'address-book-edit',
-  Carts = 'carts',
 }
 
 export interface RouterEvent {

@@ -1,5 +1,6 @@
 export * from './components';
 export * from './controllers';
+export * from './entity';
 export * from './extensions';
 export * from './feature';
 export * from './feature-options';

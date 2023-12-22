@@ -6,11 +6,11 @@ import {
   ConcreteProductsNormalizer,
   Product,
 } from '@spryker-oryx/product';
-import { map, Observable } from 'rxjs';
+import { RouteType } from '@spryker-oryx/router';
+import { Observable, map } from 'rxjs';
 import { Suggestion } from '../../../../models';
 import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
-import { RouteType } from '@spryker-oryx/router';
 
 export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
 
@@ -23,7 +23,7 @@ export function suggestionAttributesNormalizer(
     [SuggestionField.Suggestions]: completion.map((name) => ({
       name,
       params: { q: name },
-      type: RouteType.ProductList,
+      type: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
     })),
     [SuggestionField.Categories]: categories.map((category) => ({
       name: category.name,

@@ -9,7 +9,6 @@ import {
 import { inject, resolve } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { CartContext } from '../cart-context';
 
 export type CartResolvers = {
   SUMMARY: Resolver;
@@ -26,10 +25,7 @@ export class CartResolver extends BaseResolver<CartResolvers> {
     options?: TokenResolverOptions
   ): Observable<CartQualifier | undefined> {
     return options?.contextElement
-      ? this.contextService.get<CartQualifier>(
-          options.contextElement,
-          CartContext.CartID
-        )
+      ? this.contextService.get<CartQualifier>(options.contextElement, CART)
       : of(undefined);
   }
 

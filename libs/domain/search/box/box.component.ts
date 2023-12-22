@@ -71,7 +71,7 @@ export class SearchBoxComponent
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: RouteType.ProductList,
+      type: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
       ...(this.query ? { params: { q: this.query } } : {}),
     })
   );

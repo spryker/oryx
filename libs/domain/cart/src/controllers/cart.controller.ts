@@ -1,11 +1,10 @@
-import { CartService } from '@spryker-oryx/cart';
-import { CartContext } from '@spryker-oryx/cart/services';
+import { CART, CartService } from '@spryker-oryx/cart';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { PricingService } from '@spryker-oryx/site';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, filter, map, of, switchMap } from 'rxjs';
 import {
   Cart,
   CartComponentAttributes,
@@ -35,7 +34,7 @@ export class CartController {
         switchMap((cartId) =>
           cartId
             ? of({ cartId })
-            : this.contextController.get<CartQualifier>(CartContext.CartID)
+            : this.contextController.get<CartQualifier>(CART)
         )
       );
   }

@@ -67,7 +67,7 @@ export const createSuggestionMock = (
     [SuggestionField.Suggestions]: completion.map((name) => ({
       name,
       params: { q: name },
-      type: RouteType.ProductList,
+      type: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
     })),
     [SuggestionField.Categories]: createResources(
       completion,
