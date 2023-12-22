@@ -49,8 +49,6 @@ export const enum RouteType {
   AddressList = 'address-list',
   AddressBookCreate = 'address-book-create',
   AddressBookEdit = 'address-book-edit',
-  Carts = 'carts',
-  CartCreate = 'cart-create',
 }
 
 export interface RouterEvent {

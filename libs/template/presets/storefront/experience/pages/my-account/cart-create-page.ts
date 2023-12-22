@@ -1,5 +1,5 @@
+import { CART_CREATE } from '@spryker-oryx/cart';
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
 import { Size } from '@spryker-oryx/utilities';
 
 export const cartCreatePage: ExperienceComponent = {
@@ -7,7 +7,7 @@ export const cartCreatePage: ExperienceComponent = {
   type: 'Page',
   meta: {
     title: 'Create Cart',
-    routeType: RouteType.CartCreate,
+    routeType: CART_CREATE,
     route: '/my-account/create-cart',
     description: 'Create Cart Page',
   },

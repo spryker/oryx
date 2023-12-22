@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { CartService } from '@spryker-oryx/cart';
+import { CARTS, CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormFieldType, FormRenderer, SUBMIT_EVENT } from '@spryker-oryx/form';
-import { LinkService, RouteType, RouterService } from '@spryker-oryx/router';
+import { LinkService, RouterService } from '@spryker-oryx/router';
 import {
   CurrencyService,
   NotificationService,
@@ -164,7 +164,7 @@ describe('CartEditComponent', () => {
   });
 
   it('should build redirect url to the carts page', () => {
-    expect(linkService.get).toHaveBeenCalledWith({ type: RouteType.Carts });
+    expect(linkService.get).toHaveBeenCalledWith({ type: CARTS });
   });
 
   describe('when form is submitted', () => {
