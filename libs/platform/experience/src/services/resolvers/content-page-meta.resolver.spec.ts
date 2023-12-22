@@ -27,6 +27,7 @@ describe('ContentPageMetaResolver', () => {
   let service: ContentPageMetaResolver;
 
   beforeEach(() => {
+    mockFeatureVersion('1.4');
     createInjector({
       providers: [
         {

@@ -1,6 +1,7 @@
 import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouteWithParams, RouterService } from '@spryker-oryx/router';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import {
   ExperienceComponent,
@@ -81,8 +82,12 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   protected getData(
     route: RouteWithParams | string
   ): ExperienceComponent['meta'] | undefined {
-    if (typeof route === 'string') {
-      const routePath = route.split('/').filter(Boolean)[0];
+    if (featureVersion >= '1.4') {
+      return this.experienceData.find(
+        ({ meta }) => meta?.routeType === (route as RouteWithParams).type
+      )?.meta;
+    } else {
+      const routePath = (route as string).split('/').filter(Boolean)[0];
 
       return this.experienceData.find((data) => {
         // support for routes being either a string or an array of strings
@@ -96,9 +101,5 @@ export class ContentPageMetaResolver implements PageMetaResolver {
         });
       })?.meta;
     }
-
-    return this.experienceData.find(
-      ({ meta }) => meta?.routeType === route.type
-    )?.meta;
   }
 }
