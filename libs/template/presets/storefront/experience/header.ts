@@ -105,7 +105,7 @@ export const mainHeader = (): ExperienceComponent[] => {
                 colSpan: 3,
                 height: '42px',
                 justify: 'start',
-                style: 'color: var(--oryx-color-primary-12)',
+                style: '--oryx-fill: var(--oryx-color-primary-0, white)',
               },
               { query: { breakpoint: Size.Md }, colSpan: 2 },
               { query: { breakpoint: Size.Sm }, colSpan: 2 },

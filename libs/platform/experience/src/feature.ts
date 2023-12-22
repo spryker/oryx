@@ -11,9 +11,9 @@ import {
 
 export const experienceComponents = [
   components.compositionComponent,
-  components.entityText,
-  components.entityImage,
-  components.entityLink,
+  components.dataText,
+  components.dataImage,
+  components.dataLink,
 ];
 
 export const layoutFeature: AppFeature = {

@@ -37,8 +37,11 @@ export class ProductAvailabilityComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult | void {
+    const { enableIndicator, hideInStock } = this.$options();
+    if (hideInStock && this.$status() === StockAvailability.InStock) return;
+
     return html`${when(
-      this.$options().enableIndicator,
+      enableIndicator,
       () => html`<oryx-swatch .type=${this.getAlertType()}></oryx-swatch>`
     )}
     ${this.renderText()}`;
