@@ -1,5 +1,9 @@
 import { AuthIdentity, AuthService, IdentityService } from '@spryker-oryx/auth';
-import { CartAdapter, CartService } from '@spryker-oryx/cart';
+import {
+  CartAdapter,
+  CartService,
+  CreateCartQualifier,
+} from '@spryker-oryx/cart';
 import {
   mockBaseCart,
   mockCartEntry,
@@ -138,7 +142,7 @@ describe('DefaultCartService', () => {
   });
 
   describe('createCart', () => {
-    const qualifier = { name: 'mock' };
+    const qualifier = { name: 'mock' } as CreateCartQualifier;
 
     beforeEach(() => {
       service.createCart(qualifier).subscribe();
