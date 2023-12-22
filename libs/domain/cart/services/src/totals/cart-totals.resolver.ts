@@ -1,4 +1,5 @@
 import {
+  CartContext,
   CartQualifier,
   CartService,
   NormalizedTotals,
@@ -8,7 +9,6 @@ import {
 import { ContextService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { CartContext } from '../cart-context';
 
 export class CartTotalsResolver implements TotalsResolver {
   constructor(
