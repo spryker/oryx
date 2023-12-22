@@ -1,14 +1,23 @@
+import { FeatureOptionsService } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
 import {
+  computed,
+  getStaticProp,
   I18nMixin,
   I18nMixinType,
+  InstanceWithStatic,
   signal,
   Signal,
   signalAware,
+  signalProperty,
   Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ContentComponentProperties, ContentController } from '../index';
+import { ContentController } from '../controllers';
+import { optionsKey } from '../decorators';
+import { ContentComponentProperties } from '../models';
+import { ExperienceService } from '../services';
 
 export declare class ContentMixinInterface<OptionsType, ContentType>
   implements ContentComponentProperties<OptionsType, ContentType>
@@ -21,6 +30,8 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
   protected $content: Signal<ContentType>;
 }
 
+export const ContentMixinInternals = Symbol('ContentMixinInternals');
+
 export const ContentMixin = <
   OptionsType,
   ContentType = unknown,
@@ -31,9 +42,9 @@ export const ContentMixin = <
   T => {
   @signalAware()
   class ContentMixinClass extends I18nMixin(superClass) {
-    @property() uid?: string;
+    @signalProperty() uid?: string;
 
-    @property({ type: Object, reflect: true })
+    @signalProperty({ type: Object, reflect: true })
     options?: Partial<OptionsType>;
 
     @property({ type: Object, reflect: true })
@@ -41,8 +52,39 @@ export const ContentMixin = <
 
     protected contentController = new ContentController(this);
 
-    protected $options = signal(this.contentController.getOptions(), {
-      initialValue: {},
+    protected [ContentMixinInternals] = {
+      experienceService: resolve(ExperienceService, null),
+      optionsService: resolve(FeatureOptionsService, null),
+    };
+
+    protected $compositionOptions = computed(() =>
+      this[ContentMixinInternals].experienceService?.getOptions({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        uid: this.uid!,
+      })
+    );
+    protected $options = computed(() => {
+      const defaultOptions = {
+        ...getStaticProp(
+          this as unknown as InstanceWithStatic<OptionsType>,
+          optionsKey
+        ),
+        ...this[ContentMixinInternals].optionsService?.getFeatureOptions?.(
+          this.tagName
+        ),
+      } as OptionsType;
+
+      if (this.options !== undefined) {
+        return {
+          ...defaultOptions,
+          ...this.options,
+        };
+      }
+
+      return {
+        ...defaultOptions,
+        ...(this.uid ? this.$compositionOptions() : {}),
+      };
     });
 
     protected $content = signal(this.contentController.getContent(), {
