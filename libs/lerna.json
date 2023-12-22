@@ -24,6 +24,7 @@
     "template/themes",
     "base/ui",
     "domain/user",
+    "domain/merchant",
     "base/utilities"
   ],
   "version": "1.3.1",
