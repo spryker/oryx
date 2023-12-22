@@ -87,6 +87,7 @@ export interface LayoutPluginRenderParams extends LayoutPluginOptionsParams {
   element?: LitElement;
   experience?: Component;
   template?: TemplateResult;
+  isComposition?: boolean;
 }
 
 export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
