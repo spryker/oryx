@@ -24,17 +24,16 @@ export class ContentPageMetaResolver implements PageMetaResolver {
         return of(staticMeta);
       }
 
-      //routeConfig can be PathRouteConfig or URLPatternRouteConfig
-      const route =
-        'path' in routeConfig
-          ? routeConfig.path
-          : routeConfig?.pattern?.pathname;
-
-      return (
-        this.experienceService
-          .getComponent({ route })
-          .pipe(map((page) => page.meta)) ?? null
-      );
+      return this.router
+        .currentRoute()
+        .pipe(
+          switchMap(
+            (route) =>
+              this.experienceService
+                .getComponent({ route })
+                .pipe(map((page) => page.meta)) ?? null
+          )
+        );
     })
   );
 
