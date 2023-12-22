@@ -3,10 +3,10 @@ import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { EntityTextOptions } from '../entity-text.model';
+import { DataTextComponentOptions } from '../data-text.model';
 
 export default {
-  title: `${storybookPrefix}/Entity Text`,
+  title: `${storybookPrefix}/Data/Text`,
   args: {
     entity: 'product',
     field: 'name',
@@ -18,14 +18,14 @@ export default {
   },
 } as Meta;
 
-type Props = EntityTextOptions /*& FieldComponentProperties*/;
-
-const Template: Story<Props> = (props: Props): TemplateResult => {
+const Template: Story<DataTextComponentOptions> = (
+  props: DataTextComponentOptions
+): TemplateResult => {
   const { ...options } = props;
   resolve(ContextService).provide(document.body, 'sku', {
     sku: '1',
   });
-  return html` <oryx-entity-text .options=${options}></oryx-entity-text> `;
+  return html` <oryx-data-text .options=${options}></oryx-data-text> `;
 };
 
 export const Demo = Template.bind({});

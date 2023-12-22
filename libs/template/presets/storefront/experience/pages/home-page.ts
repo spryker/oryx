@@ -36,7 +36,7 @@ export const homePage: ExperienceComponent = {
       },
       components: [
         {
-          type: 'oryx-entity-text',
+          type: 'oryx-data-text',
           options: { field: 'content' },
         },
         {

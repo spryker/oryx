@@ -1,9 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
-import { DataImageOptions } from './data-image.model';
+import { DataImageComponentOptions } from './data-image.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-data-image'?: DataImageOptions;
+    'oryx-data-image'?: DataImageComponentOptions;
   }
 }
 

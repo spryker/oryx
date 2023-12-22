@@ -8,8 +8,8 @@ export const dataImageSchema: ContentComponentSchema<DataImageComponent> = {
   group: 'Experience',
   icon: IconTypes.Image,
   options: {
-    entity: { type: FormFieldType.Text },
     field: { type: FormFieldType.Text },
-    renderFallback: { type: FormFieldType.Boolean },
+    entity: { type: FormFieldType.Text },
+    renderFallback: { type: FormFieldType.Boolean, width: 100 },
   },
 };

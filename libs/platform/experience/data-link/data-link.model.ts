@@ -1,7 +1,7 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { DataFieldOptions } from '../src/models';
+import { DataFieldComponentOptions } from '../src/models';
 
-export interface EntityLinkOptions extends DataFieldOptions {
+export interface DataLinkComponentOptions extends DataFieldComponentOptions {
   icon?: IconTypes;
   label?: string;
 }

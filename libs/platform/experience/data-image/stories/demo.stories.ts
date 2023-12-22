@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { DataImageOptions } from '../data-image.model';
+import { DataImageComponentOptions } from '../data-image.model';
 
 export default {
   title: `${storybookPrefix}/Data/Image`,
@@ -15,9 +15,9 @@ export default {
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
-type Props = DataImageOptions;
-
-const Template: Story<Props> = (props: Props): TemplateResult => {
+const Template: Story<DataImageComponentOptions> = (
+  props: DataImageComponentOptions
+): TemplateResult => {
   const { ...options } = props;
   resolve(ContextService).provide(document.body, 'merchant', {
     id: '1',

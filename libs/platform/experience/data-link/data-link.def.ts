@@ -1,9 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
-import { EntityLinkOptions } from './data-link.model';
+import { DataLinkComponentOptions } from './data-link.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-data-link'?: EntityLinkOptions;
+    'oryx-data-link'?: DataLinkComponentOptions;
   }
 }
 

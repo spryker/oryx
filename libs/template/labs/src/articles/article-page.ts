@@ -99,7 +99,7 @@ export const experienceArticlePages = [
                   },
 
                   {
-                    type: 'oryx-entity-text',
+                    type: 'oryx-data-text',
                     options: {
                       field: 'content',
                     },

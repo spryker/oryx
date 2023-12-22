@@ -4,7 +4,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { EntityLinkOptions } from '../data-link.model';
+import { DataLinkComponentOptions } from '../data-link.model';
 
 export default {
   title: `${storybookPrefix}/Data/Link`,
@@ -17,8 +17,8 @@ export default {
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
-const Template: Story<EntityLinkOptions> = (
-  props: EntityLinkOptions
+const Template: Story<DataLinkComponentOptions> = (
+  props: DataLinkComponentOptions
 ): TemplateResult => {
   const { ...options } = props;
   resolve(ContextService).provide(document.body, 'merchant', {

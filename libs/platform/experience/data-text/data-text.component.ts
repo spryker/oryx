@@ -9,11 +9,11 @@ import { DirectiveResult } from 'lit/directive';
 import { UnsafeHTMLDirective } from 'lit/directives/unsafe-html';
 import { html } from 'lit/static-html.js';
 import { catchError, of } from 'rxjs';
-import { EntityTextOptions } from './entity-text.model';
+import { DataTextComponentOptions } from './data-text.model';
 
 @hydrate()
-export class EntityTextComponent extends TextMixin(
-  ContentMixin<EntityTextOptions>(LitElement)
+export class DataTextComponent extends TextMixin(
+  ContentMixin<DataTextComponentOptions>(LitElement)
 ) {
   protected entityService = resolve(EntityService);
   protected linkService = resolve(LinkService);

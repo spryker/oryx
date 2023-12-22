@@ -22,7 +22,7 @@ export const merchantSoldToOnPDP: ExperienceComponent = {
     selector: 'oryx-product-brand',
     type: ExperienceDataMergeType.After,
   },
-  type: 'oryx-entity-text',
+  type: 'oryx-data-text',
   options: {
     entity: 'merchant',
     field: 'name',
@@ -55,7 +55,7 @@ export const merchantPage: ExperienceComponent = {
           options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: 'merchant',
                 field: 'name',
@@ -63,29 +63,29 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: 'merchant',
                 field: 'description',
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: 'merchant', field: 'legal.dataPrivacy' },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: 'merchant',
                 field: 'legal.cancellationPolicy',
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: 'merchant', field: 'legal.terms' },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: 'merchant', field: 'legal.imprint' },
             },
           ],
