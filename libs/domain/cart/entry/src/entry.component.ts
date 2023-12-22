@@ -301,17 +301,23 @@ export class CartEntryComponent
   }
 
   protected updateEntry(quantity: number): void {
-    this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
-      next: () => {
-        if (this.$options().notifyOnUpdate) {
-          this.notify(
-            'cart.cart-entry-updated',
-            this.$entry()?.sku ?? this.sku
-          );
-        }
-      },
-      error: (e: Error) => this.revert(e),
-    });
+    this.cartService
+      .updateEntry({
+        cartId: this.cartId,
+        groupKey: this.key,
+        quantity,
+      })
+      .subscribe({
+        next: () => {
+          if (this.$options().notifyOnUpdate) {
+            this.notify(
+              'cart.cart-entry-updated',
+              this.$entry()?.sku ?? this.sku
+            );
+          }
+        },
+        error: (e: Error) => this.revert(e),
+      });
   }
 
   protected removeEntry(ev: Event, force?: boolean): void {
@@ -320,14 +326,19 @@ export class CartEntryComponent
       return;
     }
 
-    this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
-      next: () => {
-        if (this.$options().notifyOnRemove) {
-          this.notify('cart.confirm-removed', this.$entry()?.sku ?? this.sku);
-        }
-      },
-      error: (e: Error) => this.revert(e),
-    });
+    this.cartService
+      .deleteEntry({
+        cartId: this.cartId,
+        groupKey: this.key,
+      })
+      .subscribe({
+        next: () => {
+          if (this.$options().notifyOnRemove) {
+            this.notify('cart.confirm-removed', this.$entry()?.sku ?? this.sku);
+          }
+        },
+        error: (e: Error) => this.revert(e),
+      });
   }
 
   protected notify(token: string, sku?: string): void {
