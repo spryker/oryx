@@ -32,7 +32,7 @@ function merchantContextFallbackFactory(
               switchMap(
                 (product) =>
                   context.deserialize(
-                    MerchantContext.ID,
+                    MERCHANT,
                     product?.merchantId as string
                   ) as Observable<MerchantQualifier | undefined>
               )
