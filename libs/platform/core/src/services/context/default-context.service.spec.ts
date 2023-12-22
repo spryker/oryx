@@ -6,6 +6,7 @@ import { firstValueFrom, lastValueFrom, of } from 'rxjs';
 import { afterEach } from 'vitest';
 import {
   ContextFallback,
+  ContextFallbackParams,
   ContextSerializer,
   ContextService,
 } from './context.service';
@@ -14,6 +15,8 @@ import { DefaultContextService } from './default-context.service';
 const mockKey = 'mockKey';
 const mockKeyFallback = 'mockKeyFallback';
 const mockFallbackValue = 'mockFallbackValue';
+const mockHandlerFallbackKey = 'mockHandlerFallbackKey';
+
 const mockObject = {
   name: 'name',
   value: 'value',
@@ -59,6 +62,11 @@ describe('ContextService', () => {
         {
           provide: `${ContextFallback}${mockKeyFallback}`,
           useValue: of(mockFallbackValue),
+        },
+        {
+          provide: `${ContextFallback}${mockHandlerFallbackKey}`,
+          useValue: ({ element }: ContextFallbackParams) =>
+            of(element?.tagName),
         },
         {
           provide: `${ContextSerializer}${mockSerializerKey}`,
@@ -258,6 +266,16 @@ describe('ContextService', () => {
         .subscribe(mockCallback);
 
       expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
+    });
+
+    it('should use fallback handler if provided', () => {
+      const mockCallback = vi.fn();
+
+      testChildContext()
+        .context.get(testChildContext(), mockHandlerFallbackKey)
+        .subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenCalledWith('TEST-CHILD-CONTEXT');
     });
   });
 

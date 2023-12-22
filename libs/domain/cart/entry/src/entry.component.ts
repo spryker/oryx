@@ -2,6 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
+  Product,
   ProductContext,
   ProductMediaContainerSize,
   ProductMixin,
@@ -144,6 +145,18 @@ export class CartEntryComponent
           maxLines: featureVersion >= '1.4' ? 1 : undefined,
         } as ProductTitleOptions}
       ></oryx-product-title>
+      ${featureVersion >= '1.4' &&
+      (this.$product() as Product & { merchantId: string })?.merchantId
+        ? html`<oryx-data-text
+            .options=${{
+              entity: 'merchant',
+              field: 'name',
+              prefix: 'Sold by: ',
+              link: true,
+            }}
+            >}
+          </oryx-data-text>`
+        : html``}
       ${when(
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
@@ -301,17 +314,23 @@ export class CartEntryComponent
   }
 
   protected updateEntry(quantity: number): void {
-    this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
-      next: () => {
-        if (this.$options().notifyOnUpdate) {
-          this.notify(
-            'cart.cart-entry-updated',
-            this.$entry()?.sku ?? this.sku
-          );
-        }
-      },
-      error: (e: Error) => this.revert(e),
-    });
+    this.cartService
+      .updateEntry({
+        cartId: this.cartId,
+        groupKey: this.key,
+        quantity,
+      })
+      .subscribe({
+        next: () => {
+          if (this.$options().notifyOnUpdate) {
+            this.notify(
+              'cart.cart-entry-updated',
+              this.$entry()?.sku ?? this.sku
+            );
+          }
+        },
+        error: (e: Error) => this.revert(e),
+      });
   }
 
   protected removeEntry(ev: Event, force?: boolean): void {
@@ -320,14 +339,19 @@ export class CartEntryComponent
       return;
     }
 
-    this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
-      next: () => {
-        if (this.$options().notifyOnRemove) {
-          this.notify('cart.confirm-removed', this.$entry()?.sku ?? this.sku);
-        }
-      },
-      error: (e: Error) => this.revert(e),
-    });
+    this.cartService
+      .deleteEntry({
+        cartId: this.cartId,
+        groupKey: this.key,
+      })
+      .subscribe({
+        next: () => {
+          if (this.$options().notifyOnRemove) {
+            this.notify('cart.confirm-removed', this.$entry()?.sku ?? this.sku);
+          }
+        },
+        error: (e: Error) => this.revert(e),
+      });
   }
 
   protected notify(token: string, sku?: string): void {

@@ -6,8 +6,8 @@ import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { EntityTextComponent } from './entity-text.component';
-import { entityText } from './entity-text.def';
+import { DataTextComponent } from './data-text.component';
+import { dataText } from './data-text.def';
 
 class MockEntityService implements Partial<EntityService> {
   getField = vi.fn().mockReturnValue(of());
@@ -18,13 +18,13 @@ class MockLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of());
 }
 
-describe('EntityTextComponent', () => {
-  let element: EntityTextComponent;
+describe('DataTextComponent', () => {
+  let element: DataTextComponent;
   let entityService: MockEntityService;
   let injector: Injector;
 
   beforeAll(async () => {
-    await useComponent(entityText);
+    await useComponent(dataText);
   });
 
   beforeEach(async () => {
@@ -43,9 +43,9 @@ describe('EntityTextComponent', () => {
   describe('when an field option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-entity-text
+        html`<oryx-data-text
           .options=${{ entity: 'data', field: 'name' }}
-        ></oryx-entity-text>`
+        ></oryx-data-text>`
       );
     });
 
@@ -62,9 +62,9 @@ describe('EntityTextComponent', () => {
     beforeEach(async () => {
       entityService.getField.mockReturnValue(of('foo bar'));
       element = await fixture(
-        html`<oryx-entity-text
+        html`<oryx-data-text
           .options=${{ entity: 'data', field: 'name' }}
-        ></oryx-entity-text>`
+        ></oryx-data-text>`
       );
     });
 
@@ -75,9 +75,9 @@ describe('EntityTextComponent', () => {
     describe('and a prefix option is configured', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-entity-text
+          html`<oryx-data-text
             .options=${{ entity: 'data', field: 'name', prefix: 'prefix-' }}
-          ></oryx-entity-text>`
+          ></oryx-data-text>`
         );
       });
 
@@ -93,9 +93,9 @@ describe('EntityTextComponent', () => {
     beforeEach(async () => {
       entityService.getField.mockReturnValue(of('foo bar'));
       element = await fixture(
-        html`<oryx-entity-text
+        html`<oryx-data-text
           .options=${{ entity: 'data', field: 'name', tag: HeadingTag.H3 }}
-        ></oryx-entity-text>`
+        ></oryx-data-text>`
       );
     });
 
@@ -110,14 +110,14 @@ describe('EntityTextComponent', () => {
     describe('and a prefix option is configured', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-entity-text
+          html`<oryx-data-text
             .options=${{
               entity: 'data',
               field: 'name',
               tag: HeadingTag.H3,
               prefix: 'prefix-',
             }}
-          ></oryx-entity-text>`
+          ></oryx-data-text>`
         );
       });
 
@@ -137,9 +137,9 @@ describe('EntityTextComponent', () => {
       linkService.get.mockReturnValue(of('some-url'));
 
       element = await fixture(
-        html`<oryx-entity-text
+        html`<oryx-data-text
           .options=${{ entity: 'data', field: 'name', link: true }}
-        ></oryx-entity-text>`
+        ></oryx-data-text>`
       );
     });
 

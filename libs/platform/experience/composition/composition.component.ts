@@ -93,6 +93,9 @@ export class CompositionComponent extends LayoutMixin(
     })
   );
 
+  protected $componentData = computed(() =>
+    this.experienceService.getComponent({ uid: this.uid })
+  );
   protected $components = signal(this.componentsController.getComponents());
   protected $componentsStyles = computed(() => {
     const components = this.$components();
@@ -135,6 +138,7 @@ export class CompositionComponent extends LayoutMixin(
           options: component.options,
           experience: component,
           template: this.renderComponent(component),
+          isComposition: true,
         }).pipe(map((template) => ({ [component.id]: template })));
       }),
       reduce((acc, curr) => ({ ...acc, ...(curr ?? {}) }), {})
@@ -172,6 +176,7 @@ export class CompositionComponent extends LayoutMixin(
           `;
         }
       ) as TemplateResult,
+      experience: this.$componentData(),
       inlineStyles: this.$componentsStyles(),
     });
   }

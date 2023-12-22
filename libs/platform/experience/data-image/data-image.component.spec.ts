@@ -6,19 +6,19 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ContentAsset } from '../src/models';
-import { EntityImageComponent } from './entity-image.component';
-import { entityImage } from './entity-image.def';
+import { DataImageComponent } from './data-image.component';
+import { dataImage } from './data-image.def';
 
 class MockEntityService implements Partial<EntityService> {
   getField = vi.fn().mockReturnValue(of());
 }
 
-describe('EntityImageComponent', () => {
-  let element: EntityImageComponent;
+describe('DataImageComponent', () => {
+  let element: DataImageComponent;
   let entityService: MockEntityService;
 
   beforeAll(async () => {
-    await useComponent(entityImage);
+    await useComponent(dataImage);
   });
 
   beforeEach(async () => {
@@ -33,9 +33,9 @@ describe('EntityImageComponent', () => {
   describe('when an field option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-entity-image
+        html`<oryx-data-image
           .options=${{ entity: 'data', field: 'name' }}
-        ></oryx-entity-image>`
+        ></oryx-data-image>`
       );
     });
 
@@ -51,9 +51,9 @@ describe('EntityImageComponent', () => {
       beforeEach(async () => {
         entityService.getField.mockReturnValue(of('https://myimage.com'));
         element = await fixture(
-          html`<oryx-entity-image
+          html`<oryx-data-image
             .options=${{ entity: 'data', field: 'name' }}
-          ></oryx-entity-image>`
+          ></oryx-data-image>`
         );
       });
 
@@ -70,9 +70,9 @@ describe('EntityImageComponent', () => {
           of({ src: 'https://myimage.com', alt: 'alt text' } as ContentAsset)
         );
         element = await fixture(
-          html`<oryx-entity-image
+          html`<oryx-data-image
             .options=${{ entity: 'data', field: 'name' }}
-          ></oryx-entity-image>`
+          ></oryx-data-image>`
         );
       });
 
@@ -92,13 +92,13 @@ describe('EntityImageComponent', () => {
       describe('and a renderFallback option is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-entity-image
+            html`<oryx-data-image
               .options=${{
                 entity: 'data',
                 field: 'name',
                 renderFallback: true,
               }}
-            ></oryx-entity-image>`
+            ></oryx-data-image>`
           );
         });
 
@@ -110,12 +110,12 @@ describe('EntityImageComponent', () => {
       describe('and a renderFallback option is not provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-entity-image
+            html`<oryx-data-image
               .options=${{
                 entity: 'data',
                 field: 'name',
               }}
-            ></oryx-entity-image>`
+            ></oryx-data-image>`
           );
         });
 
