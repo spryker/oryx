@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const merchantOffersStyles = css`
-  oryx-collapsible::part(content) {
+  :host {
     display: grid;
     gap: 16px;
   }

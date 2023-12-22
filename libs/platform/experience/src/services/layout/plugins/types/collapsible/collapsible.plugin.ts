@@ -1,26 +1,14 @@
-import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { Observable, of } from 'rxjs';
-import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutPluginOptionsParams,
   LayoutPluginRender,
   LayoutPluginRenderParams,
 } from '../../layout.plugin';
 
 export class CollapsibleLayoutPlugin implements LayoutPlugin {
-  getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
-    const { options } = data;
-
-    return ssrAwaiter(
-      import('./collapsible.styles').then((m) => {
-        return m.styles;
-      })
-    );
-  }
-
   getConfig(): Observable<LayoutPluginConfig> {
     return of({
       schema: () => import('./collapsible.schema').then((m) => m.schema),
@@ -30,16 +18,33 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    console.log('data', data);
-    // if (!data.experience) {
-    return of({
-      // outer: html`<oryx-collapsible>${data.template}</oryx-collapsible>`,
-      inner: html`<oryx-collapsible heading="heading"
-        >${data.template}</oryx-collapsible
-      >`,
-    });
-    // }
-    // return of({
-    // });
+    const customHeading =
+      data.options.collapsibleTag || data.options.collapsibleTypography;
+
+    const template = html`<oryx-collapsible
+      ?open=${data.options.collapsibleOpen}
+      .heading=${customHeading ? undefined : data.experience?.name}
+    >
+      ${when(
+        customHeading,
+        () => html`
+          <oryx-heading
+            slot="heading"
+            .tag=${data.options.collapsibleTag}
+            .typography=${data.options.collapsibleTypography}
+          >
+            ${data.experience?.name}
+          </oryx-heading>
+        `
+      )}
+      ${data.template}</oryx-collapsible
+    >`;
+
+    if (!data.isComposition && !data.options.collapsePerComponent) {
+      return of({ outer: template });
+    } else if (data.options.collapsePerComponent) {
+      return of({ inner: template });
+    }
+    return of();
   }
 }
