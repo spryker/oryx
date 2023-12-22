@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/spryker/oryx/compare/lib@1.9.0...lib@1.10.0) (2023-12-22)
+
+
+### Features
+
+* **cart:** create cart page ([#1038](https://github.com/spryker/oryx/issues/1038)) ([d47b693](https://github.com/spryker/oryx/commit/d47b693b90b2c88a8f0a7d0d8977780167c565d7))
+
+
+
+
+
 # 1.9.0 (2023-12-22)
 
 
