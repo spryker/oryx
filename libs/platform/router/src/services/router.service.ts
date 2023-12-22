@@ -32,7 +32,7 @@ export const enum RouterEventType {
   NavigationEnd,
 }
 
-export enum RouteType {
+export const enum RouteType {
   Page = 'page',
   /** deprecated since 1.4, use PRODUCTS instead */
   ProductList = 'search',
@@ -49,6 +49,8 @@ export enum RouteType {
   AddressList = 'address-list',
   AddressBookCreate = 'address-book-create',
   AddressBookEdit = 'address-book-edit',
+  Carts = 'carts',
+  CartCreate = 'cart-create',
 }
 
 export interface RouterEvent {

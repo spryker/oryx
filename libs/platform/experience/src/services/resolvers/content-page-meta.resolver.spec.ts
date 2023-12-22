@@ -1,11 +1,18 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { of } from 'rxjs';
 import { ExperienceDataService, ExperienceService } from '../experience';
 import { ContentPageMetaResolver } from './content-page-meta.resolver';
 
+const mockRouteConfig: RouteConfig = {
+  path: '/mock',
+  type: 'mock',
+};
+
 const mockRouter = {
   currentRoute: vi.fn().mockReturnValue(of('/product/123')),
+  current: vi.fn().mockReturnValue(of(mockRouteConfig)),
 };
 
 const mockExperienceDataService = {
@@ -20,6 +27,7 @@ describe('ContentPageMetaResolver', () => {
   let service: ContentPageMetaResolver;
 
   beforeEach(() => {
+    mockFeatureVersion('1.4');
     createInjector({
       providers: [
         {
@@ -52,19 +60,19 @@ describe('ContentPageMetaResolver', () => {
       const callback = vi.fn();
       mockExperienceDataService.getData.mockReturnValue([
         {
-          meta: { route: '/product/:id' },
+          meta: { routeType: 'mock' },
         },
       ]);
       service = getInjector().inject(ContentPageMetaResolver);
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith([{ route: '/product/:id' }]);
+      expect(callback).toHaveBeenCalledWith([{ routeType: 'mock' }]);
     });
 
     it('should return proper value if content is not exist', () => {
       const callback = vi.fn();
       mockExperienceDataService.getData.mockReturnValue([
         {
-          meta: { route: '/category/:id' },
+          meta: { routeType: 'mock1' },
         },
       ]);
       service = getInjector().inject(ContentPageMetaResolver);
@@ -84,6 +92,7 @@ describe('ContentPageMetaResolver', () => {
             index: false,
             title: 'title',
             description: 'description',
+            routeType: 'mock',
           },
         },
       ]);
@@ -94,6 +103,7 @@ describe('ContentPageMetaResolver', () => {
         robots: 'follow,noindex',
         title: 'title',
         description: 'description',
+        routeType: 'mock',
       });
     });
   });

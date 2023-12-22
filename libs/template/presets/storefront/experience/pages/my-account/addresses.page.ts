@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 
 export const addressBookPage: ExperienceComponent = {
@@ -6,6 +7,7 @@ export const addressBookPage: ExperienceComponent = {
   type: 'Page',
   meta: {
     title: 'Address book',
+    routeType: RouteType.AddressList,
     route: '/my-account/addresses',
   },
   options: {
