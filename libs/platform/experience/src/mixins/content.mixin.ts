@@ -28,6 +28,10 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
   protected contentController: ContentController<ContentType, OptionsType>;
   protected $options: Signal<OptionsType>;
   protected $content: Signal<ContentType>;
+  protected [ContentMixinInternals]: {
+    experienceService: ExperienceService | null;
+    optionsService: FeatureOptionsService | null;
+  };
 }
 
 export const ContentMixinInternals = Symbol('ContentMixinInternals');
