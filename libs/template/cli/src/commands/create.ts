@@ -80,7 +80,7 @@ Options:
     await this.createApp(options);
   }
 
-  async createApp(options: CreateAppOptions = {}): Promise<void> {
+  async createApp(options: CreateAppOptions): Promise<void> {
     console.log(``);
     intro(`Create Oryx App`);
 
@@ -248,7 +248,7 @@ Please make sure to not use an existing directory name.`
 
 export interface CreateAppOptions {
   name: string;
-  appType: ApplicationType;
-  preset?: Preset;
-  features?: Feature[];
+  appType: ApplicationType | string;
+  preset?: Preset | string
+  features?: Feature[] | string;
 }

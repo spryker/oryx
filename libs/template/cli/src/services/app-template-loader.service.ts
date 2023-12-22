@@ -79,17 +79,17 @@ export class AppTemplateLoaderService {
 
   protected getTemplatePath(
     ref = this.templateRef[ApplicationType.Storefront]
-  ): Promise<string> {
+  ): string {
     return path.resolve(this.getTemplateDir(), ref);
   }
 
   protected getArchivePath(
     ref = this.templateRef[ApplicationType.Storefront]
-  ): Promise<string> {
+  ): string {
     return path.resolve(this.getTemplateDir(), `template-${ref}.zip`);
   }
 
-  protected getTemplateDir(): Promise<string> {
+  protected getTemplateDir(): string {
     return path.resolve(this.dirPath, '.templates');
   }
 }

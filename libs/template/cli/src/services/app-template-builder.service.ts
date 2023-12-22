@@ -9,11 +9,12 @@ export class AppTemplateBuilderService {
 }
 
 export class AppTemplateBuilder {
-  protected readonly appPath = path.resolve(this.appPath, 'src/app.ts');
   protected features?: Feature[];
   protected preset?: Preset;
 
-  constructor(protected readonly appPath: string) {}
+  constructor(protected readonly appPath: string) {
+    this.appPath = path.resolve(appPath, 'src/app.ts');
+  }
 
   setPreset(preset: Preset): this {
     this.preset = preset;
