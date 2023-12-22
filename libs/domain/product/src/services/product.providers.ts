@@ -230,6 +230,6 @@ export const productProviders: Provider[] = [
     : provideLitRoutes({ routes: productRoutes })),
   provideEntity('product', {
     service: ProductService,
-    context: ProductContext.SKU,
+    context: featureVersion >= '1.4' ? ProductContext.SKU : undefined,
   }),
 ];

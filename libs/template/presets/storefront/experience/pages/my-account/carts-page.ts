@@ -1,5 +1,5 @@
+import { CARTS } from '@spryker-oryx/cart';
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
 import { Size } from '@spryker-oryx/utilities';
 
 export const cartsPage: ExperienceComponent = {
@@ -9,7 +9,7 @@ export const cartsPage: ExperienceComponent = {
     title: 'Carts',
     route: '/my-account/carts',
     description: 'Carts Page',
-    routeType: RouteType.Carts,
+    routeType: CARTS,
   },
   components: [
     { ref: 'header' },

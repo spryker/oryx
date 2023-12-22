@@ -5,7 +5,9 @@ import {
   BreadcrumbResolver,
   BreadcrumbResolvers,
 } from '@spryker-oryx/site';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map } from 'rxjs';
+import { PRODUCTS } from '../../../entity';
 
 export class ProductListBreadcrumbResolver implements BreadcrumbResolver {
   constructor(protected routerService = inject(RouterService)) {}
@@ -27,6 +29,8 @@ export class ProductListBreadcrumbResolver implements BreadcrumbResolver {
 }
 
 export const ProductListBreadcrumb: Provider = {
-  provide: `${BreadcrumbResolvers}${RouteType.ProductList}`,
+  provide: `${BreadcrumbResolvers}${
+    featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList
+  }`,
   useClass: ProductListBreadcrumbResolver,
 };

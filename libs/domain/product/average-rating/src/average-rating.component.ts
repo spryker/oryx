@@ -1,11 +1,16 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { computed, hydrate, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { PRODUCT, ProductContext, ProductMixin } from '@spryker-oryx/product';
+import {
+  Size,
+  computed,
+  featureVersion,
+  hydrate,
+} from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
 @defaultOptions({ enableCount: true, size: Size.Lg })
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU })
 export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {

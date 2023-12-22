@@ -8,8 +8,9 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
+import { MERCHANT } from '../entity';
 import { Merchant, MerchantQualifier } from '../models';
-import { MerchantContext, MerchantService } from '../services';
+import { MerchantService } from '../services';
 
 export declare class MerchantMixinInterface {
   protected contextController: ContextController;
@@ -33,7 +34,7 @@ export const MerchantMixin = <T extends Type<LitElement>>(
     protected $merchantContext = signal(
       this[MerchantMixinInternals].contextService.get<MerchantQualifier>(
         this,
-        MerchantContext.ID
+        MERCHANT
       )
     );
 

@@ -7,6 +7,7 @@ import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
+import { PRODUCT } from '../../entity';
 import { ProductContext } from '../product-context';
 import { ProductService } from '../product.service';
 
@@ -19,7 +20,10 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(null, ProductContext.SKU),
+      this.context.get(
+        null,
+        featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU
+      ),
       this.router
         .currentRoute()
         .pipe(map((route) => route.includes('product'))),
@@ -27,20 +31,22 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
   }
 
   resolve(): Observable<ElementResolver> {
-    return this.context.get(null, ProductContext.SKU).pipe(
-      switchMap((qualifier) => {
-        if (!qualifier) {
-          return of({});
-        }
+    return this.context
+      .get(null, featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU)
+      .pipe(
+        switchMap((qualifier) => {
+          if (!qualifier) {
+            return of({});
+          }
 
-        return this.productService
-          .get(
-            featureVersion >= '1.3' ? qualifier : { sku: qualifier as string }
-          )
-          .pipe(
-            map((product) => (product?.name ? { title: product.name } : {}))
-          );
-      })
-    );
+          return this.productService
+            .get(
+              featureVersion >= '1.3' ? qualifier : { sku: qualifier as string }
+            )
+            .pipe(
+              map((product) => (product?.name ? { title: product.name } : {}))
+            );
+        })
+      );
   }
 }

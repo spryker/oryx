@@ -1,4 +1,4 @@
-import { CartContext, CartQualifier, CartService } from '@spryker-oryx/cart';
+import { CART, CartQualifier, CartService } from '@spryker-oryx/cart';
 import {
   BaseResolver,
   ContextService,
@@ -25,10 +25,7 @@ export class CartResolver extends BaseResolver<CartResolvers> {
     options?: TokenResolverOptions
   ): Observable<CartQualifier | undefined> {
     return options?.contextElement
-      ? this.contextService.get<CartQualifier>(
-          options.contextElement,
-          CartContext.CartID
-        )
+      ? this.contextService.get<CartQualifier>(options.contextElement, CART)
       : of(undefined);
   }
 

@@ -2,7 +2,7 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { LitElement, TemplateResult, html } from 'lit';
 
 import { ContextController } from '@spryker-oryx/core';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { PRODUCT, ProductMixin } from '@spryker-oryx/product';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   Size,
@@ -15,7 +15,7 @@ import {
 import { when } from 'lit/directives/when.js';
 import { merchantOfferStyles } from './offer.styles';
 
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: PRODUCT })
 @signalAware()
 export class MerchantOfferComponent extends ProductMixin(
   ContentMixin(LitElement)
@@ -29,7 +29,7 @@ export class MerchantOfferComponent extends ProductMixin(
   @elementEffect()
   protected setProductContext = (): void => {
     const sku = this.$product()?.sku;
-    this.contextController.provide(ProductContext.SKU, {
+    this.contextController.provide(PRODUCT, {
       sku,
       offer: this.offerId,
     });

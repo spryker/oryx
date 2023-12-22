@@ -1,5 +1,5 @@
 import {
-  CartContext,
+  CART,
   CartQualifier,
   CartService,
   NormalizedTotals,
@@ -20,10 +20,7 @@ export class CartTotalsResolver implements TotalsResolver {
     options?: TotalsResolverOptions
   ): Observable<CartQualifier | undefined> {
     return options?.element
-      ? this.contextService.get<CartQualifier>(
-          options.element,
-          CartContext.CartID
-        )
+      ? this.contextService.get<CartQualifier>(options.element, CART)
       : of(undefined);
   }
 
