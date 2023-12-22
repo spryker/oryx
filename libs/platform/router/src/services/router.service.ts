@@ -1,4 +1,5 @@
 import { RouteConfig } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 
 export interface RouterService {
@@ -32,9 +33,11 @@ export const enum RouterEventType {
   NavigationEnd,
 }
 
-export const enum RouteType {
+export enum RouteType {
   Page = 'page',
-  ProductList = 'search',
+  /** deprecated since 1.4, use Products instead */
+  ProductList = featureVersion >= '1.4' ? 'products' : 'search',
+  /** deprecated since 1.4, use Product instead */
   Product = 'product',
   Category = 'category',
   Checkout = 'checkout',
