@@ -1,4 +1,4 @@
-import { CartQualifier, CartService } from '@spryker-oryx/cart';
+import { CartContext, CartQualifier, CartService } from '@spryker-oryx/cart';
 import {
   BaseResolver,
   ContextService,
@@ -9,7 +9,6 @@ import {
 import { inject, resolve } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { CartContext } from '../cart-context';
 
 export type CartResolvers = {
   SUMMARY: Resolver;
