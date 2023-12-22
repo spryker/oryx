@@ -20,6 +20,7 @@ import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { LayoutController, LayoutControllerRender } from '../controllers';
 import {
+  Component,
   CompositionLayout,
   CompositionProperties,
   StyleRuleSet,
@@ -36,6 +37,7 @@ import { ContentMixin } from './content.mixin';
 
 interface LayoutMixinRender {
   inlineStyles?: string;
+  experience?: Component<CompositionProperties, Record<string, unknown>>;
   template: TemplateResult;
 }
 
@@ -199,18 +201,21 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       });
     }
 
-    protected template$ = new Subject<TemplateResult>();
+    protected template$ = new Subject<{
+      template: TemplateResult;
+      experience?: LayoutMixinRender['experience'];
+    }>();
     protected $template = computed(() => this.template$, {
       equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
     });
     protected $layoutRenderElement = computed(() =>
-      this.getLayoutPluginsRender({ template: this.$template() })
+      this.getLayoutPluginsRender({ ...(this.$template() ?? {}) })
     );
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult | void {
-      const { inlineStyles = '', template } = props;
+      const { inlineStyles = '', template, experience } = props;
 
-      this.template$.next(template);
+      this.template$.next({ template, experience });
       const layoutStyles = this.layoutStyles();
       const styles = inlineStyles + layoutStyles;
       const layoutTemplate = this.$layoutRenderElement();

@@ -101,14 +101,14 @@
       "@spryker-oryx/experience/composition": [
         "libs/platform/experience/composition/index.ts"
       ],
-      "@spryker-oryx/experience/entity-image": [
-        "libs/platform/experience/entity-image/index.ts"
+      "@spryker-oryx/experience/data-image": [
+        "libs/platform/experience/data-image/index.ts"
       ],
-      "@spryker-oryx/experience/entity-link": [
-        "libs/platform/experience/entity-link/index.ts"
+      "@spryker-oryx/experience/data-link": [
+        "libs/platform/experience/data-link/index.ts"
       ],
-      "@spryker-oryx/experience/entity-text": [
-        "libs/platform/experience/entity-text/index.ts"
+      "@spryker-oryx/experience/data-text": [
+        "libs/platform/experience/data-text/index.ts"
       ],
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"

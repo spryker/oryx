@@ -1,20 +1,15 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { IconTypes } from '@spryker-oryx/ui/icon';
-import { EntityTextComponent } from './entity-text.component';
+import { DataTextComponent } from './data-text.component';
 
-export const entityTextSchema: ContentComponentSchema<EntityTextComponent> = {
-  name: 'Entity text',
+export const dataTextSchema: ContentComponentSchema<DataTextComponent> = {
+  name: 'Data text',
   group: 'Experience',
-  icon: IconTypes.Edit,
+  icon: 'wysiwyg',
   options: {
-    entity: {
-      type: FormFieldType.Text,
-    },
-    field: {
-      type: FormFieldType.Text,
-    },
+    field: { type: FormFieldType.Text },
+    entity: { type: FormFieldType.Text },
     tag: {
       type: FormFieldType.Select,
       options: [
@@ -31,11 +26,7 @@ export const entityTextSchema: ContentComponentSchema<EntityTextComponent> = {
         { value: HeadingTag.Caption },
       ],
     },
-    prefix: {
-      type: FormFieldType.Text,
-    },
-    // link: {
-    //   type: FormFieldType.Boolean,
-    // },
+    prefix: { type: FormFieldType.Text },
+    link: { type: FormFieldType.Boolean, width: 100 },
   },
 };

@@ -5,7 +5,7 @@ import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
-export default { title: `${storybookPrefix}/Entity Link` };
+export default { title: `${storybookPrefix}/Data/Link` };
 
 const Template: Story = (): TemplateResult => {
   resolve(ContextService).provide(document.body, 'merchant', {
@@ -14,51 +14,51 @@ const Template: Story = (): TemplateResult => {
   return html`
     <div>
       <h3>Without label and icon</h3>
-      <oryx-entity-link
+      <oryx-data-link
         .options=${{ entity: 'merchant', field: 'url' }}
-      ></oryx-entity-link>
-      <oryx-entity-link
+      ></oryx-data-link>
+      <oryx-data-link
         .options=${{
           entity: 'merchant',
           field: 'contact.phone',
         }}
-      ></oryx-entity-link>
-      <oryx-entity-link
+      ></oryx-data-link>
+      <oryx-data-link
         .options=${{
           entity: 'merchant',
           field: 'contact.email',
         }}
-      ></oryx-entity-link>
+      ></oryx-data-link>
     </div>
 
     <div>
       <h3>With label and icon</h3>
-      <oryx-entity-link
+      <oryx-data-link
         .options=${{
           entity: 'merchant',
           field: 'url',
           icon: IconTypes.Link,
           label: 'Visit our website',
         }}
-      ></oryx-entity-link>
+      ></oryx-data-link>
 
-      <oryx-entity-link
+      <oryx-data-link
         .options=${{
           entity: 'merchant',
           field: 'contact.phone',
           icon: IconTypes.Phone,
           label: 'Call us',
         }}
-      ></oryx-entity-link>
+      ></oryx-data-link>
 
-      <oryx-entity-link
+      <oryx-data-link
         .options=${{
           entity: 'merchant',
           field: 'contact.email',
           icon: IconTypes.Email,
           label: 'Send us an email',
         }}
-      ></oryx-entity-link>
+      ></oryx-data-link>
     </div>
   `;
 };

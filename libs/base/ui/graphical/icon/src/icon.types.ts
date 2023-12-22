@@ -7,7 +7,8 @@ export enum IconTypes {
   DropUp = 'expand_less',
   Dropdown = 'expand_more',
   Email = 'alternate_email',
-  Image = 'photo_library',
+  Image = 'image',
+  Images = 'photo_library',
   Info = 'info',
   InputError = 'report', // merge with error
   Minus = 'remove',
@@ -109,7 +110,6 @@ export enum IconTypes {
   Video = 'play_circle',
   Description = 'description',
   Barcode = 'barcode',
-  Images = 'photo_library', // merge with image
   Label = 'label',
   Media = 'perm_media',
   Price = 'money',

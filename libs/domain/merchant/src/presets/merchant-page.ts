@@ -23,7 +23,7 @@ export const merchantSoldToOnPDP: ExperienceComponent = {
     selector: 'oryx-product-brand',
     type: ExperienceDataMergeType.After,
   },
-  type: 'oryx-entity-text',
+  type: 'oryx-data-text',
   options: {
     entity: MERCHANT,
     field: 'name',
@@ -38,7 +38,7 @@ export const merchantPage: ExperienceComponent = {
   options: { rules: [{ layout: { type: 'list' } }] },
   components: [
     {
-      type: 'oryx-entity-image',
+      type: 'oryx-data-image',
       options: {
         entity: MERCHANT,
         field: 'banner',
@@ -56,7 +56,7 @@ export const merchantPage: ExperienceComponent = {
           options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: MERCHANT,
                 field: 'name',
@@ -64,29 +64,29 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: MERCHANT,
                 field: 'description',
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: MERCHANT, field: 'legal.dataPrivacy' },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: {
                 entity: MERCHANT,
                 field: 'legal.cancellationPolicy',
               },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: MERCHANT, field: 'legal.terms' },
             },
             {
-              type: 'oryx-entity-text',
+              type: 'oryx-data-text',
               options: { entity: MERCHANT, field: 'legal.imprint' },
             },
           ],
@@ -96,7 +96,7 @@ export const merchantPage: ExperienceComponent = {
           options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
-              type: 'oryx-entity-image',
+              type: 'oryx-data-image',
               options: {
                 entity: MERCHANT,
                 field: 'logo',
@@ -114,7 +114,7 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-link',
+              type: 'oryx-data-link',
               options: {
                 entity: MERCHANT,
                 field: 'contact.email',
@@ -122,7 +122,7 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-link',
+              type: 'oryx-data-link',
               options: {
                 entity: MERCHANT,
                 field: 'contact.phone',

@@ -1,5 +1,6 @@
 import {
   ContextFallback,
+  ContextFallbackHandler,
   ContextSerializer,
   ContextService,
 } from '@spryker-oryx/core';
@@ -18,21 +19,26 @@ function merchantContextFallbackFactory(
   router = inject(RouterService),
   context = inject(ContextService),
   product = inject(ProductService)
-): Observable<unknown> {
-  return router.current().pipe(
-    switchMap((route) =>
-      route.type === MERCHANT
-        ? of(route.params)
-        : context.get<ProductQualifier>(null, ProductContext.SKU).pipe(
-            switchMap((qualifier: ProductQualifier | undefined) =>
-              qualifier ? product.get(qualifier) : of(undefined)
-            ),
-            switchMap((product) =>
-              context.deserialize(MERCHANT, product?.merchantId as string)
+): ContextFallbackHandler<MerchantQualifier | undefined> {
+  return ({ element }) =>
+    router.current().pipe(
+      switchMap((route) =>
+        route.type === MERCHANT
+          ? of(route.params)
+          : context.get(element, ProductContext.SKU).pipe(
+              switchMap((qualifier: ProductQualifier | undefined) =>
+                qualifier ? product.get(qualifier) : of(undefined)
+              ),
+              switchMap(
+                (product) =>
+                  context.deserialize(
+                    MerchantContext.ID,
+                    product?.merchantId as string
+                  ) as Observable<MerchantQualifier | undefined>
+              )
             )
-          )
-    )
-  );
+      )
+    );
 }
 
 export const MerchantContextSerializerToken = `${ContextSerializer}${MERCHANT}`;
