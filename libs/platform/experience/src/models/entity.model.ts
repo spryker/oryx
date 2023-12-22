@@ -1,4 +1,4 @@
-export interface EntityFieldOptions {
+export interface DataFieldOptions {
   entity?: string;
   field?: string;
 }

@@ -13,7 +13,7 @@ export const experienceComponents = [
   components.compositionComponent,
   components.entityText,
   components.dataImage,
-  components.entityLink,
+  components.dataLink,
 ];
 
 export const layoutFeature: AppFeature = {

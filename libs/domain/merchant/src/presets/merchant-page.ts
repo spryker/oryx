@@ -113,7 +113,7 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-link',
+              type: 'oryx-data-link',
               options: {
                 entity: 'merchant',
                 field: 'contact.email',
@@ -121,7 +121,7 @@ export const merchantPage: ExperienceComponent = {
               },
             },
             {
-              type: 'oryx-entity-link',
+              type: 'oryx-data-link',
               options: {
                 entity: 'merchant',
                 field: 'contact.phone',

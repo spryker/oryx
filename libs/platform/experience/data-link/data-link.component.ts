@@ -10,10 +10,10 @@ import {
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { catchError, of } from 'rxjs';
-import { EntityLinkOptions } from './entity-link.model';
+import { EntityLinkOptions } from './data-link.model';
 
 @hydrate()
-export class EntityLinkComponent extends ContentMixin<EntityLinkOptions>(
+export class DataLinkComponent extends ContentMixin<EntityLinkOptions>(
   LitElement
 ) {
   protected entityService = resolve(EntityService);

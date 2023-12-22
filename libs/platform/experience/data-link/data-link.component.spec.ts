@@ -5,19 +5,19 @@ import { LinkService } from '@spryker-oryx/router';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { EntityLinkComponent } from './entity-link.component';
-import { entityLink } from './entity-link.def';
+import { DataLinkComponent } from './data-link.component';
+import { dataLink } from './data-link.def';
 
 class MockEntityService implements Partial<EntityService> {
   getField = vi.fn().mockReturnValue(of());
 }
 
-describe('EntityLinkComponent', () => {
-  let element: EntityLinkComponent;
+describe('DataLinkComponent', () => {
+  let element: DataLinkComponent;
   let entityService: MockEntityService;
 
   beforeAll(async () => {
-    await useComponent(entityLink);
+    await useComponent(dataLink);
   });
 
   beforeEach(async () => {
@@ -36,9 +36,9 @@ describe('EntityLinkComponent', () => {
   describe('when an field option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-entity-link
+        html`<oryx-data-link
           .options=${{ entity: 'data', field: 'contact.phone' }}
-        ></oryx-entity-link>`
+        ></oryx-data-link>`
       );
     });
 
@@ -55,9 +55,9 @@ describe('EntityLinkComponent', () => {
     beforeEach(async () => {
       entityService.getField.mockReturnValue(of('https://spryker.com'));
       element = await fixture(
-        html`<oryx-entity-link
+        html`<oryx-data-link
           .options=${{ entity: 'data', field: 'contact.phone' }}
-        ></oryx-entity-link>`
+        ></oryx-data-link>`
       );
     });
 
@@ -70,9 +70,9 @@ describe('EntityLinkComponent', () => {
     beforeEach(async () => {
       entityService.getField.mockReturnValue(of(null));
       element = await fixture(
-        html`<oryx-entity-link
+        html`<oryx-data-link
           .options=${{ entity: 'data', field: 'contact.phone' }}
-        ></oryx-entity-link>`
+        ></oryx-data-link>`
       );
     });
 
@@ -86,9 +86,9 @@ describe('EntityLinkComponent', () => {
     beforeEach(async () => {
       entityService.getField.mockReturnValue(of(mockWebsite));
       element = await fixture(
-        html`<oryx-entity-link
+        html`<oryx-data-link
           .options=${{ entity: 'data', field: 'contact.phone' }}
-        ></oryx-entity-link>`
+        ></oryx-data-link>`
       );
     });
 
@@ -108,9 +108,9 @@ describe('EntityLinkComponent', () => {
       beforeEach(async () => {
         entityService.getField.mockReturnValue(of(mockPhone));
         element = await fixture(
-          html`<oryx-entity-link
+          html`<oryx-data-link
             .options=${{ entity: 'data', field: 'contact.phone' }}
-          ></oryx-entity-link>`
+          ></oryx-data-link>`
         );
       });
 
@@ -125,9 +125,9 @@ describe('EntityLinkComponent', () => {
     beforeEach(async () => {
       entityService.getField.mockReturnValue(of(mockEmail));
       element = await fixture(
-        html`<oryx-entity-link
+        html`<oryx-data-link
           .options=${{ entity: 'data', field: 'contact.phone' }}
-        ></oryx-entity-link>`
+        ></oryx-data-link>`
       );
     });
 

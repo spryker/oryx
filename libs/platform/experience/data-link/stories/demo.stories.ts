@@ -4,10 +4,10 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { EntityLinkOptions } from '../entity-link.model';
+import { EntityLinkOptions } from '../data-link.model';
 
 export default {
-  title: `${storybookPrefix}/Entity Link`,
+  title: `${storybookPrefix}/Data/Link`,
   args: {
     entity: 'merchant',
     field: 'contact.phone',
@@ -24,7 +24,7 @@ const Template: Story<EntityLinkOptions> = (
   resolve(ContextService).provide(document.body, 'merchant', {
     id: '1',
   });
-  return html` <oryx-entity-link .options=${options}></oryx-entity-link> `;
+  return html` <oryx-data-link .options=${options}></oryx-data-link> `;
 };
 
 export const Demo = Template.bind({});

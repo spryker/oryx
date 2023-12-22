@@ -1,7 +1,7 @@
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { EntityFieldOptions } from '../src/models';
+import { DataFieldOptions } from '../src/models';
 
-export interface EntityTextOptions extends EntityFieldOptions {
+export interface EntityTextOptions extends DataFieldOptions {
   tag?: HeadingTag;
   prefix?: string;
   link?: boolean;
