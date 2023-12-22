@@ -12,7 +12,7 @@ import {
 export const experienceComponents = [
   components.compositionComponent,
   components.entityText,
-  components.entityImage,
+  components.dataImage,
   components.entityLink,
 ];
 

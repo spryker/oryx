@@ -4,7 +4,7 @@ import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
-export default { title: `${storybookPrefix}/Entity Image` };
+export default { title: `${storybookPrefix}/Data/Image` };
 
 const Template: Story = (): TemplateResult => {
   resolve(ContextService).provide(document.body, 'merchant', {
@@ -14,29 +14,29 @@ const Template: Story = (): TemplateResult => {
     <div>
       <h3>Context image</h3>
 
-      <oryx-entity-image
+      <oryx-data-image
         .options=${{
           entity: 'merchant',
           field: 'banner',
         }}
-      ></oryx-entity-image>
+      ></oryx-data-image>
 
       <h3>Unknown without fallback image</h3>
-      <oryx-entity-image
+      <oryx-data-image
         .options=${{
           entity: 'merchant',
           field: 'unknown',
         }}
-      ></oryx-entity-image>
+      ></oryx-data-image>
 
       <h3>Unknown with fallback image</h3>
-      <oryx-entity-image
+      <oryx-data-image
         .options=${{
           entity: 'merchant',
           field: 'unknown',
           renderFallback: true,
         }}
-      ></oryx-entity-image>
+      ></oryx-data-image>
     </div>
     <style>
       div {

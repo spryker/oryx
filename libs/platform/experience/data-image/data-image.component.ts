@@ -5,10 +5,10 @@ import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { catchError, of } from 'rxjs';
-import { EntityImageOptions } from './entity-image.model';
+import { DataImageOptions } from './data-image.model';
 
 @hydrate()
-export class EntityImageComponent extends ContentMixin<EntityImageOptions>(
+export class DataImageComponent extends ContentMixin<DataImageOptions>(
   LitElement
 ) {
   protected entityService = resolve(EntityService);

@@ -1,10 +1,10 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { EntityImageComponent } from './entity-image.component';
+import { DataImageComponent } from './data-image.component';
 
-export const entityImageSchema: ContentComponentSchema<EntityImageComponent> = {
-  name: 'Entity image',
+export const dataImageSchema: ContentComponentSchema<DataImageComponent> = {
+  name: 'Data Image',
   group: 'Experience',
   icon: IconTypes.Image,
   options: {

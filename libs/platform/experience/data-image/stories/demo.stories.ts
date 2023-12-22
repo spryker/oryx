@@ -3,10 +3,10 @@ import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { EntityImageOptions } from '../entity-image.model';
+import { DataImageOptions } from '../data-image.model';
 
 export default {
-  title: `${storybookPrefix}/Entity Image`,
+  title: `${storybookPrefix}/Data/Image`,
   args: {
     entity: 'merchant',
     field: 'banner',
@@ -15,14 +15,14 @@ export default {
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
-type Props = EntityImageOptions;
+type Props = DataImageOptions;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { ...options } = props;
   resolve(ContextService).provide(document.body, 'merchant', {
     id: '1',
   });
-  return html` <oryx-entity-image .options=${options}></oryx-entity-image> `;
+  return html` <oryx-data-image .options=${options}></oryx-data-image> `;
 };
 
 export const Demo = Template.bind({});

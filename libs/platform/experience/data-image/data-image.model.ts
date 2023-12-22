@@ -1,5 +1,5 @@
 import { EntityFieldOptions } from '../src/models';
 
-export interface EntityImageOptions extends EntityFieldOptions {
+export interface DataImageOptions extends EntityFieldOptions {
   renderFallback?: boolean;
 }

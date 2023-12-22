@@ -40,7 +40,7 @@ export const homePage: ExperienceComponent = {
           options: { field: 'content' },
         },
         {
-          type: 'oryx-entity-image',
+          type: 'oryx-data-image',
           options: { field: 'picture', rules: [] },
         },
       ],

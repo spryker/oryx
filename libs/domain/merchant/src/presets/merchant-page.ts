@@ -37,7 +37,7 @@ export const merchantPage: ExperienceComponent = {
   options: { rules: [{ layout: { type: 'list' } }] },
   components: [
     {
-      type: 'oryx-entity-image',
+      type: 'oryx-data-image',
       options: {
         entity: 'merchant',
         field: 'banner',
@@ -95,7 +95,7 @@ export const merchantPage: ExperienceComponent = {
           options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
-              type: 'oryx-entity-image',
+              type: 'oryx-data-image',
               options: {
                 entity: 'merchant',
                 field: 'logo',
