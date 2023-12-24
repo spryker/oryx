@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/product",
   "type": "module",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Product features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -20,13 +20,13 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/core": "1.10.0",
-    "@spryker-oryx/di": "1.10.0",
-    "@spryker-oryx/experience": "1.10.0",
-    "@spryker-oryx/router": "1.10.0",
-    "@spryker-oryx/site": "1.10.0",
-    "@spryker-oryx/ui": "1.10.0",
-    "@spryker-oryx/utilities": "1.10.0"
+    "@spryker-oryx/core": "1.11.0",
+    "@spryker-oryx/di": "1.11.0",
+    "@spryker-oryx/experience": "1.11.0",
+    "@spryker-oryx/router": "1.11.0",
+    "@spryker-oryx/site": "1.11.0",
+    "@spryker-oryx/ui": "1.11.0",
+    "@spryker-oryx/utilities": "1.11.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",

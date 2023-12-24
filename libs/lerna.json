@@ -27,7 +27,7 @@
     "domain/merchant",
     "base/utilities"
   ],
-  "version": "1.10.0",
+  "version": "1.11.0",
   "npmClient": "npm",
   "command": {
     "publish": {

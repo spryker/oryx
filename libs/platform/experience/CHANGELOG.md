@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/spryker/oryx/compare/lib@1.10.0...lib@1.11.0) (2023-12-24)
+
+**Note:** Version bump only for package @spryker-oryx/experience
+
+
+
+
+
 # [1.10.0](https://github.com/spryker/oryx/compare/lib@1.9.0...lib@1.10.0) (2023-12-22)
 
 

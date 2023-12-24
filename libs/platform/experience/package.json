@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/experience",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "type": "module",
   "description": "Experience features for Oryx applications",
   "author": "Spryker Systems GmbH",
@@ -24,11 +24,11 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/core": "1.10.0",
-    "@spryker-oryx/di": "1.10.0",
-    "@spryker-oryx/router": "1.10.0",
-    "@spryker-oryx/ui": "1.10.0",
-    "@spryker-oryx/utilities": "1.10.0"
+    "@spryker-oryx/core": "1.11.0",
+    "@spryker-oryx/di": "1.11.0",
+    "@spryker-oryx/router": "1.11.0",
+    "@spryker-oryx/ui": "1.11.0",
+    "@spryker-oryx/utilities": "1.11.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
