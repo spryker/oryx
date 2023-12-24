@@ -31,4 +31,5 @@ export interface Component<
   content?: {
     data: Content;
   };
+  bucket?: string;
 }

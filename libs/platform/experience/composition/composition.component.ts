@@ -25,6 +25,7 @@ import {
   subscribe,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
@@ -38,6 +39,7 @@ export class CompositionComponent extends LayoutMixin(
 ) {
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
+  @property({ reflect: true }) bucket?: string;
 
   protected experienceService = resolve(ExperienceService);
   protected routerService = resolve(RouterService);
@@ -158,12 +160,15 @@ export class CompositionComponent extends LayoutMixin(
   private standardRender(): TemplateResult | void {
     const components = this.$components();
 
-    if (!components?.length) return;
+    if (!components?.length) {
+      // if (this.bucket) return html`<slot .name=${this.bucket}></slot>`;
+      return;
+    }
 
     const layoutComposition = this.$layoutRenderComposition();
 
     return this.renderLayout({
-      template: repeat(
+      template: html`${repeat(
         components,
         (component) => component.id,
         (component) => {
@@ -175,7 +180,7 @@ export class CompositionComponent extends LayoutMixin(
             ${layoutTemplate?.post}
           `;
         }
-      ) as TemplateResult,
+      ) as TemplateResult}`,
       experience: this.$componentData(),
       inlineStyles: this.$componentsStyles(),
     });

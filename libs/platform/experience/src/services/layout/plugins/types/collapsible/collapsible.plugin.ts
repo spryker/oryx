@@ -1,12 +1,14 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
-import { when } from 'lit/directives/when.js';
 import { Observable, of } from 'rxjs';
+import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
   LayoutPluginRender,
   LayoutPluginRenderParams,
 } from '../../layout.plugin';
+import { renderLabel } from '../util';
 
 export class CollapsibleLayoutPlugin implements LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig> {
@@ -15,36 +17,22 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
     });
   }
 
+  getStyles(): Observable<LayoutStyles> {
+    return ssrAwaiter(import('./collapsible.styles').then((m) => m.styles));
+  }
+
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    const customHeading =
-      data.options.collapsibleTag || data.options.collapsibleTypography;
-
-    const template = html`<oryx-collapsible
-      ?open=${data.options.collapsibleOpen}
-      .heading=${customHeading ? undefined : data.experience?.name}
-    >
-      ${when(
-        customHeading,
-        () => html`
-          <oryx-heading
-            slot="heading"
-            .tag=${data.options.collapsibleTag}
-            .typography=${data.options.collapsibleTypography}
-          >
-            ${data.experience?.name}
-          </oryx-heading>
-        `
-      )}
-      ${data.template}</oryx-collapsible
-    >`;
-
-    if (!data.isComposition && !data.options.collapsePerComponent) {
-      return of({ outer: template });
-    } else if (data.options.collapsePerComponent) {
-      return of({ inner: template });
+    if (!data.isComposition) {
+      return of({
+        outer: html`<oryx-collapsible ?open=${data?.options?.collapsibleOpen}
+          >${renderLabel(data, 'heading', -1)}
+          ${data.template}</oryx-collapsible
+        >`,
+      });
     }
+
     return of();
   }
 }

@@ -23,8 +23,6 @@ export const merchantOffersOnPDP: ExperienceComponent = {
         hideByRule: 'PRODUCT.!OFFERS',
         layout: {
           type: 'collapsible',
-          collapsibleTag: HeadingTag.H3,
-          collapsibleTypography: HeadingTag.H4,
         },
       },
     ],
@@ -106,9 +104,7 @@ export const merchantPage: ExperienceComponent = {
         },
         {
           type: 'oryx-composition',
-          id: 'abc',
-          name: 'open/close',
-          options: { rules: [{ layout: { type: 'collapsible' } }] },
+          options: { rules: [{ layout: { type: 'list' } }] },
           components: [
             {
               type: 'oryx-data-image',

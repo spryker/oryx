@@ -32,7 +32,14 @@ export class CompositionComponentsController implements ReactiveController {
         components
           ? this.filterHiddenComponents(components, breakpoint)
           : of([])
-      )
+      ),
+      map((components) => {
+        return components.filter(
+          (component) =>
+            (!this.host.bucket && !component.bucket) ||
+            component.bucket === this.host.bucket
+        );
+      })
     );
   }
 
