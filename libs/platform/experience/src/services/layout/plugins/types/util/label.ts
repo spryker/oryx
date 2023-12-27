@@ -13,7 +13,7 @@ export const renderLabelSlot = (
   if (!hasBucket) {
     const label = data.experience?.name;
     if (!label) return;
-    return html`<span .slot=${slotName} .tabindex=${tabindex}>${label}</span>`;
+    return html`<span .slot=${slotName} tabindex=${tabindex}>${label}</span>`;
   }
 
   return html`
@@ -22,7 +22,7 @@ export const renderLabelSlot = (
       .slot=${slotName}
       .uid=${data.experience?.id}
       .options=${{}}
-      .tabindex=${tabindex}
+      tabindex=${tabindex}
     ></oryx-composition>
   `;
 };
