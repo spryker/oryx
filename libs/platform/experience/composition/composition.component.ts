@@ -31,12 +31,14 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { Observable, concatMap, from, map, of, reduce, tap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
+import { CompositionComponentProperties } from './composition.model';
 
 @signalAware()
 @hydrate()
-export class CompositionComponent extends LayoutMixin(
-  ContentMixin<CompositionProperties>(LitElement)
-) {
+export class CompositionComponent
+  extends LayoutMixin(ContentMixin<CompositionProperties>(LitElement))
+  implements CompositionComponentProperties
+{
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
   @property({ reflect: true }) bucket?: string;
@@ -160,10 +162,7 @@ export class CompositionComponent extends LayoutMixin(
   private standardRender(): TemplateResult | void {
     const components = this.$components();
 
-    if (!components?.length) {
-      // if (this.bucket) return html`<slot .name=${this.bucket}></slot>`;
-      return;
-    }
+    if (!components?.length) return;
 
     const layoutComposition = this.$layoutRenderComposition();
 

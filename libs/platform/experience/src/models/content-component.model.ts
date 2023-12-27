@@ -22,12 +22,4 @@ export interface ContentComponentProperties<
    * component uid will be ignored.
    */
   options?: OptionsType;
-
-  /**
-   * The bucket represents the location where the component content is used. An
-   * example of a bucket is the `label` bucket, which is used for navigation
-   * components such as the `dropdown` or `collapsible` component. The label
-   * component(s) can be used for custom trigger elements.
-   */
-  bucket?: string;
 }

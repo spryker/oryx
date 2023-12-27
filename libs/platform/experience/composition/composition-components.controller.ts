@@ -10,16 +10,23 @@ import {
 import { ObserveController, Size } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
+import { CompositionComponentProperties } from './composition.model';
 
 export class CompositionComponentsController implements ReactiveController {
   hostConnected?(): void;
 
-  protected observe: ObserveController<LitElement & ContentComponentProperties>;
+  protected observe: ObserveController<
+    LitElement & CompositionComponentProperties & ContentComponentProperties
+  >;
   protected tokenResolver = resolve(TokenResolver);
   protected experienceService = resolve(ExperienceService);
   protected screenService = resolve(ScreenService);
 
-  constructor(protected host: LitElement & ContentComponentProperties) {
+  constructor(
+    protected host: LitElement &
+      CompositionComponentProperties &
+      ContentComponentProperties
+  ) {
     this.observe = new ObserveController(host);
   }
 
@@ -33,13 +40,7 @@ export class CompositionComponentsController implements ReactiveController {
           ? this.filterHiddenComponents(components, breakpoint)
           : of([])
       ),
-      map((components) => {
-        return components.filter(
-          (component) =>
-            (!this.host.bucket && !component.bucket) ||
-            component.bucket === this.host.bucket
-        );
-      })
+      map((components) => this.filterBucketComponents(components))
     );
   }
 
@@ -100,6 +101,14 @@ export class CompositionComponentsController implements ReactiveController {
             )
           : of(null)
       )
+    );
+  }
+
+  protected filterBucketComponents(components: Component[]): Component[] {
+    return components.filter(
+      (component) =>
+        (!this.host.bucket && !component.bucket) ||
+        component.bucket === this.host.bucket
     );
   }
 

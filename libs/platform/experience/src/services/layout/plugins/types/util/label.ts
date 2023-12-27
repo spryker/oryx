@@ -1,25 +1,25 @@
 import { TemplateResult, html } from 'lit';
 import { LayoutPluginRenderParams } from '../../layout.plugin';
 
-export const renderLabel = (
+export const renderLabelSlot = (
   data: LayoutPluginRenderParams,
-  slot: string,
+  slotName: string,
   tabindex = 0
 ): TemplateResult | void => {
   const hasBucket = data.experience?.components?.find(
     (c) => c.bucket === 'label'
   );
 
-  const label = data.experience?.name;
-
   if (!hasBucket) {
-    return html`<span .slot=${slot} .tabindex=${tabindex}>${label}</span>`;
+    const label = data.experience?.name;
+    if (!label) return;
+    return html`<span .slot=${slotName} .tabindex=${tabindex}>${label}</span>`;
   }
 
   return html`
     <oryx-composition
       bucket="label"
-      .slot=${slot}
+      .slot=${slotName}
       .uid=${data.experience?.id}
       .options=${{}}
       .tabindex=${tabindex}

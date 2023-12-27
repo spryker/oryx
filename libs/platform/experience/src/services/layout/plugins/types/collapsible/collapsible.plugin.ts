@@ -8,7 +8,7 @@ import {
   LayoutPluginRender,
   LayoutPluginRenderParams,
 } from '../../layout.plugin';
-import { renderLabel } from '../util';
+import { renderLabelSlot } from '../util';
 
 export class CollapsibleLayoutPlugin implements LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig> {
@@ -24,15 +24,13 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    if (!data.isComposition) {
-      return of({
-        outer: html`<oryx-collapsible ?open=${data?.options?.collapsibleOpen}
-          >${renderLabel(data, 'heading', -1)}
-          ${data.template}</oryx-collapsible
-        >`,
-      });
-    }
+    if (data.isComposition) return of();
 
-    return of();
+    return of({
+      outer: html`<oryx-collapsible ?open=${data?.options?.collapsibleOpen}
+        >${renderLabelSlot(data, 'heading', -1)}
+        ${data.template}</oryx-collapsible
+      >`,
+    });
   }
 }
