@@ -1,13 +1,13 @@
 import { css } from 'lit';
 
 export const merchantOffersStyles = css`
-  oryx-collapsible::part(content) {
-    display: grid;
-    gap: 16px;
+  a {
+    display: block;
+    text-decoration: none;
   }
 
-  a {
-    text-decoration: none;
+  a:not(:last-of-type) {
+    margin-block-end: 16px;
   }
 
   oryx-radio {

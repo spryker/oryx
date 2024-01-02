@@ -50,6 +50,9 @@ const styles = [
   `,
 ];
 
+/**
+ * @deprecated since 1.4, use `collapsibleStyles` instead
+ */
 export const collapsibleBackofficeUI = {
   styles,
 };

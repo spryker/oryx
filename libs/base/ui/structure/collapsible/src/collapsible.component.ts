@@ -1,6 +1,6 @@
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
+import { I18nMixin, Size, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -8,13 +8,15 @@ import {
   CollapsibleAppearance,
   CollapsibleAttributes,
 } from './collapsible.model';
+import { collapsibleStyles } from './collapsible.styles';
 import { collapsibleBaseStyle } from './styles';
 
 export class CollapsibleComponent
   extends I18nMixin(LitElement)
   implements CollapsibleAttributes
 {
-  static styles = [collapsibleBaseStyle];
+  static styles =
+    featureVersion >= '1.4' ? collapsibleStyles : [collapsibleBaseStyle];
 
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
   @property({ type: Boolean, reflect: true }) open?: boolean;
@@ -41,14 +43,14 @@ export class CollapsibleComponent
         @toggle=${this.onToggle}
       >
         <summary
-          part="heading"
+          .part=${featureVersion >= '1.4' ? undefined : 'heading'}
           tabindex=${ifDefined(nonTabbable ? -1 : undefined)}
         >
           <slot name="heading">${this.heading}</slot>
           ${this.renderToggleControl()}
           <slot name="aside"></slot>
         </summary>
-        <slot part="content"></slot>
+        <slot .part=${featureVersion >= '1.4' ? undefined : 'content'}></slot>
       </details>
     `;
   }
@@ -68,10 +70,20 @@ export class CollapsibleComponent
   }
 
   protected renderToggleControl(): TemplateResult {
-    const icon = this.open ? IconTypes.Minus : IconTypes.Add;
+    const icon =
+      featureVersion >= '1.4'
+        ? this.open
+          ? IconTypes.DropUp
+          : IconTypes.Dropdown
+        : this.open
+        ? IconTypes.Minus
+        : IconTypes.Add;
+
+    if (this.appearance === CollapsibleAppearance.Block) {
+      return html`<oryx-icon .type=${icon} .size=${Size.Md}></oryx-icon>`;
+    }
+
     const i18nToken = `collapsible.${this.details?.open ? 'hide' : 'show'}`;
-    const nonTabbable =
-      this.nonTabbable || this.appearance === CollapsibleAppearance.Block;
 
     return html`
       <oryx-button
@@ -79,7 +91,7 @@ export class CollapsibleComponent
         .size=${ButtonSize.Sm}
         .icon=${icon}
         .label=${this.i18n(i18nToken)}
-        tabindex=${ifDefined(nonTabbable ? -1 : undefined)}
+        tabindex=${ifDefined(this.nonTabbable ? -1 : undefined)}
         @click=${() => this.details?.toggleAttribute('open')}
       >
       </oryx-button>

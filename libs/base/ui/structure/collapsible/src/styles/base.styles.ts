@@ -1,13 +1,23 @@
 import { css, unsafeCSS } from 'lit';
 import { CollapsibleAppearance } from '../collapsible.model';
 
+/**
+ * @deprecated since 1.4.
+ */
 export const blockSelector = unsafeCSS(
   `[appearance=${CollapsibleAppearance.Block}]`
 );
+
+/**
+ * @deprecated since 1.4.
+ */
 export const inlineSelector = unsafeCSS(
   `[appearance=${CollapsibleAppearance.Inline}]`
 );
 
+/**
+ * @deprecated since 1.4, use `collapsibleStyles` instead.
+ */
 export const collapsibleBaseStyle = css`
   :host {
     display: block;

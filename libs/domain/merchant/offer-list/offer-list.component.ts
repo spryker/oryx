@@ -95,6 +95,7 @@ export class MerchantOfferListComponent extends ProductMixin(
         aria-label=${this.i18n('merchant.link-to-<offer>', {
           offer: offer.id,
         })}
+        tabindex="-1"
       >
         <oryx-radio>
           <input

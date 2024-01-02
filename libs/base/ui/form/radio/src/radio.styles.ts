@@ -1,5 +1,16 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import { featureVersion, screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
+
+const focusStyles =
+  featureVersion >= '1.4'
+    ? css`
+        ::slotted(input:focus-visible)::after {
+          outline: solid 1px var(--oryx-color-focus);
+          outline-offset: 4px;
+          border-radius: 1px;
+        }
+      `
+    : (`` as any);
 
 export const baseStyles = css`
   :host {
@@ -40,6 +51,8 @@ export const baseStyles = css`
     inset-inline-start: 0;
     cursor: pointer;
   }
+
+  ${focusStyles}
 
   ::slotted(input:hover) {
     color: var(--oryx-color-neutral-9);

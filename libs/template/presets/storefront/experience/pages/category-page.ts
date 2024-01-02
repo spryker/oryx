@@ -37,7 +37,14 @@ export const categoryPage: ExperienceComponent = {
             rules: [
               {
                 layout:
-                  featureVersion >= '1.2'
+                  featureVersion >= '1.4'
+                    ? {
+                        type: 'list',
+                        vertical: true,
+                        divider: true,
+                        sticky: true,
+                      }
+                    : featureVersion >= '1.2'
                     ? {
                         type: 'grid',
                         divider: true,

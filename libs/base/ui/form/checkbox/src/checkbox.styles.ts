@@ -1,4 +1,17 @@
+import { featureVersion } from '@spryker-oryx/utilities';
+
 import { css } from 'lit';
+
+const focusStyles =
+  featureVersion >= '1.4'
+    ? css`
+        ::slotted(input:focus-visible)::after {
+          outline: solid 1px var(--oryx-color-focus);
+          outline-offset: 4px;
+          border-radius: 1px;
+        }
+      `
+    : (`` as any);
 
 export const checkboxStyles = css`
   :host([disabled]) {
@@ -30,6 +43,8 @@ export const checkboxStyles = css`
     inset-block-start: 0;
     inset-inline-start: 0;
   }
+
+  ${focusStyles}
 
   ::slotted(input:not(:disabled))::after {
     cursor: pointer;
