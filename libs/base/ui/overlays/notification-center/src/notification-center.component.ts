@@ -5,9 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import {
+  Notification,
   NotificationCenterComponentAttributes,
   NotificationContent,
-  Notification,
   NotificationPosition,
   NotificationRegistry,
   NotificationResolvedContent,
@@ -45,8 +45,9 @@ export class NotificationCenterComponent
     `;
   }
 
-  protected resolveContent(content?: NotificationContent): 
-    NotificationResolvedContent | void {
+  protected resolveContent(
+    content?: NotificationContent
+  ): NotificationResolvedContent | void {
     if (typeof content === 'object' && 'token' in content) {
       return this.i18n(content.token, content.context);
     }
@@ -67,7 +68,10 @@ export class NotificationCenterComponent
         ${this.resolveContent(registry.content)}
         ${when(
           registry.subtext,
-          () => html`<span slot="subtext">${this.resolveContent(registry.subtext)}</span>`
+          () =>
+            html`<span slot="subtext"
+              >${this.resolveContent(registry.subtext)}</span
+            >`
         )}
       </oryx-notification>
     `;

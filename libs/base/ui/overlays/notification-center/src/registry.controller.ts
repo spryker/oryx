@@ -1,6 +1,9 @@
-import { LitElement, ReactiveController } from 'lit';
-import { NotificationRegistry, Notification } from './notification-center.model';
 import { AlertType } from '@spryker-oryx/ui';
+import { LitElement, ReactiveController } from 'lit';
+import {
+  Notification,
+  NotificationRegistry,
+} from './notification-center.model';
 
 const AUTO_REMOVE_TIME = 8000;
 /**

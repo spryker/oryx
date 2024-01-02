@@ -183,7 +183,10 @@ describe('CartEditComponent', () => {
     it('should push a notification with created cart name', () => {
       expect(notificationService.push).toHaveBeenCalledWith({
         type: AlertType.Success,
-        content: `Cart: ${mockDefaultCart.name} was created`,
+        content: {
+          token: 'carts.create.cart-<name>-created',
+          context: { name: mockDefaultCart.name },
+        },
       });
     });
 

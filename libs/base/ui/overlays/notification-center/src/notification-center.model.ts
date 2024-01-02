@@ -53,4 +53,6 @@ export type NotificationContent =
   | string
   | number;
 
-export type NotificationResolvedContent = Omit<NotificationContent, 'I18nContent'> | I18nTranslationValue;
+export type NotificationResolvedContent =
+  | Omit<NotificationContent, 'I18nContent'>
+  | I18nTranslationValue;

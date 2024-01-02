@@ -1,11 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { notificationComponent } from '@spryker-oryx/ui';
-import { useComponent } from '@spryker-oryx/utilities';
 import {
   CLOSE_EVENT,
   NotificationComponent,
   NotificationEvent,
 } from '@spryker-oryx/ui/notification';
+import { useComponent } from '@spryker-oryx/utilities';
+import { SpyInstance } from 'vitest';
 import { NotificationCenterComponent } from './notification-center.component';
 import { notificationCenterComponent } from './notification-center.def';
 
@@ -34,6 +35,56 @@ describe('NotificationCenterComponent', () => {
       expect(
         element.renderRoot.querySelectorAll('oryx-notification').length
       ).toBe(1);
+    });
+
+    describe('when notification contains a content', () => {
+      const notification = {
+        content: 'Mock content',
+        subtext: 'Mock subtext',
+      };
+
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-notification-center></oryx-notification-center>
+        `);
+        element.open(notification);
+        await element.updateComplete;
+      });
+
+      it('should render notification`s content', () => {
+        const notificationElement =
+          element.renderRoot.querySelector<NotificationComponent>(
+            'oryx-notification'
+          );
+        expect(notificationElement?.textContent).toContain(
+          notification.content
+        );
+        expect(notificationElement?.textContent).toContain(
+          notification.subtext
+        );
+      });
+    });
+
+    describe('when notification contains an i18n content', () => {
+      const notification = {
+        content: { token: 'content' },
+        subtext: { token: 'subtext' },
+      };
+      let spy: SpyInstance;
+
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-notification-center></oryx-notification-center>
+        `);
+        spy = vi.spyOn(element, 'i18n');
+        element.open(notification);
+        await element.updateComplete;
+      });
+
+      it('should translate the content', () => {
+        expect(spy).toHaveBeenCalledWith(notification.content.token, undefined);
+        expect(spy).toHaveBeenCalledWith(notification.subtext.token, undefined);
+      });
     });
 
     describe('when multiple notifications are provided', () => {

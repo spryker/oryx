@@ -99,7 +99,10 @@ export class CouponComponent extends CartComponentMixin(
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: { token: 'coupon.<coupon>-successfully-applied', context: { coupon } },
+          content: {
+            token: 'coupon.<coupon>-successfully-applied',
+            context: { coupon },
+          },
         });
 
         this.coupon!.value = '';

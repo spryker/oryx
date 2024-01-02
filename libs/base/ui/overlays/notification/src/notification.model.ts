@@ -45,8 +45,8 @@ export interface NotificationEvent {
   key?: string;
 }
 
-/** 
- * @deprecated since 1.4. 
+/**
+ * @deprecated since 1.4.
  * Interfaced was moved to the '@spryker-oryx/ui/notification-center'
  * and must be imported from there.
  */
@@ -61,8 +61,8 @@ export type Notification = {
   subtext?: NotificationContent;
 };
 
-/** 
- * @deprecated since 1.4. 
+/**
+ * @deprecated since 1.4.
  * Interfaced was moved to the '@spryker-oryx/ui/notification-center'
  * and must be imported from there.
  */
