@@ -39,8 +39,17 @@ export class CompositionComponentsController implements ReactiveController {
         components
           ? this.filterHiddenComponents(components, breakpoint)
           : of([])
-      ),
-      map((components) => this.filterBucketComponents(components))
+      )
+      // map((components) => {
+      //   // if(this.host.bucket) {
+      //   //   return components[this.host.bucket];
+      //   // }
+      //   // if(Array.isArray(components)) {
+      //     return components;
+      //   // }else{
+      //   //   return components.main;
+      //   // }
+      // })
     );
   }
 
@@ -59,11 +68,13 @@ export class CompositionComponentsController implements ReactiveController {
         uid
           ? this.experienceService.getComponent({ uid }).pipe(
               switchMap((component) => {
-                const components = component?.components;
+                if (!component?.components) return of(null);
 
-                if (!components) {
-                  return of(null);
-                }
+                const components = Array.isArray(component.components)
+                  ? component.components
+                  : this.host.bucket
+                  ? component.components[this.host.bucket]
+                  : component.components.main;
 
                 const stack: Record<string, boolean> = {};
                 const refs = components.reduce((acc, component) => {
@@ -104,13 +115,13 @@ export class CompositionComponentsController implements ReactiveController {
     );
   }
 
-  protected filterBucketComponents(components: Component[]): Component[] {
-    return components.filter(
-      (component) =>
-        (!this.host.bucket && !component.bucket) ||
-        component.bucket === this.host.bucket
-    );
-  }
+  // protected filterBucketComponents(components: Component[]): Component[] {
+  //   return components.filter(
+  //     (component) =>
+  //       (!this.host.bucket && !component.bucket) ||
+  //       component.bucket === this.host.bucket
+  //   );
+  // }
 
   protected filterHiddenComponents(
     components: Component[],

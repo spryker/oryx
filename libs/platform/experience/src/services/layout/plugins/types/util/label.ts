@@ -1,3 +1,4 @@
+import { Component } from '@spryker-oryx/experience';
 import { TemplateResult, html } from 'lit';
 import { LayoutPluginRenderParams } from '../../layout.plugin';
 
@@ -6,9 +7,9 @@ export const renderLabelSlot = (
   slotName: string,
   tabindex = 0
 ): TemplateResult | void => {
-  const hasBucket = data.experience?.components?.find(
-    (c) => c.bucket === 'label'
-  );
+  const hasBucket = !!(
+    data.experience?.components as Record<string, Component[]>
+  )?.label;
 
   if (!hasBucket) {
     const label = data.experience?.name;

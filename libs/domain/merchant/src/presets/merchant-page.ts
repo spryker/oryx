@@ -15,15 +15,16 @@ export const merchantOffersOnPDP: ExperienceComponent = {
     type: ExperienceDataMergeType.Append,
   },
   type: 'oryx-composition',
-  components: [
-    {
-      type: 'oryx-content-text',
-      bucket: 'label',
-      content: { data: { text: 'Product offers' } },
-      options: { rules: [{ typography: HeadingTag.H4 }] },
-    },
-    { type: 'oryx-merchant-offer-list' },
-  ],
+  components: {
+    label: [
+      {
+        type: 'oryx-content-text',
+        content: { data: { text: 'Product offers' } },
+        options: { rules: [{ typography: HeadingTag.H4 }] },
+      },
+    ],
+    main: [{ type: 'oryx-merchant-offer-list' }],
+  },
   options: {
     rules: [
       {

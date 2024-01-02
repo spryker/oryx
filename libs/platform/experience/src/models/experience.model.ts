@@ -26,10 +26,9 @@ export interface Component<
     index?: boolean;
     [key: string]: string | boolean | unknown | undefined;
   };
-  components?: Component[];
+  components?: Component[] | Record<string, Component[]>;
   options?: Options;
   content?: {
     data: Content;
   };
-  bucket?: string;
 }

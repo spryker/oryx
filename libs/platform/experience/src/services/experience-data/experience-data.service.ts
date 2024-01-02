@@ -38,7 +38,7 @@ export interface ExperienceDataMergeStrategy {
 }
 
 export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {
-  components?: ExperienceComponent[];
+  components?: ExperienceComponent[] | Record<string, ExperienceComponent[]>;
   merge?: ExperienceDataMergeStrategy;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string | symbol]: any;
