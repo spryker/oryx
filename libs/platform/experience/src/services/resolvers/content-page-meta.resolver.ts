@@ -1,6 +1,7 @@
 import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouteWithParams, RouterService } from '@spryker-oryx/router';
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import {
@@ -19,7 +20,11 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   protected experienceData = this.experienceDataService.getData();
   protected getMeta$ = this.router.current().pipe(
     switchMap((routeConfig) => {
-      const staticMeta = this.getData(routeConfig);
+      const staticMeta = this.getData(
+        featureVersion >= '1.4'
+          ? routeConfig
+          : (routeConfig as RouteConfig).path ?? ''
+      );
 
       if (staticMeta) {
         return of(staticMeta);
