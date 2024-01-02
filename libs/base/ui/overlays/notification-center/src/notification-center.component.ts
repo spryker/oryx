@@ -1,21 +1,23 @@
-import { hydrate } from '@spryker-oryx/utilities';
+import { hydrate, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { Notification } from '../../notification';
 import {
   NotificationCenterComponentAttributes,
+  NotificationContent,
+  Notification,
   NotificationPosition,
   NotificationRegistry,
+  NotificationResolvedContent,
 } from './notification-center.model';
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
 
 @hydrate()
 export class NotificationCenterComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements NotificationCenterComponentAttributes
 {
   static styles = [notificationCenterBaseStyles];
@@ -43,6 +45,15 @@ export class NotificationCenterComponent
     `;
   }
 
+  protected resolveContent(content?: NotificationContent): 
+    NotificationResolvedContent | void {
+    if (typeof content === 'object' && 'token' in content) {
+      return this.i18n(content.token, content.context);
+    }
+
+    return content;
+  }
+
   protected renderNotification(registry: NotificationRegistry): TemplateResult {
     return html`
       <oryx-notification
@@ -53,10 +64,10 @@ export class NotificationCenterComponent
         ?floating=${registry.floating}
         ?visible=${registry.visible}
       >
-        ${registry.content}
+        ${this.resolveContent(registry.content)}
         ${when(
           registry.subtext,
-          () => html`<span slot="subtext">${registry.subtext}</span>`
+          () => html`<span slot="subtext">${this.resolveContent(registry.subtext)}</span>`
         )}
       </oryx-notification>
     `;

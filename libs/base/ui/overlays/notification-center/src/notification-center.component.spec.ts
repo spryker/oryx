@@ -5,7 +5,7 @@ import {
   CLOSE_EVENT,
   NotificationComponent,
   NotificationEvent,
-} from '../../notification/src';
+} from '@spryker-oryx/ui/notification';
 import { NotificationCenterComponent } from './notification-center.component';
 import { notificationCenterComponent } from './notification-center.def';
 
