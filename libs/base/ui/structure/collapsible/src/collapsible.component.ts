@@ -79,7 +79,10 @@ export class CollapsibleComponent
         ? IconTypes.Minus
         : IconTypes.Add;
 
-    if (this.appearance === CollapsibleAppearance.Block) {
+    if (
+      featureVersion >= '1.4' &&
+      this.appearance === CollapsibleAppearance.Block
+    ) {
       return html`<oryx-icon .type=${icon} .size=${Size.Md}></oryx-icon>`;
     }
 

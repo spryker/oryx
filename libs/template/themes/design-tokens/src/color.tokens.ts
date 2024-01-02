@@ -1,11 +1,7 @@
 import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
-import { featureVersion } from '@spryker-oryx/utilities';
 
 export const color: ColorDesignTokens = {
-  neutral:
-    featureVersion >= '1.4'
-      ? colorPalette.grays.gray
-      : colorPalette.grays.sprykerSfGray,
+  neutral: colorPalette.grays.sprykerSfGray,
   primary: colorPalette.colors.spryker,
   secondary: colorPalette.colors.amber,
 

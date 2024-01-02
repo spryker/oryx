@@ -34,9 +34,9 @@ const blockAppearance = css`
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
-  /* :host(${blockSelector}:active) {
+  :host(${blockSelector}:active) {
     border-color: var(--oryx-color-primary-10);
-  } */
+  }
 
   :host(${blockSelector}) summary {
     padding-block: 12px;
@@ -52,12 +52,12 @@ const blockAppearance = css`
   }
 
   :host([open]) summary:focus-visible {
-    /* outline-offset: -4px; */
+    outline-offset: -4px;
   }
 
-  /* summary:focus-visible::after {
+  summary:focus-visible::after {
     box-shadow: var(--oryx-box-shadow-focus);
-  } */
+  }
 
   oryx-button {
     transition-duration: var(--oryx-transition-time-medium);

@@ -1,5 +1,5 @@
 import { featureVersion, screenCss } from '@spryker-oryx/utilities';
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
 
 const focusStyles =
   featureVersion >= '1.4'
@@ -10,7 +10,7 @@ const focusStyles =
           border-radius: 1px;
         }
       `
-    : (`` as any);
+    : unsafeCSS(``);
 
 export const baseStyles = css`
   :host {
