@@ -39,8 +39,8 @@ describe('NotificationCenterComponent', () => {
 
     describe('when notification contains a content', () => {
       const notification = {
-        content: 'Mock content',
-        subtext: 'Mock subtext',
+        content: { token: 'Mock content' },
+        subtext: { token: 'Mock subtext' },
       };
       let spy: SpyInstance;
 
@@ -48,12 +48,12 @@ describe('NotificationCenterComponent', () => {
         element = await fixture(html`
           <oryx-notification-center></oryx-notification-center>
         `);
-        spy = vi.spyOn(element, 'i18nContent');
+        spy = vi.spyOn(element, 'i18n');
         element.open(notification);
         await element.updateComplete;
       });
 
-      it('should pass the texts to the i18nContent method', () => {
+      it('should pass the texts to the i18n method', () => {
         expect(spy).toHaveBeenCalledWith(notification.content);
         expect(spy).toHaveBeenCalledWith(notification.subtext);
       });
@@ -64,10 +64,10 @@ describe('NotificationCenterComponent', () => {
             'oryx-notification'
           );
         expect(notificationElement?.textContent).toContain(
-          notification.content
+          notification.content.token
         );
         expect(notificationElement?.textContent).toContain(
-          notification.subtext
+          notification.subtext.token
         );
       });
     });

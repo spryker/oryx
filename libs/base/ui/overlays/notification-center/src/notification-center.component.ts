@@ -45,6 +45,19 @@ export class NotificationCenterComponent
     `;
   }
 
+  protected renderContent(
+    content?: NotificationContent
+  ): NotificationResolvedContent | undefined {
+    if (
+      typeof content === 'object' &&
+      ('token' in content || 'raw' in content)
+    ) {
+      return this.i18n(content);
+    }
+
+    return content;
+  }
+
   protected renderNotification(registry: NotificationRegistry): TemplateResult {
     return html`
       <oryx-notification
@@ -55,17 +68,12 @@ export class NotificationCenterComponent
         ?floating=${registry.floating}
         ?visible=${registry.visible}
       >
-        ${this.i18nContent<NotificationContent, NotificationResolvedContent>(
-          registry.content
-        )}
+        ${this.renderContent(registry.content)}
         ${when(
           registry.subtext,
           () =>
             html`<span slot="subtext">
-              ${this.i18nContent<
-                NotificationContent,
-                NotificationResolvedContent
-              >(registry.subtext)}
+              ${this.renderContent(registry.subtext)}
             </span>`
         )}
       </oryx-notification>

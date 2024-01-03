@@ -1,5 +1,4 @@
 import { ReactiveElement } from 'lit';
-import { I18nContent, I18nTranslationValue } from '../../injectables';
 import { Type } from '../../misc';
 import { signalAware } from '../../signals';
 import { i18n } from './i18n.directive';
@@ -35,25 +34,6 @@ export function I18nMixin<T extends Type<ReactiveElement>>(
     i18n(...args: Parameters<typeof i18n>) {
       return i18n(...args);
     }
-
-    i18nContent<T extends I18nContent | unknown, A = unknown>(
-      content?: T
-    ): T | A | I18nTranslationValue | undefined {
-      if (
-        content &&
-        typeof content === 'object' &&
-        ('token' in content || 'raw' in content)
-      ) {
-        const i18nContent = content as I18nContent;
-        if (i18nContent.token) {
-          return this.i18n(i18nContent.token, i18nContent.values);
-        } else {
-          return i18nContent.raw;
-        }
-      }
-
-      return content;
-    }
   }
 
   return I18nMixinClass;
@@ -63,9 +43,6 @@ I18nMixin.i18n = i18n;
 
 export interface I18nMixinType {
   i18n: typeof i18n;
-  i18nContent: <T extends I18nContent | unknown, A = unknown>(
-    content?: T
-  ) => T | A | I18nTranslationValue | undefined;
 }
 
 const i18nMixinMark = Symbol.for('I18nMixin');

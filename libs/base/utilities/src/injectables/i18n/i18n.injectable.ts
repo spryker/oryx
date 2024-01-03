@@ -92,11 +92,12 @@ type InferI18nFilterConfig<F> = F extends I18nContextFilter<string, infer C>
   ? C
   : never;
 
-export type I18nContent = RequireAtLeastOneProp<
-  {
-    raw?: string;
-    token?: string | readonly string[];
-    values?: InferI18nContext<string | readonly string[]>;
-  },
-  'raw' | 'token'
->;
+export type I18nContent<T extends string | readonly string[] = string> =
+  RequireAtLeastOneProp<
+    {
+      raw?: string;
+      token?: T;
+      values?: InferI18nContext<T>;
+    },
+    'raw' | 'token'
+  >;
