@@ -1,7 +1,7 @@
 import { TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { Observable } from 'rxjs';
-import { ExtractStrProps, RequireAtLeastOneProp } from '../../misc';
+import { ExtractStrProps } from '../../misc';
 import { Injectable } from '../injectable';
 import { I18nContextFilter } from './i18n-context-filter';
 import { DefaultI18nInjectable } from './i18n-default.injectable';
@@ -93,11 +93,14 @@ type InferI18nFilterConfig<F> = F extends I18nContextFilter<string, infer C>
   : never;
 
 export type I18nContent<T extends string | readonly string[] = string> =
-  RequireAtLeastOneProp<
-    {
-      raw?: string;
-      token?: T;
-      values?: InferI18nContext<T>;
-    },
-    'raw' | 'token'
-  >;
+  | I18nRawContent
+  | I18nTokenContent<T>;
+
+export interface I18nRawContent {
+  raw: string;
+}
+
+export interface I18nTokenContent<T extends string | readonly string[]> {
+  token: T;
+  values?: InferI18nContext<T>;
+}

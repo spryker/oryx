@@ -68,7 +68,7 @@ export function i18n<T extends string | readonly string[]>(
     typeof tokenOrContent === 'object' &&
     ('token' in tokenOrContent || 'raw' in tokenOrContent)
   ) {
-    if (tokenOrContent.raw) {
+    if ('raw' in tokenOrContent) {
       return tokenOrContent.raw;
     } else {
       token = tokenOrContent.token as T;
