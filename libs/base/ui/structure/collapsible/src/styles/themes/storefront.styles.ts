@@ -34,8 +34,7 @@ const blockAppearance = css`
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
-  :host(${blockSelector}:active),
-  :host(${blockSelector}[open]) {
+  :host(${blockSelector}:active) {
     border-color: var(--oryx-color-primary-10);
   }
 
@@ -47,6 +46,15 @@ const blockAppearance = css`
     We isolate this style for both inline/block since "storybook-addon-pseudo-states"
     doesn't support us otherwise.
   */
+
+  summary:focus-visible {
+    outline: solid 1px var(--oryx-color-focus);
+  }
+
+  :host([open]) summary:focus-visible {
+    outline-offset: -4px;
+  }
+
   summary:focus-visible::after {
     box-shadow: var(--oryx-box-shadow-focus);
   }
@@ -67,6 +75,9 @@ const blockAppearance = css`
   }
 `;
 
+/**
+ * @deprecated since 1.4, use `collapsibleStyles` instead
+ */
 export const collapsibleStorefrontUI = {
   styles: [inlineAppearance, blockAppearance],
 };
