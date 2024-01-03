@@ -82,7 +82,11 @@ export class DefaultContextService implements ContextService {
         return of(undefined);
       }),
       this.contextFallback(key, element),
-      distinctUntilChanged()
+      distinctUntilChanged((a, b) =>
+        typeof a === 'object'
+          ? JSON.stringify(a) === JSON.stringify(b)
+          : a === b
+      )
     );
   }
 

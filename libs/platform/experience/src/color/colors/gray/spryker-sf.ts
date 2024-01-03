@@ -5,7 +5,7 @@ export const sprykerSfGray: Color = {
   light: {
     0: '#FFFFFF',
     1: '#FFFFFF',
-    2: '',
+    2: '#F8F8F8',
     3: '#F5F5F5',
     4: '#E7EAEE',
     5: '#E1E1E1',

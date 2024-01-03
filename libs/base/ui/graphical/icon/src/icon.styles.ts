@@ -9,6 +9,7 @@ export const styles = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    user-select: none;
     height: var(--oryx-icon-size, var(--_size, 24px));
     width: var(--oryx-icon-size, var(--_size, 24px));
     color: var(--oryx-icon-color, inherit);

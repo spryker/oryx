@@ -26,27 +26,6 @@ export const homePage: ExperienceComponent = {
     featureVersion >= '1.2' ? { ref: 'header' } : {},
     {
       type: 'oryx-composition',
-      options: {
-        context: {
-          article: {
-            id: 'Gift Guide Tue',
-          },
-          entity: 'article',
-        },
-      },
-      components: [
-        {
-          type: 'oryx-data-text',
-          options: { field: 'content' },
-        },
-        {
-          type: 'oryx-data-image',
-          options: { field: 'picture', rules: [] },
-        },
-      ],
-    },
-    {
-      type: 'oryx-composition',
       id: 'home-hero',
       options: {
         rules: [
@@ -170,9 +149,10 @@ export const homePage: ExperienceComponent = {
         brand('HP'),
         brand('TomTom'),
         brand('DELL'),
-        brand('Fujitsu', [{ padding: '0 0 2px' }]),
+        brand('Fujitsu'),
         brand('Asus'),
         brand('Acer'),
+        featureVersion >= '1.4' ? brand('Canon') : {},
       ],
     },
     featureVersion >= '1.2' ? { ref: 'footer' } : {},
