@@ -42,13 +42,20 @@ describe('NotificationCenterComponent', () => {
         content: 'Mock content',
         subtext: 'Mock subtext',
       };
+      let spy: SpyInstance;
 
       beforeEach(async () => {
         element = await fixture(html`
           <oryx-notification-center></oryx-notification-center>
         `);
+        spy = vi.spyOn(element, 'i18nContent');
         element.open(notification);
         await element.updateComplete;
+      });
+
+      it('should pass the texts to the i18nContent method', () => {
+        expect(spy).toHaveBeenCalledWith(notification.content);
+        expect(spy).toHaveBeenCalledWith(notification.subtext);
       });
 
       it('should render notification`s content', () => {
@@ -62,28 +69,6 @@ describe('NotificationCenterComponent', () => {
         expect(notificationElement?.textContent).toContain(
           notification.subtext
         );
-      });
-    });
-
-    describe('when notification contains an i18n content', () => {
-      const notification = {
-        content: { token: 'content' },
-        subtext: { token: 'subtext' },
-      };
-      let spy: SpyInstance;
-
-      beforeEach(async () => {
-        element = await fixture(html`
-          <oryx-notification-center></oryx-notification-center>
-        `);
-        spy = vi.spyOn(element, 'i18n');
-        element.open(notification);
-        await element.updateComplete;
-      });
-
-      it('should translate the content', () => {
-        expect(spy).toHaveBeenCalledWith(notification.content.token, undefined);
-        expect(spy).toHaveBeenCalledWith(notification.subtext.token, undefined);
       });
     });
 

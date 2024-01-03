@@ -185,7 +185,7 @@ describe('CartEditComponent', () => {
         type: AlertType.Success,
         content: {
           token: 'carts.create.cart-<name>-created',
-          context: { name: mockDefaultCart.name },
+          values: { name: mockDefaultCart.name },
         },
       });
     });

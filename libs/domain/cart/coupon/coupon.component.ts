@@ -101,7 +101,7 @@ export class CouponComponent extends CartComponentMixin(
           type: AlertType.Success,
           content: {
             token: 'coupon.<coupon>-successfully-applied',
-            context: { coupon },
+            values: { coupon },
           },
         });
 

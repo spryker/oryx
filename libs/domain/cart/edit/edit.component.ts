@@ -131,7 +131,7 @@ export class CartEditComponent extends CartComponentMixin(
           type: AlertType.Success,
           content: {
             token: 'carts.create.cart-<name>-created',
-            context: { name: cart.name },
+            values: { name: cart.name },
           },
         });
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

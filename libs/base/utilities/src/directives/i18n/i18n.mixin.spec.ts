@@ -46,4 +46,30 @@ describe('I18nMixin', () => {
 
     expect(MixedClass2).toBe(MixedClass);
   });
+
+  describe('i18nContent', () => {
+    let instance: any;
+    beforeEach(() => {
+      class TestClass {}
+      const MixedClass = I18nMixin(TestClass as any);
+
+      instance = new MixedClass();
+    });
+
+    it('should return the content when it`s type not I18nContent', () => {
+      const content = 'mock-content';
+      expect(instance.i18nContent(content)).toBe(content);
+    });
+
+    it('should return raw text', () => {
+      const content = { raw: 'mock-content' };
+      expect(instance.i18nContent(content)).toBe(content.raw);
+    });
+
+    it('should translate the content', () => {
+      const content = { token: 'mock-token', values: {} };
+      instance.i18nContent(content);
+      expect(i18nMock).toHaveBeenCalledWith(content.token, content.values);
+    });
+  });
 });
