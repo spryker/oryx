@@ -152,6 +152,7 @@ export const homePage: ExperienceComponent = {
         brand('Fujitsu'),
         brand('Asus'),
         brand('Acer'),
+        featureVersion >= '1.4' ? brand('Canon') : {},
       ],
     },
     featureVersion >= '1.2' ? { ref: 'footer' } : {},
