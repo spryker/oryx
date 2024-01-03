@@ -10,7 +10,7 @@ export const collapsibleTokens: DesignToken[] = [
       text: {
         size: 'var(--oryx-typography-subtitle-small-size)',
         weight: 'var(--oryx-typography-subtitle-small-weight)',
-        height: 'var(--oryx-typography-subtitle-small-height)',
+        height: 'var(--oryx-typography-subtitle-small-line)',
         transform: 'uppercase',
       },
     },
