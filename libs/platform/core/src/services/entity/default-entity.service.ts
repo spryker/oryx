@@ -11,7 +11,7 @@ import {
 
 export class DefaultEntityService implements EntityService {
   protected injector = inject(INJECTOR);
-  protected context = inject(ContextService);
+  protected contextService = inject(ContextService);
 
   get<E = unknown, Q = unknown>({
     qualifier,
@@ -60,7 +60,11 @@ export class DefaultEntityService implements EntityService {
   }
 
   getContextKey(type: string): Observable<string | null> {
-    return of(this.injector.inject(`${EntityProvider}${type}`, null)?.context);
+    return of(
+      this.injector.inject(`${EntityProvider}${type}`, null)?.context ??
+        type ??
+        null
+    );
   }
 
   protected resolveConfig<E = unknown, Q = unknown>({
@@ -73,7 +77,7 @@ export class DefaultEntityService implements EntityService {
     let type$: Observable<string | undefined>;
 
     if (!type) {
-      type$ = this.context.get<string>(element ?? null, EntityContext);
+      type$ = this.contextService.get<string>(element ?? null, EntityContext);
     } else {
       type$ = of(type);
     }
@@ -98,12 +102,7 @@ export class DefaultEntityService implements EntityService {
     { type, element }: Pick<EntityQualifier<Q>, 'type' | 'element'>,
     { context }: EntityProvider<E, Q>
   ): Observable<Q | undefined> {
-    if (!context) {
-      return throwError(
-        () => new Error(`No context or qualifier provided for entity ${type}`)
-      );
-    }
-    return this.context.get<Q>(element ?? null, context);
+    return this.contextService.get<Q>(element ?? null, context ?? type!);
   }
 
   protected getConfig<E, Q>(type: string): EntityProvider<E, Q> {

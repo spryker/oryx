@@ -1,4 +1,4 @@
-import { Product } from '@spryker-oryx/product';
+import { Product, PRODUCTS } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
   Suggestion,
@@ -6,6 +6,7 @@ import {
   SuggestionQualifier,
   SuggestionResource,
 } from '@spryker-oryx/search';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const dummyUrl = (): string => '#';
 const makeTheNameGreatAgain = (name: string): string =>
@@ -67,7 +68,7 @@ export const createSuggestionMock = (
     [SuggestionField.Suggestions]: completion.map((name) => ({
       name,
       params: { q: name },
-      type: RouteType.ProductList,
+      type: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
     })),
     [SuggestionField.Categories]: createResources(
       completion,

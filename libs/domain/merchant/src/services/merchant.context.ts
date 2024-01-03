@@ -6,17 +6,14 @@ import {
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
 import {
-  ProductContext,
+  PRODUCT,
   ProductQualifier,
   ProductService,
 } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, of, switchMap } from 'rxjs';
+import { MERCHANT } from '../entity';
 import { MerchantQualifier } from '../models';
-
-export const enum MerchantContext {
-  ID = 'merchant',
-}
 
 function merchantContextFallbackFactory(
   router = inject(RouterService),
@@ -26,16 +23,16 @@ function merchantContextFallbackFactory(
   return ({ element }) =>
     router.current().pipe(
       switchMap((route) =>
-        route.type === 'merchant'
+        route.type === MERCHANT
           ? of(route.params)
-          : context.get(element, ProductContext.SKU).pipe(
+          : context.get(element, PRODUCT).pipe(
               switchMap((qualifier: ProductQualifier | undefined) =>
                 qualifier ? product.get(qualifier) : of(undefined)
               ),
               switchMap(
                 (product) =>
                   context.deserialize(
-                    MerchantContext.ID,
+                    MERCHANT,
                     product?.merchantId as string
                   ) as Observable<MerchantQualifier | undefined>
               )
@@ -44,7 +41,7 @@ function merchantContextFallbackFactory(
     );
 }
 
-export const MerchantContextSerializerToken = `${ContextSerializer}${MerchantContext.ID}`;
+export const MerchantContextSerializerToken = `${ContextSerializer}${MERCHANT}`;
 
 export class MerchantContextSerializer
   implements ContextSerializer<MerchantQualifier>
@@ -60,7 +57,7 @@ export class MerchantContextSerializer
 
 export const merchantContextProviders: Provider[] = [
   {
-    provide: `${ContextFallback}${MerchantContext.ID}`,
+    provide: `${ContextFallback}${MERCHANT}`,
     useFactory: merchantContextFallbackFactory,
   },
   {

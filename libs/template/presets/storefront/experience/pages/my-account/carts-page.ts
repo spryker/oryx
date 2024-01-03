@@ -1,5 +1,5 @@
+import { CARTS } from '@spryker-oryx/cart';
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
 import { Size } from '@spryker-oryx/utilities';
 
 export const cartsPage: ExperienceComponent = {
@@ -9,14 +9,21 @@ export const cartsPage: ExperienceComponent = {
     title: 'Carts',
     route: '/my-account/carts',
     description: 'Carts Page',
-    routeType: RouteType.Carts,
+    routeType: CARTS,
   },
-  options: { rules: [{ layout: 'list', padding: '30px 0' }] },
   components: [
+    { ref: 'header' },
     {
-      type: 'oryx-site-breadcrumb',
-      options: { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] },
+      type: 'oryx-composition',
+      options: { rules: [{ layout: 'list', padding: '30px 0' }] },
+      components: [
+        {
+          type: 'oryx-site-breadcrumb',
+          options: { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] },
+        },
+        { ref: 'carts-page-content' },
+      ],
     },
-    { ref: 'carts-page-content' },
+    { ref: 'footer' },
   ],
 };

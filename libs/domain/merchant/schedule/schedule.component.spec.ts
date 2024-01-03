@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { Merchant, MerchantService } from '../src';
+import { MERCHANT, Merchant, MerchantService } from '../src';
 import { MerchantScheduleComponent } from './schedule.component';
 import { merchantScheduleComponent } from './schedule.def';
 
@@ -85,7 +85,7 @@ describe('MerchantScheduleComponent', () => {
 
     merchantService = injector.inject<MockMerchantService>(MerchantService);
     const contextService = injector.inject(ContextService);
-    contextService.provide(document.body, 'merchant', { id: '1' });
+    contextService.provide(document.body, MERCHANT, { id: '1' });
   });
 
   afterEach(() => {

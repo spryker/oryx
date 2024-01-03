@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
+import { PRODUCT } from '@spryker-oryx/product';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { featureVersion } from '@spryker-oryx/utilities';
 
@@ -9,7 +9,7 @@ export const productPage: ExperienceComponent = {
   meta: {
     title: 'Product Page',
     route: ['/product/:sku', '/product/:sku,:offer'],
-    routeType: RouteType.Product,
+    routeType: PRODUCT,
     description: 'Default Product Page Description',
   },
   components: [

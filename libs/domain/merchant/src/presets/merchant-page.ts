@@ -42,7 +42,6 @@ export const merchantSoldToOnPDP: ExperienceComponent = {
   },
   type: 'oryx-data-text',
   options: {
-    entity: 'merchant',
     field: 'name',
     link: true,
     prefix: 'Sold by: ',
@@ -57,7 +56,6 @@ export const merchantPage: ExperienceComponent = {
     {
       type: 'oryx-data-image',
       options: {
-        entity: 'merchant',
         field: 'banner',
         rules: [{ height: '250px', objectFit: ObjectFit.Cover }],
       },
@@ -75,7 +73,6 @@ export const merchantPage: ExperienceComponent = {
             {
               type: 'oryx-data-text',
               options: {
-                entity: 'merchant',
                 field: 'name',
                 tag: HeadingTag.H1,
               },
@@ -83,28 +80,26 @@ export const merchantPage: ExperienceComponent = {
             {
               type: 'oryx-data-text',
               options: {
-                entity: 'merchant',
                 field: 'description',
               },
             },
             {
               type: 'oryx-data-text',
-              options: { entity: 'merchant', field: 'legal.dataPrivacy' },
+              options: { field: 'legal.dataPrivacy' },
             },
             {
               type: 'oryx-data-text',
               options: {
-                entity: 'merchant',
                 field: 'legal.cancellationPolicy',
               },
             },
             {
               type: 'oryx-data-text',
-              options: { entity: 'merchant', field: 'legal.terms' },
+              options: { field: 'legal.terms' },
             },
             {
               type: 'oryx-data-text',
-              options: { entity: 'merchant', field: 'legal.imprint' },
+              options: { field: 'legal.imprint' },
             },
           ],
         },
@@ -116,7 +111,6 @@ export const merchantPage: ExperienceComponent = {
               type: 'oryx-data-image',
               name: 'logo',
               options: {
-                entity: 'merchant',
                 field: 'logo',
                 rules: [{ height: '100px' }],
               },
@@ -134,7 +128,6 @@ export const merchantPage: ExperienceComponent = {
             {
               type: 'oryx-data-link',
               options: {
-                entity: 'merchant',
                 field: 'contact.email',
                 icon: IconTypes.Email,
               },
@@ -142,7 +135,6 @@ export const merchantPage: ExperienceComponent = {
             {
               type: 'oryx-data-link',
               options: {
-                entity: 'merchant',
                 field: 'contact.phone',
                 icon: IconTypes.Phone,
               },

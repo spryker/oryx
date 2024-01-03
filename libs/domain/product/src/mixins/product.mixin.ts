@@ -10,6 +10,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { map, of } from 'rxjs';
+import { PRODUCT } from '../entity';
 import type { Product, ProductQualifier } from '../models';
 import { ProductComponentProperties } from '../models';
 import { ProductContext, ProductService } from '../services';
@@ -39,12 +40,14 @@ export const ProductMixin = <
       computed(() =>
         this.sku
           ? of({ sku: this.sku } as ProductQualifier)
-          : this.contextController.get(ProductContext.SKU).pipe(
-              // TODO: deprecated since 1.3, mapping won't be needed as context will always return qualifier in 1.3+
-              map((sku) =>
-                featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
+          : this.contextController
+              .get(featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU)
+              .pipe(
+                // TODO: deprecated since 1.3, mapping won't be needed as context will always return qualifier in 1.3+
+                map((sku) =>
+                  featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
+                )
               )
-            )
       );
 
     protected $product = computed(() => {

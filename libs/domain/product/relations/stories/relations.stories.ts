@@ -1,6 +1,6 @@
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ProductContext } from '@spryker-oryx/product';
+import { PRODUCT, ProductContext } from '@spryker-oryx/product';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
@@ -25,7 +25,7 @@ interface Props {
 const Template: Story<Props> = ({ sku }: Props): TemplateResult => {
   resolve(ContextService).provide(
     document.body,
-    ProductContext.SKU,
+    featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
     featureVersion >= '1.3' ? { sku } : sku
   );
 
