@@ -62,9 +62,7 @@ export class CompositionComponentsController implements ReactiveController {
 
                 const components = Array.isArray(component.components)
                   ? component.components
-                  : this.host.bucket
-                  ? component.components[this.host.bucket]
-                  : component.components.main;
+                  : component.components[this.host.bucket ?? 'main'];
 
                 const stack: Record<string, boolean> = {};
                 const refs = components.reduce((acc, component) => {
