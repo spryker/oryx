@@ -11,6 +11,6 @@ export const HeaderPickerTemplate: ExperienceComponent = {
       options: { rules: [{ style: 'flex: 1 0 auto;' }] },
     },
     { type: 'oryx-picking-customer-note-modal' },
-    ...HeaderTemplate.components!,
+    ...(HeaderTemplate.components as ExperienceComponent[]),
   ],
 };

@@ -25,19 +25,23 @@ import {
   subscribe,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { Observable, concatMap, from, map, of, reduce, tap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
+import { CompositionComponentProperties } from './composition.model';
 
 @signalAware()
 @hydrate()
-export class CompositionComponent extends LayoutMixin(
-  ContentMixin<CompositionProperties>(LitElement)
-) {
+export class CompositionComponent
+  extends LayoutMixin(ContentMixin<CompositionProperties>(LitElement))
+  implements CompositionComponentProperties
+{
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
+  @property({ reflect: true }) bucket?: string;
 
   protected experienceService = resolve(ExperienceService);
   protected routerService = resolve(RouterService);
@@ -163,7 +167,7 @@ export class CompositionComponent extends LayoutMixin(
     const layoutComposition = this.$layoutRenderComposition();
 
     return this.renderLayout({
-      template: repeat(
+      template: html`${repeat(
         components,
         (component) => component.id,
         (component) => {
@@ -175,7 +179,7 @@ export class CompositionComponent extends LayoutMixin(
             ${layoutTemplate?.post}
           `;
         }
-      ) as TemplateResult,
+      ) as TemplateResult}`,
       experience: this.$componentData(),
       inlineStyles: this.$componentsStyles(),
     });

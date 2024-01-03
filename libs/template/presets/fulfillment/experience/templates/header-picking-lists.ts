@@ -17,6 +17,6 @@ export const HeaderPickingListsTemplate: ExperienceComponent = {
       },
     },
     { type: 'oryx-picking-search' },
-    ...HeaderTemplate.components!,
+    ...(HeaderTemplate.components as ExperienceComponent[]),
   ],
 };

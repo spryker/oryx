@@ -11,7 +11,7 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Component } from '../../models';
+import { Component, CompositionProperties } from '../../models';
 import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ExperienceAdapter } from '../experience.adapter';
@@ -58,7 +58,9 @@ export class DefaultExperienceService implements ExperienceService {
       }
 
       this.processData(component);
-      components.push(...(component.components ?? []));
+      components.push(
+        ...((component.components as CompositionProperties[]) ?? [])
+      );
     }
   }
 

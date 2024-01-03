@@ -42,7 +42,13 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
       component.id ??= this.getAutoId();
       cb?.(component);
-      components.push(...(component.components ?? []));
+      if (Array.isArray(component.components)) {
+        components.push(...(component.components ?? []));
+      } else if (component.components) {
+        Object.values(component.components).forEach((bucketComponents) => {
+          components.push(...(bucketComponents ?? []));
+        });
+      }
     }
   }
 
@@ -107,13 +113,15 @@ export class DefaultExperienceDataService implements ExperienceDataService {
   }
 
   protected recursiveSearch(properties: MergeProperties): void {
-    const { strategy, template, paths = [] } = properties;
-    const { type } = strategy.merge!;
-    const { components } = template;
+    const { template } = properties;
+    const components = Array.isArray(template.components)
+      ? template.components
+      : template.components?.main; //TODO: process buckets
 
-    if (!components) {
-      return;
-    }
+    if (!components) return;
+
+    const { strategy, paths = [] } = properties;
+    const { type } = strategy.merge!;
 
     const path = paths[0];
     const isMergeElement = paths.length === 1;
@@ -156,7 +164,11 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const { template, componentIndex = NaN } = properties;
     const strategy = { ...properties.strategy };
     const { type = ExperienceDataMergeType.Replace } = strategy.merge!;
-    const { components = [] } = template;
+
+    const components = Array.isArray(template.components)
+      ? template.components
+      : template.main; // TODO: process buckets
+
     const isNaN = Number.isNaN(componentIndex);
     delete strategy.merge;
 
@@ -191,13 +203,13 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
 
     if (type === ExperienceDataMergeType.Append) {
-      components.push(strategy);
+      components?.push(strategy);
 
       return;
     }
 
     if (type === ExperienceDataMergeType.Prepend) {
-      components.unshift(strategy);
+      components?.unshift(strategy);
 
       return;
     }

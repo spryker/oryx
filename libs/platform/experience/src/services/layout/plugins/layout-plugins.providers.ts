@@ -9,6 +9,7 @@ import {
 } from './properties';
 import {
   CarouselLayoutPluginToken,
+  CollapsibleLayoutPluginToken,
   ColumnLayoutPluginToken,
   FlexLayoutPluginToken,
   GridLayoutPluginToken,
@@ -76,6 +77,13 @@ export const layoutPluginsProviders: Provider[] = [
     asyncClass: () =>
       import('./types/carousel/carousel-layout.plugin').then(
         (m) => m.CarouselLayoutPlugin
+      ),
+  },
+  {
+    provide: CollapsibleLayoutPluginToken,
+    asyncClass: () =>
+      import('./types/collapsible/collapsible.plugin').then(
+        (m) => m.CollapsibleLayoutPlugin
       ),
   },
   {

@@ -16,6 +16,7 @@ export const brandGraphics: ResourceGraphic = {
   Fujitsu: { source: () => import('./fujitsu').then((m) => m.resource) },
   appleStore: { source: () => import('./apple-store').then((m) => m.resource) },
   playStore: { source: () => import('./play-store').then((m) => m.resource) },
+  Canon: { source: () => import('./canon').then((m) => m.resource) },
 
   ...deliveryMethodsLogos,
   ...paymentMethodsLogos,

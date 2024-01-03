@@ -14,7 +14,25 @@ export const merchantOffersOnPDP: ExperienceComponent = {
     selector: 'product-info',
     type: ExperienceDataMergeType.Append,
   },
-  type: 'oryx-merchant-offer-list',
+  type: 'oryx-composition',
+  components: {
+    label: [
+      {
+        type: 'oryx-content-text',
+        content: { data: { text: 'Product offers' } },
+        options: { rules: [{ typography: HeadingTag.H4 }] },
+      },
+    ],
+    main: [{ type: 'oryx-merchant-offer-list' }],
+  },
+  options: {
+    rules: [
+      {
+        hideByRule: 'PRODUCT.!OFFERS',
+        layout: { type: 'collapsible' },
+      },
+    ],
+  },
 };
 
 export const merchantSoldToOnPDP: ExperienceComponent = {
@@ -92,6 +110,7 @@ export const merchantPage: ExperienceComponent = {
           components: [
             {
               type: 'oryx-data-image',
+              name: 'logo',
               options: {
                 field: 'logo',
                 rules: [{ height: '100px' }],
