@@ -78,6 +78,22 @@ describe('CollapsibleComponent', () => {
       const button = element.renderRoot.querySelector('oryx-button');
       expect(button).toHaveProperty('size', ButtonSize.Sm);
     });
+
+    describe('and the version >= 1.4', () => {
+      beforeEach(async () => {
+        mockFeatureVersion('1.4');
+        element = await fixture(
+          html`<oryx-collapsible
+            .appearance=${CollapsibleAppearance.Block}
+          ></oryx-collapsible>`
+        );
+      });
+
+      it('should have a medium sized oryx-icon', () => {
+        const button = element.renderRoot.querySelector('oryx-icon');
+        expect(button).toHaveProperty('size', ButtonSize.Md);
+      });
+    });
   });
 
   describe('when the appearance is inline', () => {
