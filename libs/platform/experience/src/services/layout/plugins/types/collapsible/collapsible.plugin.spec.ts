@@ -109,7 +109,9 @@ describe('CollapsibleLayoutPlugin', () => {
               experience: {
                 id: '',
                 type: '',
-                components: [{ id: '', type: '', bucket: 'label' }],
+                components: {
+                  label: [{ id: '', type: '' }],
+                },
               },
             })
           );

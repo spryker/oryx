@@ -116,7 +116,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const { template } = properties;
     const components = Array.isArray(template.components)
       ? template.components
-      : template.main;
+      : template.components?.main; //TODO: process buckets
 
     if (!components) return;
 
@@ -164,9 +164,10 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const { template, componentIndex = NaN } = properties;
     const strategy = { ...properties.strategy };
     const { type = ExperienceDataMergeType.Replace } = strategy.merge!;
+
     const components = Array.isArray(template.components)
       ? template.components
-      : template.main;
+      : template.main; // TODO: process buckets
 
     const isNaN = Number.isNaN(componentIndex);
     delete strategy.merge;
@@ -202,13 +203,13 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
 
     if (type === ExperienceDataMergeType.Append) {
-      components.push(strategy);
+      components?.push(strategy);
 
       return;
     }
 
     if (type === ExperienceDataMergeType.Prepend) {
-      components.unshift(strategy);
+      components?.unshift(strategy);
 
       return;
     }

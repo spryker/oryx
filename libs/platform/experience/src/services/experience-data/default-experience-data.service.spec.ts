@@ -104,8 +104,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should add element before all selectors', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -146,8 +148,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should add element after all selectors', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -188,8 +192,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should replace all elements by selectors', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -228,8 +234,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should remove all elements by selectors', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -267,8 +275,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should merge all elements by selectors', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -314,8 +324,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should merge add element to the components', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -356,8 +368,10 @@ describe('DefaultExperienceDataService', () => {
     });
 
     it('should merge prepend element to the components', () => {
-      const result = service.getData().find((c) => c.id?.includes('a'))
-        ?.components?.[0].components?.[0].components?.[1];
+      const result = (
+        service.getData().find((c) => c.id?.includes('a'))
+          ?.components as ExperienceComponent
+      )?.[0].components?.[0].components?.[1];
       const expected = {
         id: expect.anything(),
         components: [
@@ -402,9 +416,13 @@ describe('DefaultExperienceDataService', () => {
       const b = result[1];
 
       expect(b.id).toContain('b');
-      expect(b.components?.[0].components?.[0]).toEqual(mockMergeComponent);
+      expect(
+        (b.components as ExperienceComponent)?.[0].components?.[0]
+      ).toEqual(mockMergeComponent);
       expect(a.id).toContain('a');
-      expect(a.components?.[0].components?.[0]).toEqual(mockMergeComponent);
+      expect(
+        (a.components as ExperienceComponent)?.[0].components?.[0]
+      ).toEqual(mockMergeComponent);
     });
   });
 });

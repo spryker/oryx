@@ -256,17 +256,17 @@ describe('CompositionComponentsController', () => {
       });
     });
 
-    describe('when component has a component with a bucket', () => {
+    describe('when the composition has a components in the main and bucket', () => {
       const callback = vi.fn();
-      const mockBucketComponent: Component = {
-        id: 'mockBucketComponentId',
-        type: 'mockType',
-        bucket: 'mockBucket',
-      };
+
+      const mockBucketComponent = { id: 'mockBucket', type: 'mockBucket' };
 
       const mockComponentWithBucket: Component = {
         ...mockComponent,
-        components: [mockComponent, mockBucketComponent],
+        components: {
+          main: [mockComponent],
+          bucket: [mockBucketComponent],
+        },
       };
 
       beforeEach(() => {
@@ -275,22 +275,22 @@ describe('CompositionComponentsController', () => {
           .mockReturnValue(of(mockComponentWithBucket));
       });
 
-      describe('when component has components without a bucket', () => {
+      describe('and a bucket property is not provided', () => {
         beforeEach(() => {
           const controller = new CompositionComponentsController(mockElement);
           controller.getComponents().subscribe(callback);
         });
 
-        it('should return mock component', () => {
+        it('should return the mock component', () => {
           expect(callback).toBeCalledWith([mockComponent]);
         });
       });
 
-      describe('when component has components with a bucket', () => {
+      describe('and a bucket property is provided', () => {
         beforeEach(() => {
           const mockElementWithBucket = {
             tagName: 'tagName',
-            bucket: 'mockBucket',
+            bucket: 'bucket',
           } as unknown as LitElement;
           const controller = new CompositionComponentsController(
             mockElementWithBucket
@@ -298,7 +298,7 @@ describe('CompositionComponentsController', () => {
           controller.getComponents().subscribe(callback);
         });
 
-        it('should return mock component', () => {
+        it('should return the mock component', () => {
           expect(callback).toBeCalledWith([mockBucketComponent]);
         });
       });
