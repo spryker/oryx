@@ -19,7 +19,7 @@ const products: Product[] = [
   },
   // product with product references
   {
-    id: '138_30657838',
+    id: '138_30046855',
     title: 'Acer TravelMate P258-M',
     originalPrice: '264.32',
   },
