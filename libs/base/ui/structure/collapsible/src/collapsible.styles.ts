@@ -23,6 +23,19 @@ const commonStyles = css`
     justify-content: space-between;
     gap: 8px;
     align-items: center;
+    font-size: var(
+      --oryx-collapsible-text-size,
+      var(--oryx-typography-h6-size)
+    );
+    font-weight: var(
+      --oryx-collapsible-text-weight,
+      var(--oryx-typography-h6-weight)
+    );
+    line-height: var(
+      --oryx-collapsible-text-height,
+      var(--oryx-typography-h6-height)
+    );
+    text-transform: var(--oryx-collapsible-text-transform);
   }
 
   summary:focus-visible {

@@ -4,7 +4,7 @@ import { css } from 'lit';
 
 export const facetValueNavigationStyles = css`
   section {
-    ${headingUtil(HeadingTag.H6)}
+    ${featureVersion >= '1.4' ? css`` : headingUtil(HeadingTag.H6)}
 
     display: flex;
     align-items: center;

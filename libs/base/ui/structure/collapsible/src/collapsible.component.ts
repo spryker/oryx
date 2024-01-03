@@ -43,14 +43,16 @@ export class CollapsibleComponent
         @toggle=${this.onToggle}
       >
         <summary
-          .part=${featureVersion >= '1.4' ? undefined : 'heading'}
+          part=${ifDefined(featureVersion >= '1.4' ? undefined : 'heading')}
           tabindex=${ifDefined(nonTabbable ? -1 : undefined)}
         >
-          <slot name="heading">${this.heading}</slot>
+          <slot name="heading"> ${this.heading} </slot>
           ${this.renderToggleControl()}
           <slot name="aside"></slot>
         </summary>
-        <slot .part=${featureVersion >= '1.4' ? undefined : 'content'}></slot>
+        <slot
+          name=${ifDefined(featureVersion >= '1.4' ? undefined : 'content')}
+        ></slot>
       </details>
     `;
   }

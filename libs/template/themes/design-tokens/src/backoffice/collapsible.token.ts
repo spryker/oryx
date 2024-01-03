@@ -7,6 +7,12 @@ export const collapsibleTokens: DesignToken[] = [
       divider: 'solid 1px var(--oryx-color-neutral-6)',
       hover: 'var(--oryx-color-neutral-6)',
       border: 'none',
+      text: {
+        size: 'var(--oryx-typography-subtitle-small-size)',
+        weight: 'var(--oryx-typography-subtitle-small-weight)',
+        height: 'var(--oryx-typography-subtitle-small-height)',
+        transform: 'uppercase',
+      },
     },
   },
 ];
