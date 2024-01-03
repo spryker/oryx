@@ -18,6 +18,10 @@ export const styles: LayoutStyles = {
       flex-wrap: wrap;
       align-self: stretch;
     }
+
+    oryx-composition {
+      display: contents;
+    }
   `,
 };
 

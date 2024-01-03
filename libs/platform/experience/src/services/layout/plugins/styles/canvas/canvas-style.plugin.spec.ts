@@ -63,7 +63,6 @@ describe('CanvasStylePlugin', () => {
         expect(result).toEqual({
           'box-shadow': 'var(--oryx-shadow-flat) var(--oryx-shadow-color)',
           'z-index': 'var(--oryx-z-index, 1)',
-          isolation: 'isolate',
           background: 'background',
           'border-radius': 'radius',
           border: 'border',

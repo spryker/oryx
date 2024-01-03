@@ -187,7 +187,7 @@ export const mainHeader = (): ExperienceComponent[] => {
                     type: 'column',
                     sticky: true,
                     bleed: true,
-                    zIndex: 1,
+                    zIndex: 3,
                   }
                 : 'column',
             background: 'var(--oryx-color-primary-9)',

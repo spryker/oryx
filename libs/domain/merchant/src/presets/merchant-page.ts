@@ -35,6 +35,45 @@ export const merchantOffersOnPDP: ExperienceComponent = {
   },
 };
 
+export const merchantHeaderNavigation: ExperienceComponent = {
+  merge: {
+    selector: 'category-navigation',
+    type: ExperienceDataMergeType.Append,
+  },
+  type: 'oryx-composition',
+  options: { rules: [{ layout: { type: 'dropdown' } }] },
+  components: {
+    label: [
+      {
+        type: 'oryx-content-link',
+        content: { data: { text: 'Merchants' } },
+      },
+    ],
+    main: [
+      {
+        type: 'oryx-content-link',
+        options: { url: '/merchant/MER000001' },
+        content: { data: { text: 'Spryker' } },
+      },
+      {
+        type: 'oryx-content-link',
+        options: { url: '/merchant/MER000002' },
+        content: { data: { text: 'Video King' } },
+      },
+      {
+        type: 'oryx-content-link',
+        options: { url: '/merchant/MER000005' },
+        content: { data: { text: 'Budget Cameras' } },
+      },
+      {
+        type: 'oryx-content-link',
+        options: { url: '/merchant/MER000006' },
+        content: { data: { text: 'Sony Experts' } },
+      },
+    ],
+  },
+};
+
 export const merchantSoldToOnPDP: ExperienceComponent = {
   merge: {
     selector: 'oryx-product-brand',

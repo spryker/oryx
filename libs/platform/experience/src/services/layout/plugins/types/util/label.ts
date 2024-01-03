@@ -1,11 +1,12 @@
 import { Component } from '@spryker-oryx/experience';
 import { TemplateResult, html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LayoutPluginRenderParams } from '../../layout.plugin';
 
 export const renderLabelSlot = (
   data: LayoutPluginRenderParams,
   slotName: string,
-  tabindex = 0
+  tabindex?: number
 ): TemplateResult | void => {
   const hasBucket = !!(
     data.experience?.components as Record<string, Component[]>
@@ -23,7 +24,7 @@ export const renderLabelSlot = (
       .slot=${slotName}
       .uid=${data.experience?.id}
       .options=${{}}
-      tabindex=${tabindex}
+      tabindex=${ifDefined(tabindex)}
     ></oryx-composition>
   `;
 };

@@ -1,7 +1,7 @@
 import { OverlaysDecorator } from '@/tools/storybook';
 import { Position } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { storybookPrefix } from '../../../../.constants';
 import { DrawerProperties, DrawerType } from '../drawer.model';
@@ -133,7 +133,7 @@ DrawerDemo.argTypes = {
     control: { type: 'radio' },
   },
   position: {
-    options: Object.values(Position),
+    options: [Position.Start, Position.End],
     control: { type: 'radio' },
   },
 };
