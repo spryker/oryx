@@ -40,11 +40,6 @@ export class OfferResolver extends BaseResolver<OfferResolvers> {
 export const offerResolvers: Provider[] = [
   {
     provide: ProductTokenResourceResolverToken,
-    //     asyncClass: () =>
-    //       import('@spryker-oryx/merchant/services').then((m) => m.CartResolver),
-    //   },
-    //     {
-    //     provide: `${BreadcrumbResolvers}${RouteType.Product}`,
     useClass: OfferResolver,
   },
 ];

@@ -256,7 +256,7 @@ describe('CompositionComponentsController', () => {
       });
     });
 
-    describe('when the composition has a components in the main and bucket', () => {
+    describe('when the composition has buckets', () => {
       const callback = vi.fn();
 
       const mockBucketComponent = { id: 'mockBucket', type: 'mockBucket' };

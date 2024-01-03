@@ -40,16 +40,6 @@ export class CompositionComponentsController implements ReactiveController {
           ? this.filterHiddenComponents(components, breakpoint)
           : of([])
       )
-      // map((components) => {
-      //   // if(this.host.bucket) {
-      //   //   return components[this.host.bucket];
-      //   // }
-      //   // if(Array.isArray(components)) {
-      //     return components;
-      //   // }else{
-      //   //   return components.main;
-      //   // }
-      // })
     );
   }
 
@@ -114,14 +104,6 @@ export class CompositionComponentsController implements ReactiveController {
       )
     );
   }
-
-  // protected filterBucketComponents(components: Component[]): Component[] {
-  //   return components.filter(
-  //     (component) =>
-  //       (!this.host.bucket && !component.bucket) ||
-  //       component.bucket === this.host.bucket
-  //   );
-  // }
 
   protected filterHiddenComponents(
     components: Component[],
