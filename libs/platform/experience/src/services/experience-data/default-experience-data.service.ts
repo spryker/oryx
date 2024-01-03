@@ -44,10 +44,10 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       cb?.(component);
       if (Array.isArray(component.components)) {
         components.push(...(component.components ?? []));
-      } else {
-        if (component.components?.main) {
-          components.push(...(component.components.main ?? []));
-        }
+      } else if (component.components) {
+        Object.values(component.components).forEach((bucketComponents) => {
+          components.push(...(bucketComponents ?? []));
+        });
       }
     }
   }
