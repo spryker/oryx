@@ -37,10 +37,12 @@ export class DataListComponent extends LayoutMixin(
       template: html`${repeat(
         list,
         (item) =>
-          html`<oryx-composition
-            .uid=${this.uid}
-            data-merchant=${item.id}
-          ></oryx-composition>`
+          html`<a href="/merchant/MER000001">
+            <oryx-composition
+              .uid=${this.uid}
+              data-merchant=${item.id}
+            ></oryx-composition>
+          </a>`
       )}`,
     });
   }
