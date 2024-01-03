@@ -37,7 +37,7 @@ describe('DropdownLayoutPlugin', () => {
       });
     });
 
-    describe.only('when the options not contains a dropdown layout', () => {
+    describe('when the options not contains a dropdown layout', () => {
       let result: LayoutStyles | undefined;
       beforeEach(async () => {
         result = await lastValueFrom(
@@ -77,20 +77,20 @@ describe('DropdownLayoutPlugin', () => {
   });
 
   describe('when getRender() is called for a composition', () => {
-    let element: HTMLElement;
-
+    let result: any;
     beforeEach(async () => {
-      const result = await lastValueFrom(
-        plugin.getRender({
-          isComposition: true,
-          options: {},
-        })
+      result = await lastValueFrom(
+        plugin
+          .getRender({
+            isComposition: true,
+            options: {},
+          })
+          .pipe(startWith({}))
       );
-      element = await fixture(html`<div>${result!.outer!}</div>`);
     });
 
-    it('should not render a dropdown layout', async () => {
-      expect(element).not.toContainElement('oryx-dropdown');
+    it('should not render outer html', async () => {
+      expect(result?.outer).toBeUndefined();
     });
   });
 
@@ -129,7 +129,7 @@ describe('DropdownLayoutPlugin', () => {
           const result = await lastValueFrom(
             plugin.getRender({
               isComposition: false,
-              options: { collapsibleOpen: true },
+              options: {},
               experience: { id: '', type: '', name: 'test' },
             })
           );
@@ -137,7 +137,7 @@ describe('DropdownLayoutPlugin', () => {
         });
 
         it('should render a custom label', async () => {
-          const label = element.querySelector('span[slot="heading"]');
+          const label = element.querySelector('span[slot="trigger"]');
           expect(label?.textContent?.trim()).toEqual('test');
         });
       });
@@ -166,9 +166,4 @@ describe('DropdownLayoutPlugin', () => {
       });
     });
   });
-
-  //   it('should wrap each child ', async () => {
-  //     const result = await lastValueFrom(plugin.getRender({ options: {} }));
-  //     expect(result?.outer).not.toBeUndefined();
-  //   });
 });
