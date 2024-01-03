@@ -9,6 +9,10 @@ export type ComponentSchema<Options, Content> = {
   type?: string;
   name: string;
   group: string;
+  buckets?: {
+    prefix?: string[];
+    suffix?: string[];
+  };
   category?: string;
   content?: {
     [P in keyof Content]: Omit<FieldDefinition, 'id'>;

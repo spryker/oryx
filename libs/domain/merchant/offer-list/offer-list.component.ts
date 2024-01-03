@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { PRODUCT, ProductMixin, ProductService } from '@spryker-oryx/product';
 import { LinkService, RouteType } from '@spryker-oryx/router';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { HTMLTemplateResult, LitElement, TemplateResult, html } from 'lit';
 import { queryAll } from 'lit/decorators.js';
@@ -68,22 +67,13 @@ export class MerchantOfferListComponent extends ProductMixin(
 
     if (!offers || offers.length < 2) return;
 
-    return html` <oryx-collapsible>
-      <oryx-heading
-        slot="heading"
-        .tag=${HeadingTag.H4}
-        .typography=${HeadingTag.H5}
-      >
-        ${this.i18n('product.offer.available-<count>-merchants', {
-          count: this.$product()?.offers?.length,
-        })}
-      </oryx-heading>
+    return html`
       ${repeat(
         offers,
         (offer) => offer.id,
         (offer) => this.renderOffer(offer)
       )}
-    </oryx-collapsible>`;
+    `;
   }
 
   protected renderOffer(

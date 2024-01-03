@@ -14,6 +14,7 @@ import { CompositionComponentsController } from './composition-components.contro
 const mockElement = {
   tagName: 'tagName',
 } as unknown as LitElement;
+
 const mockUid = 'mockUid';
 const rules = ['mockRule1', 'mockRule2'];
 
@@ -255,9 +256,58 @@ describe('CompositionComponentsController', () => {
       });
     });
 
+    describe('when the composition has buckets', () => {
+      const callback = vi.fn();
+
+      const mockBucketComponent = { id: 'mockBucket', type: 'mockBucket' };
+
+      const mockComponentWithBucket: Component = {
+        ...mockComponent,
+        components: {
+          main: [mockComponent],
+          bucket: [mockBucketComponent],
+        },
+      };
+
+      beforeEach(() => {
+        experienceService.getComponent = vi
+          .fn()
+          .mockReturnValue(of(mockComponentWithBucket));
+      });
+
+      describe('and a bucket property is not provided', () => {
+        beforeEach(() => {
+          const controller = new CompositionComponentsController(mockElement);
+          controller.getComponents().subscribe(callback);
+        });
+
+        it('should return the mock component', () => {
+          expect(callback).toBeCalledWith([mockComponent]);
+        });
+      });
+
+      describe('and a bucket property is provided', () => {
+        beforeEach(() => {
+          const mockElementWithBucket = {
+            tagName: 'tagName',
+            bucket: 'bucket',
+          } as unknown as LitElement;
+          const controller = new CompositionComponentsController(
+            mockElementWithBucket
+          );
+          controller.getComponents().subscribe(callback);
+        });
+
+        it('should return the mock component', () => {
+          expect(callback).toBeCalledWith([mockBucketComponent]);
+        });
+      });
+    });
+
     describe('when component has composition components without visibility config', () => {
       const callback = vi.fn();
       beforeEach(() => {
+        mockObserve.get = vi.fn().mockReturnValue(of(mockUid));
         experienceService.getComponent = vi
           .fn()
           .mockReturnValue(of(mockComponentWithComposition));
