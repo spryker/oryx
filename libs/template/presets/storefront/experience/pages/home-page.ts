@@ -111,6 +111,15 @@ export const homePage: ExperienceComponent = {
       },
     },
     {
+      type: 'oryx-data-list',
+      options: { entity: 'merchant', rules: [{ layout: { type: 'grid' } }] },
+      components: [
+        { type: 'oryx-data-text', options: { field: 'name' } },
+        { type: 'oryx-data-image', options: { field: 'logo' } },
+        { type: 'oryx-data-image', options: { field: 'banner' } },
+      ],
+    },
+    {
       type: 'oryx-composition',
       id: 'brands',
       name: 'brands',

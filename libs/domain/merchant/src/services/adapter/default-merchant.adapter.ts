@@ -1,8 +1,17 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
-import { ApiMerchantModel, Merchant, MerchantQualifier } from '../../models';
-import { MerchantAdapter, MerchantNormalizer } from './merchant.adapter';
+import {
+  ApiMerchantModel,
+  Merchant,
+  MerchantListQualifier,
+  MerchantQualifier,
+} from '../../models';
+import {
+  MerchantAdapter,
+  MerchantListNormalizer,
+  MerchantNormalizer,
+} from './merchant.adapter';
 
 export class DefaultMerchantAdapter implements MerchantAdapter {
   protected merchantEndpoint = 'merchants';
@@ -14,13 +23,22 @@ export class DefaultMerchantAdapter implements MerchantAdapter {
   ) {}
 
   get({ id }: MerchantQualifier): Observable<Merchant> {
-    const include = ['merchant-opening-hours', 'merchant-addresses'];
+    const includes = ['merchant-opening-hours', 'merchant-addresses'];
     return this.http
       .get<ApiMerchantModel.Merchant>(
         `${this.SCOS_BASE_URL}/${this.merchantEndpoint}/${id}${
-          include?.length ? '?include=' : ''
-        }${include?.join(',') || ''}`
+          includes?.length ? '?include=' : ''
+        }${includes?.join(',') || ''}`
       )
       .pipe(this.transformer.do(MerchantNormalizer));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getList(qualifier?: MerchantListQualifier): Observable<Merchant[]> {
+    return this.http
+      .get<ApiMerchantModel.Merchant[]>(
+        `${this.SCOS_BASE_URL}/${this.merchantEndpoint}`
+      )
+      .pipe(this.transformer.do(MerchantListNormalizer));
   }
 }

@@ -10,11 +10,15 @@ import {
 import {
   DefaultMerchantAdapter,
   MerchantAdapter,
+  MerchantListNormalizer,
   MerchantNormalizer,
   OfferNormalizer,
   merchantIncludes,
 } from './adapter';
-import { merchantNormalizer } from './adapter/normalizers';
+import {
+  merchantListNormalizer,
+  merchantNormalizer,
+} from './adapter/normalizers';
 import {
   offerAvailabilityNormalizer,
   offerMerchantNormalizer,
@@ -54,6 +58,11 @@ export const merchantProviders: Provider[] = [
   {
     provide: MerchantNormalizer,
     useValue: merchantNormalizer,
+  },
+
+  {
+    provide: MerchantListNormalizer,
+    useValue: merchantListNormalizer,
   },
   ...merchantQueries,
   ...merchantsEffects,
