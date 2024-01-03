@@ -42,6 +42,7 @@ export const merchantSoldToOnPDP: ExperienceComponent = {
   },
   type: 'oryx-data-text',
   options: {
+    entity: 'merchant',
     field: 'name',
     link: true,
     prefix: 'Sold by: ',
