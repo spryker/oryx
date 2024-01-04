@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { isObservable, map, Observable } from 'rxjs';
 import {
+  I18nContent,
   I18nContext,
   i18nInjectable,
   I18nTranslation,
@@ -14,6 +15,10 @@ import { Signal, signal } from '../../signals';
 
 /**
  * Internationalize token(s) with optional context object.
+ *
+ * Since 1.4 can accept I18nContent as a first param that includes `token` and `values` object.
+ * Optionally `raw` field can be used to pass a raw string that will be used as a translation
+ * without processing
  *
  * Token should have a domain prefix separated by dot,
  * after that a readable token name should be used in kebab-case
@@ -48,7 +53,32 @@ import { Signal, signal } from '../../signals';
 export function i18n<T extends string | readonly string[]>(
   token: T,
   context?: InferI18nContext<T>
+): I18nTranslationValue;
+export function i18n<T extends string | readonly string[]>(
+  content: I18nContent<T>
+): I18nTranslationValue;
+export function i18n<T extends string | readonly string[]>(
+  tokenOrContent: T | I18nContent<T>,
+  _context?: InferI18nContext<T>
 ): I18nTranslationValue {
+  let token: string | readonly string[],
+    context: InferI18nContext<T> | undefined;
+
+  if (
+    typeof tokenOrContent === 'object' &&
+    ('token' in tokenOrContent || 'raw' in tokenOrContent)
+  ) {
+    if ('raw' in tokenOrContent) {
+      return tokenOrContent.raw;
+    } else {
+      token = tokenOrContent.token as T;
+      context = tokenOrContent.values;
+    }
+  } else {
+    token = tokenOrContent;
+    context = _context;
+  }
+
   const i18nMap = i18nMapInjectable.get();
   const hash = getI18nTextHash(token, context);
 

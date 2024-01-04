@@ -129,10 +129,10 @@ export class CartEditComponent extends CartComponentMixin(
       next: (cart) => {
         this.notificationService.push({
           type: AlertType.Success,
-          //TODO: use translation string when issue with resolving of translated result
-          //outside components render is fixed
-          // content: this.i18n('carts.create.cart-<name>-created', { name: cart.name }) as string
-          content: `Cart: ${cart.name} was created`,
+          content: {
+            token: 'carts.create.cart-<name>-created',
+            values: { name: cart.name },
+          },
         });
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.routerService.navigate(this.$redirectLink()!);

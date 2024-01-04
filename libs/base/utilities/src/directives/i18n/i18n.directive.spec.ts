@@ -1,6 +1,7 @@
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import {
   I18nInjectable,
+  I18nTranslationValue,
   i18nInjectable,
 } from '../../injectables/i18n/i18n.injectable';
 import { i18n, i18nMapInjectable } from './i18n.directive';
@@ -94,6 +95,43 @@ describe('i18n directive', () => {
       i18nInjectable.inject(mockI18n);
 
       expect(i18n('token')).toBe(mockDirectiveResult);
+    });
+  });
+
+  describe('when I18nContent is provided', () => {
+    const content = { token: 'mock-token', values: {} };
+    let mockI18n: I18nInjectable;
+
+    beforeEach(() => {
+      mockI18n = {
+        translate: vi.fn().mockReturnValue('mock-result'),
+      };
+      i18nInjectable.inject(mockI18n);
+      i18n(content);
+    });
+
+    it('should pass token and values to the translate method', () => {
+      expect(mockI18n.translate).toHaveBeenCalledWith(
+        content.token,
+        content.values
+      );
+    });
+
+    describe('and raw string is provided', () => {
+      const content = { raw: 'mock-raw' };
+      let result: I18nTranslationValue;
+
+      beforeEach(() => {
+        mockI18n = {
+          translate: vi.fn().mockReturnValue('mock-result'),
+        };
+        i18nInjectable.inject(mockI18n);
+        result = i18n(content);
+      });
+
+      it('should pass pass raw string without processing', () => {
+        expect(result).toBe(content.raw);
+      });
     });
   });
 });

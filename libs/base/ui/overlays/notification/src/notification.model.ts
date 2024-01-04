@@ -45,6 +45,11 @@ export interface NotificationEvent {
   key?: string;
 }
 
+/**
+ * @deprecated since 1.4.
+ * Interface was moved to the '@spryker-oryx/ui/notification-center'
+ * and must be imported from there.
+ */
 export type Notification = {
   type?: AlertType;
   scheme?: Scheme;
@@ -56,6 +61,11 @@ export type Notification = {
   subtext?: NotificationContent;
 };
 
+/**
+ * @deprecated since 1.4.
+ * Interface was moved to the '@spryker-oryx/ui/notification-center'
+ * and must be imported from there.
+ */
 export type NotificationContent =
   | HTMLElement
   | TemplateResult
