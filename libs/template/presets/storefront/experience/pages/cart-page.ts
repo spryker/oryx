@@ -71,11 +71,7 @@ export const cartPage: ExperienceComponent = {
               ],
             },
             { type: 'oryx-checkout-link' },
-            featureVersion >= '1.4'
-              ? {
-                  type: 'oryx-cart-coupon',
-                }
-              : {},
+            featureVersion >= '1.4' ? { type: 'oryx-cart-coupon' } : {},
           ],
           options: {
             rules: [

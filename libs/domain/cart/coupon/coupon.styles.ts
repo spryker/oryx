@@ -2,29 +2,16 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const couponStyles = css`
-  h3 {
-    ${headingUtil(HeadingTag.H5, { margin: '0 0 8px' })};
-  }
-
-  section {
+  :host {
     display: grid;
-    grid-template-columns: 1fr min-content;
-    gap: 20px;
-    align-items: start;
+    gap: 8px;
   }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 10px 0 0;
-    grid-column: 1;
-  }
-
-  li {
+  div {
     display: grid;
     column-gap: 10px;
     align-items: center;
-    grid-template-columns: max-content 1fr max-content;
+    grid-template-columns: max-content 1fr;
   }
 
   .code {
@@ -38,5 +25,12 @@ export const couponStyles = css`
 
   oryx-icon {
     color: var(--oryx-color-success-9);
+  }
+
+  oryx-button {
+    --_height: 24px;
+
+    padding: 7px;
+    margin-inline-end: 0;
   }
 `;
