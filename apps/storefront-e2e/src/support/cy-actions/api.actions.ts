@@ -90,7 +90,7 @@ Cypress.Commands.add(
       notifications[0].getWrapper().should('contain.text', 'Error');
       notifications[0]
         .getSubtext()
-        .should('have.text', getFailedApiCallData().apiErrorMessage);
+        .should('contain.text', getFailedApiCallData().apiErrorMessage);
 
       // when we close notification
       notifications[0].getCloseBtn().click();

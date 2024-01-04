@@ -1,4 +1,4 @@
-import { Notification } from '@spryker-oryx/ui/notification';
+import { Notification } from '@spryker-oryx/ui/notification-center';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { NotificationService } from './notification.service';
 

@@ -4,6 +4,7 @@ import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   I18nMixin,
+  I18nRawContent,
   Size,
   hydrate,
   signal,
@@ -43,7 +44,9 @@ export class SiteBreadcrumbComponent extends I18nMixin(
   protected renderText({
     text,
   }: BreadcrumbItem): string | DirectiveResult | void {
-    return text?.token ? this.i18n(text.token, text?.values) : text?.raw;
+    return text && 'token' in text
+      ? this.i18n(text.token, text?.values)
+      : (text as I18nRawContent)?.raw;
   }
 
   protected renderBreadcrumb(
