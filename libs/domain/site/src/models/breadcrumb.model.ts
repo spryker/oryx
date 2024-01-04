@@ -1,6 +1,6 @@
-import { I18nContent, RequireAtLeastOneProp } from '@spryker-oryx/utilities';
+import { I18nContent } from '@spryker-oryx/utilities';
 
 export interface BreadcrumbItem {
-  text?: RequireAtLeastOneProp<I18nContent, 'raw' | 'token'>;
+  text?: I18nContent;
   url?: string;
 }
