@@ -109,10 +109,7 @@ export class CouponComponent extends CartComponentMixin(
 
         this.coupon!.value = '';
       },
-      error: (e) => {
-        console.log(e);
-        this.hasError = true;
-      },
+      error: () => (this.hasError = true),
     });
   }
 }
