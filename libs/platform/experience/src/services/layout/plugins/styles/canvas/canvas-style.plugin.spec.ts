@@ -29,13 +29,16 @@ describe('CanvasStylePlugin', () => {
           border: 'border',
           background: 'background',
           fill: 'fill',
+          zIndex: 4,
         };
-        const styleProperties = {
-          border: data.border,
-          'border-radius': data.radius,
-          background: data.background,
-          '--oryx-fill': data.fill,
-        };
+        const styleProperties = [
+          [{ background: data.background }],
+          [{ 'border-radius': data.radius }],
+          [{ border: data.border }],
+          [{ '--oryx-fill': data.fill }],
+          [{ 'z-index': data.zIndex }, { omitUnit: true }],
+          [{ '--oryx-z-index': data.zIndex }, { omitUnit: true }],
+        ];
         const result = await lastValueFrom(
           plugin.getStyleProperties({ styles: data, options: {} })
         );
@@ -60,14 +63,17 @@ describe('CanvasStylePlugin', () => {
       });
 
       it('should return a LayoutStyleProperties object with shadow', () => {
-        expect(result).toEqual({
-          'box-shadow': 'var(--oryx-shadow-flat) var(--oryx-shadow-color)',
-          'z-index': 'var(--oryx-z-index, 1)',
-          background: 'background',
-          'border-radius': 'radius',
-          border: 'border',
-          '--oryx-fill': 'fill',
-        });
+        expect(result).toEqual([
+          [
+            {
+              'box-shadow': 'var(--oryx-shadow-flat) var(--oryx-shadow-color)',
+            },
+          ],
+          [{ background: 'background' }],
+          [{ 'border-radius': 'radius' }],
+          [{ border: 'border' }],
+          [{ '--oryx-fill': 'fill' }],
+        ]);
       });
     });
   });
