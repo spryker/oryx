@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
-import { storybookPrefix } from '../../../../.constants';
+import { storybookPrefix } from '../../../.constants';
 import {
   CollapsibleAppearance,
   CollapsibleAttributes,
@@ -25,11 +25,7 @@ export default {
       control: { type: 'boolean' },
     },
   },
-  parameters: {
-    chromatic: {
-      disableSnapshot: true,
-    },
-  },
+  parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
