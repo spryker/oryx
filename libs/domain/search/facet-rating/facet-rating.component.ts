@@ -82,6 +82,7 @@ export class SearchRatingFacetComponent
       ?enableClear="${!this.disableClear}"
       ?dirty=${this.$isDirty()}
       .heading=${this.name}
+      .key=${facet.parameter}
       >${this.renderValues(this.getValues())}
     </oryx-search-facet-value-navigation>`;
   }

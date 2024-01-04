@@ -10,10 +10,9 @@ declare global {
   export interface LayoutProperty {
     collapsibleOpen?: boolean;
     /**
-     * The sync key to use for this collapsible. If set, the collapsible open state
-     * will be stored in the session storage and restored when the component is used
-     * during the same session.
+     * The sync key to use for storing the open state. If set, the open state is stored
+     * in session storage and restored when the component is used in the same session.
      */
-    collapsibleSyncKey?: string;
+    collapsibleStateKey?: string;
   }
 }

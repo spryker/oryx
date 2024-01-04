@@ -122,10 +122,11 @@ export class SearchRangeFacetComponent
     if (!facet) return;
 
     return html`<oryx-search-facet-value-navigation
-      ?open="${this.open}"
-      ?enableClear="${!this.disableClear}"
-      ?dirty="${this.$isDirty()}"
-      .heading="${this.name}"
+      ?open=${this.open}
+      ?enableClear=${!this.disableClear}
+      ?dirty=${this.$isDirty()}
+      .heading=${this.name}
+      .key=${facet.parameter}
     >
       <section>${this.renderControls(facet)}</section>
     </oryx-search-facet-value-navigation>`;

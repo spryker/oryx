@@ -21,7 +21,7 @@ export class CollapsibleComponent
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
   @property({ type: Boolean, reflect: true }) open?: boolean;
   @property() heading?: string;
-  @property() syncKey?: string;
+  @property() persistedStateKey?: string;
   @property({ type: Boolean }) nonTabbable?: boolean;
 
   @query('details') protected details?: HTMLDetailsElement;
@@ -78,7 +78,7 @@ export class CollapsibleComponent
   }
 
   protected syncState(store = false): void {
-    if (!this.syncKey) return;
+    if (!this.persistedStateKey) return;
 
     const uiStorageKey = 'ui';
     const uiState = JSON.parse(sessionStorage.getItem(uiStorageKey) ?? '{}');
@@ -88,13 +88,13 @@ export class CollapsibleComponent
 
     if (store) {
       if (this.isManuallyOpened) {
-        collapsibleState[this.syncKey] = this.open;
+        collapsibleState[this.persistedStateKey] = this.open;
         uiState[collapsibleStateKey] = collapsibleState;
         sessionStorage.setItem(uiStorageKey, JSON.stringify(uiState));
       }
     } else {
-      if (collapsibleState[this.syncKey] !== undefined) {
-        this.open = collapsibleState[this.syncKey];
+      if (collapsibleState[this.persistedStateKey] !== undefined) {
+        this.open = collapsibleState[this.persistedStateKey];
       }
     }
   }

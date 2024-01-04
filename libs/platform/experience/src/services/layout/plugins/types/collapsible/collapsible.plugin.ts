@@ -29,7 +29,7 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
     return of({
       outer: html`<oryx-collapsible
         ?open=${data?.options?.collapsibleOpen}
-        .syncKey=${data.options.collapsibleSyncKey}
+        .persistedStateKey=${data.options.collapsibleStateKey}
       >
         ${renderLabelSlot(data, 'heading', -1)} ${data.template}
       </oryx-collapsible>`,

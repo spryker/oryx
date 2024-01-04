@@ -23,6 +23,7 @@ export class SearchFacetValueNavigationComponent
   static styles = facetValueNavigationStyles;
 
   @property() heading?: string;
+  @property() key?: string;
   @property({ type: Number }) valuesLength?: number;
   @property({ type: Number }) selectedLength?: number;
   @property({ type: Boolean }) enableToggle?: boolean;
@@ -38,9 +39,7 @@ export class SearchFacetValueNavigationComponent
       this.enableClear &&
       (featureVersion >= '1.2' ? this.dirty : this.selectedLength);
 
-    const syncKey = this.$options().syncCollapsibleState
-      ? this.heading?.replace(' ', '-').toLowerCase()
-      : undefined;
+    const syncKey = this.$options().syncCollapsibleState ? this.key : undefined;
 
     return html` <oryx-collapsible
       ?open=${this.open}

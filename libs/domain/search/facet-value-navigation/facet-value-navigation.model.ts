@@ -14,6 +14,11 @@ export interface SearchFacetValueNavigationComponentAttributes {
    * Name of the facet which should be rendered.
    */
   heading?: string;
+
+  /**
+   * Unique key of the facet, used for storing the UI state of the navigation.
+   */
+  key?: string;
   /**
    * Length of all facet values.
    */
