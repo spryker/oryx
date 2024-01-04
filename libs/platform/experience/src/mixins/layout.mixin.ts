@@ -172,8 +172,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutStyles = computed(() =>
       this[LayoutMixinInternals].layoutController.getStyles(
         featureVersion >= '1.2'
-          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this[LayoutMixinInternals].$attributeFilter()
+          ? this[LayoutMixinInternals].$attributeFilter()
           : ['layout', ...layoutKeys],
         this.$options().rules,
         this.$screen()
@@ -194,7 +193,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
           ...data,
           options: this.$options() as CompositionProperties,
         },
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         attrs: this[LayoutMixinInternals].$attributeFilter(),
         screen: this.$screen(),
       });
