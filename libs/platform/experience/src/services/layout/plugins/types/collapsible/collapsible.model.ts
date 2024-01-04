@@ -6,10 +6,14 @@ declare global {
   export interface Layouts {
     collapsible: undefined;
   }
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface LayoutProperty extends CollapsibleLayoutProperties {}
-}
 
-export interface CollapsibleLayoutProperties {
-  collapsibleOpen?: boolean;
+  export interface LayoutProperty {
+    collapsibleOpen?: boolean;
+    /**
+     * The sync key to use for this collapsible. If set, the collapsible open state
+     * will be stored in the session storage and restored when the component is used
+     * during the same session.
+     */
+    collapsibleSyncKey?: string;
+  }
 }

@@ -121,4 +121,67 @@ describe('CollapsibleComponent', () => {
       expect(element).toContainElement('summary[tabindex="-1"]');
     });
   });
+
+  describe('when a syncKey is provided', () => {
+    vi.spyOn(globalThis.sessionStorage.__proto__, 'getItem');
+    vi.spyOn(globalThis.sessionStorage.__proto__, 'setItem');
+    let details: HTMLDetailsElement | undefined | null;
+
+    beforeEach(async () => {
+      mockFeatureVersion('1.4');
+      element = await fixture(
+        html`<oryx-collapsible syncKey="foo"></oryx-collapsible>`
+      );
+      details = element.shadowRoot?.querySelector('details');
+      element.scrollIntoView = vi.fn();
+    });
+
+    it('should not load the collapsible state from sessionStorage', () => {
+      expect(globalThis.localStorage.getItem).not.toHaveBeenCalled();
+    });
+
+    describe('and the collapsible is toggled', () => {
+      beforeEach(async () => {
+        details?.dispatchEvent(new Event('toggle'));
+      });
+
+      it('should not store the collapsible state in sessionStorage', () => {
+        expect(globalThis.localStorage.setItem).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and the collapsible is manually expanded', () => {
+      beforeEach(async () => {
+        if (details) {
+          details.click();
+          details.open = true;
+          details.dispatchEvent(new Event('toggle'));
+        }
+      });
+
+      it('should store the collapsible state in sessionStorage', () => {
+        expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
+          'ui',
+          '{"collapsible":{"foo":true}}'
+        );
+      });
+
+      describe('and the collapsible is collapsed', () => {
+        beforeEach(async () => {
+          if (details) {
+            details.click();
+            details.open = false;
+            details.dispatchEvent(new Event('toggle'));
+          }
+        });
+
+        it('should store the collapsible state in sessionStorage', () => {
+          expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
+            'ui',
+            '{"collapsible":{"foo":false}}'
+          );
+        });
+      });
+    });
+  });
 });

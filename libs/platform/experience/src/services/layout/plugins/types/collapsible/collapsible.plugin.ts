@@ -27,10 +27,12 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
     if (data.isComposition) return of();
 
     return of({
-      outer: html`<oryx-collapsible ?open=${data?.options?.collapsibleOpen}
-        >${renderLabelSlot(data, 'heading', -1)}
-        ${data.template}</oryx-collapsible
-      >`,
+      outer: html`<oryx-collapsible
+        ?open=${data?.options?.collapsibleOpen}
+        .syncKey=${data.options.collapsibleSyncKey}
+      >
+        ${renderLabelSlot(data, 'heading', -1)} ${data.template}
+      </oryx-collapsible>`,
     });
   }
 }

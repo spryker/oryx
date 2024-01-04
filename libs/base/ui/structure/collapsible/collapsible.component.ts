@@ -1,7 +1,7 @@
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, Size, featureVersion } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, html } from 'lit';
+import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
@@ -21,9 +21,14 @@ export class CollapsibleComponent
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
   @property({ type: Boolean, reflect: true }) open?: boolean;
   @property() heading?: string;
+  @property() syncKey?: string;
   @property({ type: Boolean }) nonTabbable?: boolean;
 
   @query('details') protected details?: HTMLDetailsElement;
+
+  protected firstUpdated(): void {
+    if (!isServer) this.syncState();
+  }
 
   /**
    * Indicates that the collapsible was opened by a user. We need this info since
@@ -57,8 +62,13 @@ export class CollapsibleComponent
     `;
   }
 
+  protected onClick(): void {
+    this.isManuallyOpened = true;
+  }
+
   protected onToggle(): void {
     this.open = this.details?.open;
+    if (featureVersion >= '1.4') this.syncState(true);
     if (featureVersion >= '1.2') {
       if (this.isManuallyOpened && this.open) {
         this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -67,8 +77,26 @@ export class CollapsibleComponent
     }
   }
 
-  protected onClick(): void {
-    this.isManuallyOpened = true;
+  protected syncState(store = false): void {
+    if (!this.syncKey) return;
+
+    const uiStorageKey = 'ui';
+    const uiState = JSON.parse(sessionStorage.getItem(uiStorageKey) ?? '{}');
+
+    const collapsibleStateKey = 'collapsible';
+    const collapsibleState = uiState[collapsibleStateKey] || {};
+
+    if (store) {
+      if (this.isManuallyOpened) {
+        collapsibleState[this.syncKey] = this.open;
+        uiState[collapsibleStateKey] = collapsibleState;
+        sessionStorage.setItem(uiStorageKey, JSON.stringify(uiState));
+      }
+    } else {
+      if (collapsibleState[this.syncKey] !== undefined) {
+        this.open = collapsibleState[this.syncKey];
+      }
+    }
   }
 
   protected renderToggleControl(): TemplateResult {
