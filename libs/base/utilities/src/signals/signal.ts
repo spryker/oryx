@@ -8,7 +8,7 @@ import {
 } from './signal-from';
 
 export { effect } from './core/factories';
-export type { Signal } from './core/factories';
+export type { Signal, SettableSignal } from './core/factories';
 export { Effect } from './core/signals';
 
 /**
