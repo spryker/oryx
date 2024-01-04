@@ -57,7 +57,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       .heading=${this.name}
       .selectedLength=${selectedLength}
       .valuesLength=${valuesLength}
-      .key=${facet.parameter}
+      .key=${featureVersion >= '1.4' ? facet.parameter : undefined}
     >
       ${when(
         valuesLength,

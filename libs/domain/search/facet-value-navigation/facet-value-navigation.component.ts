@@ -44,7 +44,7 @@ export class SearchFacetValueNavigationComponent
     return html` <oryx-collapsible
       ?open=${this.open}
       ?nonTabbable=${allowClear}
-      .syncKey=${syncKey}
+      .persistedStateKey=${syncKey}
     >
       <section slot="heading">
         <slot name="heading">${this.heading}</slot>

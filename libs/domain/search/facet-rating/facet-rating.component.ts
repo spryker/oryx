@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RangeFacet } from '@spryker-oryx/product';
 import { FacetController, searchFacetStyles } from '@spryker-oryx/search/facet';
-import { I18nMixin, computed } from '@spryker-oryx/utilities';
+import { I18nMixin, computed, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -82,7 +82,7 @@ export class SearchRatingFacetComponent
       ?enableClear="${!this.disableClear}"
       ?dirty=${this.$isDirty()}
       .heading=${this.name}
-      .key=${facet.parameter}
+      .key=${featureVersion >= '1.4' ? facet.parameter : undefined}
       >${this.renderValues(this.getValues())}
     </oryx-search-facet-value-navigation>`;
   }
