@@ -1,6 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { useComponent } from '@spryker-oryx/utilities';
+import { UiStateController } from '../../src/controllers';
 import { CollapsibleComponent } from './collapsible.component';
 import { collapsibleComponent } from './collapsible.def';
 import { CollapsibleAppearance } from './collapsible.model';
@@ -140,7 +141,8 @@ describe('CollapsibleComponent', () => {
       });
 
       it('should not store the open state', () => {
-        expect(CollapsibleComponent.openStates.foo).toBeUndefined();
+        // expect(CollapsibleComponent.openStates.foo).toBeUndefined();
+        expect(UiStateController.state.foo).toBeUndefined();
       });
     });
 
@@ -154,7 +156,8 @@ describe('CollapsibleComponent', () => {
       });
 
       it('should store the open state', () => {
-        expect(CollapsibleComponent.openStates.foo).toBe(true);
+        // expect(CollapsibleComponent.openStates.foo).toBe(true);
+        expect(UiStateController.state.foo).toBe(true);
       });
 
       describe('and the collapsible is collapsed', () => {
@@ -167,7 +170,8 @@ describe('CollapsibleComponent', () => {
         });
 
         it('should store the open state', () => {
-          expect(CollapsibleComponent.openStates.foo).toBe(false);
+          // expect(CollapsibleComponent.openStates.foo).toBe(false);
+          expect(UiStateController.state.foo).toBe(false);
         });
       });
     });

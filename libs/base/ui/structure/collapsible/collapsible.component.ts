@@ -4,6 +4,7 @@ import { I18nMixin, Size, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { UiStateController } from '../../src/';
 import {
   CollapsibleAppearance,
   CollapsibleAttributes,
@@ -18,10 +19,7 @@ export class CollapsibleComponent
   static styles =
     featureVersion >= '1.4' ? collapsibleStyles : [collapsibleBaseStyle];
 
-  /**
-   * The open state is kept in memory.
-   */
-  static openStates: { [key: string]: boolean } = {};
+  protected uiController = new UiStateController(this);
 
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
   @property({ type: Boolean, reflect: true }) open?: boolean;
@@ -87,11 +85,13 @@ export class CollapsibleComponent
 
     if (store) {
       if (this.isManuallyOpened) {
-        CollapsibleComponent.openStates[this.persistedStateKey] = !!this.open;
+        this.uiController.set(this.persistedStateKey, this.open);
+        // CollapsibleComponent.openStates[this.persistedStateKey] = !!this.open;
       }
     }
-    if (CollapsibleComponent.openStates[this.persistedStateKey] !== undefined) {
-      this.open = CollapsibleComponent.openStates[this.persistedStateKey];
+    if (this.uiController.has(this.persistedStateKey)) {
+      this.open = this.uiController.get<boolean>(this.persistedStateKey);
+      // this.open = CollapsibleComponent.openStates[this.persistedStateKey];
     }
   }
 
