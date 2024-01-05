@@ -12,7 +12,7 @@ export const experienceArticlePages = [
     components: [
       {
         type: 'oryx-content-text',
-        content: { data: { text: `©️ 2023 Spryker` } },
+        content: { data: { text: `©️ ${new Date().getFullYear()} Spryker` } },
       },
       {
         type: 'oryx-content-list',

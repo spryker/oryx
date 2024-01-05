@@ -32,7 +32,7 @@ const legalLinks: ExperienceComponent = {
   components: [
     {
       type: 'oryx-content-text',
-      content: { data: { text: `©️ 2023 Spryker` } },
+      content: { data: { text: `©️ ${new Date().getFullYear()} Spryker` } },
     },
     link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
@@ -290,12 +290,13 @@ export const FooterTemplate: ExperienceComponent = {
             : 'flex',
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',
-        padding: '30 0',
+        padding: '30px 0',
         typography: 'small',
         style: 'line-height: 24px;',
         ...(featureVersion >= '1.2'
           ? {}
           : { divider: true, bleed: true, sticky: true }),
+        ...(featureVersion >= '1.4' ? { gap: 0 } : {}),
       },
     ],
   },

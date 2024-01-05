@@ -100,7 +100,7 @@ export class ContentLinkComponent extends ContentMixin<
   });
 
   protected renderLink(custom?: boolean): TemplateResult {
-    if (!this.$link()) return html`${this.$text()}`;
+    if (!this.$link()) return html`<a tabindex="0">${this.$text()}</a>`;
 
     const { label, target } = this.$options();
 

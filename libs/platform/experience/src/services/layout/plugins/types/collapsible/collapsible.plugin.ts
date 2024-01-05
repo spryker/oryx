@@ -31,7 +31,7 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
         ?open=${data?.options?.collapsibleOpen}
         .persistedStateKey=${data.options.collapsibleStateKey}
       >
-        ${renderLabelSlot(data, 'heading', -1)} ${data.template}
+        ${renderLabelSlot(data, 'heading')} ${data.template}
       </oryx-collapsible>`,
     });
   }

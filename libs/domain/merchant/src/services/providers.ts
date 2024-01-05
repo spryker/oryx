@@ -3,6 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { MERCHANT } from '../entity';
 import {
+  merchantHeaderNavigation,
   merchantOffersOnPDP,
   merchantPage,
   merchantSoldToOnPDP,
@@ -64,6 +65,7 @@ export const merchantProviders: Provider[] = [
   }),
   provideExperienceData([
     merchantPage,
+    merchantHeaderNavigation,
     merchantOffersOnPDP,
     merchantSoldToOnPDP,
   ]),

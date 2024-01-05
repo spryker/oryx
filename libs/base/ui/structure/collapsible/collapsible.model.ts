@@ -40,3 +40,7 @@ export const enum CollapsibleAppearance {
    */
   Inline = 'inline',
 }
+
+export interface ToggleEventDetail {
+  toggleAll?: boolean;
+}

@@ -9,7 +9,7 @@ export const popoverBaseStyles = css`
     user-select: none;
     transform-origin: left top;
     transform: scaleY(var(--oryx-popover-visible, 0));
-    z-index: var(--oryx-popover-z-index, 2);
+    z-index: calc(var(--oryx-popover-z-index, var(--oryx-z-index, 1)) + 1);
   }
 
   :host([show]) {

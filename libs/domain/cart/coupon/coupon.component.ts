@@ -20,69 +20,72 @@ export class CouponComponent extends CartComponentMixin(
 
   @state() hasError = false;
 
-  @query('input[name=coupon]') coupon?: HTMLInputElement;
+  @query('input') coupon?: HTMLInputElement;
 
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) {
-      return;
-    }
+    if (this.$isEmpty()) return;
 
     return html`
-      <oryx-layout>
-        <h3>${this.i18n('coupon.have-a-coupon')}</h3>
+      <oryx-input
+        ?hasError="${this.hasError}"
+        .errorMessage="${this.hasError
+          ? `${
+              !this.coupon?.value
+                ? this.i18n('coupon.insert')
+                : this.i18n('coupon.invalid')
+            }`
+          : ''}"
+      >
+        <input
+          placeholder=${this.i18n('coupon.have-a-coupon')}
+          @keyup=${this.onKeyup}
+        />
+        <oryx-button
+          slot="suffix"
+          .type="${ButtonType.Solid}"
+          .color="${ColorType.Neutral}"
+          .size=${ButtonSize.Sm}
+          @click=${this.onSubmit}
+        >
+          ${this.i18n('coupon.apply')}
+        </oryx-button>
+      </oryx-input>
 
-        <section>
-          <oryx-input
-            ?hasError="${this.hasError}"
-            .errorMessage="${this.hasError
-              ? `${
-                  !this.coupon?.value
-                    ? this.i18n('coupon.insert')
-                    : this.i18n('coupon.invalid')
-                }`
-              : ''}"
-          >
-            <input
-              placeholder="${this.i18n('coupon.coupon-code')}"
-              name="coupon"
-            />
-          </oryx-input>
-          <oryx-button
-            .type="${ButtonType.Outline}"
-            .color="${ColorType.Neutral}"
-            .size=${ButtonSize.Md}
-            @click=${this.onSubmit}
-          >
-            ${this.i18n('coupon.apply')}
-          </oryx-button>
-        </section>
-      </oryx-layout>
-
-      <ul>
-        ${repeat(
-          this.$coupons(),
-          (coupon) => coupon.code,
-          (coupon) => {
-            return html`
-              <li>
-                <oryx-icon .type="${IconTypes.Check}"></oryx-icon>
-                <span class="code">${coupon.code} </span>
-                <span class="name">
-                  ${coupon.displayName}
-                  <oryx-date
-                    .stamp=${coupon.expirationDateTime}
-                    .i18nToken=${'coupon.(valid-till-<date>)'}
-                  ></oryx-date>
-                </span>
-              </li>
-            `;
-          }
-        )}
-      </ul>
+      ${this.renderCoupons()}
     `;
+  }
+
+  protected renderCoupons(): TemplateResult | void {
+    return html`
+      ${repeat(
+        this.$coupons(),
+        (coupon) => coupon.code,
+        (coupon) => {
+          return html`
+            <div>
+              <oryx-icon .type="${IconTypes.Check}"></oryx-icon>
+              <span class="code">${coupon.code} </span>
+              <span class="name">
+                ${coupon.displayName}
+                <oryx-date
+                  .stamp=${coupon.expirationDateTime}
+                  .i18nToken=${'coupon.valid-till-<date>'}
+                ></oryx-date>
+              </span>
+            </div>
+          `;
+        }
+      )}
+    `;
+  }
+
+  protected onKeyup(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.onSubmit();
+    }
   }
 
   protected onSubmit(): void {
@@ -91,7 +94,6 @@ export class CouponComponent extends CartComponentMixin(
 
     if (!coupon) {
       this.hasError = true;
-
       return;
     }
 
@@ -107,9 +109,7 @@ export class CouponComponent extends CartComponentMixin(
 
         this.coupon!.value = '';
       },
-      error: () => {
-        this.hasError = true;
-      },
+      error: () => (this.hasError = true),
     });
   }
 }
