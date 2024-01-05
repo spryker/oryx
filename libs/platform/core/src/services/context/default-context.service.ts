@@ -63,7 +63,7 @@ export class DefaultContextService implements ContextService {
       switchMap(() => {
         if (element) {
           const { element: currentElement, elementWithAttr } =
-            this.closestPassShadow(element, this.getAttributeName(key));
+            this.closestPassShadow(element, this.getAttributeName(key), key);
 
           if (currentElement && this.hasKey(currentElement, key)) {
             return this.manifest.get(currentElement)!.get(key)!;
@@ -149,7 +149,8 @@ export class DefaultContextService implements ContextService {
 
   protected closestPassShadow(
     element: Element | Window | Document | undefined,
-    selector: string
+    selector: string,
+    key: string
   ): {
     element?: Element;
     elementWithAttr?: Element;
@@ -161,7 +162,7 @@ export class DefaultContextService implements ContextService {
     };
 
     while (isElement(element)) {
-      const result = this.closest(element, selector);
+      const result = this.closest(element, selector, key);
 
       if (result) {
         return result;
@@ -175,13 +176,15 @@ export class DefaultContextService implements ContextService {
 
   protected closest(
     element: Element | null,
-    selector: string
+    selector: string,
+    key: string
   ): {
     element?: Element;
     elementWithAttr?: Element;
   } | null {
     while (element) {
-      const hasElement = this.manifest.has(element);
+      const hasElement =
+        this.manifest.has(element) && this.manifest.get(element)!.has(key);
 
       if (hasElement) {
         return {
