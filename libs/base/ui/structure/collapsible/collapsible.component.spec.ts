@@ -136,6 +136,10 @@ describe('CollapsibleComponent', () => {
       element.scrollIntoView = vi.fn();
     });
 
+    it('should load the collapsible state from sessionStorage', () => {
+      expect(globalThis.localStorage.getItem).toHaveBeenCalledWith('oryx-ui');
+    });
+
     describe('and the collapsible is toggled', () => {
       beforeEach(async () => {
         details?.dispatchEvent(new Event('toggle'));
