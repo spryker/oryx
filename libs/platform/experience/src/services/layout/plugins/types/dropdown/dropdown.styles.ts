@@ -5,6 +5,8 @@ export const styles: LayoutStyles = {
   styles: css`
     :host {
       --oryx-popover-border-radius: 0;
+
+      display: contents;
     }
 
     oryx-composition[bucket='label'] {

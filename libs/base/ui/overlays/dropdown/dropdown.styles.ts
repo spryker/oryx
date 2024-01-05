@@ -23,7 +23,12 @@ export const dropdownBaseStyles = css`
       var(--oryx-popover-maxwidth)
     );
 
-    /* z-index: 100; */
+    ${featureVersion >= '1.4'
+      ? css``
+      : css`
+          z-index: 100;
+        `}
+
     overflow: auto;
     max-height: min(
       calc(

@@ -22,7 +22,6 @@ export class DropdownLayoutPlugin implements LayoutPlugin {
 
   getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
     // TODO: add isComposition to data set so we can better check
-    // console.log(data, data.options.layout !== 'dropdown');
     if (data.options.layout !== 'dropdown') return of();
 
     return ssrAwaiter(import('./dropdown.styles').then((m) => m.styles));
