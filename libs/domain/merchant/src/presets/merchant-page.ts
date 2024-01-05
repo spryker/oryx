@@ -29,7 +29,10 @@ export const merchantOffersOnPDP: ExperienceComponent = {
     rules: [
       {
         hideByRule: 'PRODUCT.!OFFERS',
-        layout: { type: 'collapsible', collapsibleStateKey: 'offers' },
+        layout: {
+          type: 'collapsible',
+          collapsibleStateKey: 'pdp-merchant-offers',
+        },
       },
     ],
   },

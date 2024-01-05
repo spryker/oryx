@@ -2,7 +2,7 @@ export const FACET_TOGGLE_EVENT = 'oryx.toggle';
 export const FACET_CLEAR_EVENT = 'oryx.clear';
 
 export interface FacetValueNavigationOption {
-  syncCollapsibleState?: boolean;
+  persistCollapsibleState?: boolean;
 }
 
 export interface ToggleFacetEventDetail {

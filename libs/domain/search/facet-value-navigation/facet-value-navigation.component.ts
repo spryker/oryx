@@ -15,7 +15,7 @@ import {
 } from './facet-value-navigation.model';
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
 
-@defaultOptions({ syncCollapsibleState: true })
+@defaultOptions({ persistCollapsibleState: true })
 export class SearchFacetValueNavigationComponent
   extends ContentMixin<FacetValueNavigationOption>(I18nMixin(LitElement))
   implements SearchFacetValueNavigationComponentAttributes
@@ -39,12 +39,10 @@ export class SearchFacetValueNavigationComponent
       this.enableClear &&
       (featureVersion >= '1.2' ? this.dirty : this.selectedLength);
 
-    const syncKey = this.$options().syncCollapsibleState ? this.key : undefined;
-
     return html` <oryx-collapsible
       ?open=${this.open}
       ?nonTabbable=${allowClear}
-      .persistedStateKey=${syncKey}
+      .persistedStateKey=${this.getPersistedStateKey()}
     >
       <section slot="heading">
         <slot name="heading">${this.heading}</slot>
@@ -97,6 +95,16 @@ export class SearchFacetValueNavigationComponent
         </oryx-button>`
       )}
     </oryx-collapsible>`;
+  }
+
+  /**
+   * Returns the key to use for storing the collapsible state in the session storage.
+   */
+  protected getPersistedStateKey(): string | undefined {
+    if (this.$options().persistCollapsibleState && this.key) {
+      return `facet-${this.key}`;
+    }
+    return;
   }
 
   protected onToggle(): void {

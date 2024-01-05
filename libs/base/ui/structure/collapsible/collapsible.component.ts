@@ -81,17 +81,17 @@ export class CollapsibleComponent
     const storage = sessionStorage;
     if (!storage || !this.persistedStateKey) return;
 
-    const uiStorageKey = 'oryx-ui';
-    const uiState = JSON.parse(storage.getItem(uiStorageKey) ?? '{}');
+    const uiStorageKey = 'oryx-collapsible';
+    const collapsibleState = JSON.parse(storage.getItem(uiStorageKey) ?? '{}');
 
-    const collapsibleStateKey = 'collapsible';
-    const collapsibleState = uiState[collapsibleStateKey] || {};
+    // const collapsibleStateKey = 'collapsible';
+    // const collapsibleState = uiState[collapsibleStateKey] || {};
 
     if (store) {
       if (this.isManuallyOpened) {
         collapsibleState[this.persistedStateKey] = this.open;
-        uiState[collapsibleStateKey] = collapsibleState;
-        storage.setItem(uiStorageKey, JSON.stringify(uiState));
+        // uiState[collapsibleStateKey] = collapsibleState;
+        storage.setItem(uiStorageKey, JSON.stringify(collapsibleState));
       }
     } else {
       if (collapsibleState[this.persistedStateKey] !== undefined) {

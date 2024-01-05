@@ -137,7 +137,9 @@ describe('CollapsibleComponent', () => {
     });
 
     it('should load the collapsible state from sessionStorage', () => {
-      expect(globalThis.localStorage.getItem).toHaveBeenCalledWith('oryx-ui');
+      expect(globalThis.localStorage.getItem).toHaveBeenCalledWith(
+        'oryx-collapsible'
+      );
     });
 
     describe('and the collapsible is toggled', () => {
@@ -161,8 +163,8 @@ describe('CollapsibleComponent', () => {
 
       it('should store the collapsible state in sessionStorage', () => {
         expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
-          'oryx-ui',
-          '{"collapsible":{"foo":true}}'
+          'oryx-collapsible',
+          '{"foo":true}'
         );
       });
 
@@ -177,8 +179,8 @@ describe('CollapsibleComponent', () => {
 
         it('should store the collapsible state in sessionStorage', () => {
           expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
-            'oryx-ui',
-            '{"collapsible":{"foo":false}}'
+            'oryx-collapsible',
+            '{"foo":false}'
           );
         });
       });
