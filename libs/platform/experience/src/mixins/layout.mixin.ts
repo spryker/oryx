@@ -198,15 +198,17 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       });
     }
 
-    protected $template = signal<
-      | {
-          template: TemplateResult;
-          experience?: LayoutMixinRender['experience'];
-        }
-      | undefined
-    >(undefined, {
-      equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
-    });
+    protected $template = signal(
+      undefined as
+        | {
+            template: TemplateResult;
+            experience?: LayoutMixinRender['experience'];
+          }
+        | undefined,
+      {
+        equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+      }
+    );
 
     protected $layoutRenderElement = computed(() =>
       this.getLayoutPluginsRender({ ...(this.$template() ?? {}) })
