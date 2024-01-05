@@ -9,6 +9,11 @@ import {
   EntityService,
 } from './entity.service';
 
+enum GetMethod {
+  Single = 'get',
+  List = 'getList',
+}
+
 export class DefaultEntityService implements EntityService {
   protected injector = inject(INJECTOR);
   protected contextService = inject(ContextService);
@@ -27,10 +32,29 @@ export class DefaultEntityService implements EntityService {
         return qualifier$.pipe(
           switchMap((qualifier) =>
             qualifier
-              ? this.resolveServiceOrFactory<E, Q>(config, qualifier)
+              ? (this.resolveServiceOrFactory<E, Q>(
+                  config,
+                  qualifier
+                ) as Observable<E | undefined>)
               : of(undefined)
           )
         );
+      })
+    );
+  }
+
+  getList<E = unknown, Q = unknown>({
+    qualifier,
+    element,
+    type,
+  }: EntityQualifier<Q>): Observable<E[] | undefined> {
+    return this.resolveConfig<E, Q>({ element, type }).pipe(
+      switchMap(({ config, type }) => {
+        return this.resolveServiceOrFactory<E, Q>(
+          config,
+          qualifier!,
+          GetMethod.List
+        ) as Observable<E[] | undefined>;
       })
     );
   }
@@ -111,18 +135,19 @@ export class DefaultEntityService implements EntityService {
 
   protected resolveServiceOrFactory<E, Q>(
     provider: EntityProvider<E, Q>,
-    qualifier: Q
-  ): Observable<E | undefined> {
+    qualifier: Q,
+    method: GetMethod = GetMethod.Single
+  ): Observable<E | E[] | undefined> {
     if (!isCustomEntityProvider(provider)) {
       const service = this.injector.inject<{
-        get: (q?: Q) => Observable<E>;
+        [method: string]: (q?: Q) => Observable<E>;
       } | null>(provider.service!, null);
       if (!service) {
         return throwError(
           () => new Error(`No service found for entity ${provider.service}`)
         );
       }
-      return service.get(qualifier);
+      return service[method](qualifier);
     } else {
       const service = provider.service
         ? this.injector.inject<{ get: (q?: Q) => Observable<E> } | null>(
@@ -130,7 +155,7 @@ export class DefaultEntityService implements EntityService {
             null
           )
         : this.injector;
-      return provider.resolve(service, qualifier);
+      return provider[method]?.(service, qualifier) ?? of(undefined);
     }
   }
 

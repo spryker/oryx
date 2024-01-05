@@ -37,8 +37,7 @@ describe('DefaultEntityService', () => {
         provideEntity('customType', {
           service: 'MockTestService',
           context: 'mockContext',
-          resolve: (service: any, qualifier: any) =>
-            service.getCustom(qualifier),
+          get: (service: any, qualifier: any) => service.getCustom(qualifier),
         }),
         {
           provide: ContextService,
