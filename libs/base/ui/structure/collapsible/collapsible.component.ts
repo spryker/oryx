@@ -18,6 +18,11 @@ export class CollapsibleComponent
   static styles =
     featureVersion >= '1.4' ? collapsibleStyles : [collapsibleBaseStyle];
 
+  /**
+   * The open state is kept in memory.
+   */
+  static openStates: { [key: string]: boolean } = {};
+
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
   @property({ type: Boolean, reflect: true }) open?: boolean;
   @property() heading?: string;
@@ -78,25 +83,15 @@ export class CollapsibleComponent
   }
 
   protected syncState(store = false): void {
-    const storage = globalThis.sessionStorage;
-    if (!storage || !this.persistedStateKey) return;
-
-    const uiStorageKey = 'oryx-collapsible';
-    const collapsibleState = JSON.parse(storage.getItem(uiStorageKey) ?? '{}');
-
-    // const collapsibleStateKey = 'collapsible';
-    // const collapsibleState = uiState[collapsibleStateKey] || {};
+    if (!this.persistedStateKey) return;
 
     if (store) {
       if (this.isManuallyOpened) {
-        collapsibleState[this.persistedStateKey] = this.open;
-        // uiState[collapsibleStateKey] = collapsibleState;
-        storage.setItem(uiStorageKey, JSON.stringify(collapsibleState));
+        CollapsibleComponent.openStates[this.persistedStateKey] = !!this.open;
       }
-    } else {
-      if (collapsibleState[this.persistedStateKey] !== undefined) {
-        this.open = collapsibleState[this.persistedStateKey];
-      }
+    }
+    if (CollapsibleComponent.openStates[this.persistedStateKey] !== undefined) {
+      this.open = CollapsibleComponent.openStates[this.persistedStateKey];
     }
   }
 

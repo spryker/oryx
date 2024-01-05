@@ -123,8 +123,6 @@ describe('CollapsibleComponent', () => {
   });
 
   describe('when a persistedStateKey is provided', () => {
-    vi.spyOn(globalThis.sessionStorage.__proto__, 'getItem');
-    vi.spyOn(globalThis.sessionStorage.__proto__, 'setItem');
     let details: HTMLDetailsElement | undefined | null;
 
     beforeEach(async () => {
@@ -136,19 +134,13 @@ describe('CollapsibleComponent', () => {
       element.scrollIntoView = vi.fn();
     });
 
-    it('should load the collapsible state from sessionStorage', () => {
-      expect(globalThis.localStorage.getItem).toHaveBeenCalledWith(
-        'oryx-collapsible'
-      );
-    });
-
     describe('and the collapsible is toggled', () => {
       beforeEach(async () => {
         details?.dispatchEvent(new Event('toggle'));
       });
 
-      it('should not store the collapsible state in sessionStorage', () => {
-        expect(globalThis.localStorage.setItem).not.toHaveBeenCalled();
+      it('should not store the open state', () => {
+        expect(CollapsibleComponent.openStates.foo).toBeUndefined();
       });
     });
 
@@ -161,11 +153,8 @@ describe('CollapsibleComponent', () => {
         }
       });
 
-      it('should store the collapsible state in sessionStorage', () => {
-        expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
-          'oryx-collapsible',
-          '{"foo":true}'
-        );
+      it('should store the open state', () => {
+        expect(CollapsibleComponent.openStates.foo).toBe(true);
       });
 
       describe('and the collapsible is collapsed', () => {
@@ -177,11 +166,8 @@ describe('CollapsibleComponent', () => {
           }
         });
 
-        it('should store the collapsible state in sessionStorage', () => {
-          expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
-            'oryx-collapsible',
-            '{"foo":false}'
-          );
+        it('should store the open state', () => {
+          expect(CollapsibleComponent.openStates.foo).toBe(false);
         });
       });
     });
