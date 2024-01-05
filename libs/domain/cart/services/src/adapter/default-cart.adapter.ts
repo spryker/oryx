@@ -125,14 +125,13 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  delete(data: CartQualifier): Observable<Cart> {
+  delete(data: CartQualifier): Observable<unknown> {
     if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
 
     return this.http
       .delete<ApiCartModel.Response>(
         `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}/${data.cartId}`
-      )
-      .pipe(this.transformer.do(CartNormalizer));
+      );
   }
 
   addCoupon(data: CouponQualifier): Observable<Cart> {

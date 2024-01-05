@@ -24,3 +24,6 @@ export type CartsUpdated = QueryEvent;
 
 export const CartCreated = 'CartCreated';
 export type CartCreated = QueryEvent;
+
+export const CartDeleted = 'CartDeleted';
+export type CartDeleted = QueryEvent;
