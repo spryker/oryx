@@ -358,7 +358,7 @@ export class CartEntryComponent
   protected notify(token: string, sku?: string): void {
     this.notificationService.push({
       type: AlertType.Success,
-      content: this.i18n(token) as string,
+      content: { token },
       subtext: html`<oryx-product-title .sku=${sku}></oryx-product-title>`,
     });
   }

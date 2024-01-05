@@ -1,4 +1,7 @@
-import { Notification } from '../../notification';
+import { AlertType } from '@spryker-oryx/ui';
+import { Scheme } from '@spryker-oryx/ui/notification';
+import { I18nContent, I18nTranslationValue } from '@spryker-oryx/utilities';
+import { TemplateResult } from 'lit';
 export interface NotificationCenterComponentAttributes {
   /**
    * Enables to position of the notifications, i.e.:
@@ -31,3 +34,25 @@ export type NotificationRegistry = Notification & {
   key: number;
   visible?: boolean;
 };
+
+export type Notification = {
+  type?: AlertType;
+  scheme?: Scheme;
+  closable?: boolean;
+  floating?: boolean;
+  autoClose?: boolean;
+  autoCloseTime?: number;
+  content?: NotificationContent;
+  subtext?: NotificationContent;
+};
+
+export type NotificationContent =
+  | I18nContent
+  | HTMLElement
+  | TemplateResult
+  | string
+  | number;
+
+export type NotificationResolvedContent =
+  | Omit<NotificationContent, 'I18nContent'>
+  | I18nTranslationValue;

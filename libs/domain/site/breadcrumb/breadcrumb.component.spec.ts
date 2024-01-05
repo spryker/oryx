@@ -1,25 +1,25 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
+import { BreadcrumbService } from '@spryker-oryx/site';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
-import { useComponent } from '@spryker-oryx/utilities';
+import { I18nRawContent, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { SiteBreadcrumbComponent } from './breadcrumb.component';
 import { siteBreadcrumbComponent } from './breadcrumb.def';
 
-const breadcrumb: BreadcrumbItem = {
+const breadcrumb = {
   url: '/test',
   text: { raw: 'test' },
 };
 
-const breadcrumbI18n: BreadcrumbItem = {
+const breadcrumbI18n = {
   url: '/test',
   text: { token: 'test.test', values: { value: 'test' } },
 };
 
-const breadcrumbNoUrl: BreadcrumbItem = {
+const breadcrumbNoUrl = {
   text: { raw: 'test' },
 };
 
@@ -87,7 +87,9 @@ describe('SiteBreadcrumbComponent', () => {
 
     it('should render span as last breadcrumb', () => {
       const last = element.renderRoot.querySelector('span');
-      expect(last?.textContent).toBe(breadcrumbs[2].text?.raw);
+      expect(last?.textContent).toBe(
+        (breadcrumbs[2].text as I18nRawContent).raw
+      );
     });
 
     describe('and breadcrumb has a text label', () => {
@@ -122,8 +124,8 @@ describe('SiteBreadcrumbComponent', () => {
 
       it('should translate the token', () => {
         expect(spy).toHaveBeenCalledWith(
-          breadcrumbI18n.text?.token,
-          breadcrumbI18n.text?.values
+          breadcrumbI18n.text.token,
+          breadcrumbI18n.text.values
         );
       });
 
