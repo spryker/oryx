@@ -122,7 +122,7 @@ describe('CollapsibleComponent', () => {
     });
   });
 
-  describe('when a syncKey is provided', () => {
+  describe('when a persistedStateKey is provided', () => {
     vi.spyOn(globalThis.sessionStorage.__proto__, 'getItem');
     vi.spyOn(globalThis.sessionStorage.__proto__, 'setItem');
     let details: HTMLDetailsElement | undefined | null;
@@ -130,14 +130,10 @@ describe('CollapsibleComponent', () => {
     beforeEach(async () => {
       mockFeatureVersion('1.4');
       element = await fixture(
-        html`<oryx-collapsible syncKey="foo"></oryx-collapsible>`
+        html`<oryx-collapsible persistedStateKey="foo"></oryx-collapsible>`
       );
       details = element.shadowRoot?.querySelector('details');
       element.scrollIntoView = vi.fn();
-    });
-
-    it('should not load the collapsible state from sessionStorage', () => {
-      expect(globalThis.localStorage.getItem).not.toHaveBeenCalled();
     });
 
     describe('and the collapsible is toggled', () => {
@@ -161,7 +157,7 @@ describe('CollapsibleComponent', () => {
 
       it('should store the collapsible state in sessionStorage', () => {
         expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
-          'ui',
+          'oryx-ui',
           '{"collapsible":{"foo":true}}'
         );
       });
@@ -177,7 +173,7 @@ describe('CollapsibleComponent', () => {
 
         it('should store the collapsible state in sessionStorage', () => {
           expect(globalThis.localStorage.setItem).toHaveBeenCalledWith(
-            'ui',
+            'oryx-ui',
             '{"collapsible":{"foo":false}}'
           );
         });

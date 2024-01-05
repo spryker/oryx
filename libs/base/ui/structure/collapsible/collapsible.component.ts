@@ -1,7 +1,7 @@
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, Size, featureVersion } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, html, isServer } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
@@ -27,7 +27,7 @@ export class CollapsibleComponent
   @query('details') protected details?: HTMLDetailsElement;
 
   protected firstUpdated(): void {
-    if (!isServer) this.syncState();
+    this.syncState();
   }
 
   /**
@@ -78,10 +78,11 @@ export class CollapsibleComponent
   }
 
   protected syncState(store = false): void {
-    if (!this.persistedStateKey) return;
+    const storage = sessionStorage;
+    if (!storage || !this.persistedStateKey) return;
 
-    const uiStorageKey = 'ui';
-    const uiState = JSON.parse(sessionStorage.getItem(uiStorageKey) ?? '{}');
+    const uiStorageKey = 'oryx-ui';
+    const uiState = JSON.parse(storage.getItem(uiStorageKey) ?? '{}');
 
     const collapsibleStateKey = 'collapsible';
     const collapsibleState = uiState[collapsibleStateKey] || {};
@@ -90,7 +91,7 @@ export class CollapsibleComponent
       if (this.isManuallyOpened) {
         collapsibleState[this.persistedStateKey] = this.open;
         uiState[collapsibleStateKey] = collapsibleState;
-        sessionStorage.setItem(uiStorageKey, JSON.stringify(uiState));
+        storage.setItem(uiStorageKey, JSON.stringify(uiState));
       }
     } else {
       if (collapsibleState[this.persistedStateKey] !== undefined) {
