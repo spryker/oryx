@@ -4,8 +4,7 @@ import { LayoutPluginRenderParams } from '../../layout.plugin';
 
 export const renderLabelSlot = (
   data: LayoutPluginRenderParams,
-  slotName: string,
-  tabindex = 0
+  slotName: string
 ): TemplateResult | void => {
   const hasBucket = !!(
     data.experience?.components as Record<string, Component[]>
@@ -14,7 +13,7 @@ export const renderLabelSlot = (
   if (!hasBucket) {
     const label = data.experience?.name;
     if (!label) return;
-    return html`<span .slot=${slotName} tabindex=${tabindex}>${label}</span>`;
+    return html`<span .slot=${slotName} tabindex="0">${label}</span>`;
   }
 
   return html`
@@ -23,7 +22,6 @@ export const renderLabelSlot = (
       .slot=${slotName}
       .uid=${data.experience?.id}
       .options=${{}}
-      tabindex=${tabindex}
     ></oryx-composition>
   `;
 };

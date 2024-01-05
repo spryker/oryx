@@ -142,8 +142,9 @@ describe('ContentLinkComponent', () => {
       );
     });
 
-    it('should not render a link', () => {
-      expect(element).not.toContainElement('a');
+    it('should not render a an href on the link', () => {
+      expect(element).toContainElement('a');
+      expect(element).not.toContainElement('a[href]');
     });
   });
 
@@ -240,8 +241,9 @@ describe('ContentLinkComponent', () => {
       element = await fixture(html`<oryx-content-link></oryx-content-link>`);
     });
 
-    it('should build the correct link', () => {
-      expect(element).not.toContainElement('a');
+    it('should not add an href on the link', () => {
+      expect(element).toContainElement('a');
+      expect(element).not.toContainElement('a[href]');
     });
   });
 

@@ -7,6 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import {
   CollapsibleAppearance,
   CollapsibleAttributes,
+  ToggleEventDetail,
 } from './collapsible.model';
 import { collapsibleStyles } from './collapsible.styles';
 import { collapsibleBaseStyle } from './styles';
@@ -57,8 +58,13 @@ export class CollapsibleComponent
     `;
   }
 
-  protected onToggle(): void {
+  protected onToggle(event: Event): void {
     this.open = this.details?.open;
+    if (!this.isManuallyOpened) {
+      this.dispatchEvent(
+        new CustomEvent('toggle', { bubbles: true, composed: true })
+      );
+    }
     if (featureVersion >= '1.2') {
       if (this.isManuallyOpened && this.open) {
         this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -67,8 +73,15 @@ export class CollapsibleComponent
     }
   }
 
-  protected onClick(): void {
+  protected onClick(event: PointerEvent): void {
     this.isManuallyOpened = true;
+    this.dispatchEvent(
+      new CustomEvent<ToggleEventDetail>('toggle', {
+        bubbles: true,
+        composed: true,
+        detail: { toggleAll: event.altKey },
+      })
+    );
   }
 
   protected renderToggleControl(): TemplateResult {

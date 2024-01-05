@@ -28,8 +28,7 @@ export class CollapsibleLayoutPlugin implements LayoutPlugin {
 
     return of({
       outer: html`<oryx-collapsible ?open=${data?.options?.collapsibleOpen}
-        >${renderLabelSlot(data, 'heading', -1)}
-        ${data.template}</oryx-collapsible
+        >${renderLabelSlot(data, 'heading')} ${data.template}</oryx-collapsible
       >`,
     });
   }

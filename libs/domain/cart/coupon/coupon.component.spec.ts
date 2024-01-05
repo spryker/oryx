@@ -86,7 +86,7 @@ describe('CouponComponent', () => {
     });
 
     it('should render the coupon list', async () => {
-      const couponElements = element.shadowRoot?.querySelectorAll('li');
+      const couponElements = element.shadowRoot?.querySelectorAll('div');
       expect(couponElements?.length).toBe(coupons.length);
 
       couponElements?.forEach((couponElement, index) => {
@@ -105,26 +105,41 @@ describe('CouponComponent', () => {
     });
 
     it('should not render the coupon list', async () => {
-      const couponElements = element.shadowRoot?.querySelectorAll('li');
+      const couponElements = element.shadowRoot?.querySelectorAll('div');
       expect(couponElements?.length).toBe(0);
     });
   });
 
-  describe('when applying coupon successfully', () => {
+  describe('when a valid coupon is added', () => {
+    const couponCode = '12grVfg';
     beforeEach(async () => {
       service.addCoupon = vi.fn().mockReturnValue(of());
       element = await fixture(html`<oryx-cart-coupon></oryx-cart-coupon>`);
+      element.coupon!.value = couponCode;
     });
 
-    it('should call addCoupon', async () => {
-      const couponCode = '12grVfg';
-      element.coupon!.value = couponCode;
+    describe('and the button is clicked', () => {
+      beforeEach(async () => {
+        const button =
+          element.shadowRoot?.querySelector<HTMLElement>('oryx-button');
+        button?.click();
+      });
 
-      const button =
-        element.shadowRoot?.querySelector<HTMLElement>('oryx-button');
-      button?.click();
+      it('should call addCoupon', async () => {
+        expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
+      });
+    });
 
-      expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
+    describe('and the enter key is used', () => {
+      beforeEach(async () => {
+        const input =
+          element.shadowRoot?.querySelector<HTMLInputElement>('input');
+        input?.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      });
+
+      it('should call addCoupon', async () => {
+        expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
+      });
     });
   });
 
