@@ -1,18 +1,18 @@
+import { CartService } from '@spryker-oryx/cart';
+import { resolve } from '@spryker-oryx/di';
+import { NotificationService } from '@spryker-oryx/site';
+import { AlertType } from '@spryker-oryx/ui';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, Size, hydrate } from '@spryker-oryx/utilities';
+import { I18nMixin, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { CartComponentMixin } from '../src/mixins';
-import { resolve } from '@spryker-oryx/di';
-import { CartService } from '@spryker-oryx/cart';
-import { NotificationService } from '@spryker-oryx/site';
-import { AlertType } from '@spryker-oryx/ui';
 
 @hydrate({ event: ['mouseover', 'focusin'] })
 export class CartRemoveComponent extends CartComponentMixin(
   I18nMixin(LitElement)
-){
+) {
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
 
@@ -20,6 +20,8 @@ export class CartRemoveComponent extends CartComponentMixin(
   @state() protected isLoading = false;
 
   protected override render(): TemplateResult | void {
+    if (!this.$cart()?.id) return;
+
     return html`
       <oryx-button
         .type=${ButtonType.Icon}
@@ -47,7 +49,7 @@ export class CartRemoveComponent extends CartComponentMixin(
       @oryx.modal.closed=${this.onCancel}
       enableFooter
     >
-      <span>${this.i18n('cart.remove.remove-<name>-info', {name})} </span>
+      <span>${this.i18n('cart.remove.remove-cart-<name>-info', { name })}</span>
       <oryx-button
         slot="footer-more"
         .color=${ButtonColor.Error}
@@ -60,18 +62,20 @@ export class CartRemoveComponent extends CartComponentMixin(
   }
 
   protected onConfirm(): void {
-    const cartId = this.$cart()?.id;
-
-    if (!cartId) return;
-
     this.isLoading = true;
-    const name = this.$cart()?.name;
 
-    this.cartService.deleteCart({cartId}).subscribe({
+    const cart = this.$cart();
+    const name = cart?.name;
+    const cartId = cart?.id;
+
+    this.cartService.deleteCart({ cartId }).subscribe({
       next: () => {
         this.notificationService.push({
           type: AlertType.Error,
-          content: this.i18n('carts.remove.cart-<name>-removed', { name }) as string
+          content: {
+            token: 'carts.remove.<name>-removed',
+            values: { name },
+          },
         });
         this.requestsConfirmation = false;
       },
@@ -82,8 +86,6 @@ export class CartRemoveComponent extends CartComponentMixin(
   }
 
   protected onCancel(e: Event): void {
-    console.log('cancel');
-    
     e.stopPropagation();
     this.requestsConfirmation = false;
   }

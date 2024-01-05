@@ -1,59 +1,61 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
-import {
-  Address,
-  AddressService,
-  AddressStateService,
-} from '@spryker-oryx/user';
-import { useComponent } from '@spryker-oryx/utilities';
+import { NotificationService, PricingService } from '@spryker-oryx/site';
+import { AlertType } from '@spryker-oryx/ui';
+import { CLOSED_MODAL_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { UserAddressRemoveComponent } from './cart-remove.component';
-import { userAddressRemoveComponent } from './cart-remove.def';
+import { mockDefaultCart } from '../src/mocks/src';
+import { CartRemoveComponent } from './cart-remove.component';
+import { cartRemoveComponent } from './cart-remove.def';
 
-const mockAddress: Address = { id: 'foo' };
-class MockAddressService implements Partial<AddressService> {
-  get = vi.fn().mockReturnValue(of(mockAddress));
-  getList = vi.fn().mockReturnValue(of([mockAddress]));
-  delete = vi.fn().mockReturnValue(of({}));
-}
-class MockRouterService implements Partial<RouterService> {
-  currentParams = vi.fn().mockReturnValue(of());
+class MockCartService implements Partial<CartService> {
+  getCart = vi.fn().mockReturnValue(of(mockDefaultCart));
+  deleteCart = vi.fn().mockReturnValue(of(undefined));
 }
 
-class MockAddressStateService implements Partial<AddressStateService> {
-  get = vi.fn().mockReturnValue(of(null));
-  set = vi.fn();
+class MockNotificationService implements Partial<NotificationService> {
+  push = vi.fn();
 }
 
-describe('UserAddressRemoveComponent', () => {
-  let element: UserAddressRemoveComponent;
-  let addressService: MockAddressService;
+class MockPricingService {
+  format = vi.fn().mockReturnValue(of('price'));
+}
+
+describe('CartRemoveComponent', () => {
+  let element: CartRemoveComponent;
+  let cartService: MockCartService;
+  let notificationService: MockNotificationService;
 
   beforeAll(async () => {
-    await useComponent(userAddressRemoveComponent);
+    await useComponent(cartRemoveComponent);
   });
 
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: AddressService,
-          useClass: MockAddressService,
+          provide: CartService,
+          useClass: MockCartService,
         },
         {
-          provide: AddressStateService,
-          useClass: MockAddressStateService,
+          provide: PricingService,
+          useClass: MockPricingService,
         },
         {
-          provide: RouterService,
-          useClass: MockRouterService,
+          provide: NotificationService,
+          useClass: MockNotificationService,
         },
       ],
     });
-
-    addressService = testInjector.inject<MockAddressService>(AddressService);
+    cartService = testInjector.inject<MockCartService>(CartService);
+    notificationService =
+      testInjector.inject<MockNotificationService>(NotificationService);
+    element = await fixture(
+      html`<oryx-cart-remove cartId="mock"></oryx-cart-remove>`
+    );
   });
 
   afterEach(() => {
@@ -61,64 +63,41 @@ describe('UserAddressRemoveComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when the component is instantiated', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<oryx-user-address-remove
-        .addressId=${mockAddress.id}
-      ></oryx-user-address-remove>`);
-    });
-
-    it('should be an instance of UserAddressRemoveComponent', () => {
-      expect(element).toBeInstanceOf(UserAddressRemoveComponent);
-    });
-
-    it('passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible();
-    });
-
-    it('should not open the confirmation modal', () => {
-      expect(element).not.toContainElement('oryx-modal');
-    });
-
-    it('should not get the address', () => {
-      expect(addressService.get).not.toHaveBeenCalled();
-    });
+  it('should render button', () => {
+    expect(element).toContainElement('oryx-button');
   });
 
-  describe('when the user clicks the remove button', () => {
+  it('should not render confirmation modal', () => {
+    expect(element).not.toContainElement('oryx-modal');
+  });
+
+  describe('when button is clicked', () => {
     beforeEach(() => {
-      element.renderRoot
-        .querySelector<HTMLElement>('oryx-button')
-        ?.dispatchEvent(new MouseEvent('click'));
-    });
-
-    beforeEach(async () => {
-      element = await fixture(html`<oryx-user-address-remove
-        .addressId=${mockAddress.id}
-      ></oryx-user-address-remove>`);
-
       element.renderRoot
         .querySelector('oryx-button')
         ?.dispatchEvent(new MouseEvent('click'));
     });
 
-    it('should open the confirmation modal', () => {
-      expect(element).toContainElement('oryx-modal[open]');
+    it('should render opened confirmation modal with content', () => {
+      const modal =
+        element.renderRoot.querySelector<ModalComponent>('oryx-modal');
+      expect(element).toContainElement('oryx-modal[open][enableFooter]');
+      expect(modal?.heading).toContain(i18n('carts.remove.title.confirmation'));
+
+      expect(modal?.querySelector('span')?.textContent).toContain(
+        i18n('cart.remove.remove-cart-<name>-info', {
+          name: mockDefaultCart.name,
+        })
+      );
+
+      expect(element).toContainElement('oryx-modal oryx-button');
     });
 
-    describe('and the confirm remove button is clicked', () => {
+    describe('and removing is cancelled', () => {
       beforeEach(() => {
         element.renderRoot
-          .querySelector<HTMLElement>('oryx-button[slot="footer-more"]')
-          ?.click();
-      });
-
-      it('should load the address by id', () => {
-        expect(addressService.get).toHaveBeenCalledWith(mockAddress.id);
-      });
-
-      it('should delete the address', () => {
-        expect(addressService.delete).toHaveBeenCalledWith(mockAddress);
+          .querySelector('oryx-modal')
+          ?.dispatchEvent(new CustomEvent(CLOSED_MODAL_EVENT));
       });
 
       it('should close the modal', () => {
@@ -126,15 +105,45 @@ describe('UserAddressRemoveComponent', () => {
       });
     });
 
-    describe('when the oryx.close event is dispatched', () => {
+    describe('and removing is confirmed', () => {
       beforeEach(() => {
-        const modal = element.renderRoot.querySelector('oryx-modal');
-        modal?.dispatchEvent(new CustomEvent('oryx.close'));
+        element.renderRoot
+          .querySelector('oryx-modal oryx-button')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should remove the cart', () => {
+        expect(cartService.deleteCart).toHaveBeenCalledWith({
+          cartId: mockDefaultCart.id,
+        });
+      });
+
+      it('should push a notification with removed cart name', () => {
+        expect(notificationService.push).toHaveBeenCalledWith({
+          type: AlertType.Error,
+          content: {
+            token: 'carts.remove.<name>-removed',
+            values: { name: mockDefaultCart.name },
+          },
+        });
       });
 
       it('should close the modal', () => {
         expect(element).not.toContainElement('oryx-modal');
       });
+    });
+  });
+
+  describe('when cart is not available', () => {
+    beforeEach(async () => {
+      cartService.getCart = vi.fn().mockReturnValue(of({}));
+      element = await fixture(
+        html`<oryx-cart-remove cartId="mock"></oryx-cart-remove>`
+      );
+    });
+
+    it('should not render the content', () => {
+      expect(element).not.toContainElement('oryx-modal, oryx-button');
     });
   });
 });
