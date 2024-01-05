@@ -78,7 +78,7 @@ export class CollapsibleComponent
   }
 
   protected syncState(store = false): void {
-    const storage = sessionStorage;
+    const storage = globalThis.sessionStorage;
     if (!storage || !this.persistedStateKey) return;
 
     const uiStorageKey = 'oryx-collapsible';
