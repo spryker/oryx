@@ -1,15 +1,20 @@
-import { ContextController, EntityContext } from '@spryker-oryx/core';
+import {
+  ContextController,
+  EntityContext,
+  EntityService,
+} from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, LayoutMixin } from '@spryker-oryx/experience';
 
 import {
+  computed,
   elementEffect,
   hydrate,
-  signal,
   signalAware,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { of } from 'rxjs';
 import { DataListOptions } from './data-list.model';
 
 @hydrate()
@@ -24,9 +29,13 @@ export class DataListComponent extends LayoutMixin(
     this.contextController.provide(EntityContext, this.$options().entity);
   };
 
-  // TODO: abstract away the service and context (data-merchant) based on entity
-  protected merchantService = resolve('oryx.MerchantService');
-  protected $list = signal(this.merchantService.getList());
+  protected entityService = resolve(EntityService);
+
+  protected $list = computed(() =>
+    this.$options().entity
+      ? this.entityService.getList({ type: this.$options().entity })
+      : of([])
+  );
 
   protected override render(): TemplateResult | void {
     const list = this.$list();
