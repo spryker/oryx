@@ -141,8 +141,7 @@ describe('CollapsibleComponent', () => {
       });
 
       it('should not store the open state', () => {
-        // expect(CollapsibleComponent.openStates.foo).toBeUndefined();
-        expect(UiStateController.state.foo).toBeUndefined();
+        expect(UiStateController.state['oryx-collapsible-foo']).toBeUndefined();
       });
     });
 
@@ -156,8 +155,7 @@ describe('CollapsibleComponent', () => {
       });
 
       it('should store the open state', () => {
-        // expect(CollapsibleComponent.openStates.foo).toBe(true);
-        expect(UiStateController.state.foo).toBe(true);
+        expect(UiStateController.state['oryx-collapsible-foo']).toBe(true);
       });
 
       describe('and the collapsible is collapsed', () => {
@@ -170,8 +168,7 @@ describe('CollapsibleComponent', () => {
         });
 
         it('should store the open state', () => {
-          // expect(CollapsibleComponent.openStates.foo).toBe(false);
-          expect(UiStateController.state.foo).toBe(false);
+          expect(UiStateController.state['oryx-collapsible-foo']).toBe(false);
         });
       });
     });

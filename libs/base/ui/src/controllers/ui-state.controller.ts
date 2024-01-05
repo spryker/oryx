@@ -13,14 +13,18 @@ export class UiStateController implements ReactiveController {
   }
 
   has(key: string): boolean {
-    return UiStateController.state[key] !== undefined;
+    return UiStateController.state[this.resolveKey(key)] !== undefined;
   }
 
   get<T = unknown>(key: string): T {
-    return UiStateController.state[key] as T;
+    return UiStateController.state[this.resolveKey(key)] as T;
   }
 
   set<T = unknown>(key: string, value: T): void {
-    UiStateController.state[key] = value;
+    UiStateController.state[this.resolveKey(key)] = value;
+  }
+
+  protected resolveKey(key: string): string {
+    return `${this.host.localName}-${key}`;
   }
 }

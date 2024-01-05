@@ -24,7 +24,7 @@ export interface CollapsibleAttributes {
 
   /**
    * The key to use for storing the open state. If set, the open state is stored
-   * in session storage and restored when the component is used in the same session.
+   * in memory and restored when the component is used in the same session.
    */
   persistedStateKey?: string;
 }
