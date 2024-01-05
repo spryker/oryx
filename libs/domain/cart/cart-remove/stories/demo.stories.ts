@@ -4,11 +4,6 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Remove Cart`,
-  parameters: {
-    chromatic: {
-      disableSnapshot: true,
-    },
-  },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
