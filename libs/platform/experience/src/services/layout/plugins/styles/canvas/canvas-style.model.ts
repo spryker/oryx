@@ -35,6 +35,8 @@ declare global {
      * 3D effect. The elevation sets the 3D depth of the element.
      */
     shadow?: ShadowElevation;
+
+    zIndex?: number;
   }
 }
 
