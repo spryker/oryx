@@ -17,7 +17,6 @@ export type MerchantListQuery = Query<Merchant[], MerchantListQuery>;
 export const merchantQueries = [
   provideQuery(MerchantQuery, (adapter = inject(MerchantAdapter)) => ({
     loader: (q: MerchantQualifier) => adapter.get(q),
-    // q.scope === 'mininal' ? EMPTY : adapter.get(q),
     refreshOn: [LocaleChanged],
   })),
 
