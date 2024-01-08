@@ -10,6 +10,11 @@ declare global {
 
   export interface LayoutProperty {
     /**
+     * Show the dropdown on hover instead of click.
+     */
+    dropdownOnHover?: boolean;
+
+    /**
      * Horizontal position of the dropdown.
      */
     dropdownPosition?: Position;

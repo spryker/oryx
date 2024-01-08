@@ -52,6 +52,48 @@ describe('DropdownComponent', () => {
     });
   });
 
+  describe('when openOnHover property is assigned', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-dropdown openOnHover></oryx-dropdown>`
+      );
+    });
+
+    it('should hide the popover', async () => {
+      expect(element).not.toContainElement('oryx-popover[show]');
+    });
+
+    describe('and mouseover event dispatched', () => {
+      beforeEach(async () => {
+        element.dispatchEvent(new MouseEvent('mouseover'));
+      });
+
+      it('should show the popover', async () => {
+        expect(element).toContainElement('oryx-popover[show]');
+      });
+
+      describe('and mouseout event dispatched', () => {
+        beforeEach(async () => {
+          element.dispatchEvent(new MouseEvent('mouseout'));
+        });
+
+        it('should not yet hide the popover', async () => {
+          expect(element).toContainElement('oryx-popover[show]');
+        });
+
+        describe('but when 100ms have passed', () => {
+          beforeEach(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          });
+
+          it('should hide the popover', async () => {
+            expect(element).not.toContainElement('oryx-popover[show]');
+          });
+        });
+      });
+    });
+  });
+
   // describe('when "oryx.close" event dispatched', () => {
   //   let input: HTMLInputElement | null | undefined;
 

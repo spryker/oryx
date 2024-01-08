@@ -23,15 +23,13 @@ export class DropdownComponent
   /**
    * @deprecated not needed to keep a reference to the controller.
    */
-  protected controller?: PopoverController =
-    featureVersion >= '1.4'
-      ? undefined
-      : new PopoverController(this, {
-          boundingElement: this,
-        });
+  protected controller?: PopoverController = new PopoverController(this, {
+    boundingElement: this,
+  });
 
   @property({ reflect: true, type: Boolean }) open?: boolean;
   @property({ type: Boolean }) showOnFocus?: boolean;
+  @property({ type: Boolean }) openOnHover?: boolean;
   @property({ reflect: true }) position?: Position;
   @property({ type: Boolean, attribute: 'vertical-align' })
   verticalAlign?: boolean;
@@ -41,16 +39,6 @@ export class DropdownComponent
    * @deprecated since version 1.4 use the i18n token 'ui.toggle-dropdown' instead
    */
   @property() toggleButtonAriaLabel = 'Toggle dropdown';
-
-  connectedCallback(): void {
-    if (featureVersion >= '1.4') {
-      new PopoverController(this, {
-        boundingElement: this,
-        showOnFocus: this.showOnFocus,
-      });
-    }
-    super.connectedCallback();
-  }
 
   protected override render(): TemplateResult {
     return html`

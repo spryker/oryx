@@ -68,6 +68,9 @@ export class ToggleController implements ReactiveController {
     this.host.addEventListener('keydown', this.handleKeydown);
     this.host.addEventListener('keyup', this.handleKeyup);
 
+    this.host.addEventListener('mouseover', this.handleMouseOver);
+    this.host.addEventListener('mouseout', this.handleMouseOut);
+
     if (this.host.hasAttribute('open')) {
       //simulate first updated hook
       this.host.requestUpdate();
@@ -87,6 +90,8 @@ export class ToggleController implements ReactiveController {
     this.host.removeEventListener('mouseup', this.handleMouseup);
     this.host.removeEventListener('keydown', this.handleKeydown);
     this.host.removeEventListener('keyup', this.handleKeyup);
+    this.host.removeEventListener('mouseover', this.handleMouseOver);
+    this.host.removeEventListener('mouseout', this.handleMouseOut);
   }
 
   protected handleBlur(): void {
@@ -98,7 +103,10 @@ export class ToggleController implements ReactiveController {
   }
 
   protected handleFocusin(): void {
-    if (!this.skipOpeningOnNextFocus && this.options.showOnFocus) {
+    if (
+      !this.skipOpeningOnNextFocus &&
+      (this.host.openOnHover || this.options.showOnFocus)
+    ) {
       this.timeStarted = Date.now();
       this.toggle(true);
     }
@@ -114,7 +122,53 @@ export class ToggleController implements ReactiveController {
     this.focusShouldBeFocusedMaybe();
   }
 
+  protected handleMouseOver(): void {
+    if (!this.host.openOnHover) return;
+    this.toggle(true);
+  }
+
+  /**
+   * Handle mouse out event when the host is configured to open on hover.
+   * The popover should be closed when the mouse is out of the host and the popover,
+   * but not when the mouse is out of the host and over the popover.
+   *
+   * The popover should be closed after a delay to allow the user to move the mouse
+   * from the host to the popover. During this time the mouse coordinates are tracked.
+   */
+  protected handleMouseOut(): void {
+    if (!this.host.openOnHover) return;
+
+    let mouseX: number, mouseY: number;
+    const syncMouseCoordinates = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    document.addEventListener('mousemove', syncMouseCoordinates);
+
+    setTimeout(() => {
+      document.removeEventListener('mousemove', syncMouseCoordinates);
+      const triggerBox = this.host!.getBoundingClientRect();
+      const dropdownBox = this.element!.getBoundingClientRect();
+      const isInHost =
+        mouseX >= triggerBox.left &&
+        mouseX <= triggerBox.right &&
+        mouseY >= triggerBox.top &&
+        mouseY <= triggerBox.bottom;
+      const isInPopover =
+        mouseX >= dropdownBox.left &&
+        mouseX <= dropdownBox.right &&
+        mouseY >= dropdownBox.top &&
+        mouseY <= dropdownBox.bottom;
+
+      if (!isInHost && !isInPopover) {
+        this.toggle(false);
+      }
+    }, 100);
+  }
+
   protected handleMousedown(e: MouseEvent): void {
+    if (this.host.openOnHover) return;
     if (
       !isFocusable(e.target as HTMLElement) &&
       this.emitterIsInsidePopover(e)
@@ -141,6 +195,7 @@ export class ToggleController implements ReactiveController {
   }
 
   protected async handleMouseup(e: MouseEvent): Promise<void> {
+    if (this.host.openOnHover) return;
     this.focusShouldBeFocusedMaybe();
 
     const isEmitterOutside =
@@ -289,7 +344,10 @@ export class ToggleController implements ReactiveController {
     return Array.from(this.host.querySelectorAll(this.options.itemSelector));
   }
 
-  constructor(protected host: LitElement, protected options: ToggleOptions) {
+  constructor(
+    protected host: LitElement & { openOnHover?: boolean },
+    protected options: ToggleOptions
+  ) {
     this.host.addController(this);
     this.dimensionController = new DimensionController(host);
 
@@ -301,5 +359,7 @@ export class ToggleController implements ReactiveController {
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleKeyup = this.handleKeyup.bind(this);
     this.handleContentCloseEvent = this.handleContentCloseEvent.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
   }
 }
