@@ -35,8 +35,6 @@ export class CartRemoveComponent extends CartComponentMixin(
   }
 
   protected onRemove(e: PointerEvent): void {
-    console.log(e.altKey);
-
     if (e.altKey) {
       this.onConfirm();
     } else {
