@@ -63,22 +63,32 @@ describe('DropdownComponent', () => {
       expect(element).not.toContainElement('oryx-popover[show]');
     });
 
-    describe('and mouseover event dispatched', () => {
+    describe('and mouseenter event dispatched', () => {
       beforeEach(async () => {
-        element.dispatchEvent(new MouseEvent('mouseover'));
+        element.dispatchEvent(new MouseEvent('mouseenter'));
       });
 
       it('should show the popover', async () => {
         expect(element).toContainElement('oryx-popover[show]');
       });
 
-      describe('and mouseout event dispatched', () => {
+      describe('and mouseleave event dispatched', () => {
         beforeEach(async () => {
-          element.dispatchEvent(new MouseEvent('mouseout'));
+          element.dispatchEvent(new MouseEvent('mouseleave'));
         });
 
         it('should not yet hide the popover', async () => {
           expect(element).toContainElement('oryx-popover[show]');
+        });
+
+        describe('but when 99ms have passed', () => {
+          beforeEach(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 99));
+          });
+
+          it('should still show the popover', async () => {
+            expect(element).toContainElement('oryx-popover[show]');
+          });
         });
 
         describe('but when 100ms have passed', () => {
