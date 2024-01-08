@@ -51,17 +51,19 @@ export class CompositionComponent
   protected contextController = new ContextController(this);
   protected componentsController = new CompositionComponentsController(this);
 
+  protected componentFromRoute$ = computed(() =>
+    this.experienceService
+      .getComponent({ route: this.route })
+      .pipe(map((component) => (component?.id ? component : null)))
+  );
+
   @elementEffect()
   protected $uidFromRoute = effect(() => {
     if (!this.route) {
       return;
     }
 
-    const component = signal(
-      this.experienceService
-        .getComponent({ route: this.route })
-        .pipe(map((component) => (component?.id ? component : null)))
-    )();
+    const component = this.componentFromRoute$();
 
     if (component === null || !component?.id) {
       this.uid = undefined;
