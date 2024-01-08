@@ -1,5 +1,5 @@
 import { isSafari, nonFocusableOnClickInSafari } from '@spryker-oryx/ui';
-import { isFocusable } from '@spryker-oryx/utilities';
+import { debounce, isFocusable } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
 import { PopoverComponent } from '../popover.component';
@@ -57,6 +57,8 @@ export class ToggleController implements ReactiveController {
    */
   protected shouldBeFocused: EventTarget | null = null;
 
+  protected lastMouseMove = 0;
+
   async hostConnected(): Promise<void> {
     window.addEventListener('blur', this.handleBlur);
 
@@ -68,8 +70,9 @@ export class ToggleController implements ReactiveController {
     this.host.addEventListener('keydown', this.handleKeydown);
     this.host.addEventListener('keyup', this.handleKeyup);
 
-    this.host.addEventListener('mouseover', this.handleMouseOver);
-    this.host.addEventListener('mouseout', this.handleMouseOut);
+    this.host.addEventListener('mouseenter', this.handleMouseOver);
+    this.host.addEventListener('mousemove', this.handleMouseMove);
+    this.host.addEventListener('mouseleave', this.handleMouseOut);
 
     if (this.host.hasAttribute('open')) {
       //simulate first updated hook
@@ -90,8 +93,8 @@ export class ToggleController implements ReactiveController {
     this.host.removeEventListener('mouseup', this.handleMouseup);
     this.host.removeEventListener('keydown', this.handleKeydown);
     this.host.removeEventListener('keyup', this.handleKeyup);
-    this.host.removeEventListener('mouseover', this.handleMouseOver);
-    this.host.removeEventListener('mouseout', this.handleMouseOut);
+    this.host.removeEventListener('mouseenter', this.handleMouseOver);
+    this.host.removeEventListener('mouseleave', this.handleMouseOut);
   }
 
   protected handleBlur(): void {
@@ -124,7 +127,11 @@ export class ToggleController implements ReactiveController {
 
   protected handleMouseOver(): void {
     if (!this.host.openOnHover) return;
-    this.toggle(true);
+    this.host.dispatchEvent(new Event('focusin'));
+  }
+
+  protected handleMouseMove(): void {
+    this.lastMouseMove = Date.now();
   }
 
   /**
@@ -137,34 +144,41 @@ export class ToggleController implements ReactiveController {
    */
   protected handleMouseOut(): void {
     if (!this.host.openOnHover) return;
+    const currentTimestamp = Date.now();
 
-    let mouseX: number, mouseY: number;
-    const syncMouseCoordinates = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-
-    document.addEventListener('mousemove', syncMouseCoordinates);
-
-    setTimeout(() => {
-      document.removeEventListener('mousemove', syncMouseCoordinates);
-      const triggerBox = this.host!.getBoundingClientRect();
-      const dropdownBox = this.element!.getBoundingClientRect();
-      const isInHost =
-        mouseX >= triggerBox.left &&
-        mouseX <= triggerBox.right &&
-        mouseY >= triggerBox.top &&
-        mouseY <= triggerBox.bottom;
-      const isInPopover =
-        mouseX >= dropdownBox.left &&
-        mouseX <= dropdownBox.right &&
-        mouseY >= dropdownBox.top &&
-        mouseY <= dropdownBox.bottom;
-
-      if (!isInHost && !isInPopover) {
-        this.toggle(false);
+    debounce(() => {
+      if (currentTimestamp > this.lastMouseMove) {
+        this.host.dispatchEvent(new Event('focusout'));
       }
-    }, 100);
+    }, 300)();
+
+    // let mouseX: number, mouseY: number;
+    // const syncMouseCoordinates = (e: MouseEvent) => {
+    //   mouseX = e.clientX;
+    //   mouseY = e.clientY;
+    // };
+
+    // document.addEventListener('mousemove', syncMouseCoordinates);
+
+    // setTimeout(() => {
+    //   document.removeEventListener('mousemove', syncMouseCoordinates);
+    //   const triggerBox = this.host!.getBoundingClientRect();
+    //   const dropdownBox = this.element!.getBoundingClientRect();
+    //   const isInHost =
+    //     mouseX >= triggerBox.left &&
+    //     mouseX <= triggerBox.right &&
+    //     mouseY >= triggerBox.top &&
+    //     mouseY <= triggerBox.bottom;
+    //   const isInPopover =
+    //     mouseX >= dropdownBox.left &&
+    //     mouseX <= dropdownBox.right &&
+    //     mouseY >= dropdownBox.top &&
+    //     mouseY <= dropdownBox.bottom;
+
+    //   if (!isInHost && !isInPopover) {
+    //     this.toggle(false);
+    //   }
+    // }, 100);
   }
 
   protected handleMousedown(e: MouseEvent): void {
@@ -361,5 +375,6 @@ export class ToggleController implements ReactiveController {
     this.handleContentCloseEvent = this.handleContentCloseEvent.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 }
