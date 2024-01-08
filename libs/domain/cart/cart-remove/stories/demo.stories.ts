@@ -7,7 +7,7 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html` <oryx-cart-remove cartId="single"></oryx-cart-remove> `;
+  return html` <oryx-cart-remove></oryx-cart-remove> `;
 };
 
 export const Demo = Template.bind({});
@@ -23,7 +23,6 @@ Demo.play = async (obj: {
 
   const element =
     obj.canvasElement.querySelector<LitElement>('oryx-cart-remove');
-  console.log(element?.renderRoot.querySelector<LitElement>('oryx-button'));
 
   element?.renderRoot.querySelector<LitElement>('oryx-button')?.click();
 };
