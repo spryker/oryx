@@ -232,6 +232,7 @@
       ],
       "@spryker-oryx/product/id": ["libs/domain/product/id/index.ts"],
       "@spryker-oryx/product/images": ["libs/domain/product/images/index.ts"],
+      "@spryker-oryx/product/jsonld": ["libs/domain/product/jsonld/index.ts"],
       "@spryker-oryx/product/labels": ["libs/domain/product/labels/index.ts"],
       "@spryker-oryx/product/list": ["libs/domain/product/list/index.ts"],
       "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
