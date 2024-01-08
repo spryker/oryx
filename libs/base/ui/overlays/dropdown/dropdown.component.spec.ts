@@ -74,7 +74,12 @@ describe('DropdownComponent', () => {
 
       describe('and mouseleave event dispatched', () => {
         beforeEach(async () => {
+          vi.useFakeTimers();
           element.dispatchEvent(new MouseEvent('mouseleave'));
+        });
+
+        afterEach(() => {
+          vi.clearAllTimers();
         });
 
         it('should not yet hide the popover', async () => {
@@ -83,7 +88,7 @@ describe('DropdownComponent', () => {
 
         describe('but when 99ms have passed', () => {
           beforeEach(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 99));
+            vi.advanceTimersByTime(99);
           });
 
           it('should still show the popover', async () => {
@@ -93,7 +98,7 @@ describe('DropdownComponent', () => {
 
         describe('but when 100ms have passed', () => {
           beforeEach(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            vi.advanceTimersByTime(100);
           });
 
           it('should hide the popover', async () => {
