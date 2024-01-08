@@ -1,8 +1,9 @@
 import { inject } from '@spryker-oryx/di';
-import { JsonLdNormalizer, ProductJSONLD } from '@spryker-oryx/site';
+import { JsonLdNormalizer } from '@spryker-oryx/site';
 import { Observable, map, of } from 'rxjs';
 import { ProductCategoryService } from '..';
 import { Product } from '../../models';
+import { ProductJSONLD } from './model';
 
 export class ProductJsonLdNormalizer implements JsonLdNormalizer<Product> {
   protected productCategoryService = inject(ProductCategoryService);
