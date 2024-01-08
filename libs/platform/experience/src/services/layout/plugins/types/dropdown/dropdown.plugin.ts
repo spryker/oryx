@@ -39,6 +39,7 @@ export class DropdownLayoutPlugin implements LayoutPlugin {
             outer: html`<oryx-dropdown
               .position=${options.dropdownPosition}
               vertical-align
+              ?openOnHover=${options.dropdownOnHover}
             >
               ${renderLabelSlot(data, 'trigger')}
 

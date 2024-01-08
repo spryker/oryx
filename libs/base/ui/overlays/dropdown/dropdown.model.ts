@@ -45,7 +45,14 @@ export interface DropdownProperties {
   triggerIconSize?: Size;
 
   /**
+   * Indicates that the popover will be opened on hover. The keyboard user will have a similarly
+   * experience when the focus is moved to the trigger element.
+   */
+  openOnHover?: boolean;
+
+  /**
    * Indicates that the popover will be opened on focus.
+   * @deprecated since version 1.4 use openOnHover instead
    */
   showOnFocus?: boolean;
 }
