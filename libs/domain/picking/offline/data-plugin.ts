@@ -4,6 +4,7 @@ import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { PickingListStatus } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   Observable,
@@ -92,7 +93,11 @@ export class OfflineDataPlugin implements AppPlugin {
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
     return onlineAdapter
-      .get({ status: PickingListStatus.ReadyForPicking })
+      .get(
+        featureVersion >= '1.4'
+          ? { status: PickingListStatus.ReadyForPicking }
+          : {}
+      )
       .pipe(
         map((pl) => {
           const productIds = new Set<string>();
