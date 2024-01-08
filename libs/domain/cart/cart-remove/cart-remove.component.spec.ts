@@ -120,7 +120,7 @@ describe('CartRemoveComponent', () => {
 
       it('should push a notification with removed cart name', () => {
         expect(notificationService.push).toHaveBeenCalledWith({
-          type: AlertType.Error,
+          type: AlertType.Success,
           content: {
             token: 'carts.remove.<name>-removed',
             values: { name: mockDefaultCart.name },
@@ -130,6 +130,21 @@ describe('CartRemoveComponent', () => {
 
       it('should close the modal', () => {
         expect(element).not.toContainElement('oryx-modal');
+      });
+    });
+
+    describe('and alt key pressed', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-remove cartId="mock"></oryx-cart-remove>`
+        );
+        element.renderRoot
+          .querySelector('oryx-button')
+          ?.dispatchEvent(new MouseEvent('click', { altKey: true }));
+      });
+
+      it('should remove the cart without confirmation', () => {
+        expect(cartService.deleteCart).toHaveBeenCalled();
       });
     });
   });

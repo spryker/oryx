@@ -17,7 +17,7 @@ export class CartRemoveComponent extends CartComponentMixin(
   protected notificationService = resolve(NotificationService);
 
   @state() protected requestsConfirmation = false;
-  @state() protected isLoading = false;
+  @state() protected inProgress = false;
 
   protected override render(): TemplateResult | void {
     if (!this.$cart()?.id) return;
@@ -34,8 +34,14 @@ export class CartRemoveComponent extends CartComponentMixin(
     `;
   }
 
-  protected onRemove(): void {
-    this.requestsConfirmation = true;
+  protected onRemove(e: PointerEvent): void {
+    console.log(e.altKey);
+
+    if (e.altKey) {
+      this.onConfirm();
+    } else {
+      this.requestsConfirmation = true;
+    }
   }
 
   protected renderRemoveConfirmationModal(): TemplateResult | void {
@@ -55,14 +61,14 @@ export class CartRemoveComponent extends CartComponentMixin(
         .color=${ButtonColor.Error}
         .size=${ButtonSize.Md}
         .text=${this.i18n('carts.remove.button.remove')}
-        ?loading=${this.isLoading}
+        ?loading=${this.inProgress}
         @click=${this.onConfirm}
       ></oryx-button>
     </oryx-modal>`;
   }
 
   protected onConfirm(): void {
-    this.isLoading = true;
+    this.inProgress = true;
 
     const cart = this.$cart();
     const name = cart?.name;
@@ -71,16 +77,18 @@ export class CartRemoveComponent extends CartComponentMixin(
     this.cartService.deleteCart({ cartId }).subscribe({
       next: () => {
         this.notificationService.push({
-          type: AlertType.Error,
+          type: AlertType.Success,
           content: {
             token: 'carts.remove.<name>-removed',
             values: { name },
           },
         });
         this.requestsConfirmation = false;
+        this.inProgress = false;
       },
-      complete: () => {
-        this.isLoading = false;
+      error: (e) => {
+        this.inProgress = false;
+        throw e;
       },
     });
   }
