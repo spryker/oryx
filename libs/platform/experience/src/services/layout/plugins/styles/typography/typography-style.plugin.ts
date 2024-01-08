@@ -24,6 +24,7 @@ export class TypographyStylePlugin implements LayoutPlugin {
       'font-size': `var(--oryx-typography-${styles.typography}-size)`,
       'font-weight': `var(--oryx-typography-${styles.typography}-weight)`,
       'line-height': `var(--oryx-typography-${styles.typography}-line)`,
+      'text-transform': `var(--oryx-typography-${styles.typography}-transform)`,
     });
   }
 }

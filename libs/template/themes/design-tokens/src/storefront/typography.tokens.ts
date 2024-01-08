@@ -9,6 +9,7 @@ export const typographyTokens: ThemeToken = {
       size: '0.8571428571rem',
       line: '1.3333333333em',
       weight: '600',
+      transform: 'uppercase',
     },
     'subtitle-small': {
       size: '0.8571428571rem',
