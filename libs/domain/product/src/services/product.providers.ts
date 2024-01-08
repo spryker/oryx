@@ -66,6 +66,7 @@ import {
   ProductMediaConfig,
   productMediaConfig,
 } from './images/product-media.config';
+import { productJsonLdNormalizers } from './jsonld';
 import {
   DefaultProductListAdapter,
   DefaultProductListPageService,
@@ -238,4 +239,5 @@ export const productProviders: Provider[] = [
     service: ProductService,
     context: featureVersion >= '1.4' ? ProductContext.SKU : undefined,
   }),
+  ...productJsonLdNormalizers,
 ];
