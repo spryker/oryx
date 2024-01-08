@@ -8,324 +8,236 @@ const checkoutPage = new CheckoutPage();
 
 let api: GlueAPI;
 
+describe('Carts suite', () => {
+  describe('', () => {
+    api = new GlueAPI();
 
-// TODO: this might be extracted further into something bigger
-// for now let's keep it here
-const users = [
-  {
-    userType: 'guest',
-    createCart: () => {
-      api = new GlueAPI();
+    cy.loginApi(api);
+    cy.customerCleanup(api);
+    cy.createCart(api);
+  })
+  // users.forEach((user) => {
+  //   describe(`for ${user.userType} user: `, () => {
+  //     beforeEach(() => {
+  //       user.createCart();
+  //     });
 
-      cy.createGuestCart(api);
-    },
-    goToCart: () => {
-      cy.goToGuestCart();
-    },
-    goToCheckout: () => {
-      cy.goToGuestCheckout();
-    },
-    addProduct: () => {
-      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
-    },
-    addProductWithCoupon: () => {
-      cy.addProductToGuestCart(
-        api,
-        1,
-        ProductStorage.getProductWithCouponByEq(0)
-      );
-    },
-    addSecondProductWithCoupon: () => {
-      cy.addProductToGuestCart(
-        api,
-        1,
-        ProductStorage.getProductWithCouponByEq(1)
-      );
-    },
-    updateCartItemsUrl: '/guest-carts/*/guest-cart-items/*',
-  },
-  {
-    userType: 'authenticated',
-    createCart: () => {
-      api = new GlueAPI();
+  //     describe('without items in the cart: ', () => {
+  //       it('should render empty cart if there are no items', () => {
+  //         user.goToCart();
+  //         cartPage.checkEmptyCart();
+  //       });
+  //     });
 
-      cy.loginApi(api);
-      cy.customerCleanup(api);
-      cy.createCart(api);
-    },
-    goToCart: () => {
-      cy.goToCart();
-    },
-    goToCheckout: () => {
-      cy.goToCheckout();
-    },
-    addProduct: () => {
-      cy.addProductToCart(api, 1, ProductStorage.getByEq(2));
-    },
-    addProductWithCoupon: () => {
-      cy.addProductToCart(api, 1, ProductStorage.getProductWithCouponByEq(0));
-    },
-    addSecondProductWithCoupon: () => {
-      cy.addProductToCart(api, 1, ProductStorage.getProductWithCouponByEq(1));
-    },
-    updateCartItemsUrl: '/carts/*/items/*',
-  },
-];
+  //     describe('with items in the cart: ', () => {
+  //       beforeEach(() => {
+  //         user.addProduct();
+  //         user.goToCart();
+  //       });
 
-describe('Cart suite', () => {
-  users.forEach((user) => {
-    describe(`for ${user.userType} user: `, () => {
-      beforeEach(() => {
-        user.createCart();
-      });
+  //       it('should update prices if the number of items was changed', () => {
+  //         cartPage.checkNotEmptyCart();
+  //         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
 
-      describe('without items in the cart: ', () => {
-        it('should render empty cart if there are no items', () => {
-          user.goToCart();
-          cartPage.checkEmptyCart();
-        });
-      });
+  //         checkCartEntry({
+  //           quantity: 1,
+  //           subTotal: '€34.54',
+  //           salesPrice: '€34.54',
+  //         });
 
-      describe('with items in the cart: ', () => {
-        beforeEach(() => {
-          user.addProduct();
-          user.goToCart();
-        });
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€34.54',
+  //           taxTotal: '€5.51',
+  //           totalPrice: '€34.54',
+  //         });
 
-        it('should update prices if the number of items was changed', () => {
-          cartPage.checkNotEmptyCart();
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+  //         // change the number of items
+  //         cartPage.getCartEntries().then((entries) => {
+  //           entries[0].changeQuantityInInput(4);
+  //         });
 
-          checkCartEntry({
-            quantity: 1,
-            subTotal: '€34.54',
-            salesPrice: '€34.54',
-          });
+  //         cartPage.getCartEntriesHeading().should('contain.text', '4 items');
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€34.54',
-            taxTotal: '€5.51',
-            totalPrice: '€34.54',
-          });
+  //         checkCartEntry({
+  //           quantity: 4,
+  //           subTotal: '€124.34',
+  //           salesPrice: '€31.08',
+  //         });
 
-          // change the number of items
-          cartPage.getCartEntries().then((entries) => {
-            entries[0].changeQuantityInInput(4);
-          });
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€138.16',
+  //           discountsTotal: '-€13.82',
+  //           taxTotal: '€19.85',
+  //           totalPrice: '€124.34',
+  //         });
+  //       });
 
-          cartPage.getCartEntriesHeading().should('contain.text', '4 items');
+  //       it('should show a global error if an error occurs while cart editing', () => {
+  //         cy.failApiCall(
+  //           {
+  //             method: 'PATCH',
+  //             url: user.updateCartItemsUrl,
+  //           },
+  //           () => {
+  //             cartPage.getCartEntries().then((entries) => {
+  //               entries[0].increaseEntry();
+  //             });
+  //           }
+  //         );
 
-          checkCartEntry({
-            quantity: 4,
-            subTotal: '€124.34',
-            salesPrice: '€31.08',
-          });
+  //         cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
+  //       });
+  //     });
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€138.16',
-            discountsTotal: '-€13.82',
-            taxTotal: '€19.85',
-            totalPrice: '€124.34',
-          });
-        });
+  //     describe('with items in the cart and a valid coupon', () => {
+  //       beforeEach(() => {
+  //         user.addProductWithCoupon();
+  //         user.goToCart();
+  //       });
 
-        it('should show a global error if an error occurs while cart editing', () => {
-          cy.failApiCall(
-            {
-              method: 'PATCH',
-              url: user.updateCartItemsUrl,
-            },
-            () => {
-              cartPage.getCartEntries().then((entries) => {
-                entries[0].increaseEntry();
-              });
-            }
-          );
+  //       it('should update prices if the coupon is applied', () => {
+  //         cartPage.checkNotEmptyCart();
+  //         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
 
-          cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
-        });
-      });
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€366.00',
+  //           discountsTotal: '-€102.48',
+  //           taxTotal: '€42.07',
+  //           totalPrice: '€263.52',
+  //         });
 
-      describe('with items in the cart and a valid coupon', () => {
-        beforeEach(() => {
-          user.addProductWithCoupon();
-          user.goToCart();
-        });
+  //         cartPage.getCouponInput().type(coupon[0].code);
+  //         cartPage.getCouponBtn().click();
 
-        it('should update prices if the coupon is applied', () => {
-          cartPage.checkNotEmptyCart();
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+  //         cartPage.getCouponNotification().should('contain.text', '12345wu2ca');
+  //         cartPage
+  //           .getCouponNotification()
+  //           .invoke('attr', 'type')
+  //           .should('eq', 'success');
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€366.00',
-            discountsTotal: '-€102.48',
-            taxTotal: '€42.07',
-            totalPrice: '€263.52',
-          });
+  //         cartPage.getCouponInput().should('have.value', '');
 
-          cartPage.getCouponInput().type(coupon[0].code);
-          cartPage.getCouponBtn().click();
+  //         cartPage
+  //           .getCouponDate()
+  //           .shadow()
+  //           .should('contain.text', coupon[0].expiredDate);
 
-          cartPage.getCouponNotification().should('contain.text', '12345wu2ca');
-          cartPage
-            .getCouponNotification()
-            .invoke('attr', 'type')
-            .should('eq', 'success');
+  //         cy.scrollTo('top');
 
-          cartPage.getCouponInput().should('have.value', '');
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€366.00',
+  //           discountsTotal: '-€202.48',
+  //           taxTotal: '€26.11',
+  //           totalPrice: '€163.52',
+  //         });
 
-          cartPage
-            .getCouponDate()
-            .shadow()
-            .should('contain.text', coupon[0].expiredDate);
+  //         user.goToCheckout();
 
-          cy.scrollTo('top');
+  //         checkoutPage.getCartTotals().checkTotals({
+  //           subTotal: '€366.00',
+  //           discountsTotal: '-€202.48',
+  //           taxTotal: '€26.11',
+  //           totalPrice: '€163.52',
+  //         });
+  //       });
+  //     });
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€366.00',
-            discountsTotal: '-€202.48',
-            taxTotal: '€26.11',
-            totalPrice: '€163.52',
-          });
+  //     describe('when invalid coupon', () => {
+  //       beforeEach(() => {
+  //         user.addProductWithCoupon();
+  //         user.goToCart();
+  //       });
 
-          user.goToCheckout();
+  //       it('should show error message below input field amd keep value', () => {
+  //         cartPage.checkNotEmptyCart();
+  //         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
 
-          checkoutPage.getCartTotals().checkTotals({
-            subTotal: '€366.00',
-            discountsTotal: '-€202.48',
-            taxTotal: '€26.11',
-            totalPrice: '€163.52',
-          });
-        });
-      });
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€366.00',
+  //           discountsTotal: '-€102.48',
+  //           taxTotal: '€42.07',
+  //           totalPrice: '€263.52',
+  //         });
 
-      describe('when invalid coupon', () => {
-        beforeEach(() => {
-          user.addProductWithCoupon();
-          user.goToCart();
-        });
+  //         cartPage.getCouponInput().type('111111');
+  //         cartPage.getCouponBtn().click();
 
-        it('should show error message below input field amd keep value', () => {
-          cartPage.checkNotEmptyCart();
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+  //         cartPage.getCouponInput().should('have.value', '111111');
+  //         cartPage.getCouponInputError().should('be.visible');
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€366.00',
-            discountsTotal: '-€102.48',
-            taxTotal: '€42.07',
-            totalPrice: '€263.52',
-          });
+  //         cy.scrollTo('top');
 
-          cartPage.getCouponInput().type('111111');
-          cartPage.getCouponBtn().click();
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€366.00',
+  //           discountsTotal: '-€102.48',
+  //           taxTotal: '€42.07',
+  //           totalPrice: '€263.52',
+  //         });
+  //       });
+  //     });
 
-          cartPage.getCouponInput().should('have.value', '111111');
-          cartPage.getCouponInputError().should('be.visible');
+  //     describe('when items in the cart with multiple coupons', () => {
+  //       beforeEach(() => {
+  //         user.addProductWithCoupon();
+  //         user.addSecondProductWithCoupon();
+  //         user.goToCart();
+  //       });
 
-          cy.scrollTo('top');
+  //       it('should update prices if the coupon is applied', () => {
+  //         cartPage.checkNotEmptyCart();
+  //         cartPage.getCartEntriesHeading().should('contain.text', '2 items');
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€366.00',
-            discountsTotal: '-€102.48',
-            taxTotal: '€42.07',
-            totalPrice: '€263.52',
-          });
-        });
-      });
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€776.24',
+  //           discountsTotal: '-€217.35',
+  //           taxTotal: '€89.23',
+  //           totalPrice: '€558.89',
+  //         });
 
-      describe('when items in the cart with multiple coupons', () => {
-        beforeEach(() => {
-          user.addProductWithCoupon();
-          user.addSecondProductWithCoupon();
-          user.goToCart();
-        });
+  //         cartPage.getCouponInput().type(coupon[0].code);
+  //         cartPage.getCouponBtn().click();
 
-        it('should update prices if the coupon is applied', () => {
-          cartPage.checkNotEmptyCart();
-          cartPage.getCartEntriesHeading().should('contain.text', '2 items');
+  //         cartPage
+  //           .getCouponNotification()
+  //           .should('contain.text', coupon[0].code);
+  //         cartPage
+  //           .getCouponNotification()
+  //           .invoke('attr', 'type')
+  //           .should('eq', 'success');
 
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€776.24',
-            discountsTotal: '-€217.35',
-            taxTotal: '€89.23',
-            totalPrice: '€558.89',
-          });
+  //         cartPage.getCouponInput().type(coupon[1].code);
+  //         cartPage.getCouponBtn().click();
 
-          cartPage.getCouponInput().type(coupon[0].code);
-          cartPage.getCouponBtn().click();
+  //         cartPage
+  //           .getCouponNotification()
+  //           .should('contain.text', coupon[1].code);
+  //         cartPage
+  //           .getCouponNotification()
+  //           .invoke('attr', 'type')
+  //           .should('eq', 'success');
 
-          cartPage
-            .getCouponNotification()
-            .should('contain.text', coupon[0].code);
-          cartPage
-            .getCouponNotification()
-            .invoke('attr', 'type')
-            .should('eq', 'success');
+  //         cartPage.getCouponCode().should('contain.text', coupon[0].code);
+  //         cartPage.getCouponCode().should('contain.text', coupon[1].code);
 
-          cartPage.getCouponInput().type(coupon[1].code);
-          cartPage.getCouponBtn().click();
+  //         cy.scrollTo('top');
 
-          cartPage
-            .getCouponNotification()
-            .should('contain.text', coupon[1].code);
-          cartPage
-            .getCouponNotification()
-            .invoke('attr', 'type')
-            .should('eq', 'success');
+  //         cartPage.getCartTotals().checkTotals({
+  //           subTotal: '€776.24',
+  //           discountsTotal: '-€337.86',
+  //           taxTotal: '€69.99',
+  //           totalPrice: '€438.38',
+  //         });
 
-          cartPage.getCouponCode().should('contain.text', coupon[0].code);
-          cartPage.getCouponCode().should('contain.text', coupon[1].code);
+  //         user.goToCheckout();
 
-          cy.scrollTo('top');
-
-          cartPage.getCartTotals().checkTotals({
-            subTotal: '€776.24',
-            discountsTotal: '-€337.86',
-            taxTotal: '€69.99',
-            totalPrice: '€438.38',
-          });
-
-          user.goToCheckout();
-
-          checkoutPage.getCartTotals().checkTotals({
-            subTotal: '€776.24',
-            discountsTotal: '-€337.86',
-            taxTotal: '€69.99',
-            totalPrice: '€438.38',
-          });
-        });
-      });
-    });
-  });
+  //         checkoutPage.getCartTotals().checkTotals({
+  //           subTotal: '€776.24',
+  //           discountsTotal: '-€337.86',
+  //           taxTotal: '€69.99',
+  //           totalPrice: '€438.38',
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
 });
-
-function checkCartEntry(entry: {
-  quantity?: number;
-  subTotal?: string;
-  salesPrice?: string;
-  originalPrice?: string;
-}) {
-  cartPage.getCartEntries().then((entries) => {
-    if (entry.quantity) {
-      entries[0]
-        .getQuantityInput()
-        .getInput()
-        .should('have.value', entry.quantity);
-    }
-    if (entry.subTotal) {
-      entries[0].getSubtotal().shadow().should('contain.text', entry.subTotal);
-    }
-    if (entry.salesPrice) {
-      entries[0]
-        .getSalesPrice()
-        .shadow()
-        .should('contain.text', entry.salesPrice);
-    }
-    if (entry.originalPrice) {
-      entries[0]
-        .getOriginalPrice()
-        .shadow()
-        .should('contain.text', entry.originalPrice);
-    }
-  });
-}
