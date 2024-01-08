@@ -4,6 +4,7 @@ import { I18nMixin, Size, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { UiStateController } from '../../src/';
 import {
   CollapsibleAppearance,
   CollapsibleAttributes,
@@ -19,12 +20,19 @@ export class CollapsibleComponent
   static styles =
     featureVersion >= '1.4' ? collapsibleStyles : [collapsibleBaseStyle];
 
+  protected uiController = new UiStateController(this);
+
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
   @property({ type: Boolean, reflect: true }) open?: boolean;
   @property() heading?: string;
+  @property() persistedStateKey?: string;
   @property({ type: Boolean }) nonTabbable?: boolean;
 
   @query('details') protected details?: HTMLDetailsElement;
+
+  protected firstUpdated(): void {
+    this.syncState();
+  }
 
   /**
    * Indicates that the collapsible was opened by a user. We need this info since
@@ -58,8 +66,20 @@ export class CollapsibleComponent
     `;
   }
 
+  protected onClick(event: PointerEvent): void {
+    this.isManuallyOpened = true;
+    this.dispatchEvent(
+      new CustomEvent<ToggleEventDetail>('toggle', {
+        bubbles: true,
+        composed: true,
+        detail: { toggleAll: event.altKey },
+      })
+    );
+  }
+
   protected onToggle(event: Event): void {
     this.open = this.details?.open;
+    if (featureVersion >= '1.4') this.syncState(true);
     if (!this.isManuallyOpened) {
       this.dispatchEvent(
         new CustomEvent('toggle', { bubbles: true, composed: true })
@@ -73,15 +93,16 @@ export class CollapsibleComponent
     }
   }
 
-  protected onClick(event: PointerEvent): void {
-    this.isManuallyOpened = true;
-    this.dispatchEvent(
-      new CustomEvent<ToggleEventDetail>('toggle', {
-        bubbles: true,
-        composed: true,
-        detail: { toggleAll: event.altKey },
-      })
-    );
+  protected syncState(store = false): void {
+    if (!this.persistedStateKey) return;
+
+    if (store) {
+      if (this.isManuallyOpened) {
+        this.uiController.set(this.persistedStateKey, this.open);
+      }
+    } else if (this.uiController.has(this.persistedStateKey)) {
+      this.open = this.uiController.get<boolean>(this.persistedStateKey);
+    }
   }
 
   protected renderToggleControl(): TemplateResult {
