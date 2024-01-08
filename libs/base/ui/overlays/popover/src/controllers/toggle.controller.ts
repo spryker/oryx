@@ -1,5 +1,5 @@
 import { isSafari, nonFocusableOnClickInSafari } from '@spryker-oryx/ui';
-import { debounce, isFocusable } from '@spryker-oryx/utilities';
+import { debounce, isFocusable, throttle } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
 import { PopoverComponent } from '../popover.component';
@@ -95,6 +95,7 @@ export class ToggleController implements ReactiveController {
     this.host.removeEventListener('keyup', this.handleKeyup);
     this.host.removeEventListener('mouseenter', this.handleMouseEnter);
     this.host.removeEventListener('mouseleave', this.handleMouseLeave);
+    this.host.removeEventListener('mousemove', this.handleMouseMove);
   }
 
   protected handleBlur(): void {
@@ -340,6 +341,6 @@ export class ToggleController implements ReactiveController {
     this.handleContentCloseEvent = this.handleContentCloseEvent.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
-    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseMove = throttle(this.handleMouseMove.bind(this), 50);
   }
 }
