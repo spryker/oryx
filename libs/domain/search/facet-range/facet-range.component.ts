@@ -6,6 +6,7 @@ import {
   computed,
   effect,
   elementEffect,
+  featureVersion,
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -122,10 +123,11 @@ export class SearchRangeFacetComponent
     if (!facet) return;
 
     return html`<oryx-search-facet-value-navigation
-      ?open="${this.open}"
-      ?enableClear="${!this.disableClear}"
-      ?dirty="${this.$isDirty()}"
-      .heading="${this.name}"
+      ?open=${this.open}
+      ?enableClear=${!this.disableClear}
+      ?dirty=${this.$isDirty()}
+      .heading=${this.name}
+      .key=${featureVersion >= '1.4' ? facet.parameter : undefined}
     >
       <section>${this.renderControls(facet)}</section>
     </oryx-search-facet-value-navigation>`;

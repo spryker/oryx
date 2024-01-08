@@ -21,6 +21,12 @@ export interface CollapsibleAttributes {
    * Prevent focus by keyboard navigation
    */
   nonTabbable?: boolean;
+
+  /**
+   * The key to use for storing the open state. If set, the open state is stored
+   * in memory and restored when the component is used in the same session.
+   */
+  persistedStateKey?: string;
 }
 
 export const enum CollapsibleAppearance {
@@ -33,4 +39,8 @@ export const enum CollapsibleAppearance {
    * Renders the toggle button next to the header.
    */
   Inline = 'inline',
+}
+
+export interface ToggleEventDetail {
+  toggleAll?: boolean;
 }
