@@ -158,22 +158,11 @@ export const mainHeader = (): ExperienceComponent[] => {
               components: [{ type: 'oryx-auth-login-link' }],
             },
             {
-              type: 'oryx-site-navigation-item',
-              options: {
-                label: 'cart',
-                badge: 'CART.SUMMARY',
-                icon: IconTypes.Cart,
-                url: { type: 'cart' },
-              },
-            },
-
-            {
               type: 'oryx-composition',
               options: {
                 rules: [
                   {
                     layout: { type: 'dropdown', dropdownOnHover: true },
-                    typography: 'subtitle',
                   },
                 ],
               },
