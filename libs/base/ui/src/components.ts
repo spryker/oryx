@@ -1,3 +1,4 @@
+export * from '../action/action/action.def';
 export * from '../action/button/button.def';
 export * from '../action/color-mode-selector/src/color-mode-selector.def';
 export * from '../action/link/src/link.def';
