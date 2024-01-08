@@ -1,5 +1,5 @@
 import { QueryEvent } from '@spryker-oryx/core';
-import { Cart, CartEntryQualifier } from '../../models';
+import { Cart, CartEntryQualifier, CouponQualifier } from '../../models';
 
 export const CartModificationStart = 'CartModificationStart';
 export type CartModificationStart = QueryEvent<unknown, CartEntryQualifier>;
@@ -24,3 +24,6 @@ export type CartsUpdated = QueryEvent;
 
 export const CartCreated = 'CartCreated';
 export type CartCreated = QueryEvent;
+
+export const CouponRemoved = 'CouponRemoved';
+export type CouponRemoved = QueryEvent<unknown, CouponQualifier>;

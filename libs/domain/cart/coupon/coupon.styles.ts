@@ -16,6 +16,14 @@ export const couponStyles = css`
 
   .code {
     ${headingUtil(HeadingTag.Caption)};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > oryx-icon {
+      color: currentColor;
+      cursor: pointer;
+    }
   }
 
   .name {
