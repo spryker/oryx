@@ -13,6 +13,7 @@ export class PickingInProgressModalComponent extends I18nMixin(LitElement) {
       footerButtonFullWidth
       ?open=${this.open}
       @oryx.close=${this.close}
+      @oryx..modal.closed=${this.close}
       minimal
     >
       <oryx-heading slot="heading">
