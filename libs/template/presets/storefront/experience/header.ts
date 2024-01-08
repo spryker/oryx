@@ -166,10 +166,31 @@ export const mainHeader = (): ExperienceComponent[] => {
                 url: { type: 'cart' },
               },
             },
+
+            {
+              type: 'oryx-composition',
+              options: {
+                rules: [
+                  {
+                    layout: { type: 'dropdown', dropdownOnHover: true },
+                    typography: 'subtitle',
+                  },
+                ],
+              },
+              components: {
+                label: [{ type: 'oryx-cart-summary' }],
+                main: [{ type: 'oryx-cart-list' }],
+              },
+            },
           ],
           options: {
             rules: [
-              { colSpan: 3, layout: 'flex', justify: 'end' },
+              {
+                colSpan: 3,
+                layout: 'flex',
+                justify: 'end',
+                typography: 'subtitle',
+              },
               {
                 query: { breakpoint: Size.Md },
                 colSpan: 2,

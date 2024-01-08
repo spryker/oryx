@@ -4,4 +4,5 @@ export * from '../entries/src/entries.def';
 export * from '../entry/src/entry.def';
 export * from '../heading/heading.def';
 export * from '../quantity-input/src/quantity-input.def';
+export * from '../summary/summary.def';
 export * from '../totals/src/totals.def';

@@ -42,6 +42,7 @@
         "libs/domain/cart/quantity-input/index.ts"
       ],
       "@spryker-oryx/cart/services": ["libs/domain/cart/services/index.ts"],
+      "@spryker-oryx/cart/summary": ["libs/domain/cart/summary/index.ts"],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
       "@spryker-oryx/checkout/account": [
@@ -312,6 +313,7 @@
         "libs/template/themes/design-tokens/index.ts"
       ],
       "@spryker-oryx/ui": ["libs/base/ui/src/index.ts"],
+      "@spryker-oryx/ui/action": ["libs/base/ui/action/action/index.ts"],
       "@spryker-oryx/ui/button": ["libs/base/ui/action/button/index.ts"],
       "@spryker-oryx/ui/card": ["libs/base/ui/structure/card/index.ts"],
       "@spryker-oryx/ui/checkbox": ["libs/base/ui/form/checkbox/index.ts"],
