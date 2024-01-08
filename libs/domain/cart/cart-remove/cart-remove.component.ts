@@ -78,10 +78,12 @@ export class CartRemoveComponent extends CartComponentMixin(
           },
         });
         this.requestsConfirmation = false;
-      },
-      complete: () => {
         this.isLoading = false;
       },
+      error: (e) => {
+        this.isLoading = false;
+        throw e;
+      }
     });
   }
 
