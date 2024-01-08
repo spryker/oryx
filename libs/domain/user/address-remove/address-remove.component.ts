@@ -41,6 +41,7 @@ export class UserAddressRemoveComponent extends I18nMixin(
       open
       .heading=${this.i18n('checkout.address.remove-address')}
       @oryx.close=${this.onClose}
+      @oryx.modal.closed=${this.onClose}
       enableFooter
     >
       <oryx-user-address .addressId=${this.$addressId()}></oryx-user-address>

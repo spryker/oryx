@@ -85,7 +85,9 @@ export class PickingFiltersComponent extends I18nMixin(LitElement) {
         enableNavigateBack
         enableFooter
         @oryx.back=${this.onReset}
+        @oryx.modal.back=${this.onReset}
         @oryx.close=${this.onClose}
+        @oryx.modal.closed=${this.onClose}
       >
         ${this.__renderHeading()}
 
