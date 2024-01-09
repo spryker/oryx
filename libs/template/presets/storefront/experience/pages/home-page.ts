@@ -27,6 +27,22 @@ export const homePage: ExperienceComponent = {
     {
       type: 'oryx-composition',
       id: 'home-hero',
+      options: {
+        rules: [
+          {
+            height: '550px',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'split',
+                    bleed: true,
+                  }
+                : 'split',
+            align: 'end',
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
+          },
+        ],
+      },
       components: [
         {
           type: 'oryx-content-image',
@@ -78,22 +94,6 @@ export const homePage: ExperienceComponent = {
           },
         },
       ],
-      options: {
-        rules: [
-          {
-            height: '550px',
-            layout:
-              featureVersion >= '1.2'
-                ? {
-                    type: 'split',
-                    bleed: true,
-                  }
-                : 'split',
-            align: 'end',
-            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
-          },
-        ],
-      },
     },
     {
       type: 'oryx-product-list',
@@ -149,9 +149,10 @@ export const homePage: ExperienceComponent = {
         brand('HP'),
         brand('TomTom'),
         brand('DELL'),
-        brand('Fujitsu', [{ padding: '0 0 2px' }]),
+        brand('Fujitsu'),
         brand('Asus'),
         brand('Acer'),
+        featureVersion >= '1.4' ? brand('Canon') : {},
       ],
     },
     featureVersion >= '1.2' ? { ref: 'footer' } : {},

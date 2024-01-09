@@ -31,9 +31,12 @@
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
       "@spryker-oryx/cart/coupon": ["libs/domain/cart/coupon/index.ts"],
+      "@spryker-oryx/cart/edit": ["libs/domain/cart/edit/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
       "@spryker-oryx/cart/entry": ["libs/domain/cart/entry/index.ts"],
       "@spryker-oryx/cart/heading": ["libs/domain/cart/heading/index.ts"],
+      "@spryker-oryx/cart/list": ["libs/domain/cart/list/index.ts"],
+      "@spryker-oryx/cart/list-item": ["libs/domain/cart/list-item/index.ts"],
       "@spryker-oryx/cart/mocks": ["libs/domain/cart/src/mocks/index.ts"],
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
@@ -99,8 +102,14 @@
       "@spryker-oryx/experience/composition": [
         "libs/platform/experience/composition/index.ts"
       ],
-      "@spryker-oryx/experience/entity-text": [
-        "libs/platform/experience/entity-text/index.ts"
+      "@spryker-oryx/experience/data-image": [
+        "libs/platform/experience/data-image/index.ts"
+      ],
+      "@spryker-oryx/experience/data-link": [
+        "libs/platform/experience/data-link/index.ts"
+      ],
+      "@spryker-oryx/experience/data-text": [
+        "libs/platform/experience/data-text/index.ts"
       ],
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"
@@ -115,6 +124,17 @@
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
+      "@spryker-oryx/merchant": ["libs/domain/merchant/src/index.ts"],
+      "@spryker-oryx/merchant/mocks": [
+        "libs/domain/merchant/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/merchant/offer": ["libs/domain/merchant/offer/index.ts"],
+      "@spryker-oryx/merchant/offer-list": [
+        "libs/domain/merchant/offer-list/index.ts"
+      ],
+      "@spryker-oryx/merchant/schedule": [
+        "libs/domain/merchant/schedule/index.ts"
+      ],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"

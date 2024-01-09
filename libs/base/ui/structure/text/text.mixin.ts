@@ -28,7 +28,8 @@ export const TextMixin = <T extends Type<LitElement>>(
   class TextMixinClass extends superClass {
     protected convertText(
       raw: string
-    ): DirectiveResult<typeof UnsafeHTMLDirective> {
+    ): DirectiveResult<typeof UnsafeHTMLDirective> | void {
+      if (!raw || typeof raw !== 'string') return;
       let text = this[TextMixinInternals].convertHeadings(raw);
       text = this[TextMixinInternals].convertLinks(text);
       text = this[TextMixinInternals].convertButtons(text);

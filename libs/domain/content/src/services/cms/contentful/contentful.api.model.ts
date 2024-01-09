@@ -1,4 +1,12 @@
 export module ContentfulCmsModel {
+  export interface LinkAsset {
+    sys: {
+      id: string;
+      linkType: 'Asset';
+      type: string;
+    };
+  }
+
   export interface Type {
     disabled: boolean;
     id: string;
@@ -7,6 +15,25 @@ export module ContentfulCmsModel {
     omitted: boolean;
     required: boolean;
     type: string;
+  }
+
+  export interface File {
+    contentType: string;
+    details: {
+      size: number;
+      image?: {
+        width: number;
+        height: number;
+      };
+    };
+    fileName: string;
+    url: string;
+  }
+
+  export interface Asset {
+    description: string;
+    title: string;
+    file: File | Record<string, File>;
   }
 
   export interface Locale {
@@ -37,5 +64,6 @@ export module ContentfulCmsModel {
 
   export type TypesResponse = Response<Type[]>;
   export type EntriesResponse = Response<Entry>;
+  export type AssetsResponse = Response<Asset>;
   export type LocalesResponse = { items: Locale[] };
 }

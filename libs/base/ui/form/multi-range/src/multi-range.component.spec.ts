@@ -255,7 +255,7 @@ describe('MultiRangeComponent', () => {
   });
 
   describe('featureVersion >= 1.2', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       mockFeatureVersion('1.2');
     });
 

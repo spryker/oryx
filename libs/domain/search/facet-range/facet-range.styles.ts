@@ -1,10 +1,17 @@
-import { screenCss } from '@spryker-oryx/utilities';
-import { css } from 'lit';
+import { featureVersion, screenCss } from '@spryker-oryx/utilities';
+import { css, unsafeCSS } from 'lit';
+
+const padding =
+  featureVersion >= '1.4'
+    ? unsafeCSS(``)
+    : css`
+        :host {
+          padding: 4px 1px;
+        }
+      `;
 
 export const searchRangeFacetStyles = css`
-  :host {
-    padding: 4px 1px;
-  }
+  ${padding}
 
   input {
     appearance: textfield;

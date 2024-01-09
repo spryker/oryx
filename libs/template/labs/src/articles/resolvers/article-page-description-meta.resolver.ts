@@ -22,9 +22,9 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(null, ContentContext.Qualifier),
+      this.context.get(null, ContentContext.Content),
       combineLatest([
-        this.context.get(null, ContentContext.Qualifier),
+        this.context.get(null, ContentContext.Content),
         this.router.currentRoute(),
       ]).pipe(map(([type, route]) => route.includes(`/${type}/`))),
     ]);
@@ -32,7 +32,7 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
 
   resolve(): Observable<ElementResolver> {
     return this.context
-      .get<ContentQualifier>(null, ContentContext.Qualifier)
+      .get<ContentQualifier>(null, ContentContext.Content)
       .pipe(
         switchMap((qualifier) => {
           const type = qualifier?.type;

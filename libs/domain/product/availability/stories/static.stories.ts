@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
@@ -9,9 +9,10 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <section>
-      <span>no indicator</span>
-      <span>no exact count</span>
-      <span></span>
+      <span>No indicator</span>
+      <span>No exact count</span>
+      <span>Exact count</span>
+      <span>Hide available</span>
       ${['3', '1', '4'].map(
         (sku) => html`
           <oryx-product-availability
@@ -38,14 +39,23 @@ const Template: Story = (): TemplateResult => {
               enableExactStock: true,
             }}
           ></oryx-product-availability>
+          <oryx-product-availability
+            .sku=${sku}
+            .options=${{
+              threshold: 5,
+              enableIndicator: true,
+              enableExactStock: true,
+              hideInStock: true,
+            }}
+          ></oryx-product-availability>
         `
       )}
     </section>
     <style>
       section {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(4, max-content);
+        gap: 10px 20px;
       }
     </style>
   `;

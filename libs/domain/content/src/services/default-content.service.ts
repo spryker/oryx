@@ -1,7 +1,17 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { catchError, merge, Observable, of, scan } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  map,
+  merge,
+  Observable,
+  of,
+  scan,
+  skip,
+  startWith,
+} from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
@@ -40,14 +50,33 @@ export class DefaultContentService implements ContentService {
     loader: (q: ContentQualifier) => {
       const adapters = this.getAdapters(q);
       return adapters.length
-        ? merge(
-            ...adapters.map((adapter) =>
-              adapter.getAll(q).pipe(catchError(() => of(null)))
+        ? combineLatest(
+            adapters.map((adapter) =>
+              adapter.getAll(q).pipe(
+                startWith(null),
+                catchError(() => of(null))
+              )
             )
           ).pipe(
-            scan<Content[] | null, Content[] | null>(
-              (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
-              null
+            skip(1),
+            map((data) =>
+              data.flat()?.reduce((acc, curr) => {
+                if (!curr) return acc;
+
+                acc ??= [];
+
+                const index = acc?.findIndex(
+                  (content) => content.id === curr.id
+                );
+
+                if (index !== -1) {
+                  acc?.splice(index, 1, curr);
+                } else {
+                  acc?.push(curr);
+                }
+
+                return acc;
+              }, null as Content[] | null)
             )
           )
         : of(null);

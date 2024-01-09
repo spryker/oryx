@@ -4,6 +4,7 @@ import {
   AddCartEntryQualifier,
   Cart,
   CartAdapter,
+  CartCreated,
   CartEntry,
   CartEntryQualifier,
   CartEntryRemoved,
@@ -17,6 +18,7 @@ import {
   CartsUpdated,
   Coupon,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -59,6 +61,13 @@ export class DefaultCartService implements CartService {
     onError: [CartModificationFail],
   };
 
+  protected cartsCommandBase = {
+    onStart: [CartModificationStart],
+    onFinish: [CartModificationEnd],
+    onSuccess: [CartModificationSuccess],
+    onError: [CartModificationFail],
+  };
+
   protected cartsQuery$ = createQuery({
     loader: () => this.adapter.getAll(),
     onLoad: [
@@ -69,7 +78,7 @@ export class DefaultCartService implements CartService {
       },
     ],
     resetOn: [this.identity.get().pipe(skip(1))],
-    refreshOn: [CartsUpdated],
+    refreshOn: [CartsUpdated, CartCreated],
   });
 
   protected cartQuery$ = createQuery({
@@ -111,6 +120,20 @@ export class DefaultCartService implements CartService {
     ...this.cartCommandBase,
     action: (qualifier: UpdateCartQualifier) => {
       return this.adapter.update(qualifier);
+    },
+  });
+
+  protected createCartCommand$ = createCommand({
+    action: (qualifier: CreateCartQualifier) => {
+      return this.adapter.create(qualifier);
+    },
+    onSuccess: [CartCreated],
+  });
+
+  protected deleteCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartQualifier) => {
+      return this.adapter.delete(qualifier);
     },
   });
 
@@ -219,6 +242,10 @@ export class DefaultCartService implements CartService {
     );
   }
 
+  getCarts(): Observable<Cart[] | undefined> {
+    return this.cartsQuery$.get();
+  }
+
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {
     return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
   }
@@ -268,8 +295,16 @@ export class DefaultCartService implements CartService {
     return this.executeWithOptionalCart(qualifier, this.updateEntryCommand$);
   }
 
-  updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+  updateCart(qualifier: UpdateCartQualifier): Observable<Cart> {
     return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
+  }
+
+  createCart(qualifier: CreateCartQualifier): Observable<Cart> {
+    return this.createCartCommand$.execute(qualifier);
+  }
+
+  deleteCart(qualifier: CartQualifier): Observable<unknown> {
+    return this.deleteCartCommand$.execute(qualifier);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {

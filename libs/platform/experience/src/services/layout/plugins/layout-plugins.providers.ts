@@ -9,6 +9,7 @@ import {
 } from './properties';
 import {
   CarouselLayoutPluginToken,
+  CollapsibleLayoutPluginToken,
   ColumnLayoutPluginToken,
   FlexLayoutPluginToken,
   GridLayoutPluginToken,
@@ -17,6 +18,7 @@ import {
   SplitLayoutPluginToken,
   TextLayoutPluginToken,
 } from './types';
+import { DropdownLayoutPluginToken } from './types/dropdown';
 
 export const layoutPluginsProviders: Provider[] = [
   {
@@ -76,6 +78,20 @@ export const layoutPluginsProviders: Provider[] = [
     asyncClass: () =>
       import('./types/carousel/carousel-layout.plugin').then(
         (m) => m.CarouselLayoutPlugin
+      ),
+  },
+  {
+    provide: DropdownLayoutPluginToken,
+    asyncClass: () =>
+      import('./types/dropdown/dropdown.plugin').then(
+        (m) => m.DropdownLayoutPlugin
+      ),
+  },
+  {
+    provide: CollapsibleLayoutPluginToken,
+    asyncClass: () =>
+      import('./types/collapsible/collapsible.plugin').then(
+        (m) => m.CollapsibleLayoutPlugin
       ),
   },
   {

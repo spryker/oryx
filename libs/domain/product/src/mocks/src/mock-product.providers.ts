@@ -5,9 +5,9 @@ import {
   DefaultProductImageService,
   DefaultProductListPageService,
   DefaultProductListService,
+  PRODUCT,
   ProductAdapter,
   ProductCategoryService,
-  ProductContext,
   ProductImageService,
   ProductListAdapter,
   ProductListPageService,
@@ -59,8 +59,7 @@ export const mockProductProviders: Provider[] = [
     provide: ProductCategoryService,
     useClass: MockProductCategoryService,
   },
-  provideEntity('product', {
+  provideEntity(PRODUCT, {
     service: ProductService,
-    context: ProductContext.SKU,
   }),
 ];

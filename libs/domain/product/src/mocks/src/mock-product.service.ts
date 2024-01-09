@@ -6,6 +6,7 @@ import {
   ProductQualifier,
   ProductService,
 } from '@spryker-oryx/product';
+
 import { Observable, of } from 'rxjs';
 
 const img1 = {

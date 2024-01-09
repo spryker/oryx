@@ -91,3 +91,16 @@ type InferI18nFilterName<F> = F extends I18nContextFilter<infer N, object>
 type InferI18nFilterConfig<F> = F extends I18nContextFilter<string, infer C>
   ? C
   : never;
+
+export type I18nContent<T extends string | readonly string[] = string> =
+  | I18nRawContent
+  | I18nTokenContent<T>;
+
+export interface I18nRawContent {
+  raw: string;
+}
+
+export interface I18nTokenContent<T extends string | readonly string[]> {
+  token: T;
+  values?: InferI18nContext<T>;
+}

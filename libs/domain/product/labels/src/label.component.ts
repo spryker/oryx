@@ -1,16 +1,17 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import {
+  PRODUCT,
   ProductContext,
   ProductLabel,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU })
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {

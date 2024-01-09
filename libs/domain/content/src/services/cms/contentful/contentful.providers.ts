@@ -7,7 +7,10 @@ import {
   ContentfulSpace,
   ContentfulToken,
 } from './contentful.model';
-import { contentfulFieldNormalizers } from './normalizers';
+import {
+  contentfulAssetsNormalizers,
+  contentfulFieldNormalizers,
+} from './normalizers';
 
 export const contentfulProviders: Provider[] =
   featureVersion >= '1.4' &&
@@ -23,6 +26,7 @@ export const contentfulProviders: Provider[] =
           useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
         },
         ...contentfulFieldNormalizers,
+        ...contentfulAssetsNormalizers,
         {
           provide: ContentfulContentAdapter,
           useClass: DefaultContentfulContentAdapter,

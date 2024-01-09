@@ -4,6 +4,7 @@ import {
   LayoutPluginConfig,
   LayoutPluginPropertiesParams,
   LayoutStyleProperties,
+  LayoutStylePropertiesArr,
 } from '../../layout.plugin';
 
 export class CanvasStylePlugin implements LayoutPlugin {
@@ -17,22 +18,27 @@ export class CanvasStylePlugin implements LayoutPlugin {
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
     const { styles } = data;
-    const properties: any = {};
+    const properties: LayoutStylePropertiesArr = [];
 
     if (styles.shadow) {
-      properties[
-        'box-shadow'
-      ] = `var(--oryx-shadow-${styles.shadow}) var(--oryx-shadow-color)`;
-      properties['z-index'] = 'var(--oryx-z-index, 1)';
-      properties['isolation'] = 'isolate';
+      properties.push([
+        {
+          'box-shadow': `var(--oryx-shadow-${styles.shadow}) var(--oryx-shadow-color)`,
+        },
+      ]);
     }
 
-    if (styles.background) properties['background'] = styles.background;
-    if (styles.radius) properties['border-radius'] = styles.radius;
-    if (styles.border) properties['border'] = styles.border;
-    if (styles.fill) properties['--oryx-fill'] = styles.fill;
-    properties['overflow'] ??= styles.overflow;
-
+    if (styles.background) properties.push([{ background: styles.background }]);
+    if (styles.radius) properties.push([{ 'border-radius': styles.radius }]);
+    if (styles.border) properties.push([{ border: styles.border }]);
+    if (styles.fill) properties.push([{ '--oryx-fill': styles.fill }]);
+    if (styles.zIndex) {
+      properties.push([{ 'z-index': styles.zIndex }, { omitUnit: true }]);
+      properties.push([
+        { '--oryx-z-index': styles.zIndex },
+        { omitUnit: true },
+      ]);
+    }
     return of(properties);
   }
 }

@@ -4,6 +4,7 @@ import {
   defaultOptions,
 } from '@spryker-oryx/experience';
 import {
+  PRODUCT,
   ProductContext,
   ProductMedia,
   ProductMediaContainerSize,
@@ -37,7 +38,10 @@ const defaultImagesOptions: ProductImagesComponentOptions = {
 };
 
 @defaultOptions(defaultImagesOptions)
-@hydrate({ event: 'mouseover', context: ProductContext.SKU })
+@hydrate({
+  event: 'mouseover',
+  context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
+})
 export class ProductImagesComponent extends ProductMixin(
   ContentMixin<ProductImagesComponentOptions>(LitElement)
 ) {

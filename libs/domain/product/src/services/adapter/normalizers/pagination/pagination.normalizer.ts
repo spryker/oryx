@@ -1,5 +1,5 @@
 import { Transformer } from '@spryker-oryx/core';
-import { ApiProductListModel, Pagination } from '@spryker-oryx/product';
+import { ApiProductListModel, Pagination } from '../../../../models';
 
 export const PaginationNormalizer = 'oryx.PaginationNormalizer*';
 

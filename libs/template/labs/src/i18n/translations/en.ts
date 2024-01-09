@@ -8,6 +8,18 @@ const product = {
     'Available online ({stock, plural, one {one product} other {{stock} products}})',
 };
 
+const carts = {
+  'carts.totals.<count>-carts':
+    'My carts ({count, plural, one {1 cart} other {{count} carts}})',
+  'carts.totals.<count>-items':
+    '({count, plural, 0 {empty} one {1 item} other {{count} items}})',
+  'carts.list.no-cart-entries':
+    'There are no cart entries for this cart available.',
+  'carts.price-mode.gross': '(Gross)',
+  'carts.price-mode.net': '(Net)',
+  'carts.create.cart-<name>-created': 'Cart "{name}" was successfully created',
+};
+
 const cart = {
   'cart.totals.<count>-items':
     'My cart ({count, plural, one {one item} other {{count} items}})',
@@ -19,6 +31,8 @@ const cart = {
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',
   'oauth.logging-you-in': 'Logging you in...',
+  'cart.edit.name.placeholder': 'The name of the shopping cart',
+  'cart.edit.set-default': 'Make this cart my current cart',
 };
 
 const coupon = {
@@ -79,9 +93,17 @@ const search = {
   'search.facet.rating.up': '& up',
 };
 
+const merchant = {
+  'merchant.schedule.weekdays': 'Opening hours',
+  'merchant.schedule.dates': 'Upcoming dates',
+  'merchant.schedule.<note>': '({note})',
+  'merchant.schedule.<date>-<note>': '{date} ({note})',
+};
+
 export default {
   ...product,
   ...cart,
+  ...carts,
   ...coupon,
   ...checkout,
   ...order,
@@ -89,4 +111,5 @@ export default {
   ...picking,
   ...ui,
   ...search,
+  ...merchant,
 };

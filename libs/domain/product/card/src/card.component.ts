@@ -2,6 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
+  PRODUCT,
   ProductContext,
   ProductMediaContainerSize,
   ProductMixin,
@@ -53,7 +54,7 @@ export class ProductCardComponent extends ProductMixin(
     const sku = this.$options().sku;
     if (sku !== undefined) {
       this.contextController.provide(
-        ProductContext.SKU,
+        featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
         featureVersion >= '1.3' ? { sku } : sku
       );
     }
@@ -63,7 +64,7 @@ export class ProductCardComponent extends ProductMixin(
   protected setProductContext = (): void => {
     if (this.sku) {
       this.contextController.provide(
-        ProductContext.SKU,
+        featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
         featureVersion >= '1.3' ? { sku: this.sku } : this.sku
       );
     }

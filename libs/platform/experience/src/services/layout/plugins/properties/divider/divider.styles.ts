@@ -6,9 +6,7 @@ export const commonStyle = css`
     --_divider: var(--oryx-divider-width, 1px) var(--oryx-divider-style, solid)
       var(--oryx-divider-color, var(--oryx-color-neutral-6));
   }
-`;
 
-export const horizontalInBetweenStyles = css`
   *:not(:first-child),
   ::slotted(*:not(:first-child)) {
     position: relative;
@@ -19,6 +17,14 @@ export const horizontalInBetweenStyles = css`
     content: '';
     position: absolute;
     inset: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+`;
+
+export const horizontalInBetweenStyles = css`
+  *:not(:first-child)::before,
+  ::slotted(*:not(:first-child))::before {
     border-inline-start: var(--_divider);
     transform: translateX(
       calc(
@@ -32,16 +38,8 @@ export const horizontalInBetweenStyles = css`
 `;
 
 export const verticalInBetweenStyles = css`
-  *:not(:first-child),
-  ::slotted(*:not(:first-child)) {
-    position: relative;
-  }
-
   *:not(:first-child)::before,
   ::slotted(*:not(:first-child))::before {
-    content: '';
-    position: absolute;
-    inset: 0;
     width: 100%;
     border-block-start: var(--_divider);
     transform: translateY(

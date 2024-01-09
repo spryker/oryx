@@ -4,6 +4,7 @@ import { color } from '../color.tokens';
 import { commonTokens, commonTokensSmall } from '../common-tokens';
 import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 import { buttonTokens } from './button.token';
+import { collapsibleTokens } from './collapsible.token';
 import { layoutMdTokens } from './layout.tokens';
 import { tokens } from './other.tokens';
 import {
@@ -14,6 +15,7 @@ import {
 
 export const backofficeTokens: DesignToken[] = [
   ...buttonTokens,
+  ...collapsibleTokens,
   {
     color,
     ...commonTokens,

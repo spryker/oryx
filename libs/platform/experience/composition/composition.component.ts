@@ -1,3 +1,4 @@
+import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -21,28 +22,40 @@ import {
   signal,
   signalAware,
   signalProperty,
+  subscribe,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { Observable, concatMap, from, map, of, reduce } from 'rxjs';
+import { Observable, concatMap, from, map, of, reduce, tap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
+import { CompositionComponentProperties } from './composition.model';
 
 @signalAware()
 @hydrate()
-export class CompositionComponent extends LayoutMixin(
-  ContentMixin<CompositionProperties>(LitElement)
-) {
+export class CompositionComponent
+  extends LayoutMixin(ContentMixin<CompositionProperties>(LitElement))
+  implements CompositionComponentProperties
+{
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
+  @property({ reflect: true }) bucket?: string;
 
   protected experienceService = resolve(ExperienceService);
   protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
+  protected contextController = new ContextController(this);
   protected componentsController = new CompositionComponentsController(this);
+
+  protected componentFromRoute$ = computed(() =>
+    this.experienceService
+      .getComponent({ route: this.route })
+      .pipe(map((component) => (component?.id ? component : null)))
+  );
 
   @elementEffect()
   protected $uidFromRoute = effect(() => {
@@ -50,11 +63,7 @@ export class CompositionComponent extends LayoutMixin(
       return;
     }
 
-    const component = signal(
-      this.experienceService
-        .getComponent({ route: this.route })
-        .pipe(map((component) => (component?.id ? component : null)))
-    )();
+    const component = this.componentFromRoute$();
 
     if (component === null || !component?.id) {
       this.uid = undefined;
@@ -66,6 +75,33 @@ export class CompositionComponent extends LayoutMixin(
     }
   });
 
+  private providedContext: string[] = [];
+
+  // TODO: change to elementEffect when SSR issue will be fixed
+  @subscribe()
+  private $contextProvider = this.contentController.getOptions().pipe(
+    tap((options) => {
+      const contexts = options?.context;
+      const types: string[] = [];
+      const data = Object.entries(contexts ?? {});
+
+      for (const [type, context] of data) {
+        types.push(type);
+        this.contextController.provide(type, context);
+      }
+
+      for (const key of this.providedContext) {
+        if (types.includes(key)) continue;
+        this.contextController.remove(key);
+      }
+
+      this.providedContext = [...types];
+    })
+  );
+
+  protected $componentData = computed(() =>
+    this.experienceService.getComponent({ uid: this.uid })
+  );
   protected $components = signal(this.componentsController.getComponents());
   protected $componentsStyles = computed(() => {
     const components = this.$components();
@@ -108,6 +144,7 @@ export class CompositionComponent extends LayoutMixin(
           options: component.options,
           experience: component,
           template: this.renderComponent(component),
+          isComposition: true,
         }).pipe(map((template) => ({ [component.id]: template })));
       }),
       reduce((acc, curr) => ({ ...acc, ...(curr ?? {}) }), {})
@@ -132,7 +169,7 @@ export class CompositionComponent extends LayoutMixin(
     const layoutComposition = this.$layoutRenderComposition();
 
     return this.renderLayout({
-      template: repeat(
+      template: html`${repeat(
         components,
         (component) => component.id,
         (component) => {
@@ -144,7 +181,8 @@ export class CompositionComponent extends LayoutMixin(
             ${layoutTemplate?.post}
           `;
         }
-      ) as TemplateResult,
+      ) as TemplateResult}`,
+      experience: this.$componentData(),
       inlineStyles: this.$componentsStyles(),
     });
   }

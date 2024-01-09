@@ -6,7 +6,9 @@ export enum IconTypes {
   Close = 'close',
   DropUp = 'expand_less',
   Dropdown = 'expand_more',
-  Image = 'photo_library',
+  Email = 'alternate_email',
+  Image = 'image',
+  Images = 'photo_library',
   Info = 'info',
   InputError = 'report', // merge with error
   Minus = 'remove',
@@ -25,6 +27,7 @@ export enum IconTypes {
   ModeDark = 'dark_mode',
   ModeLight = 'light_mode',
   Orders = 'shop_two',
+  Phone = 'call',
   History = 'history',
   Parcel = 'deployed_code',
   Printer = 'print',
@@ -107,7 +110,6 @@ export enum IconTypes {
   Video = 'play_circle',
   Description = 'description',
   Barcode = 'barcode',
-  Images = 'photo_library', // merge with image
   Label = 'label',
   Media = 'perm_media',
   Price = 'money',

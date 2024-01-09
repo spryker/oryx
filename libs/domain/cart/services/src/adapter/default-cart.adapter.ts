@@ -6,14 +6,20 @@ import {
   Cart,
   CartAdapter,
   CartEntryQualifier,
+  CartFeatureOptionsKey,
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  FeatureOptionsService,
+  HttpService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   CurrencyService,
@@ -39,7 +45,8 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService),
     protected store = inject(StoreService),
     protected currency = inject(CurrencyService),
-    protected priceMode = inject(PriceModeService)
+    protected priceMode = inject(PriceModeService),
+    protected optionsService = inject(FeatureOptionsService)
   ) {}
 
   getAll(): Observable<Cart[]> {
@@ -107,11 +114,25 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
+        const options = {
+          headers: { 'If-Match': '*' },
+        };
+
         return this.http
-          .patch<ApiCartModel.Response>(url, body)
+          .patch<ApiCartModel.Response>(url, body, options)
           .pipe(this.transformer.do(CartNormalizer));
       })
     );
+  }
+
+  delete(data: CartQualifier): Observable<Cart> {
+    if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
+
+    return this.http
+      .delete<ApiCartModel.Response>(
+        `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}/${data.cartId}`
+      )
+      .pipe(this.transformer.do(CartNormalizer));
   }
 
   addCoupon(data: CouponQualifier): Observable<Cart> {
@@ -146,6 +167,7 @@ export class DefaultCartAdapter implements CartAdapter {
     const attributes = {
       sku: data.sku,
       quantity: data.quantity,
+      productOfferReference: data.offer,
     };
 
     return this.identity.get({ requireGuest: true }).pipe(
@@ -180,6 +202,38 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
+  create(qualifier?: CreateCartQualifier): Observable<Cart> {
+    const request = (attributes: CreateCartQualifier) =>
+      this.http.post<ApiCartModel.Response>(
+        `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
+        {
+          data: {
+            type: 'carts',
+            attributes,
+          },
+        }
+      );
+
+    return this.store.get().pipe(
+      take(1),
+      switchMap((store) =>
+        qualifier
+          ? request({
+              store: store?.id,
+              ...qualifier,
+              name: this.ensureCartName(qualifier),
+            })
+          : combineLatest([this.currency.get(), this.priceMode.get()]).pipe(
+              take(1),
+              switchMap(([currency, priceMode]) =>
+                request({ store: store?.id, currency, priceMode })
+              )
+            )
+      ),
+      this.transformer.do(CartNormalizer)
+    );
+  }
+
   protected createCartIfNeeded(
     identity: AuthIdentity,
     cartId: string | undefined
@@ -189,31 +243,7 @@ export class DefaultCartAdapter implements CartAdapter {
     }
 
     // if we are a registered user and we do not have a cartId, we need to create a cart first
-    return combineLatest([
-      this.store.get(),
-      this.currency.get(),
-      this.priceMode.get(),
-    ]).pipe(
-      take(1),
-      switchMap(([store, currency, priceMode]) =>
-        this.http.post<ApiCartModel.Response>(
-          `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
-          {
-            data: {
-              type: 'carts',
-              attributes: {
-                name: 'My Cart',
-                priceMode,
-                currency,
-                store: store?.id,
-              },
-            },
-          }
-        )
-      ),
-      this.transformer.do(CartNormalizer),
-      map((result) => [identity, result.id])
-    );
+    return this.create().pipe(map(({ id }) => [identity, id]));
   }
 
   updateEntry(data: UpdateCartEntryQualifier): Observable<Cart> {
@@ -262,11 +292,22 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  protected generateUrl(path: string, isAnonymous: boolean): string {
+  protected generateUrl(path: string, isAnonymous?: boolean): string {
     const includes = isAnonymous
       ? [ApiCartModel.Includes.GuestCartItems, ApiCartModel.Includes.Coupons]
       : [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons];
 
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
+  }
+
+  protected ensureCartName(
+    qualifier?: CreateCartQualifier
+  ): string | undefined {
+    return this.isMultiCart ? qualifier?.name : undefined;
+  }
+
+  protected get isMultiCart(): boolean {
+    return !!this.optionsService.getFeatureOptions(CartFeatureOptionsKey)
+      ?.multi;
   }
 }

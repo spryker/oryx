@@ -1,11 +1,16 @@
 import { Cart, CartController, CartService } from '@spryker-oryx/cart';
 import { mockBaseCart } from '@spryker-oryx/cart/mocks';
+import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PricingService } from '@spryker-oryx/site';
 import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
+
+const mockContext = {
+  get: vi.fn().mockReturnValue(of('MOCK')),
+};
 
 const mockThis = {} as LitElement;
 
@@ -26,6 +31,9 @@ vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
 (litRxjs.ObserveController as unknown as SpyInstance).mockReturnValue(
   mockObserve
 );
+
+vi.spyOn(core, 'ContextController') as SpyInstance;
+(core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
 
 describe('Cart controller', () => {
   let service: MockCartService;
@@ -63,7 +71,7 @@ describe('Cart controller', () => {
 
   describe('getTotalItemsQuantity(', () => {
     describe('when there is no cart', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         setupMockedData(null);
       });
       it('should return null', () => {
@@ -347,6 +355,26 @@ describe('Cart controller', () => {
             });
         });
       });
+    });
+  });
+
+  describe('when observable attribute is provided', () => {
+    const cartId = 'mockId';
+    beforeEach(() => {
+      setupMockedData(null);
+      vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
+      (litRxjs.ObserveController as unknown as SpyInstance).mockReturnValue({
+        get: vi.fn().mockReturnValue(of(cartId)),
+      });
+    });
+
+    it('should call service method with proper qualifier', () => {
+      new CartController(mockThis)
+        .getCart()
+        .pipe(take(1))
+        .subscribe(() => {
+          expect(service.getCart).toHaveBeenCalledWith({ cartId });
+        });
     });
   });
 });

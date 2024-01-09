@@ -6,9 +6,10 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, switchMap } from 'rxjs';
+import { PRODUCT } from '../../entity';
 import { ApiProductModel, Product, ProductQualifier } from '../../models';
 import { ProductNormalizer } from './normalizers';
-import { ProductAdapter, ProductResource } from './product.adapter';
+import { ProductAdapter } from './product.adapter';
 
 export class DefaultProductAdapter implements ProductAdapter {
   protected productEndpoint = 'concrete-products';
@@ -26,7 +27,7 @@ export class DefaultProductAdapter implements ProductAdapter {
 
   get({ sku, include }: ProductQualifier): Observable<Product> {
     if (featureVersion >= '1.4') {
-      return this.includeService.get({ resource: ProductResource }).pipe(
+      return this.includeService.get({ resource: PRODUCT }).pipe(
         switchMap((includes) =>
           this.http.get(
             `${this.SCOS_BASE_URL}/${this.productEndpoint}/${sku}${

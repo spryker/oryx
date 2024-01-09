@@ -1,17 +1,18 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const facetValueNavigationStyles = css`
   section {
+    ${featureVersion >= '1.4' ? css`` : headingUtil(HeadingTag.H6)}
+
     display: flex;
     align-items: center;
     flex-grow: 1;
-    font-size: 16px;
-    font-weight: normal;
   }
 
   section oryx-button {
-    font-size: 14px;
+    font-size: 1rem;
     margin-inline-start: auto;
   }
 
@@ -38,10 +39,6 @@ export const facetValueNavigationStyles = css`
   oryx-collapsible {
     width: 100%;
     border: none;
-  }
-
-  oryx-collapsible::part(heading) {
-    padding-block: 10px;
   }
 
   slot:not([name]) {

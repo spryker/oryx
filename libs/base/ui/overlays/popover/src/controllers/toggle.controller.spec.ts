@@ -2,7 +2,7 @@ import { dispatchKeydown, userAgentSafariMacOsX154 } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { PopoverComponent } from '../popover.component';
 import { CLOSE_EVENT } from '../popover.model';
@@ -436,10 +436,14 @@ describe('ToggleController', () => {
       </fake-popover-not-open-on-focus>`);
     });
 
-    it('should not show the popover', () => {
-      element.dispatchEvent(new Event('focusin', { bubbles: true }));
+    describe('and the focusin event is dispatched', () => {
+      beforeEach(() => {
+        element.dispatchEvent(new Event('focusin', { bubbles: true }));
+      });
 
-      expect(utils.popover()?.hasAttribute('show')).toBe(false);
+      it('should not show the popover', () => {
+        expect(utils.popover()?.hasAttribute('show')).toBe(false);
+      });
     });
   });
 

@@ -10,16 +10,23 @@ import {
 import { ObserveController, Size } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
+import { CompositionComponentProperties } from './composition.model';
 
 export class CompositionComponentsController implements ReactiveController {
   hostConnected?(): void;
 
-  protected observe: ObserveController<LitElement & ContentComponentProperties>;
+  protected observe: ObserveController<
+    LitElement & CompositionComponentProperties & ContentComponentProperties
+  >;
   protected tokenResolver = resolve(TokenResolver);
   protected experienceService = resolve(ExperienceService);
   protected screenService = resolve(ScreenService);
 
-  constructor(protected host: LitElement & ContentComponentProperties) {
+  constructor(
+    protected host: LitElement &
+      CompositionComponentProperties &
+      ContentComponentProperties
+  ) {
     this.observe = new ObserveController(host);
   }
 
@@ -51,11 +58,11 @@ export class CompositionComponentsController implements ReactiveController {
         uid
           ? this.experienceService.getComponent({ uid }).pipe(
               switchMap((component) => {
-                const components = component?.components;
+                if (!component?.components) return of(null);
 
-                if (!components) {
-                  return of(null);
-                }
+                const components = Array.isArray(component.components)
+                  ? component.components
+                  : component.components[this.host.bucket ?? 'main'];
 
                 const stack: Record<string, boolean> = {};
                 const refs = components.reduce((acc, component) => {
@@ -112,11 +119,13 @@ export class CompositionComponentsController implements ReactiveController {
           return of(null);
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.tokenResolver.resolveToken(rules.hideByRule!).pipe(
-          //hidden by default
-          startWith(true),
-          map((value) => (value ? null : component))
-        );
+        return this.tokenResolver
+          .resolveToken({ token: rules.hideByRule!, contextElement: this.host })
+          .pipe(
+            //hidden by default
+            startWith(true),
+            map((value) => (value ? null : component))
+          );
       })
     ).pipe(map((components) => components.filter(Boolean) as Component[]));
   }

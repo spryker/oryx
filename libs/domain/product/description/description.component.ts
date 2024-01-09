@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { PRODUCT, ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { CollapsibleTextToggle } from '@spryker-oryx/ui/collapsible-text';
-import { hydrate } from '@spryker-oryx/utilities';
+import { featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
@@ -11,7 +11,7 @@ import { convertLineFeedsToHTML } from './utils';
 @defaultOptions({ lineClamp: 3, enableToggle: true })
 @hydrate({
   event: ['mouseover', 'window:resize'],
-  context: ProductContext.SKU,
+  context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU,
 })
 export class ProductDescriptionComponent extends ProductMixin(
   ContentMixin<ProductDescriptionOptions>(LitElement)

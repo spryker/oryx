@@ -1,6 +1,8 @@
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { provideExperienceData } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
+import { cartCreatePage, cartsPage } from '../presets';
 import {
   CartResolver,
   CartTotalsResolver,
@@ -11,6 +13,7 @@ import {
   cartsItemsNormalizer,
 } from '../services-reexports';
 import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
+import { cartContextProviders } from './cart-context';
 import { CartService } from './cart.service';
 import { TotalsResolver, TotalsService } from './totals';
 
@@ -121,4 +124,6 @@ export const cartProviders: Provider[] =
               (m) => m.CartTotalsResolver
             ),
         },
+        ...cartContextProviders,
+        provideExperienceData([cartsPage, cartCreatePage]),
       ];

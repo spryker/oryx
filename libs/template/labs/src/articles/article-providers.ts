@@ -1,9 +1,15 @@
-import { ContentConfig } from '@spryker-oryx/content';
-import { PageMetaResolver } from '@spryker-oryx/core';
+import {
+  Content,
+  ContentConfig,
+  ContentQualifier,
+  ContentService,
+} from '@spryker-oryx/content';
+import { PageMetaResolver, provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { ArticleQualifierContextFallback } from './article-context';
 import { experienceArticlePages } from './article-page';
+import { articleTypes } from './article-types';
 import {
   ArticlePageDescriptionMetaResolver,
   ArticlePageTitleMetaResolver,
@@ -35,4 +41,12 @@ export const articleProviders: Provider[] = [
       },
     },
   },
+  ...articleTypes.map((type) =>
+    provideEntity<Content | null | undefined, ContentQualifier>(type, {
+      service: ContentService,
+      context: type,
+      resolve: (service, qualifier) =>
+        (service as ContentService).get({ ...qualifier, type }),
+    })
+  ),
 ];

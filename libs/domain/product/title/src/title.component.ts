@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { PRODUCT, ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
@@ -17,7 +17,7 @@ import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
 
 @ssrShim('style')
-@hydrate({ context: ProductContext.SKU })
+@hydrate({ context: featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU })
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {

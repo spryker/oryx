@@ -3,6 +3,7 @@ import { inject, INJECTOR } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   distinctUntilChanged,
+  isObservable,
   Observable,
   of,
   startWith,
@@ -12,6 +13,7 @@ import {
 } from 'rxjs';
 import {
   ContextFallback,
+  ContextFallbackHandler,
   ContextSerializer,
   ContextService,
 } from './context.service';
@@ -79,8 +81,12 @@ export class DefaultContextService implements ContextService {
         }
         return of(undefined);
       }),
-      this.contextFallback(key),
-      distinctUntilChanged()
+      this.contextFallback(key, element),
+      distinctUntilChanged((a, b) =>
+        typeof a === 'object'
+          ? JSON.stringify(a) === JSON.stringify(b)
+          : a === b
+      )
     );
   }
 
@@ -106,18 +112,26 @@ export class DefaultContextService implements ContextService {
   }
 
   protected contextFallback<T>(
-    token: string
-  ): (observable$: Observable<T>) => Observable<T> {
+    token: string,
+    element: Element | null
+  ): (observable$: Observable<T | undefined>) => Observable<T | undefined> {
     return (observable$) =>
       observable$.pipe(
-        switchMap((value) =>
-          value === undefined
-            ? this.injector.inject<Observable<T>>(
-                `${ContextFallback}${token}`,
-                of(value)
-              )
-            : of(value)
-        )
+        switchMap((value) => {
+          if (value !== undefined) return of(value);
+
+          try {
+            const contextFallback = this.injector.inject<
+              Observable<T> | ContextFallbackHandler<T>
+            >(`${ContextFallback}${token}`);
+
+            return isObservable(contextFallback)
+              ? contextFallback
+              : contextFallback({ element });
+          } catch (_) {
+            return of(undefined);
+          }
+        })
       );
   }
 

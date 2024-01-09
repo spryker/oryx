@@ -1,7 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
-
-const experienceArticleTags = ['article', 'faq', 'about'];
+import { articleTypes } from './article-types';
 
 export const experienceArticlePages = [
   {
@@ -13,7 +12,7 @@ export const experienceArticlePages = [
     components: [
       {
         type: 'oryx-content-text',
-        content: { data: { text: `©️ 2023 Spryker` } },
+        content: { data: { text: `©️ ${new Date().getFullYear()} Spryker` } },
       },
       {
         type: 'oryx-content-list',
@@ -32,17 +31,17 @@ export const experienceArticlePages = [
       },
     ],
   },
-  ...experienceArticleTags
+  ...articleTypes
     .map(
-      (tag) =>
+      (type) =>
         [
           {
             type: 'Page',
-            id: `${tag}-list`,
+            id: `${type}-list`,
             meta: {
-              title: `${tag} List`,
-              route: `/${tag}`,
-              routeType: tag,
+              title: `${type} List`,
+              route: `/${type}/:id`,
+              routeType: type,
             },
             components: [
               { ref: 'header' },
@@ -64,7 +63,7 @@ export const experienceArticlePages = [
                       [SuggestionField.Categories]: null,
                       [SuggestionField.Contents]: null,
                       [SuggestionField.Products]: null,
-                      [tag]: { max: 8 },
+                      [type]: { max: 8 },
                     },
                   },
                   {
@@ -80,10 +79,11 @@ export const experienceArticlePages = [
           },
           {
             type: 'Page',
-            id: tag,
+            id: type,
             meta: {
-              title: tag,
-              route: `/${tag}/:id`,
+              title: type,
+              route: `/${type}/:id`,
+              routeType: 'content',
             },
             components: [
               { ref: 'header' },
@@ -97,7 +97,13 @@ export const experienceArticlePages = [
                     type: 'oryx-site-breadcrumb',
                     options: { rules: [{ colSpan: 2 }] },
                   },
-                  { type: 'oryx-content-article' },
+
+                  {
+                    type: 'oryx-data-text',
+                    options: {
+                      field: 'content',
+                    },
+                  },
                 ],
               },
               { ref: 'footer' },

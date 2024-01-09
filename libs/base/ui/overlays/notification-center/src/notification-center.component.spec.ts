@@ -1,11 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { notificationComponent } from '@spryker-oryx/ui';
-import { useComponent } from '@spryker-oryx/utilities';
 import {
   CLOSE_EVENT,
   NotificationComponent,
   NotificationEvent,
-} from '../../notification/src';
+} from '@spryker-oryx/ui/notification';
+import { useComponent } from '@spryker-oryx/utilities';
+import { SpyInstance } from 'vitest';
 import { NotificationCenterComponent } from './notification-center.component';
 import { notificationCenterComponent } from './notification-center.def';
 
@@ -34,6 +35,41 @@ describe('NotificationCenterComponent', () => {
       expect(
         element.renderRoot.querySelectorAll('oryx-notification').length
       ).toBe(1);
+    });
+
+    describe('when notification contains a content', () => {
+      const notification = {
+        content: { token: 'Mock content' },
+        subtext: { token: 'Mock subtext' },
+      };
+      let spy: SpyInstance;
+
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-notification-center></oryx-notification-center>
+        `);
+        spy = vi.spyOn(element, 'i18n');
+        element.open(notification);
+        await element.updateComplete;
+      });
+
+      it('should pass the texts to the i18n method', () => {
+        expect(spy).toHaveBeenCalledWith(notification.content);
+        expect(spy).toHaveBeenCalledWith(notification.subtext);
+      });
+
+      it('should render notification`s content', () => {
+        const notificationElement =
+          element.renderRoot.querySelector<NotificationComponent>(
+            'oryx-notification'
+          );
+        expect(notificationElement?.textContent).toContain(
+          notification.content.token
+        );
+        expect(notificationElement?.textContent).toContain(
+          notification.subtext.token
+        );
+      });
     });
 
     describe('when multiple notifications are provided', () => {

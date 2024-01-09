@@ -1,5 +1,9 @@
 import { AuthIdentity, AuthService, IdentityService } from '@spryker-oryx/auth';
-import { CartAdapter, CartService } from '@spryker-oryx/cart';
+import {
+  CartAdapter,
+  CartService,
+  CreateCartQualifier,
+} from '@spryker-oryx/cart';
 import {
   mockBaseCart,
   mockCartEntry,
@@ -55,6 +59,8 @@ class MockCartAdapter implements Partial<CartAdapter> {
   addEntry = vi.fn().mockReturnValue(of({}));
   deleteEntry = vi.fn().mockReturnValue(of(null));
   updateEntry = vi.fn().mockReturnValue(of({}));
+  create = vi.fn().mockReturnValue(of({}));
+  delete = vi.fn().mockReturnValue(of({}));
 }
 
 describe('DefaultCartService', () => {
@@ -132,6 +138,30 @@ describe('DefaultCartService', () => {
         service.getCart({ cartId: 'cart' }).subscribe(cartCallback);
         expect(cartCallback).toHaveBeenCalledWith(mockBaseCart);
       });
+    });
+  });
+
+  describe('createCart', () => {
+    const qualifier = { name: 'mock' } as CreateCartQualifier;
+
+    beforeEach(() => {
+      service.createCart(qualifier).subscribe();
+    });
+
+    it('should call create method of adapter with proper qualifier', () => {
+      expect(adapter.create).toHaveBeenCalledWith(qualifier);
+    });
+  });
+
+  describe('deleteCart', () => {
+    const qualifier = { cartId: 'mock' };
+
+    beforeEach(() => {
+      service.deleteCart(qualifier).subscribe();
+    });
+
+    it('should call delete method of adapter with proper qualifier', () => {
+      expect(adapter.delete).toHaveBeenCalledWith(qualifier);
     });
   });
 

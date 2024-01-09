@@ -34,12 +34,15 @@ export const enum RouterEventType {
 
 export const enum RouteType {
   Page = 'page',
+  /** deprecated since 1.4, use PRODUCTS instead */
   ProductList = 'search',
+  /** deprecated since 1.4, use PRODUCT instead */
   Product = 'product',
   Category = 'category',
   Checkout = 'checkout',
   CheckoutLogin = 'checkoutLogin',
   Order = 'order',
+  /** deprecated since 1.4, use CART instead */
   Cart = 'cart',
   Login = 'login',
   NotFound = 'not-found',

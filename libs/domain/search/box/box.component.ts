@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { PRODUCTS } from '@spryker-oryx/product';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import {
   Suggestion,
@@ -15,6 +16,7 @@ import {
   Size,
   computed,
   debounce,
+  featureVersion,
   hydrate,
   signalAware,
   signalProperty,
@@ -71,7 +73,7 @@ export class SearchBoxComponent
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: RouteType.ProductList,
+      type: featureVersion >= '1.4' ? PRODUCTS : RouteType.ProductList,
       ...(this.query ? { params: { q: this.query } } : {}),
     })
   );
