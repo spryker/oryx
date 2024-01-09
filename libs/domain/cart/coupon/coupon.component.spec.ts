@@ -2,6 +2,8 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { CartService, Coupon } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { NotificationService, PricingService } from '@spryker-oryx/site';
+import { AlertType } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { useComponent } from '@spryker-oryx/utilities';
 import { of, throwError } from 'rxjs';
 import { CouponComponent } from './coupon.component';
@@ -9,7 +11,8 @@ import { couponComponent } from './coupon.def';
 
 class MockCartService implements Partial<CartService> {
   isEmpty = vi.fn().mockReturnValue(of(false));
-  addCoupon = vi.fn().mockReturnValue(of());
+  addCoupon = vi.fn().mockReturnValue(of([]));
+  deleteCoupon = vi.fn().mockReturnValue(of([]));
   getCoupons = vi.fn().mockReturnValue(of([]));
 }
 
@@ -24,6 +27,7 @@ class mockPricingService {
 describe('CouponComponent', () => {
   let element: CouponComponent;
   let service: MockCartService;
+  let notificationService: MockNotificationService;
 
   const coupons: Coupon[] = [
     {
@@ -65,9 +69,12 @@ describe('CouponComponent', () => {
         },
       ],
     });
-    element = await fixture(html`<oryx-cart-coupon></oryx-cart-coupon>`);
 
     service = testInjector.inject(CartService) as unknown as MockCartService;
+    notificationService =
+      testInjector.inject<MockNotificationService>(NotificationService);
+
+    element = await fixture(html`<oryx-cart-coupon></oryx-cart-coupon>`);
   });
 
   afterEach(() => {
@@ -94,6 +101,10 @@ describe('CouponComponent', () => {
 
         expect(couponElement.textContent).toContain(coupon.code);
         expect(couponElement.textContent).toContain(coupon.displayName);
+
+        expect(
+          couponElement.querySelector(`oryx-icon[type="${IconTypes.Trash}"]`)
+        ).toBeDefined();
       });
     });
   });
@@ -113,32 +124,77 @@ describe('CouponComponent', () => {
   describe('when a valid coupon is added', () => {
     const couponCode = '12grVfg';
     beforeEach(async () => {
-      service.addCoupon = vi.fn().mockReturnValue(of());
       element = await fixture(html`<oryx-cart-coupon></oryx-cart-coupon>`);
       element.coupon!.value = couponCode;
     });
 
     describe('and the button is clicked', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         const button =
           element.shadowRoot?.querySelector<HTMLElement>('oryx-button');
         button?.click();
       });
 
-      it('should call addCoupon', async () => {
+      it('should call addCoupon', () => {
         expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
+      });
+
+      it('should show success notification', () => {
+        expect(notificationService.push).toHaveBeenCalledWith({
+          type: AlertType.Success,
+          content: {
+            token: 'coupon.<coupon>-successfully-applied',
+            values: { coupon: couponCode },
+          },
+        });
       });
     });
 
     describe('and the enter key is used', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         const input =
           element.shadowRoot?.querySelector<HTMLInputElement>('input');
         input?.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       });
 
-      it('should call addCoupon', async () => {
+      it('should call addCoupon', () => {
         expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
+      });
+    });
+  });
+
+  describe('when coupons can be deleted', () => {
+    beforeEach(async () => {
+      service.getCoupons = vi.fn().mockReturnValue(of(coupons));
+      element = await fixture(html`<oryx-cart-coupon></oryx-cart-coupon>`);
+    });
+
+    describe('and the delete button is clicked', () => {
+      beforeEach(() => {
+        const couponElements = element.shadowRoot?.querySelectorAll('div');
+
+        const deleteIcon = couponElements
+          ?.item(0)
+          .querySelector(`span[class="code"]`)
+          ?.querySelector(`oryx-icon`) as HTMLElement;
+
+        deleteIcon?.click();
+      });
+
+      it('should call deleteCoupon service', () => {
+        expect(service.deleteCoupon).toHaveBeenCalledWith({
+          code: coupons[0].code,
+        });
+      });
+
+      it('should show success notification', () => {
+        expect(notificationService.push).toHaveBeenCalledWith({
+          type: AlertType.Success,
+          content: {
+            token: 'coupon.<coupon>-successfully-deleted',
+            values: { coupon: coupons[0].code },
+          },
+        });
       });
     });
   });
