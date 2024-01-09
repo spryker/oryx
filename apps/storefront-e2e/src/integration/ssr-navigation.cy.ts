@@ -19,109 +19,115 @@ const footer = new FooterFragment();
 const header = new HeaderFragment();
 const searchbox = new SearchBoxFragment();
 
+const visitOptions = {
+  onBeforeLoad: (win) => {
+    delete win.CSSStyleSheet.prototype.replace;
+  },
+};
+
 describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
   if (isSSREnabled()) {
-    // it('should render Landing page', () => {
-    //   const landingPage = new LandingPage();
+    it('should render Landing page', () => {
+      const landingPage = new LandingPage();
 
-    //   landingPage.visit();
+      landingPage.visit(visitOptions);
 
-    //   verifyHeader();
-    //   landingPage.getHeroBanner().should('be.visible');
+      verifyHeader();
+      landingPage.getHeroBanner().should('be.visible');
 
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter();
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
-    //   cy.takeScreenshot('Landing Page');
-    // });
+      cy.takeScreenshot('Landing Page');
+    });
 
-    // it('should render Product details page', () => {
-    //   const productData = ProductStorage.getByEq(1);
-    //   const pdp = new ProductDetailsPage(productData);
+    it('should render Product details page', () => {
+      const productData = ProductStorage.getByEq(1);
+      const pdp = new ProductDetailsPage(productData);
 
-    //   pdp.visit();
+      pdp.visit(visitOptions);
 
-    //   verifyHeader();
-    //   pdp.checkDefaultProduct();
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter();
+      verifyHeader();
+      pdp.checkDefaultProduct();
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
-    //   cy.takeScreenshot('Product details page');
-    // });
+      cy.takeScreenshot('Product details page');
+    });
 
-    // it('should render Contact us page', () => {
-    //   const contactPage = new ContactPage();
+    it('should render Contact us page', () => {
+      const contactPage = new ContactPage();
 
-    //   contactPage.visit();
+      contactPage.visit(visitOptions);
 
-    //   verifyHeader();
-    //   contactPage.getHeading().should('be.visible');
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter(false);
+      verifyHeader();
+      contactPage.getHeading().should('be.visible');
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter(false);
 
-    //   cy.takeScreenshot('Contact Us page');
-    // });
+      cy.takeScreenshot('Contact Us page');
+    });
 
-    // it('should render Login page', () => {
-    //   const loginPage = new LoginPage();
+    it('should render Login page', () => {
+      const loginPage = new LoginPage();
 
-    //   loginPage.visit();
+      loginPage.visit(visitOptions);
 
-    //   verifyHeader();
-    //   loginPage.loginForm.getWrapper().should('be.visible');
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter();
+      verifyHeader();
+      loginPage.loginForm.getWrapper().should('be.visible');
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
-    //   cy.takeScreenshot('Login page');
-    // });
+      cy.takeScreenshot('Login page');
+    });
 
-    // it('should render Cart page', () => {
-    //   const cartPage = new CartPage();
+    it('should render Cart page', () => {
+      const cartPage = new CartPage();
 
-    //   api = new GlueAPI();
+      api = new GlueAPI();
 
-    //   cy.createGuestCart(api);
-    //   cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
-    //   cy.goToGuestCart();
+      cy.createGuestCart(api);
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
+      cy.goToGuestCart(visitOptions);
 
-    //   verifyHeader();
-    //   cartPage.checkNotEmptyCart();
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter();
+      verifyHeader();
+      cartPage.checkNotEmptyCart();
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
-    //   cy.takeScreenshot('Cart page');
-    // });
+      cy.takeScreenshot('Cart page');
+    });
 
-    // it('should render Search page', () => {
-    //   const searchPage = new SearchPage({ q: 'TomTom' });
+    it('should render Search page', () => {
+      const searchPage = new SearchPage({ q: 'TomTom' });
 
-    //   searchPage.visit();
+      searchPage.visit(visitOptions);
 
-    //   verifyHeader();
-    //   searchPage.getFacets().getWrapper().should('be.visible');
-    //   searchPage.getProductSorting().getWrapper().should('be.visible');
-    //   searchPage.getProductCards().should('have.length.greaterThan', 1);
-    //   searchPage.getProductHeadings().should('contain.text', 'TomTom');
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter();
+      verifyHeader();
+      searchPage.getFacets().getWrapper().should('be.visible');
+      searchPage.getProductSorting().getWrapper().should('be.visible');
+      searchPage.getProductCards().should('have.length.greaterThan', 1);
+      searchPage.getProductHeadings().should('contain.text', 'TomTom');
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
-    //   cy.takeScreenshot('Search page');
-    // });
+      cy.takeScreenshot('Search page');
+    });
 
-    // it('should render Category page', () => {
-    //   const categoryPage = new CategoryPage({ id: '6' });
+    it('should render Category page', () => {
+      const categoryPage = new CategoryPage({ id: '6' });
 
-    //   categoryPage.visit();
+      categoryPage.visit(visitOptions);
 
-    //   verifyHeader();
-    //   categoryPage.getFacets().getWrapper().should('be.visible');
-    //   categoryPage.getProductSorting().getWrapper().should('be.visible');
-    //   categoryPage.getProductCards().should('have.length.greaterThan', 1);
-    //   cy.window().then((win) => processCustomComponent(win.document.body));
-    //   // verifyFooter();
+      verifyHeader();
+      categoryPage.getFacets().getWrapper().should('be.visible');
+      categoryPage.getProductSorting().getWrapper().should('be.visible');
+      categoryPage.getProductCards().should('have.length.greaterThan', 1);
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
-    //   cy.takeScreenshot('Category page');
-    // });
+      cy.takeScreenshot('Category page');
+    });
 
     it('should render Checkout page', () => {
       const checkoutPage = new CheckoutPage();
@@ -132,7 +138,7 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       cy.goToGuestCheckout();
 
-      checkoutPage.visit();
+      checkoutPage.visit(visitOptions);
       verifyHeader();
       checkoutPage.getPlaceOrderBtn().should('be.visible');
       cy.window().then((win) => processCustomComponent(win.document.body));
@@ -166,15 +172,19 @@ function verifyHeader() {
   searchbox.getTypeahead().should('be.visible');
 }
 
+//theme plugin is applying styles to the components
+//that hide all elements that are not hydratable or defined
+//the fix adds "hydratable" attribute to all custom components
+//to make them visible on percy snapshot
 function processCustomComponent(node: Element): void {
   if (node.tagName.toLowerCase().startsWith('oryx-')) {
     node.toggleAttribute('hydratable', true);
   }
-  
+
   const children = [
     ...node.querySelectorAll('*'),
-    ...(node?.shadowRoot?.querySelectorAll('*') ?? [])
-  ]
+    ...(node?.shadowRoot?.querySelectorAll('*') ?? []),
+  ];
 
-  children.filter(e => e.shadowRoot).forEach(processCustomComponent);
+  children.filter((e) => e.shadowRoot).forEach(processCustomComponent);
 }

@@ -1,4 +1,3 @@
-import { isSSREnabled } from '..';
 import { BreadcrumbFragment } from '../page-fragments/breadcrumb.fragment';
 import { FooterFragment } from '../page-fragments/footer.fragment';
 import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
@@ -23,14 +22,7 @@ export abstract class AbstractSFPage implements E2EPage {
     }
 
     this.beforeVisit();
-    cy.visit(this.url, {
-      onBeforeLoad: (win) => {
-        if (isSSREnabled()) {
-          delete win.CSSStyleSheet.prototype.replace;
-        }
-      },
-      ...(options || {}),
-    });
+    cy.visit(this.url, options);
     this.waitForLoaded();
   }
 

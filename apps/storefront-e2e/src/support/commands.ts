@@ -55,7 +55,7 @@ Cypress.Commands.add(
   ) => {
     if (isPercyEnabled()) {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(3000);
+      cy.wait(1000);
       cy.percySnapshot(name, options);
     }
   }
