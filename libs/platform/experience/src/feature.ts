@@ -15,6 +15,7 @@ export const experienceComponents = [
   components.dataImage,
   components.dataLink,
   components.dataList,
+  components.dataWrapper,
 ];
 
 export const layoutFeature: AppFeature = {
