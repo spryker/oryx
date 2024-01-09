@@ -10,6 +10,7 @@ import {
   Type,
   computed,
   featureVersion,
+  signal,
   signalAware,
   signalProperty,
   ssrShim,
@@ -17,7 +18,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LayoutController, LayoutControllerRender } from '../controllers';
 import {
   Component,
@@ -121,6 +122,9 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       layoutController: new LayoutController(this),
       layoutService: resolve(LayoutService),
       screenService: resolve(ScreenService, null),
+      $attributeFilter: signal<(keyof LayoutProperties)[]>([], {
+        equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+      }),
     };
 
     // @deprecated since 1.2 will be deleted. Use LayoutMixinInternals instead
@@ -138,11 +142,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
       this.observer.disconnect();
       this.observe();
-    });
-
-    layoutAttributes$ = new BehaviorSubject<(keyof LayoutProperties)[]>([]);
-    attributeFilter = computed(() => this.layoutAttributes$, {
-      equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
     });
 
     protected observe(layoutSpecificAttrs = []): void {
@@ -163,7 +162,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         layoutSpecificAttrs
       ) as (keyof LayoutProperties)[];
 
-      this.layoutAttributes$.next(attributeFilter);
+      this[LayoutMixinInternals].$attributeFilter.set(attributeFilter);
       this.observer.observe(this, {
         attributes: true,
         attributeFilter,
@@ -173,8 +172,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutStyles = computed(() =>
       this[LayoutMixinInternals].layoutController.getStyles(
         featureVersion >= '1.2'
-          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.attributeFilter()!
+          ? this[LayoutMixinInternals].$attributeFilter()
           : ['layout', ...layoutKeys],
         this.$options().rules,
         this.$screen()
@@ -195,19 +193,23 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
           ...data,
           options: this.$options() as CompositionProperties,
         },
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        attrs: this.attributeFilter()!,
+        attrs: this[LayoutMixinInternals].$attributeFilter(),
         screen: this.$screen(),
       });
     }
 
-    protected template$ = new Subject<{
-      template: TemplateResult;
-      experience?: LayoutMixinRender['experience'];
-    }>();
-    protected $template = computed(() => this.template$, {
-      equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
-    });
+    protected $template = signal(
+      undefined as
+        | {
+            template: TemplateResult;
+            experience?: LayoutMixinRender['experience'];
+          }
+        | undefined,
+      {
+        equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+      }
+    );
+
     protected $layoutRenderElement = computed(() =>
       this.getLayoutPluginsRender({ ...(this.$template() ?? {}) })
     );
@@ -215,7 +217,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected renderLayout(props: LayoutMixinRender): TemplateResult | void {
       const { inlineStyles = '', template, experience } = props;
 
-      this.template$.next({ template, experience });
+      this.$template.set({ template, experience });
       const layoutStyles = this.layoutStyles();
       const styles = inlineStyles + layoutStyles;
       const layoutTemplate = this.$layoutRenderElement();
