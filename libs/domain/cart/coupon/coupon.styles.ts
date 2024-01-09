@@ -21,9 +21,11 @@ export const couponStyles = css`
     justify-content: space-between;
     align-items: center;
 
-    > oryx-icon {
+    oryx-button {
+      --_height: 35px;
+
       color: currentColor;
-      cursor: pointer;
+      padding: 0;
     }
   }
 

@@ -176,7 +176,7 @@ describe('CouponComponent', () => {
         const deleteIcon = couponElements
           ?.item(0)
           .querySelector(`span[class="code"]`)
-          ?.querySelector(`oryx-icon`) as HTMLElement;
+          ?.querySelector(`oryx-button`) as HTMLElement;
 
         deleteIcon?.click();
       });

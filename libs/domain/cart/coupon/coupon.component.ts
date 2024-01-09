@@ -69,11 +69,14 @@ export class CouponComponent extends CartComponentMixin(
               <oryx-icon .type="${IconTypes.Check}"></oryx-icon>
               <span class="code">
                 ${coupon.code}
-                <oryx-icon
-                  .type="${IconTypes.Trash}"
+                <oryx-button
+                  .type=${ButtonType.Icon}
+                  .size=${ButtonSize.Lg}
+                  .icon=${IconTypes.Trash}
                   @click=${() => this.onDeleted(coupon.code)}
-                ></oryx-icon
-              ></span>
+                >
+                </oryx-button>
+              </span>
 
               <span class="name">
                 ${coupon.displayName}
