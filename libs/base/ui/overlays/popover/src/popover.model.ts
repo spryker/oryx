@@ -6,6 +6,8 @@ export interface PopoverOptions {
    * using either the mousedown or enter/space keys.
    *
    * Defaults to false.
+   *
+   * @deprecated since version 1.4 use openOnHover on the host element instead
    */
   showOnFocus?: boolean;
 

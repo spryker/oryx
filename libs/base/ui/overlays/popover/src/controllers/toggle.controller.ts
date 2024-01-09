@@ -1,5 +1,5 @@
 import { isSafari, nonFocusableOnClickInSafari } from '@spryker-oryx/ui';
-import { isFocusable } from '@spryker-oryx/utilities';
+import { debounce, isFocusable, throttle } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
 import { PopoverComponent } from '../popover.component';
@@ -57,6 +57,8 @@ export class ToggleController implements ReactiveController {
    */
   protected shouldBeFocused: EventTarget | null = null;
 
+  protected lastMouseMove = 0;
+
   async hostConnected(): Promise<void> {
     window.addEventListener('blur', this.handleBlur);
 
@@ -67,6 +69,10 @@ export class ToggleController implements ReactiveController {
     this.host.addEventListener('mouseup', this.handleMouseup);
     this.host.addEventListener('keydown', this.handleKeydown);
     this.host.addEventListener('keyup', this.handleKeyup);
+
+    this.host.addEventListener('mouseenter', this.handleMouseEnter);
+    this.host.addEventListener('mousemove', this.handleMouseMove);
+    this.host.addEventListener('mouseleave', this.handleMouseLeave);
 
     if (this.host.hasAttribute('open')) {
       //simulate first updated hook
@@ -87,6 +93,9 @@ export class ToggleController implements ReactiveController {
     this.host.removeEventListener('mouseup', this.handleMouseup);
     this.host.removeEventListener('keydown', this.handleKeydown);
     this.host.removeEventListener('keyup', this.handleKeyup);
+    this.host.removeEventListener('mouseenter', this.handleMouseEnter);
+    this.host.removeEventListener('mouseleave', this.handleMouseLeave);
+    this.host.removeEventListener('mousemove', this.handleMouseMove);
   }
 
   protected handleBlur(): void {
@@ -98,7 +107,10 @@ export class ToggleController implements ReactiveController {
   }
 
   protected handleFocusin(): void {
-    if (!this.skipOpeningOnNextFocus && this.options.showOnFocus) {
+    if (
+      !this.skipOpeningOnNextFocus &&
+      (this.host.openOnHover || this.options.showOnFocus)
+    ) {
       this.timeStarted = Date.now();
       this.toggle(true);
     }
@@ -114,7 +126,29 @@ export class ToggleController implements ReactiveController {
     this.focusShouldBeFocusedMaybe();
   }
 
+  protected handleMouseEnter(): void {
+    if (!this.host.openOnHover) return;
+    this.host.dispatchEvent(new Event('focusin'));
+  }
+
+  protected handleMouseMove(): void {
+    this.lastMouseMove = Date.now();
+  }
+
+  protected handleMouseLeave(): void {
+    if (!this.host.openOnHover) return;
+
+    const currentTimestamp = Date.now();
+
+    debounce(() => {
+      if (currentTimestamp > this.lastMouseMove) {
+        this.host.dispatchEvent(new Event('focusout'));
+      }
+    }, 100)();
+  }
+
   protected handleMousedown(e: MouseEvent): void {
+    if (this.host.openOnHover) return;
     if (
       !isFocusable(e.target as HTMLElement) &&
       this.emitterIsInsidePopover(e)
@@ -141,6 +175,7 @@ export class ToggleController implements ReactiveController {
   }
 
   protected async handleMouseup(e: MouseEvent): Promise<void> {
+    if (this.host.openOnHover) return;
     this.focusShouldBeFocusedMaybe();
 
     const isEmitterOutside =
@@ -289,7 +324,10 @@ export class ToggleController implements ReactiveController {
     return Array.from(this.host.querySelectorAll(this.options.itemSelector));
   }
 
-  constructor(protected host: LitElement, protected options: ToggleOptions) {
+  constructor(
+    protected host: LitElement & { openOnHover?: boolean },
+    protected options: ToggleOptions
+  ) {
     this.host.addController(this);
     this.dimensionController = new DimensionController(host);
 
@@ -301,5 +339,8 @@ export class ToggleController implements ReactiveController {
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleKeyup = this.handleKeyup.bind(this);
     this.handleContentCloseEvent = this.handleContentCloseEvent.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleMouseMove = throttle(this.handleMouseMove.bind(this), 50);
   }
 }

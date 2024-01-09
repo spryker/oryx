@@ -135,7 +135,7 @@ describe('InputListComponent', () => {
     ];
 
     describe('list direction', () => {
-      Object.values(Direction).forEach((direction) => {
+      [Direction.Horizontal, Direction.Vertical].forEach((direction) => {
         describe(`when direction is "${direction}"`, () => {
           beforeEach(async () => {
             element = await fixture(html`<oryx-input-list
