@@ -34,7 +34,7 @@ export class DataListComponent extends LayoutMixin(
   protected $list = computed(() =>
     this.$options().entity
       ? this.entityService.getList({ type: this.$options().entity })
-      : of([])
+      : of([]).pipe()
   );
 
   protected override render(): TemplateResult | void {
@@ -46,12 +46,9 @@ export class DataListComponent extends LayoutMixin(
       template: html`${repeat(
         list,
         (item) =>
-          html`<a href="/merchant/MER000001">
-            <oryx-composition
-              .uid=${this.uid}
-              data-merchant=${item.id}
-            ></oryx-composition>
-          </a>`
+          html`<oryx-data-wrapper .options=${{ link: true }} .item=${item}
+            ><oryx-composition .uid=${this.uid}></oryx-composition
+          ></oryx-data-wrapper>`
       )}`,
     });
   }
