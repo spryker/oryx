@@ -1,3 +1,4 @@
+import { isSSREnabled } from '..';
 import { BreadcrumbFragment } from '../page-fragments/breadcrumb.fragment';
 import { FooterFragment } from '../page-fragments/footer.fragment';
 import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
@@ -14,7 +15,7 @@ export type E2EPage = {
 export abstract class AbstractSFPage implements E2EPage {
   abstract url: string;
 
-  visit(): void {
+  visit(options?: Partial<Cypress.VisitOptions>): void {
     if (!this.url) {
       throw new Error(
         'It is not possibe to visit this page bacause `url` is not set.'
@@ -22,7 +23,14 @@ export abstract class AbstractSFPage implements E2EPage {
     }
 
     this.beforeVisit();
-    cy.visit(this.url);
+    cy.visit(this.url, {
+      onBeforeLoad: (win) => {
+        if (isSSREnabled()) {
+          delete win.CSSStyleSheet.prototype.replace;
+        }
+      },
+      ...(options || {}),
+    });
     this.waitForLoaded();
   }
 

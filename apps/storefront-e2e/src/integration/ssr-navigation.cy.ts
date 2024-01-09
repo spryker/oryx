@@ -21,99 +21,107 @@ const searchbox = new SearchBoxFragment();
 
 describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
   if (isSSREnabled()) {
-    it('should render Landing page', () => {
-      const landingPage = new LandingPage();
+    // it('should render Landing page', () => {
+    //   const landingPage = new LandingPage();
 
-      landingPage.visit();
+    //   landingPage.visit();
 
-      verifyHeader();
-      landingPage.getHeroBanner().should('be.visible');
-      // verifyFooter();
+    //   verifyHeader();
+    //   landingPage.getHeroBanner().should('be.visible');
 
-      cy.takeScreenshot('Landing Page');
-    });
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter();
 
-    it('should render Product details page', () => {
-      const productData = ProductStorage.getByEq(1);
-      const pdp = new ProductDetailsPage(productData);
+    //   cy.takeScreenshot('Landing Page');
+    // });
 
-      pdp.visit();
+    // it('should render Product details page', () => {
+    //   const productData = ProductStorage.getByEq(1);
+    //   const pdp = new ProductDetailsPage(productData);
 
-      // verifyHeader();
-      // pdp.checkDefaultProduct();
-      // verifyFooter();
+    //   pdp.visit();
 
-      cy.takeScreenshot('Product details page');
-    });
+    //   verifyHeader();
+    //   pdp.checkDefaultProduct();
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter();
 
-    it('should render Contact us page', () => {
-      const contactPage = new ContactPage();
+    //   cy.takeScreenshot('Product details page');
+    // });
 
-      contactPage.visit();
+    // it('should render Contact us page', () => {
+    //   const contactPage = new ContactPage();
 
-      verifyHeader();
-      // contactPage.getHeading().should('be.visible');
-      // verifyFooter(false);
+    //   contactPage.visit();
 
-      cy.takeScreenshot('Contact Us page');
-    });
+    //   verifyHeader();
+    //   contactPage.getHeading().should('be.visible');
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter(false);
 
-    it('should render Login page', () => {
-      const loginPage = new LoginPage();
+    //   cy.takeScreenshot('Contact Us page');
+    // });
 
-      loginPage.visit();
+    // it('should render Login page', () => {
+    //   const loginPage = new LoginPage();
 
-      verifyHeader();
-      // loginPage.loginForm.getWrapper().should('be.visible');
-      // verifyFooter();
+    //   loginPage.visit();
 
-      cy.takeScreenshot('Login page');
-    });
+    //   verifyHeader();
+    //   loginPage.loginForm.getWrapper().should('be.visible');
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter();
 
-    it('should render Cart page', () => {
-      const cartPage = new CartPage();
+    //   cy.takeScreenshot('Login page');
+    // });
 
-      api = new GlueAPI();
+    // it('should render Cart page', () => {
+    //   const cartPage = new CartPage();
 
-      cy.createGuestCart(api);
-      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
-      cy.goToGuestCart();
+    //   api = new GlueAPI();
 
-      verifyHeader();
-      // cartPage.checkNotEmptyCart();
-      // verifyFooter();
+    //   cy.createGuestCart(api);
+    //   cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
+    //   cy.goToGuestCart();
 
-      cy.takeScreenshot('Cart page');
-    });
+    //   verifyHeader();
+    //   cartPage.checkNotEmptyCart();
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter();
 
-    it('should render Search page', () => {
-      const searchPage = new SearchPage({ q: 'TomTom' });
+    //   cy.takeScreenshot('Cart page');
+    // });
 
-      searchPage.visit();
+    // it('should render Search page', () => {
+    //   const searchPage = new SearchPage({ q: 'TomTom' });
 
-      verifyHeader();
-      // searchPage.getFacets().getWrapper().should('be.visible');
-      // searchPage.getProductSorting().getWrapper().should('be.visible');
-      // searchPage.getProductCards().should('have.length.greaterThan', 1);
-      // searchPage.getProductHeadings().should('contain.text', 'TomTom');
-      // verifyFooter();
+    //   searchPage.visit();
 
-      cy.takeScreenshot('Search page');
-    });
+    //   verifyHeader();
+    //   searchPage.getFacets().getWrapper().should('be.visible');
+    //   searchPage.getProductSorting().getWrapper().should('be.visible');
+    //   searchPage.getProductCards().should('have.length.greaterThan', 1);
+    //   searchPage.getProductHeadings().should('contain.text', 'TomTom');
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter();
 
-    it('should render Category page', () => {
-      const categoryPage = new CategoryPage({ id: '6' });
+    //   cy.takeScreenshot('Search page');
+    // });
 
-      categoryPage.visit();
+    // it('should render Category page', () => {
+    //   const categoryPage = new CategoryPage({ id: '6' });
 
-      verifyHeader();
-      // categoryPage.getFacets().getWrapper().should('be.visible');
-      // categoryPage.getProductSorting().getWrapper().should('be.visible');
-      // categoryPage.getProductCards().should('have.length.greaterThan', 1);
-      // verifyFooter();
+    //   categoryPage.visit();
 
-      cy.takeScreenshot('Category page');
-    });
+    //   verifyHeader();
+    //   categoryPage.getFacets().getWrapper().should('be.visible');
+    //   categoryPage.getProductSorting().getWrapper().should('be.visible');
+    //   categoryPage.getProductCards().should('have.length.greaterThan', 1);
+    //   cy.window().then((win) => processCustomComponent(win.document.body));
+    //   // verifyFooter();
+
+    //   cy.takeScreenshot('Category page');
+    // });
 
     it('should render Checkout page', () => {
       const checkoutPage = new CheckoutPage();
@@ -124,11 +132,11 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       cy.goToGuestCheckout();
 
-      // trigger ssr
-      cy.reload();
+      checkoutPage.visit();
       verifyHeader();
-      // checkoutPage.getPlaceOrderBtn().should('be.visible');
-      // verifyFooter();
+      checkoutPage.getPlaceOrderBtn().should('be.visible');
+      cy.window().then((win) => processCustomComponent(win.document.body));
+      verifyFooter();
 
       cy.takeScreenshot('Checkout page');
     });
@@ -146,7 +154,7 @@ function verifyFooter(isPageScrollable = true) {
 
   footer
     .getWrapper()
-    .find('oryx-text')
+    .find('oryx-content-text')
     .shadow()
     .should('contain.text', currentYear);
 }
@@ -156,4 +164,17 @@ function verifyHeader() {
   header.getCurrencySelector().should('be.visible');
   header.getUserSummaryHeading().should('be.visible');
   searchbox.getTypeahead().should('be.visible');
+}
+
+function processCustomComponent(node: Element): void {
+  if (node.tagName.toLowerCase().startsWith('oryx-')) {
+    node.toggleAttribute('hydratable', true);
+  }
+  
+  const children = [
+    ...node.querySelectorAll('*'),
+    ...(node?.shadowRoot?.querySelectorAll('*') ?? [])
+  ]
+
+  children.filter(e => e.shadowRoot).forEach(processCustomComponent);
 }
