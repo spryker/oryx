@@ -232,7 +232,6 @@
       ],
       "@spryker-oryx/product/id": ["libs/domain/product/id/index.ts"],
       "@spryker-oryx/product/images": ["libs/domain/product/images/index.ts"],
-      "@spryker-oryx/product/jsonld": ["libs/domain/product/jsonld/index.ts"],
       "@spryker-oryx/product/labels": ["libs/domain/product/labels/index.ts"],
       "@spryker-oryx/product/list": ["libs/domain/product/list/index.ts"],
       "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
@@ -287,6 +286,7 @@
       ],
       "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
       "@spryker-oryx/site/day": ["libs/domain/site/day/index.ts"],
+      "@spryker-oryx/site/jsonld": ["libs/domain/site/jsonld/index.ts"],
       "@spryker-oryx/site/locale-selector": [
         "libs/domain/site/locale-selector/index.ts"
       ],
