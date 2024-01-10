@@ -20,13 +20,6 @@ export const couponStyles = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    oryx-button {
-      --_height: 35px;
-
-      color: currentColor;
-      padding: 0;
-    }
   }
 
   .name {
@@ -34,14 +27,11 @@ export const couponStyles = css`
     color: var(--oryx-color-neutral-9);
   }
 
-  oryx-icon {
-    color: var(--oryx-color-success-9);
+  oryx-button:not([icon]) {
+    --_height: 24px;
   }
 
-  oryx-button {
-    --_height: 24px;
-
-    padding: 7px;
-    margin-inline-end: 0;
+  oryx-icon {
+    --oryx-icon-color: var(--oryx-color-success-9);
   }
 `;
