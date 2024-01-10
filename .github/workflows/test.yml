@@ -165,8 +165,6 @@ jobs:
       - uses: ./.github/actions/init
       - name: Storefront B2C visual regression tests
         uses: ./.github/actions/run-optimal
-      - run: npm install --save-dev @percy/cli
-      - run: npx percy snapshot snapshots/
         env:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           STORE: DE
@@ -176,6 +174,7 @@ jobs:
           cmd: npm run sf:e2e:headless:ci:visual-regression
           affectedCmd: npm run sf:e2e:headless:ci:visual-regression
           isDev: ${{ env.IS_DEV }}
+      - run: npx percy snapshot snapshots/
 
   test-e2e-storefront-b2b:
     runs-on: ubuntu-latest
