@@ -12,8 +12,9 @@ import { ProductService } from '../product.service';
 
 /**
  * Meta resolver to generate the robots meta tag for the product page. When the
- * product is available, the meta tag will be set to 'follow, index', otherwise
- * it will be set to 'follow, noindex'.
+ * product is discontinued and no longer has stock available, the robots meta
+ * tag will be set to `noindex,follow`. Otherwise, the robots meta tag will be
+ * set to `index,follow`.
  */
 export class ProductPageRobotMetaResolver implements PageMetaResolver {
   constructor(
@@ -49,6 +50,6 @@ export class ProductPageRobotMetaResolver implements PageMetaResolver {
   }
 
   protected isDiscontinued(product?: Product): boolean {
-    return !!product?.discontinued;
+    return !!product?.discontinued && !product.availability?.quantity;
   }
 }

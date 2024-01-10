@@ -70,25 +70,43 @@ describe('ProductPageRobotMetaResolver', () => {
     });
   });
 
+  const callback = vi.fn();
+
   describe('when the product is discontinued', () => {
-    const callback = vi.fn();
-    beforeEach(() => {
-      mockContextService.get.mockReturnValue(of('sku'));
-      mockProductService.get.mockReturnValue(
-        of({ discontinued: true } as Product)
-      );
-      service.resolve().subscribe(callback);
+    describe('and has no stock available', () => {
+      beforeEach(() => {
+        mockContextService.get.mockReturnValue(of('sku'));
+        mockProductService.get.mockReturnValue(
+          of({ discontinued: true, availability: { quantity: 0 } } as Product)
+        );
+        service.resolve().subscribe(callback);
+      });
+
+      it('should resolve a robot meta info with "noindex, follow"', () => {
+        expect(callback).toHaveBeenCalledWith({
+          robots: 'noindex,follow',
+        });
+      });
     });
 
-    it('should resolve a robot meta info with "noindex, follow"', () => {
-      expect(callback).toHaveBeenCalledWith({
-        robots: 'noindex,follow',
+    describe('and has stock available', () => {
+      beforeEach(() => {
+        mockContextService.get.mockReturnValue(of('sku'));
+        mockProductService.get.mockReturnValue(
+          of({ discontinued: true, availability: { quantity: 1 } } as Product)
+        );
+        service.resolve().subscribe(callback);
+      });
+
+      it('should resolve a robot meta info with "index, follow"', () => {
+        expect(callback).toHaveBeenCalledWith({
+          robots: 'index,follow',
+        });
       });
     });
   });
 
   describe('when the product is not discontinued', () => {
-    const callback = vi.fn();
     beforeEach(() => {
       mockContextService.get.mockReturnValue(of('sku'));
       mockProductService.get.mockReturnValue(of({} as Product));
