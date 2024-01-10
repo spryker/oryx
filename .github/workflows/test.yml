@@ -165,6 +165,8 @@ jobs:
       - uses: ./.github/actions/init
       - name: Storefront B2C visual regression tests
         uses: ./.github/actions/run-optimal
+      - run: npm install --save-dev @percy/cli
+      - run: npx percy snapshot snapshots/
         env:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           STORE: DE
