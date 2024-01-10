@@ -79,13 +79,23 @@ export class CartAddComponent extends ProductMixin(
   };
 
   protected $hasStock = computed(() => {
+    const product = this.$product();
+
+    if (product?.discontinued && !product?.availability?.quantity) return false;
+
     return (
-      this.$product()?.availability?.isNeverOutOfStock ||
+      product?.availability?.isNeverOutOfStock ||
       (this.$max() && this.$max() >= this.$min())
     );
   });
 
   protected $min = computed(() => {
+    if (
+      this.$product()?.discontinued &&
+      !this.$product()?.availability?.quantity
+    )
+      return 0;
+
     return this.$product()?.availability?.isNeverOutOfStock || this.$max()
       ? 1
       : 0;
@@ -93,6 +103,11 @@ export class CartAddComponent extends ProductMixin(
 
   protected $max = computed(() => {
     const { availability, sku } = this.$product() ?? {};
+    if (
+      this.$product()?.discontinued &&
+      !this.$product()?.availability?.quantity
+    )
+      return 0;
 
     if (availability?.isNeverOutOfStock) return Infinity;
     if (availability?.quantity)

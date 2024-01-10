@@ -5,6 +5,7 @@ export * from '../brand/brand.def';
 export * from '../card/src/card.def';
 export * from '../category/list/list.def';
 export * from '../description/description.def';
+export * from '../discontinued/discontinued.def';
 export * from '../id/src/id.def';
 export * from '../images/src/images.def';
 export * from '../labels/src/label.def';
