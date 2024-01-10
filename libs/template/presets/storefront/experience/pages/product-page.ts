@@ -21,7 +21,6 @@ export const productPage: ExperienceComponent = {
     {
       type: 'oryx-composition',
       components: [
-        { type: 'oryx-product-base-schema' },
         {
           type: 'oryx-composition',
           id: 'product-body',

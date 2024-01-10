@@ -280,6 +280,7 @@ export const FooterTemplate: ExperienceComponent = {
       ],
     },
     { type: 'oryx-site-notification-center' },
+    { type: 'oryx-site-jsonld' },
   ],
   options: {
     rules: [

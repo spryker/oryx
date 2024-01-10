@@ -7,7 +7,6 @@ export * from '../category/list/list.def';
 export * from '../description/description.def';
 export * from '../id/src/id.def';
 export * from '../images/src/images.def';
-export * from '../jsonld/json-ld.def';
 export * from '../labels/src/label.def';
 export * from '../list/src/list.def';
 export * from '../media/src/media.def';

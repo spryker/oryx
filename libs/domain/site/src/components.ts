@@ -2,6 +2,7 @@ export * from '../breadcrumb/breadcrumb.def';
 export * from '../currency-selector/currency-selector.def';
 export * from '../date/date.def';
 export * from '../day/day.def';
+export * from '../jsonld/jsonld.def';
 export * from '../locale-selector/locale-selector.def';
 export * from '../navigation-button/navigation-button.def';
 export * from '../navigation-item/navigation-item.def';

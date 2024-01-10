@@ -14,6 +14,7 @@ import {
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
 import { DefaultGenderService, GenderService } from './gender';
+import { DefaultJsonLdService, JsonLdService } from './jsonld';
 import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
@@ -134,6 +135,10 @@ export const siteProviders: Provider[] = [
   {
     provide: FallbackBreadcrumbResolver,
     useClass: DefaultFallbackBreadcrumbResolver,
+  },
+  {
+    provide: JsonLdService,
+    useClass: DefaultJsonLdService,
   },
   // TODO: uncomment when CORs header issue is fixed
   // {

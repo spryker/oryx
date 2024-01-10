@@ -9,7 +9,6 @@ export class ProductJsonLdNormalizer implements JsonLdNormalizer<Product> {
   protected productCategoryService = inject(ProductCategoryService);
 
   normalize(product: Product): Observable<ProductJSONLD | undefined> {
-    console.log('normalize base', product);
     if (!product) return of(undefined);
 
     const categoryId = product?.categoryIds?.[0];
