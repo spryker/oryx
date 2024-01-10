@@ -8,6 +8,7 @@ export const siteNotificationCenterSchema: ContentComponentSchema<SiteNotificati
     type: 'oryx-site-notification-center',
     name: 'Site Notification Center',
     group: 'Site',
+    icon: 'notifications',
     options: {
       position: {
         type: FormFieldType.Select,
