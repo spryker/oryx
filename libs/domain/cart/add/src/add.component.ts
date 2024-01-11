@@ -88,7 +88,7 @@ export class CartAddComponent extends ProductMixin(
     const { availability, sku, discontinued } = this.$product() ?? {};
     const { quantity = 0, isNeverOutOfStock } = availability ?? {};
 
-    if ((discontinued && !quantity) || (!quantity && !isNeverOutOfStock)) {
+    if (!quantity && (discontinued || !isNeverOutOfStock)) {
       return 0;
     }
 
@@ -100,6 +100,13 @@ export class CartAddComponent extends ProductMixin(
         .filter((entry) => entry.sku === sku)
         .reduce((cumulated, { quantity }) => cumulated + Number(quantity), 0)
     );
+  });
+
+  /**
+   * @deprecated Use $availableQuantity instead.
+   */
+  protected $hasStock = computed(() => {
+    return !!this.$availableQuantity();
   });
 
   /**
