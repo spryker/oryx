@@ -90,6 +90,7 @@ import {
 import {
   ProductDetailsBreadcrumb,
   ProductListBreadcrumb,
+  ProductPageCanonicalUrlResolver,
   ProductPageRobotMetaResolver,
 } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
@@ -203,6 +204,10 @@ export const productProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: ProductPageDescriptionMetaResolver,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageCanonicalUrlResolver,
   },
   {
     provide: PageMetaResolver,
