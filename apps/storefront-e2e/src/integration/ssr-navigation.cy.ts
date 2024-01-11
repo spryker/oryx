@@ -34,9 +34,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       verifyHeader();
       landingPage.getHeroBanner().should('be.visible');
+      verifyFooter();
 
       cy.window().then((win) => processCustomComponent(win.document.body));
-      verifyFooter();
 
       cy.takeScreenshot('Landing Page');
     });
@@ -49,8 +49,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       verifyHeader();
       pdp.checkDefaultProduct();
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter();
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Product details page');
     });
@@ -62,8 +63,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       verifyHeader();
       contactPage.getHeading().should('be.visible');
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter(false);
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Contact Us page');
     });
@@ -75,8 +77,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       verifyHeader();
       loginPage.loginForm.getWrapper().should('be.visible');
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter();
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Login page');
     });
@@ -92,8 +95,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
 
       verifyHeader();
       cartPage.checkNotEmptyCart();
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter();
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Cart page');
     });
@@ -108,8 +112,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       searchPage.getProductSorting().getWrapper().should('be.visible');
       searchPage.getProductCards().should('have.length.greaterThan', 1);
       searchPage.getProductHeadings().should('contain.text', 'TomTom');
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter();
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Search page');
     });
@@ -123,8 +128,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       categoryPage.getFacets().getWrapper().should('be.visible');
       categoryPage.getProductSorting().getWrapper().should('be.visible');
       categoryPage.getProductCards().should('have.length.greaterThan', 1);
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter();
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Category page');
     });
@@ -141,8 +147,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       checkoutPage.visit(visitOptions);
       verifyHeader();
       checkoutPage.getPlaceOrderBtn().should('be.visible');
-      cy.window().then((win) => processCustomComponent(win.document.body));
       verifyFooter();
+
+      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Checkout page');
     });
