@@ -170,8 +170,7 @@ jobs:
           STORE: DE
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-          PUPPETEER_EXECUTABLE_PATH: $HOME/.cache/puppeteer
+          PERCY_BROWSER_EXECUTABLE: /home/runner/work/oryx/oryx/chrome/linux-120.0.6099.109/chrome-linux64/chrome
         with:
           cmd: npm install -D puppeteer && npx @puppeteer/browsers install chrome@stable && npm run sf:e2e:headless:ci:visual-regression
           affectedCmd: npm install -D puppeteer && npx @puppeteer/browsers install chrome@stable &&  npm run sf:e2e:headless:ci:visual-regression
