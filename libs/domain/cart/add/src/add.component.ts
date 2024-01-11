@@ -44,8 +44,8 @@ export class CartAddComponent extends ProductMixin(
     if (this.$options().hideQuantityInput) return;
 
     return html`<oryx-cart-quantity-input
-      .min=${this.$min()}
-      .max=${this.$max()}
+      .min=${this.$availableQuantity() ? 1 : 0}
+      .max=${this.$availableQuantity()}
       @update=${this.onUpdate}
       @submit=${this.onSubmit}
     ></oryx-cart-quantity-input>`;
@@ -62,7 +62,7 @@ export class CartAddComponent extends ProductMixin(
       text=${ifDefined(enableLabel ? text : undefined)}
       label=${ifDefined(enableLabel ? undefined : text)}
       icon=${IconTypes.CartAdd}
-      ?disabled=${this.isInvalid || !this.$hasStock()}
+      ?disabled=${this.isInvalid || !this.$availableQuantity()}
       @click=${this.onSubmit}
       @mouseup=${this.onMouseUp}
       hydration-events="click"
@@ -78,46 +78,42 @@ export class CartAddComponent extends ProductMixin(
     if (this.$product()) this.input?.reset?.();
   };
 
-  protected $hasStock = computed(() => {
-    const product = this.$product();
+  /**
+   * The available quantity is the sum of the product's availability quantity
+   * and the quantity of all entries in the cart with the same sku.
+   * If the product is discontinued, the available quantity is 0.
+   * If the product is never out of stock, the available quantity is Infinity.
+   */
+  protected $availableQuantity = computed(() => {
+    const { availability, sku, discontinued } = this.$product() ?? {};
+    const { quantity = 0, isNeverOutOfStock } = availability ?? {};
 
-    if (product?.discontinued && !product?.availability?.quantity) return false;
+    if ((discontinued && !quantity) || (!quantity && !isNeverOutOfStock)) {
+      return 0;
+    }
+
+    if (isNeverOutOfStock) return Infinity;
 
     return (
-      product?.availability?.isNeverOutOfStock ||
-      (this.$max() && this.$max() >= this.$min())
+      quantity -
+      this.$entries()
+        .filter((entry) => entry.sku === sku)
+        .reduce((cumulated, { quantity }) => cumulated + Number(quantity), 0)
     );
   });
 
+  /**
+   * @deprecated Use $availableQuantity instead.
+   */
   protected $min = computed(() => {
-    if (
-      this.$product()?.discontinued &&
-      !this.$product()?.availability?.quantity
-    )
-      return 0;
-
-    return this.$product()?.availability?.isNeverOutOfStock || this.$max()
-      ? 1
-      : 0;
+    return this.$availableQuantity() ? 1 : 0;
   });
 
+  /**
+   * @deprecated Use $availableQuantity instead.
+   */
   protected $max = computed(() => {
-    const { availability, sku } = this.$product() ?? {};
-    if (
-      this.$product()?.discontinued &&
-      !this.$product()?.availability?.quantity
-    )
-      return 0;
-
-    if (availability?.isNeverOutOfStock) return Infinity;
-    if (availability?.quantity)
-      return (
-        availability.quantity -
-        this.$entries()
-          .filter((entry) => entry.sku === sku)
-          .reduce((a, { quantity }) => a + Number(quantity), 0)
-      );
-    return 0;
+    return this.$availableQuantity();
   });
 
   protected onUpdate(e: CustomEvent<QuantityEventDetail>): void {

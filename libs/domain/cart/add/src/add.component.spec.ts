@@ -200,6 +200,7 @@ describe('CartAddComponent', () => {
           expect(button?.disabled).toEqual(true);
         });
       });
+
       describe('and the quantity > 0', () => {
         beforeEach(async () => {
           productService.get.mockReturnValue(

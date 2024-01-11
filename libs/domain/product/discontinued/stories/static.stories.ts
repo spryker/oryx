@@ -11,7 +11,7 @@ const Template: Story = (): TemplateResult => {
     <h3>Discontinued without note</h3>
     <oryx-product-discontinued sku="discontinued"></oryx-product-discontinued>
 
-    <h3>Discontinued wit note</h3>
+    <h3>Discontinued with note</h3>
     <oryx-product-discontinued
       sku="discontinued-with-note"
     ></oryx-product-discontinued>
