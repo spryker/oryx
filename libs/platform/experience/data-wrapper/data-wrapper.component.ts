@@ -22,7 +22,7 @@ export class DataWrapperComponent extends ContentMixin<DataWrapperComponentOptio
   protected contextService = resolve(ContextService);
 
   @signalProperty()
-  item: unknown;
+  qualifier: unknown;
 
   @signalProperty()
   entity = '';
@@ -33,10 +33,10 @@ export class DataWrapperComponent extends ContentMixin<DataWrapperComponentOptio
 
   protected $context = computed(() => {
     const entity = this.$entity();
-    if (!entity || !this.item) return of(undefined);
+    if (!entity || !this.qualifier) return of(undefined);
 
     return this.contextService
-      .serialize(entity, this.item)
+      .serialize(entity, this.qualifier)
       .pipe(
         switchMap((context) => this.contextService.deserialize(entity, context))
       );
@@ -51,7 +51,7 @@ export class DataWrapperComponent extends ContentMixin<DataWrapperComponentOptio
 
   protected $linkQualifier = computed(() =>
     this.entityService
-      .getQualifier({ element: this, type: this.$options().entity })
+      .getQualifier({ element: this, type: this.$entity() })
       .pipe(catchError(() => of()))
   );
 
