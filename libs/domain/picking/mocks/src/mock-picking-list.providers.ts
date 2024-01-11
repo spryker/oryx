@@ -6,7 +6,7 @@ import {
 import { PickingGuardService } from '@spryker-oryx/picking';
 import { PickingSyncActionHandlerService } from '@spryker-oryx/picking/offline';
 import { PickingListService } from '@spryker-oryx/picking/services';
-import { MockPickingGuardService } from './mock-picking-header.service';
+import { MockPickingGuardService } from './mock-picking-guard.service';
 import { MockPickingListService } from './mock-picking-list.service';
 import { MockPickingSyncActionHandlerService } from './mock-sync-action-handler.service';
 

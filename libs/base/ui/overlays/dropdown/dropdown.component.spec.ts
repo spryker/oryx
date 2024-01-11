@@ -52,6 +52,63 @@ describe('DropdownComponent', () => {
     });
   });
 
+  describe('when openOnHover property is assigned', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-dropdown openOnHover></oryx-dropdown>`
+      );
+    });
+
+    it('should hide the popover', async () => {
+      expect(element).not.toContainElement('oryx-popover[show]');
+    });
+
+    describe('and mouseenter event dispatched', () => {
+      beforeEach(async () => {
+        element.dispatchEvent(new MouseEvent('mouseenter'));
+      });
+
+      it('should show the popover', async () => {
+        expect(element).toContainElement('oryx-popover[show]');
+      });
+
+      describe('and mouseleave event dispatched', () => {
+        beforeEach(async () => {
+          vi.useFakeTimers();
+          element.dispatchEvent(new MouseEvent('mouseleave'));
+        });
+
+        afterEach(() => {
+          vi.clearAllTimers();
+        });
+
+        it('should not yet hide the popover', async () => {
+          expect(element).toContainElement('oryx-popover[show]');
+        });
+
+        describe('but when 99ms have passed', () => {
+          beforeEach(async () => {
+            vi.advanceTimersByTime(99);
+          });
+
+          it('should still show the popover', async () => {
+            expect(element).toContainElement('oryx-popover[show]');
+          });
+        });
+
+        describe('but when 100ms have passed', () => {
+          beforeEach(async () => {
+            vi.advanceTimersByTime(100);
+          });
+
+          it('should hide the popover', async () => {
+            expect(element).not.toContainElement('oryx-popover[show]');
+          });
+        });
+      });
+    });
+  });
+
   // describe('when "oryx.close" event dispatched', () => {
   //   let input: HTMLInputElement | null | undefined;
 
