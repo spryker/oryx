@@ -27,12 +27,26 @@ export interface ContextService {
    * Serializes the value for the given key, making it suitable for usage as a data attribute.
    */
   serialize<T>(key: string, value: T): Observable<string>;
+  /**
+   * Deserializes the value from string for the given key
+   */
   deserialize<T>(key: string, value: string): Observable<T | undefined>;
+  /**
+   * Distills the value, so it contains only the data that is relevant for the given context
+   */
+  distill<Entity, Qualifier>(
+    key: string,
+    value: Entity
+  ): Observable<Qualifier | undefined>;
 }
 
+/**
+ * Custom Context Serializer that can handle more advanced cases.
+ */
 export interface ContextSerializer<T = unknown> {
   serialize(value: T): Observable<string>;
   deserialize(value: string): Observable<T | undefined>;
+  distill?(value: T): Observable<T | undefined>;
 }
 
 export interface ContextFallbackParams {
@@ -47,6 +61,6 @@ declare global {
   interface InjectionTokensContractMap {
     [ContextService]: ContextService;
     [ContextFallback]: Observable<unknown>;
-    [ContextSerializer]: ContextSerializer;
+    [ContextSerializer]: ContextSerializer | string[];
   }
 }
