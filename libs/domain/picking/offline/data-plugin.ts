@@ -2,7 +2,9 @@ import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
+import { PickingListStatus } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   Observable,
@@ -90,40 +92,53 @@ export class OfflineDataPlugin implements AppPlugin {
     const onlineAdapter = injector.inject(PickingListOnlineAdapter);
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
-    return onlineAdapter.get({}).pipe(
-      map((pl) => {
-        const productIds = new Set<string>();
-        return {
-          pickingLists: pl,
-          products: pl
-            .map((pickingList) => pickingList.items.map((item) => item.product))
-            .flat()
-            .filter((product) => {
-              if (productIds.has(product.id)) return false;
-              productIds.add(product.id);
-
-              return true;
-            }),
-        };
-      }),
-      withLatestFrom(
-        dexieIdbService.getStore(PickingListEntity),
-        dexieIdbService.getStore(PickingProductEntity),
-        dexieIdbService.getDb()
-      ),
-      switchMap(
-        ([{ pickingLists, products }, pickingListsStore, productStore, db]) => {
-          return db.transaction(
-            'readwrite',
-            [pickingListsStore, productStore],
-            () => {
-              pickingListsStore.bulkAdd(pickingLists);
-              productStore.bulkAdd(products);
-            }
-          );
-        }
+    return onlineAdapter
+      .get(
+        featureVersion >= '1.4'
+          ? { status: PickingListStatus.ReadyForPicking }
+          : {}
       )
-    );
+      .pipe(
+        map((pl) => {
+          const productIds = new Set<string>();
+          return {
+            pickingLists: pl,
+            products: pl
+              .map((pickingList) =>
+                pickingList.items.map((item) => item.product)
+              )
+              .flat()
+              .filter((product) => {
+                if (productIds.has(product.id)) return false;
+                productIds.add(product.id);
+
+                return true;
+              }),
+          };
+        }),
+        withLatestFrom(
+          dexieIdbService.getStore(PickingListEntity),
+          dexieIdbService.getStore(PickingProductEntity),
+          dexieIdbService.getDb()
+        ),
+        switchMap(
+          ([
+            { pickingLists, products },
+            pickingListsStore,
+            productStore,
+            db,
+          ]) => {
+            return db.transaction(
+              'readwrite',
+              [pickingListsStore, productStore],
+              () => {
+                pickingListsStore.bulkAdd(pickingLists);
+                productStore.bulkAdd(products);
+              }
+            );
+          }
+        )
+      );
   }
 
   protected populateData(injector: Injector): Observable<void> {
