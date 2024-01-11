@@ -2,12 +2,12 @@ import {
   ContextFallback,
   ContextSerializer,
   ContextService,
+  FieldContextSerializer,
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { CART } from '../entity';
-import { CartQualifier } from '../models';
 
 export function cartContextFallbackFactory(
   router = inject(RouterService),
@@ -24,16 +24,6 @@ export function cartContextFallbackFactory(
 
 export const CartContextSerializerToken = `${ContextSerializer}${CART}`;
 
-export class CartContextSerializer implements ContextSerializer<CartQualifier> {
-  serialize(value: CartQualifier): Observable<string> {
-    return of(value?.cartId ?? '');
-  }
-
-  deserialize(cartId: string): Observable<CartQualifier | undefined> {
-    return of(cartId ? { cartId } : undefined);
-  }
-}
-
 export const cartContextProviders: Provider[] = [
   {
     provide: `${ContextFallback}${CART}`,
@@ -41,6 +31,6 @@ export const cartContextProviders: Provider[] = [
   },
   {
     provide: CartContextSerializerToken,
-    useClass: CartContextSerializer,
+    useFactory: () => new FieldContextSerializer('cartId'),
   },
 ];

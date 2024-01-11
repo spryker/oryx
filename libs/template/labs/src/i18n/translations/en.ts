@@ -6,6 +6,7 @@ const product = {
   'product.availability.available': 'Available online',
   'product.availability.available-<stock>':
     'Available online ({stock, plural, one {one product} other {{stock} products}})',
+  'product.discontinued': 'This product is no longer available.',
 };
 
 const carts = {

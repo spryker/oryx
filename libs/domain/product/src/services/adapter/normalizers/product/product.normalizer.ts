@@ -85,6 +85,16 @@ export function productAvailabilityNormalizer(
     .pipe(map((availability) => ({ availability })));
 }
 
+export function productDiscontinuedNormalizer(
+  data: DeserializedProduct,
+  transformer: TransformerService
+): Observable<Partial<Product>> {
+  return of({
+    discontinued: data.isDiscontinued,
+    discontinuedNote: data.discontinuedNote,
+  } as Product);
+}
+
 export function productNodeNormalizer(
   data: DeserializedProduct,
   transformer: TransformerService
@@ -139,6 +149,10 @@ export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
     useValue: productAvailabilityNormalizer,
+  },
+  {
+    provide: ProductNormalizer,
+    useValue: productDiscontinuedNormalizer,
   },
   {
     provide: ProductNormalizer,
