@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { CollapsibleComponent } from '@spryker-oryx/ui/collapsible';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { SearchFacetValueNavigationComponent } from './facet-value-navigation.component';
@@ -51,6 +52,61 @@ describe('SearchFacetValueNavigationComponent', () => {
       ) as HTMLElement;
 
       expect(slot.innerText).toContain(mockHeading);
+    });
+  });
+
+  describe('persisted collapsible state', () => {
+    describe('when key property is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation
+            key="mockKey"
+          ></oryx-search-facet-value-navigation>`
+        );
+      });
+
+      it('should render the collapsible with the persisted key', () => {
+        const collapsible =
+          element.renderRoot.querySelector<CollapsibleComponent>(
+            'oryx-collapsible'
+          );
+        expect(collapsible?.persistedStateKey).toEqual('facet-mockKey');
+      });
+
+      describe('and the persistCollapsibleState option is false', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-search-facet-value-navigation
+              key="mockKey"
+              .options=${{ persistCollapsibleState: false }}
+            ></oryx-search-facet-value-navigation>`
+          );
+        });
+
+        it('should render the collapsible without the persisted key', () => {
+          const collapsible =
+            element.renderRoot.querySelector<CollapsibleComponent>(
+              'oryx-collapsible'
+            );
+          expect(collapsible?.persistedStateKey).toBeUndefined();
+        });
+      });
+    });
+
+    describe('when key property is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation></oryx-search-facet-value-navigation>`
+        );
+      });
+
+      it('should render the collapsible with the persisted key', () => {
+        const collapsible =
+          element.renderRoot.querySelector<CollapsibleComponent>(
+            'oryx-collapsible'
+          );
+        expect(collapsible?.persistedStateKey).toBeUndefined();
+      });
     });
   });
 

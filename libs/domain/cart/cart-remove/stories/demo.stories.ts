@@ -1,9 +1,11 @@
+import { OverlaysDecorator } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { LitElement, TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Remove Cart`,
+  decorators: [OverlaysDecorator()],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

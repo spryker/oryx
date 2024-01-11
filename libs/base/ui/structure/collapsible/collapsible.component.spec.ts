@@ -1,6 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { useComponent } from '@spryker-oryx/utilities';
+import { UiStateController } from '../../src/controllers';
 import { CollapsibleComponent } from './collapsible.component';
 import { collapsibleComponent } from './collapsible.def';
 import { CollapsibleAppearance } from './collapsible.model';
@@ -119,6 +120,57 @@ describe('CollapsibleComponent', () => {
 
     it('should set tabindex on summary', () => {
       expect(element).toContainElement('summary[tabindex="-1"]');
+    });
+  });
+
+  describe('when a persistedStateKey is provided', () => {
+    let details: HTMLDetailsElement | undefined | null;
+
+    beforeEach(async () => {
+      mockFeatureVersion('1.4');
+      element = await fixture(
+        html`<oryx-collapsible persistedStateKey="foo"></oryx-collapsible>`
+      );
+      details = element.shadowRoot?.querySelector('details');
+      element.scrollIntoView = vi.fn();
+    });
+
+    describe('and the collapsible is toggled', () => {
+      beforeEach(async () => {
+        details?.dispatchEvent(new Event('toggle'));
+      });
+
+      it('should not store the open state', () => {
+        expect(UiStateController.state['oryx-collapsible-foo']).toBeUndefined();
+      });
+    });
+
+    describe('and the collapsible is manually expanded', () => {
+      beforeEach(async () => {
+        if (details) {
+          details.click();
+          details.open = true;
+          details.dispatchEvent(new Event('toggle'));
+        }
+      });
+
+      it('should store the open state', () => {
+        expect(UiStateController.state['oryx-collapsible-foo']).toBe(true);
+      });
+
+      describe('and the collapsible is collapsed', () => {
+        beforeEach(async () => {
+          if (details) {
+            details.click();
+            details.open = false;
+            details.dispatchEvent(new Event('toggle'));
+          }
+        });
+
+        it('should store the open state', () => {
+          expect(UiStateController.state['oryx-collapsible-foo']).toBe(false);
+        });
+      });
     });
   });
 });

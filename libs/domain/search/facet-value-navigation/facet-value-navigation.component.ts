@@ -1,3 +1,4 @@
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
@@ -8,18 +9,21 @@ import { when } from 'lit/directives/when.js';
 import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
+  FacetValueNavigationOption,
   SearchFacetValueNavigationComponentAttributes,
   ToggleFacetEventDetail,
 } from './facet-value-navigation.model';
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
 
+@defaultOptions({ persistCollapsibleState: true })
 export class SearchFacetValueNavigationComponent
-  extends I18nMixin(LitElement)
+  extends ContentMixin<FacetValueNavigationOption>(I18nMixin(LitElement))
   implements SearchFacetValueNavigationComponentAttributes
 {
   static styles = facetValueNavigationStyles;
 
   @property() heading?: string;
+  @property() key?: string;
   @property({ type: Number }) valuesLength?: number;
   @property({ type: Number }) selectedLength?: number;
   @property({ type: Boolean }) enableToggle?: boolean;
@@ -38,6 +42,7 @@ export class SearchFacetValueNavigationComponent
     return html` <oryx-collapsible
       ?open=${this.open}
       ?nonTabbable=${allowClear}
+      .persistedStateKey=${this.getPersistedStateKey()}
     >
       <section slot="heading">
         <slot name="heading">${this.heading}</slot>
@@ -90,6 +95,16 @@ export class SearchFacetValueNavigationComponent
         </oryx-button>`
       )}
     </oryx-collapsible>`;
+  }
+
+  /**
+   * Returns the key to use for storing the collapsible state in the session storage.
+   */
+  protected getPersistedStateKey(): string | undefined {
+    if (this.$options().persistCollapsibleState && this.key) {
+      return `facet-${this.key}`;
+    }
+    return;
   }
 
   protected onToggle(): void {
