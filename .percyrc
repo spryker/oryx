@@ -10,5 +10,5 @@ discovery:
     - fonts.gstatic.com
     - glue.de.faas-suite-prod.cloud.spryker.toys
   launch-options:
-    headless: false
+    headless: true
   network-idle-timeout: 500
