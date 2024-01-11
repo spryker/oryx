@@ -16,12 +16,15 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { of } from 'rxjs';
 import { DataListOptions } from './data-list.model';
+import { dataListStyles } from './data-list.styles';
 
 @hydrate()
 @signalAware()
 export class DataListComponent extends LayoutMixin(
   ContentMixin<DataListOptions>(LitElement)
 ) {
+  static styles = dataListStyles;
+
   protected contextController: ContextController = new ContextController(this);
 
   @elementEffect()
