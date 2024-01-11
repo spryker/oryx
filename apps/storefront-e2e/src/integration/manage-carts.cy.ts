@@ -1,243 +1,117 @@
 import { GlueAPI } from '../support/apis/glue.api';
-import { CartPage } from '../support/page-objects/cart.page';
-import { CheckoutPage } from '../support/page-objects/checkout.page';
+import { CartsPage } from '../support/page-objects/multi-cart/carts.page';
+import { CreateCartPage } from '../support/page-objects/multi-cart/create-cart.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-const cartPage = new CartPage();
-const checkoutPage = new CheckoutPage();
+const cartsPage = new CartsPage();
+const createCartPage = new CreateCartPage();
+// const checkoutPage = new CheckoutPage();
 
 let api: GlueAPI;
 
-describe('Carts suite', () => {
-  describe('', () => {
-    api = new GlueAPI();
+const cartName = 'test-cart-name';
 
+interface FormValues {
+  name: string;
+  currency?: string;
+  priceMode?: string;
+}
+
+describe('Carts suite', () => {
+  beforeEach(() => {
+    api = new GlueAPI();
     cy.loginApi(api);
     cy.customerCleanup(api);
-    cy.createCart(api);
-  })
-  // users.forEach((user) => {
-  //   describe(`for ${user.userType} user: `, () => {
-  //     beforeEach(() => {
-  //       user.createCart();
-  //     });
+  });
 
-  //     describe('without items in the cart: ', () => {
-  //       it('should render empty cart if there are no items', () => {
-  //         user.goToCart();
-  //         cartPage.checkEmptyCart();
-  //       });
-  //     });
+  it(`should create and remove with name: ${cartName}`, { tags: 'b2b' }, () => {
+    cartsPage.visit();
 
-  //     describe('with items in the cart: ', () => {
-  //       beforeEach(() => {
-  //         user.addProduct();
-  //         user.goToCart();
-  //       });
+    cartsPage.getCreateCartButton().click({ force: true });
+    cy.location('pathname').should('be.eq', createCartPage.url);
 
-  //       it('should update prices if the number of items was changed', () => {
-  //         cartPage.checkNotEmptyCart();
-  //         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+    fillAndSubmitForm({ name: cartName });
 
-  //         checkCartEntry({
-  //           quantity: 1,
-  //           subTotal: '€34.54',
-  //           salesPrice: '€34.54',
-  //         });
+    //create a cart and add it to the page
+    cartsPage.getCartByName(cartName).should('exist');
+    //cart created notification is shown
+    //TODO: use full message text when API will be fixed
+    // shouldShowNotificationWithText(`Cart ${cartName} created`);
+    shouldShowNotificationWithText(`Cart ${cartName}`);
 
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€34.54',
-  //           taxTotal: '€5.51',
-  //           totalPrice: '€34.54',
-  //         });
+    addProduct();
 
-  //         // change the number of items
-  //         cartPage.getCartEntries().then((entries) => {
-  //           entries[0].changeQuantityInInput(4);
-  //         });
-
-  //         cartPage.getCartEntriesHeading().should('contain.text', '4 items');
-
-  //         checkCartEntry({
-  //           quantity: 4,
-  //           subTotal: '€124.34',
-  //           salesPrice: '€31.08',
-  //         });
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€138.16',
-  //           discountsTotal: '-€13.82',
-  //           taxTotal: '€19.85',
-  //           totalPrice: '€124.34',
-  //         });
-  //       });
-
-  //       it('should show a global error if an error occurs while cart editing', () => {
-  //         cy.failApiCall(
-  //           {
-  //             method: 'PATCH',
-  //             url: user.updateCartItemsUrl,
-  //           },
-  //           () => {
-  //             cartPage.getCartEntries().then((entries) => {
-  //               entries[0].increaseEntry();
-  //             });
-  //           }
-  //         );
-
-  //         cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
-  //       });
-  //     });
-
-  //     describe('with items in the cart and a valid coupon', () => {
-  //       beforeEach(() => {
-  //         user.addProductWithCoupon();
-  //         user.goToCart();
-  //       });
-
-  //       it('should update prices if the coupon is applied', () => {
-  //         cartPage.checkNotEmptyCart();
-  //         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€366.00',
-  //           discountsTotal: '-€102.48',
-  //           taxTotal: '€42.07',
-  //           totalPrice: '€263.52',
-  //         });
-
-  //         cartPage.getCouponInput().type(coupon[0].code);
-  //         cartPage.getCouponBtn().click();
-
-  //         cartPage.getCouponNotification().should('contain.text', '12345wu2ca');
-  //         cartPage
-  //           .getCouponNotification()
-  //           .invoke('attr', 'type')
-  //           .should('eq', 'success');
-
-  //         cartPage.getCouponInput().should('have.value', '');
-
-  //         cartPage
-  //           .getCouponDate()
-  //           .shadow()
-  //           .should('contain.text', coupon[0].expiredDate);
-
-  //         cy.scrollTo('top');
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€366.00',
-  //           discountsTotal: '-€202.48',
-  //           taxTotal: '€26.11',
-  //           totalPrice: '€163.52',
-  //         });
-
-  //         user.goToCheckout();
-
-  //         checkoutPage.getCartTotals().checkTotals({
-  //           subTotal: '€366.00',
-  //           discountsTotal: '-€202.48',
-  //           taxTotal: '€26.11',
-  //           totalPrice: '€163.52',
-  //         });
-  //       });
-  //     });
-
-  //     describe('when invalid coupon', () => {
-  //       beforeEach(() => {
-  //         user.addProductWithCoupon();
-  //         user.goToCart();
-  //       });
-
-  //       it('should show error message below input field amd keep value', () => {
-  //         cartPage.checkNotEmptyCart();
-  //         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€366.00',
-  //           discountsTotal: '-€102.48',
-  //           taxTotal: '€42.07',
-  //           totalPrice: '€263.52',
-  //         });
-
-  //         cartPage.getCouponInput().type('111111');
-  //         cartPage.getCouponBtn().click();
-
-  //         cartPage.getCouponInput().should('have.value', '111111');
-  //         cartPage.getCouponInputError().should('be.visible');
-
-  //         cy.scrollTo('top');
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€366.00',
-  //           discountsTotal: '-€102.48',
-  //           taxTotal: '€42.07',
-  //           totalPrice: '€263.52',
-  //         });
-  //       });
-  //     });
-
-  //     describe('when items in the cart with multiple coupons', () => {
-  //       beforeEach(() => {
-  //         user.addProductWithCoupon();
-  //         user.addSecondProductWithCoupon();
-  //         user.goToCart();
-  //       });
-
-  //       it('should update prices if the coupon is applied', () => {
-  //         cartPage.checkNotEmptyCart();
-  //         cartPage.getCartEntriesHeading().should('contain.text', '2 items');
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€776.24',
-  //           discountsTotal: '-€217.35',
-  //           taxTotal: '€89.23',
-  //           totalPrice: '€558.89',
-  //         });
-
-  //         cartPage.getCouponInput().type(coupon[0].code);
-  //         cartPage.getCouponBtn().click();
-
-  //         cartPage
-  //           .getCouponNotification()
-  //           .should('contain.text', coupon[0].code);
-  //         cartPage
-  //           .getCouponNotification()
-  //           .invoke('attr', 'type')
-  //           .should('eq', 'success');
-
-  //         cartPage.getCouponInput().type(coupon[1].code);
-  //         cartPage.getCouponBtn().click();
-
-  //         cartPage
-  //           .getCouponNotification()
-  //           .should('contain.text', coupon[1].code);
-  //         cartPage
-  //           .getCouponNotification()
-  //           .invoke('attr', 'type')
-  //           .should('eq', 'success');
-
-  //         cartPage.getCouponCode().should('contain.text', coupon[0].code);
-  //         cartPage.getCouponCode().should('contain.text', coupon[1].code);
-
-  //         cy.scrollTo('top');
-
-  //         cartPage.getCartTotals().checkTotals({
-  //           subTotal: '€776.24',
-  //           discountsTotal: '-€337.86',
-  //           taxTotal: '€69.99',
-  //           totalPrice: '€438.38',
-  //         });
-
-  //         user.goToCheckout();
-
-  //         checkoutPage.getCartTotals().checkTotals({
-  //           subTotal: '€776.24',
-  //           discountsTotal: '-€337.86',
-  //           taxTotal: '€69.99',
-  //           totalPrice: '€438.38',
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
+    removeCart();
+  });
 });
+
+function fillAndSubmitForm({ name, currency, priceMode }: FormValues) {
+  cy.intercept('POST', '/carts').as('createCart');
+
+  createCartPage.getCartNameInput().type(name);
+
+  if (currency) {
+    createCartPage.getCartCurrencyField().select(currency);
+  }
+
+  if (priceMode) {
+    createCartPage.getCartPriceModeField().select(priceMode);
+  }
+
+  createCartPage.getSubmitButton().click();
+
+  cy.wait('@createCart');
+  //redirect to carts page after cart creation
+  cy.location('pathname').should('be.eq', cartsPage.url);
+}
+
+function shouldShowNotificationWithText(name: string) {
+  cartsPage.globalNotificationCenter
+    .getNotifications()
+    .then((notifications) => {
+      notifications.find((notification) =>
+        notification.getWrapper().should('contain.text', name)
+      );
+    });
+}
+
+function addProduct() {
+  cartsPage
+    .getCartByName(cartName)
+    .invoke('attr', 'cartId')
+    .then((cartId) => {
+      cy.addProductToCart(api, 1, ProductStorage.getByEq(2), cartId);
+
+      //refresh page to show product inside the cart
+      cy.reload();
+
+      //open the collapsible
+      cartsPage.getCartByName(cartName).find('summary').click({ force: true });
+      //product is added to the cart
+      cartsPage
+        .getCartByName(cartName)
+        .find('oryx-cart-entry')
+        .should('be.visible');
+    });
+}
+
+function removeCart() {
+  cartsPage.getRemoveCartButton(cartName).find('button').click({ force: true });
+
+  //show the confirmation modal
+  cartsPage.getRemoveCartModal(cartName).as('modal');
+  cy.get('@modal').should('have.attr', 'open');
+
+  cy.intercept('DELETE', '/carts/**').as('removeCart');
+  cy.get('@modal').find('oryx-button').contains('button', 'Remove').click();
+  cy.wait('@removeCart');
+
+  //cart is removed from the page
+  cartsPage
+    .getCartsList()
+    .find('oryx-cart-list-item')
+    .contains(cartName)
+    .should('not.exist');
+  //cart removed notification is shown
+  shouldShowNotificationWithText(`${cartName} removed`);
+}
