@@ -85,6 +85,7 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected getTagName(name: string): string {
+    if (name === 'canonical') return 'link';
     return ['link', 'style', 'title', 'script', 'html', 'meta'].includes(name)
       ? name
       : 'meta';
@@ -110,6 +111,12 @@ export class DefaultPageMetaService implements PageMetaService {
     const name = this.getTagName(definition.name);
     const element = document.createElement(name);
 
+    if (definition.name === 'canonical') {
+      definition.attrs.rel = 'canonical';
+      definition.attrs.href = definition.attrs.content;
+      delete definition.attrs.content;
+    }
+
     if (name === 'meta' && definition.name !== 'meta') {
       definition.attrs.name = definition.name;
     }
@@ -120,6 +127,12 @@ export class DefaultPageMetaService implements PageMetaService {
 
   protected get(definition: ElementDefinition): HTMLElement | null {
     let attrs = '';
+
+    if (definition.name === 'canonical') {
+      return this.getContainer(definition).querySelector(
+        `link[rel="canonical"]`
+      );
+    }
 
     for (const [key, value] of Object.entries(definition.attrs)) {
       if (key === 'text') {
