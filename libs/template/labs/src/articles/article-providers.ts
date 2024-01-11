@@ -45,7 +45,7 @@ export const articleProviders: Provider[] = [
     provideEntity<Content | null | undefined, ContentQualifier>(type, {
       service: ContentService,
       context: type,
-      resolve: (service, qualifier) =>
+      get: (service, qualifier) =>
         (service as ContentService).get({ ...qualifier, type }),
     })
   ),

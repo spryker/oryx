@@ -6,6 +6,7 @@ import {
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
+import { CATEGORY } from '../entity';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -250,5 +251,8 @@ export const productProviders: Provider[] = [
   provideEntity('product', {
     service: ProductService,
     context: featureVersion >= '1.4' ? ProductContext.SKU : undefined,
+  }),
+  provideEntity(CATEGORY, {
+    service: ProductCategoryService,
   }),
 ];

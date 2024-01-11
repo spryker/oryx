@@ -19,6 +19,12 @@ export interface EntityService {
   get<E = unknown, T = unknown>(
     entity: EntityQualifier<T>
   ): Observable<E | undefined>;
+  getList<E = unknown, T = unknown>(
+    entity: EntityQualifier<T>
+  ): Observable<E[] | undefined>;
+  getListQualifiers<E = unknown, Q = unknown>(
+    entity: EntityQualifier<Q>
+  ): Observable<(Q | undefined)[] | undefined>;
   getField<T = unknown>(
     entity: EntityFieldQualifier<T>
   ): Observable<T | undefined>;

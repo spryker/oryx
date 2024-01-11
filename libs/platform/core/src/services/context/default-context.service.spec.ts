@@ -49,6 +49,22 @@ const mockSerializerKey = 'mockSerializerKey';
 const mockSerializedValue = 'serializedValue';
 const mockDeserializedValue = { key: 'value' };
 
+const mockValue = { some: 'data' };
+const mockDistilledValue = { some: 'distilled data' };
+const mockDistillSerializerKey = 'mockDistillSerializer';
+const noDistillSerializerKey = 'noDistillSerializer';
+
+const mockDistillSerializer = {
+  serialize: vi.fn(() => of(JSON.stringify(mockValue))),
+  deserialize: vi.fn(() => of(mockValue)),
+  distill: vi.fn(() => of(mockDistilledValue)),
+};
+
+const mockNoDistillSerializer = {
+  serialize: vi.fn(() => of(JSON.stringify(mockValue))),
+  deserialize: vi.fn(() => of(mockValue)),
+};
+
 describe('ContextService', () => {
   let element: OverlayParentContext;
 
@@ -74,6 +90,14 @@ describe('ContextService', () => {
             serialize: vi.fn(() => of(mockSerializedValue)),
             deserialize: vi.fn(() => of(mockDeserializedValue)),
           },
+        },
+        {
+          provide: `${ContextSerializer}${mockDistillSerializerKey}`,
+          useValue: mockDistillSerializer,
+        },
+        {
+          provide: `${ContextSerializer}${noDistillSerializerKey}`,
+          useValue: mockNoDistillSerializer,
         },
       ],
     });
@@ -323,6 +347,27 @@ describe('ContextService', () => {
         element.context.get(element, mockSerializerKey)
       );
       expect(value).toEqual(mockDeserializedValue);
+    });
+
+    it('should use the distill method of the serializer if available', async () => {
+      const distilledValue = await firstValueFrom(
+        element.context.distill(mockDistillSerializerKey, mockValue)
+      );
+
+      expect(mockDistillSerializer.distill).toHaveBeenCalledWith(mockValue);
+      expect(distilledValue).toEqual(mockDistilledValue);
+    });
+
+    it('should fallback to serialize and deserialize if distill method is not provided in the serializer', async () => {
+      const distilledValue = await firstValueFrom(
+        element.context.distill(noDistillSerializerKey, mockValue)
+      );
+
+      expect(mockNoDistillSerializer.serialize).toHaveBeenCalledWith(mockValue);
+      expect(mockNoDistillSerializer.deserialize).toHaveBeenCalledWith(
+        JSON.stringify(mockValue)
+      );
+      expect(distilledValue).toEqual(mockValue);
     });
   });
 });
