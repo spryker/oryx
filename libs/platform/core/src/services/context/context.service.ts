@@ -61,6 +61,6 @@ declare global {
   interface InjectionTokensContractMap {
     [ContextService]: ContextService;
     [ContextFallback]: Observable<unknown>;
-    [ContextSerializer]: ContextSerializer | string[];
+    [ContextSerializer]: ContextSerializer;
   }
 }
