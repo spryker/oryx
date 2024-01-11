@@ -36,8 +36,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       landingPage.getHeroBanner().should('be.visible');
       verifyFooter();
 
-      cy.window().then((win) => processCustomComponent(win.document.body));
-
       cy.takeScreenshot('Landing Page');
     });
 
@@ -51,8 +49,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       pdp.checkDefaultProduct();
       verifyFooter();
 
-      cy.window().then((win) => processCustomComponent(win.document.body));
-
       cy.takeScreenshot('Product details page');
     });
 
@@ -65,8 +61,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       contactPage.getHeading().should('be.visible');
       verifyFooter(false);
 
-      cy.window().then((win) => processCustomComponent(win.document.body));
-
       cy.takeScreenshot('Contact Us page');
     });
 
@@ -78,8 +72,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       verifyHeader();
       loginPage.loginForm.getWrapper().should('be.visible');
       verifyFooter();
-
-      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Login page');
     });
@@ -97,8 +89,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       cartPage.checkNotEmptyCart();
       verifyFooter();
 
-      cy.window().then((win) => processCustomComponent(win.document.body));
-
       cy.takeScreenshot('Cart page');
     });
 
@@ -114,8 +104,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       searchPage.getProductHeadings().should('contain.text', 'TomTom');
       verifyFooter();
 
-      cy.window().then((win) => processCustomComponent(win.document.body));
-
       cy.takeScreenshot('Search page');
     });
 
@@ -129,8 +117,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       categoryPage.getProductSorting().getWrapper().should('be.visible');
       categoryPage.getProductCards().should('have.length.greaterThan', 1);
       verifyFooter();
-
-      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Category page');
     });
@@ -148,8 +134,6 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       verifyHeader();
       checkoutPage.getPlaceOrderBtn().should('be.visible');
       verifyFooter();
-
-      cy.window().then((win) => processCustomComponent(win.document.body));
 
       cy.takeScreenshot('Checkout page');
     });
@@ -177,21 +161,4 @@ function verifyHeader() {
   header.getCurrencySelector().should('be.visible');
   header.getUserSummaryHeading().should('be.visible');
   searchbox.getTypeahead().should('be.visible');
-}
-
-//theme plugin is applying styles to the components
-//that hide all elements that are not hydratable or defined
-//the fix adds "hydratable" attribute to all custom components
-//to make them visible on percy snapshot
-function processCustomComponent(node: Element): void {
-  if (node.tagName.toLowerCase().startsWith('oryx-')) {
-    node.toggleAttribute('hydratable', true);
-  }
-
-  const children = [
-    ...node.querySelectorAll('*'),
-    ...(node?.shadowRoot?.querySelectorAll('*') ?? []),
-  ];
-
-  children.filter((e) => e.shadowRoot).forEach(processCustomComponent);
 }

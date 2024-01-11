@@ -54,8 +54,8 @@ Cypress.Commands.add(
     }
   ) => {
     if (isPercyEnabled()) {
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(3000);
+      fixSSRRenderedTemplate();
+
       cy.percySnapshot(name, options);
     }
   }
@@ -78,4 +78,30 @@ function checkCurrencyFormatting(
         expect(symbolPosition).to.eq(price.length - 1);
       }
     });
+}
+
+function fixSSRRenderedTemplate() {
+  cy.window().then((win) => {
+    //wait till async stuff build a template
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(3000);
+    processCustomComponent(win.document.body);
+  });
+}
+
+//theme plugin is applying styles to the components
+//that hide all elements that are not hydratable or defined
+//the fix adds "hydratable" attribute to all custom components
+//to make them visible on percy snapshot
+function processCustomComponent(node: Element): void {
+  if (node.tagName.toLowerCase().startsWith('oryx-')) {
+    node.toggleAttribute('hydratable', true);
+  }
+
+  const children = [
+    ...node.querySelectorAll('*'),
+    ...(node?.shadowRoot?.querySelectorAll('*') ?? []),
+  ];
+
+  children.filter((e) => e.shadowRoot).forEach(processCustomComponent);
 }
