@@ -49,9 +49,12 @@ export class DataListComponent extends LayoutMixin(
       template: html`${repeat(
         list,
         (item) =>
-          html`<oryx-data-wrapper .options=${{ link: true }} .qualifier=${item}
-            ><oryx-composition .uid=${this.uid}></oryx-composition
-          ></oryx-data-wrapper>`
+          html`<oryx-data-wrapper
+            .options=${{ link: this.$options().link }}
+            .qualifier=${item}
+          >
+            <oryx-composition .uid=${this.uid}></oryx-composition>
+          </oryx-data-wrapper>`
       )}`,
     });
   }

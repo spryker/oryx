@@ -34,7 +34,11 @@ export const homePage: ExperienceComponent = {
     },
     {
       type: 'oryx-data-list',
-      options: { entity: 'merchant', rules: [{ layout: { type: 'grid' } }] },
+      options: {
+        entity: 'merchant',
+        link: true,
+        rules: [{ layout: { type: 'grid' } }],
+      },
       components: [
         { type: 'oryx-data-image', options: { field: 'banner' } },
         { type: 'oryx-data-text', options: { field: 'name' } },
