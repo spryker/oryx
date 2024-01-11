@@ -173,7 +173,7 @@ jobs:
           STORE: DE
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
-          PERCY_BROWSER_EXECUTABLE: /opt/hostedtoolcache/chromium/120.0.6099.109/x64/chrome
+          # PERCY_BROWSER_EXECUTABLE: /opt/hostedtoolcache/chromium/120.0.6099.109/x64/chrome
         with:
           cmd: npm run sf:e2e:headless:ci:visual-regression
           affectedCmd: npm run sf:e2e:headless:ci:visual-regression
