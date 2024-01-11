@@ -66,7 +66,7 @@ export class DefaultEntityService implements EntityService {
     );
   }
 
-  getListQualifiers<E = unknown, Q = unknown>(
+  getListQualifiers<E extends Q, Q = unknown>(
     entity: EntityQualifier<Q>
   ): Observable<(Q | undefined)[] | undefined> {
     return this.getList(entity).pipe(
@@ -74,7 +74,7 @@ export class DefaultEntityService implements EntityService {
         values?.length
           ? combineLatest(
               values.map((value) =>
-                this.contextService.distill<E, Q>(entity.type!, value as E)
+                this.contextService.distill<Q>(entity.type!, value as Q)
               )
             )
           : of(values as Q[])

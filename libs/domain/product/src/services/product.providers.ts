@@ -88,7 +88,12 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
-import { ProductDetailsBreadcrumb, ProductListBreadcrumb } from './resolvers';
+import {
+  ProductDetailsBreadcrumb,
+  ProductListBreadcrumb,
+  ProductPageCanonicalUrlResolver,
+  ProductPageRobotMetaResolver,
+} from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productRoutes } from './routes';
@@ -200,6 +205,14 @@ export const productProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: ProductPageDescriptionMetaResolver,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageCanonicalUrlResolver,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageRobotMetaResolver,
   },
   {
     provide: CategoryIdNormalizer,

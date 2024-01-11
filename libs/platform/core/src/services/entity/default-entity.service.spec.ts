@@ -14,10 +14,12 @@ const mockResult: any = {
 
 const mockTestService = {
   get: vi.fn((qualifier) => of(mockResult)),
+  getList: vi.fn(),
   getCustom: vi.fn((qualifier) => of({ customData: qualifier } as any)),
 };
 const mockContextService = {
   get: vi.fn((element, context) => of('mockQualifier')),
+  distill: vi.fn(),
 };
 
 describe('DefaultEntityService', () => {
@@ -170,6 +172,44 @@ describe('DefaultEntityService', () => {
       ).rejects.toThrow(
         'No entity provider found for entity typeWithoutContext'
       );
+    });
+  });
+
+  describe('getList method', () => {
+    it('should return a list of entity data', async () => {
+      const mockEntityList = [mockResult, mockResult];
+      mockTestService.getList = vi.fn(() => of(mockEntityList));
+
+      const data = await firstValueFrom(service.getList({ type: 'testType' }));
+      expect(data).toEqual(mockEntityList);
+    });
+
+    it('should handle missing entity provider for list', async () => {
+      await expect(
+        firstValueFrom(service.getList({ type: 'unknownType' }))
+      ).rejects.toThrow('No entity provider found');
+    });
+  });
+
+  describe('getListQualifiers method', () => {
+    it('should use distill for qualifier context to extract qualifier from entity', async () => {
+      const mockEntityList = [mockResult, mockResult];
+      mockTestService.getList = vi.fn(() => of(mockEntityList));
+      mockContextService.distill = vi.fn((type, value) => of(value));
+
+      const qualifiers = await firstValueFrom(
+        service.getListQualifiers({ type: 'testType' })
+      );
+      expect(qualifiers).toEqual([mockResult, mockResult]);
+    });
+
+    it('should return undefined if no entities are found', async () => {
+      mockTestService.getList = vi.fn(() => of(undefined));
+
+      const qualifiers = await firstValueFrom(
+        service.getListQualifiers({ type: 'testType' })
+      );
+      expect(qualifiers).toBeUndefined();
     });
   });
 });

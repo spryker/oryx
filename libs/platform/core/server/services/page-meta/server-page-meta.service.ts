@@ -13,18 +13,13 @@ export class ServerPageMetaService extends DefaultPageMetaService {
 
     for (const meta of metas) {
       const preload = this.getPreload(meta);
-
-      if (preload) {
-        metas.push(preload);
-      }
+      if (preload) metas.push(preload);
 
       const duplicate = this.metas.find(
         (_meta) => JSON.stringify(_meta) === JSON.stringify(meta)
       );
 
-      if (!duplicate) {
-        this.metas.push(meta);
-      }
+      if (!duplicate) this.metas.push(meta);
     }
   }
 
@@ -93,6 +88,12 @@ export class ServerPageMetaService extends DefaultPageMetaService {
 
       if (tag === 'meta' && name !== 'meta') {
         attrs.name = name;
+      }
+
+      if (name === 'canonical') {
+        attrs.rel = 'canonical';
+        attrs.href = attrs.content;
+        delete attrs.content;
       }
 
       stream[type] += `\n<${tag}${this.setAttributes(attrs)} />`;

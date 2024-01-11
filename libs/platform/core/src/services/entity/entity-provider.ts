@@ -32,7 +32,7 @@ export function provideEntity<E = unknown, Q = unknown>(
 export function isCustomEntityProvider<E, Q>(
   provider: EntityProvider<E, Q>
 ): provider is CustomEntityProvider<E, Q> {
-  return 'resolve' in provider;
+  return 'get' in provider;
 }
 
 declare global {

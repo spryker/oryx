@@ -34,10 +34,7 @@ export interface ContextService {
   /**
    * Distills the value, so it contains only the data that is relevant for the given context
    */
-  distill<Entity, Qualifier>(
-    key: string,
-    value: Entity
-  ): Observable<Qualifier | undefined>;
+  distill<T = unknown>(key: string, value: T): Observable<T | undefined>;
 }
 
 /**
@@ -61,6 +58,6 @@ declare global {
   interface InjectionTokensContractMap {
     [ContextService]: ContextService;
     [ContextFallback]: Observable<unknown>;
-    [ContextSerializer]: ContextSerializer | string[];
+    [ContextSerializer]: ContextSerializer;
   }
 }

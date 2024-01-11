@@ -239,10 +239,7 @@ export class DefaultContextService implements ContextService {
     return of(value as T);
   }
 
-  distill<Entity, Qualifier>(
-    key: string,
-    value: Entity
-  ): Observable<Qualifier | undefined> {
+  distill<T = unknown>(key: string, value: T): Observable<T | undefined> {
     const serializer = this.getSerializer<T>(key);
     if (serializer) {
       return serializer.distill
@@ -251,6 +248,6 @@ export class DefaultContextService implements ContextService {
             .serialize(value)
             .pipe(switchMap((value) => serializer.deserialize(value)));
     }
-    return of(value) as Observable<Qualifier | undefined>;
+    return of(value as T | undefined);
   }
 }

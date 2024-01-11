@@ -31,6 +31,7 @@ export class PickingDiscardModalComponent extends I18nMixin(LitElement) {
       <oryx-modal
         ?open=${this.open}
         @oryx.close=${this.cancel}
+        @oryx.modal.closed=${this.cancel}
         enableFooter
         preventCloseByEscape
         footerButtonFullWidth
