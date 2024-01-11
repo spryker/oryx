@@ -21,6 +21,10 @@ export class ProductAvailabilityComponent extends ProductMixin(
     const { isNeverOutOfStock, quantity, availability } =
       this.$product()?.availability ?? {};
     const { threshold } = this.$options();
+
+    if (this.$product()?.discontinued && !quantity)
+      return StockAvailability.OutOfStock;
+
     if (
       isNeverOutOfStock ||
       (!quantity && availability) ||

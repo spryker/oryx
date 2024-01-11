@@ -91,6 +91,7 @@ import {
   ProductDetailsBreadcrumb,
   ProductListBreadcrumb,
   ProductPageCanonicalUrlResolver,
+  ProductPageRobotMetaResolver,
 } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
@@ -207,6 +208,10 @@ export const productProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: ProductPageCanonicalUrlResolver,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageRobotMetaResolver,
   },
   {
     provide: CategoryIdNormalizer,
