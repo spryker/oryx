@@ -10,7 +10,8 @@ export interface ServiceEntityProvider<E = unknown, Q = unknown> {
 
 export interface CustomEntityProvider<E = unknown, Q = unknown> {
   service?: string;
-  resolve: (service: unknown, qualifier?: Q) => Observable<E>;
+  get: (service: unknown, qualifier?: Q) => Observable<E>;
+  getList?: (service: unknown, qualifier?: Q) => Observable<E[]>;
   context?: string;
 }
 
