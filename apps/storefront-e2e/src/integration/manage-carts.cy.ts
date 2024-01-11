@@ -24,25 +24,29 @@ describe('Carts suite', () => {
     cy.customerCleanup(api);
   });
 
-  it(`should create and remove with name: ${cartName}`, { tags: 'b2b' }, () => {
-    cartsPage.visit();
+  it(
+    `should create and remove cart with name: ${cartName}`,
+    { tags: 'b2b' },
+    () => {
+      cartsPage.visit();
 
-    cartsPage.getCreateCartButton().click({ force: true });
-    cy.location('pathname').should('be.eq', createCartPage.url);
+      cartsPage.getCreateCartButton().click({ force: true });
+      cy.location('pathname').should('be.eq', createCartPage.url);
 
-    fillAndSubmitForm({ name: cartName });
+      fillAndSubmitForm({ name: cartName });
 
-    //create a cart and add it to the page
-    cartsPage.getCartByName(cartName).should('exist');
-    //cart created notification is shown
-    //TODO: use full message text when API will be fixed
-    // shouldShowNotificationWithText(`Cart ${cartName} created`);
-    shouldShowNotificationWithText(`Cart ${cartName}`);
+      //create a cart and add it to the page
+      cartsPage.getCartByName(cartName).should('exist');
+      //cart created notification is shown
+      //TODO: use full message text when API will be fixed
+      // shouldShowNotificationWithText(`Cart ${cartName} created`);
+      shouldShowNotificationWithText(`Cart ${cartName}`);
 
-    addProduct();
+      addProduct();
 
-    removeCart();
-  });
+      removeCart();
+    }
+  );
 });
 
 function fillAndSubmitForm({ name, currency, priceMode }: FormValues) {
