@@ -5,7 +5,6 @@ import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartsPage = new CartsPage();
 const createCartPage = new CreateCartPage();
-// const checkoutPage = new CheckoutPage();
 
 let api: GlueAPI;
 
