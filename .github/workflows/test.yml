@@ -163,6 +163,10 @@ jobs:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
       - uses: ./.github/actions/init
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 120
+      - run: ${{ steps.setup-chrome.outputs.chrome-path }} --version
       - name: Storefront B2C visual regression tests
         uses: ./.github/actions/run-optimal
         env:
@@ -172,8 +176,8 @@ jobs:
           PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
           PERCY_BROWSER_EXECUTABLE: /home/runner/work/oryx/oryx/chrome/linux-120.0.6099.109/chrome-linux64/chrome
         with:
-          cmd: npm install -D puppeteer && npx @puppeteer/browsers install chrome@stable && npm run sf:e2e:headless:ci:visual-regression
-          affectedCmd: npm install -D puppeteer && npx @puppeteer/browsers install chrome@stable &&  npm run sf:e2e:headless:ci:visual-regression
+          cmd: npm run sf:e2e:headless:ci:visual-regression
+          affectedCmd: npm run sf:e2e:headless:ci:visual-regression
           isDev: ${{ env.IS_DEV }}
 
   test-e2e-storefront-b2b:
