@@ -66,7 +66,7 @@ export class DefaultEntityService implements EntityService {
     );
   }
 
-  getListQualifiers<E = unknown, Q = unknown>(
+  getListQualifiers<E extends Q, Q = unknown>(
     entity: EntityQualifier<Q>
   ): Observable<(Q | undefined)[] | undefined> {
     return this.getList(entity).pipe(

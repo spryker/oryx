@@ -34,7 +34,7 @@ export interface ContextService {
   /**
    * Distills the value, so it contains only the data that is relevant for the given context
    */
-  distill<Entity, Qualifier>(
+  distill<Entity extends Qualifier, Qualifier = unknown>(
     key: string,
     value: Entity
   ): Observable<Qualifier | undefined>;
