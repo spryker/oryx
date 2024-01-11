@@ -2,6 +2,7 @@ import {
   ContextFallback,
   ContextSerializer,
   ContextService,
+  FieldContextSerializer,
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
 import { RouteType, RouterService } from '@spryker-oryx/router';
@@ -47,6 +48,7 @@ export const ProductContextSerializerToken = `${ContextSerializer}${
   featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU
 }`;
 
+/** @deprecated since 1.4, use FieldContextSerializer instead */
 export class ProductContextSerializer
   implements ContextSerializer<ProductQualifier>
 {
@@ -72,12 +74,21 @@ export const ProductContextFallback: Provider = {
 };
 
 export const productContextProviders: Provider[] =
-  featureVersion >= '1.3'
+  featureVersion >= '1.4'
     ? [
         {
-          provide: `${ContextFallback}${
-            featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU
-          }`,
+          provide: `${ContextFallback}${PRODUCT}`,
+          useFactory: productContextFallbackFactory,
+        },
+        {
+          provide: ProductContextSerializerToken,
+          useFactory: () => new FieldContextSerializer('sku'),
+        },
+      ]
+    : featureVersion >= '1.3'
+    ? [
+        {
+          provide: `${ContextFallback}${ProductContext.SKU}`,
           useFactory: productContextFallbackFactory,
         },
         {

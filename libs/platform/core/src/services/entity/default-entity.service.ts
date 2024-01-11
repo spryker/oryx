@@ -1,5 +1,12 @@
 import { INJECTOR, inject } from '@spryker-oryx/di';
-import { Observable, map, of, switchMap, throwError } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { ContextService } from '../context';
 import { EntityProvider, isCustomEntityProvider } from './entity-provider';
 import { EntityContext } from './entity.context';
@@ -56,6 +63,22 @@ export class DefaultEntityService implements EntityService {
           GetMethod.List
         ) as Observable<E[] | undefined>;
       })
+    );
+  }
+
+  getListQualifiers<E = unknown, Q = unknown>(
+    entity: EntityQualifier<Q>
+  ): Observable<(Q | undefined)[] | undefined> {
+    return this.getList(entity).pipe(
+      switchMap((values) =>
+        values?.length
+          ? combineLatest(
+              values.map((value) =>
+                this.contextService.distill<E, Q>(entity.type!, value as E)
+              )
+            )
+          : of(values as Q[])
+      )
     );
   }
 
