@@ -171,8 +171,8 @@ jobs:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
         with:
-          cmd: npm install -D puppeteer && npm run sf:e2e:headless:ci:visual-regression
-          affectedCmd: npm install -D puppeteer && npm run sf:e2e:headless:ci:visual-regression
+          cmd: npm install -D puppeteer && npx @puppeteer/browsers install chrome@stable && npm run sf:e2e:headless:ci:visual-regression
+          affectedCmd: npm install -D puppeteer && npx @puppeteer/browsers install chrome@stable &&  npm run sf:e2e:headless:ci:visual-regression
           isDev: ${{ env.IS_DEV }}
 
   test-e2e-storefront-b2b:
