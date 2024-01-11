@@ -166,7 +166,6 @@ jobs:
       - uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: 120
-      - run: ${{ steps.setup-chrome.outputs.chrome-path }} --version
       - name: Storefront B2C visual regression tests
         uses: ./.github/actions/run-optimal
         env:
@@ -174,7 +173,7 @@ jobs:
           STORE: DE
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
-          PERCY_BROWSER_EXECUTABLE: /home/runner/work/oryx/oryx/chrome/linux-120.0.6099.109/chrome-linux64/chrome
+          PERCY_BROWSER_EXECUTABLE: /opt/hostedtoolcache/chromium/120.0.6099.109/x64/chrome
         with:
           cmd: npm run sf:e2e:headless:ci:visual-regression
           affectedCmd: npm run sf:e2e:headless:ci:visual-regression
