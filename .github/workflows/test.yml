@@ -163,9 +163,9 @@ jobs:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
       - uses: ./.github/actions/init
-      - uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: 120
+      # - uses: browser-actions/setup-chrome@v1
+      #   with:
+      #     chrome-version: 120
       - name: Storefront B2C visual regression tests
         uses: ./.github/actions/run-optimal
         env:
