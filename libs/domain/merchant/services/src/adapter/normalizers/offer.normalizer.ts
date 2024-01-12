@@ -1,10 +1,11 @@
-import { Transformer, TransformerService } from '@spryker-oryx/core';
+import { TransformerService } from '@spryker-oryx/core';
+import {
+  ApiMerchantModel,
+  MerchantNormalizer,
+  ProductOffer,
+} from '@spryker-oryx/merchant';
 import { AvailabilityNormalizer, PriceNormalizer } from '@spryker-oryx/product';
 import { Observable, map } from 'rxjs';
-import { ApiMerchantModel, ProductOffer } from '../../../models';
-import { MerchantNormalizer } from '../merchant.adapter';
-
-export const OfferNormalizer = 'oryx.OfferNormalizer*';
 
 export function offerNormalizer(
   data: ApiMerchantModel.ProductOffer
@@ -40,10 +41,4 @@ export function offerMerchantNormalizer(
   return transformer
     .transform(data.merchants?.[0], MerchantNormalizer)
     .pipe(map((merchant) => ({ merchant })));
-}
-
-declare global {
-  interface InjectionTokensContractMap {
-    [OfferNormalizer]: Transformer<ProductOffer>;
-  }
 }

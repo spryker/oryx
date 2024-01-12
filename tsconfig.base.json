@@ -135,6 +135,9 @@
       "@spryker-oryx/merchant/schedule": [
         "libs/domain/merchant/schedule/index.ts"
       ],
+      "@spryker-oryx/merchant/services": [
+        "libs/domain/merchant/services/index.ts"
+      ],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"
