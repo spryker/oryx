@@ -135,6 +135,9 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       checkoutPage.getPlaceOrderBtn().should('be.visible');
       verifyFooter();
 
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(10000);
+
       cy.takeScreenshot('Checkout page');
     });
   }
