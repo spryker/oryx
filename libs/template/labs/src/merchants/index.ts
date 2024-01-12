@@ -5,6 +5,8 @@ import {
   provideExperienceData,
 } from '@spryker-oryx/experience';
 
+const env = import.meta.env;
+
 const merchantBannersData: ExperienceComponent = {
   merge: {
     selector: 'brands',
@@ -38,5 +40,5 @@ const merchantBannersData: ExperienceComponent = {
 };
 
 export const merchantBanners: Provider = provideExperienceData([
-  merchantBannersData,
+  ...(env.ORYX_MERCHANT ? [merchantBannersData] : []),
 ]);
