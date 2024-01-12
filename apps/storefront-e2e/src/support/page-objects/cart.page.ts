@@ -35,6 +35,7 @@ export class CartPage extends AbstractSFPage {
   getCouponBtn = () =>
     this.getCouponComponent().find('oryx-input').find('oryx-button');
   getCouponCode = () => this.getCouponComponent().find('div');
+  getRemoveCouponBtn = () => this.getCouponCode().find('oryx-button');
   getCouponDate = () => this.getCouponComponent().find('oryx-date');
   getCouponNotification = () => cy.get('oryx-notification');
 
