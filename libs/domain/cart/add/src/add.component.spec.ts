@@ -179,27 +179,73 @@ describe('CartAddComponent', () => {
   });
 
   describe('when isNeverOutOfStock = true', () => {
-    beforeEach(async () => {
-      productService.get.mockReturnValue(
-        of({
-          sku: '1',
-          availability: { quantity: 0, isNeverOutOfStock: true },
-        } as Product)
-      );
-      element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
+    describe('and the product is discontinued', () => {
+      describe('and the quantity is 0', () => {
+        beforeEach(async () => {
+          productService.get.mockReturnValue(
+            of({
+              sku: '1',
+              discontinued: true,
+              availability: { quantity: 0, isNeverOutOfStock: true },
+            } as Product)
+          );
+          element = await fixture(
+            html`<oryx-cart-add sku="1"></oryx-cart-add>`
+          );
+        });
+
+        it('should disable the button', () => {
+          const button =
+            element.renderRoot.querySelector<ButtonComponent>('oryx-button');
+          expect(button?.disabled).toEqual(true);
+        });
+      });
+
+      describe('and the quantity > 0', () => {
+        beforeEach(async () => {
+          productService.get.mockReturnValue(
+            of({
+              sku: '1',
+              discontinued: true,
+              availability: { quantity: 5, isNeverOutOfStock: true },
+            } as Product)
+          );
+          element = await fixture(
+            html`<oryx-cart-add sku="1"></oryx-cart-add>`
+          );
+        });
+
+        it('should enable the button', () => {
+          const button =
+            element.renderRoot.querySelector<ButtonComponent>('oryx-button');
+          expect(button?.disabled).toBeUndefined();
+        });
+      });
     });
 
-    it('should enable the button', () => {
-      const button =
-        element.renderRoot.querySelector<ButtonComponent>('oryx-button');
-      expect(button?.disabled).toBeUndefined();
-    });
+    describe('and the product is not discontinued', () => {
+      beforeEach(async () => {
+        productService.get.mockReturnValue(
+          of({
+            sku: '1',
+            availability: { quantity: 0, isNeverOutOfStock: true },
+          } as Product)
+        );
+        element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
+      });
 
-    it('should have an infinite max quantity', () => {
-      const quantityInput = element.renderRoot.querySelector(
-        'oryx-cart-quantity-input'
-      ) as QuantityInputComponent;
-      expect(quantityInput.max).toBe(Infinity);
+      it('should enable the button', () => {
+        const button =
+          element.renderRoot.querySelector<ButtonComponent>('oryx-button');
+        expect(button?.disabled).toBeUndefined();
+      });
+
+      it('should have an infinite max quantity', () => {
+        const quantityInput = element.renderRoot.querySelector(
+          'oryx-cart-quantity-input'
+        ) as QuantityInputComponent;
+        expect(quantityInput.max).toBe(Infinity);
+      });
     });
   });
 

@@ -15,7 +15,7 @@ export default {
     triggerIconSize: Size.Md,
     content: 'options',
     customTrigger: false,
-    showOnFocus: false,
+    openOnHover: false,
   },
   argTypes: {
     position: {
@@ -91,7 +91,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         <oryx-dropdown
           position=${props.position}
           ?vertical-align=${props.verticalAlign}
-          ?showOnFocus=${props.showOnFocus}
+          ?openOnHover=${props.openOnHover}
           triggerIconSize=${props.triggerIconSize}
           @oryx.close=${(): void => console.log('close')}
         >

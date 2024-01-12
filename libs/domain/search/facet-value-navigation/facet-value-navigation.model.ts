@@ -1,6 +1,10 @@
 export const FACET_TOGGLE_EVENT = 'oryx.toggle';
 export const FACET_CLEAR_EVENT = 'oryx.clear';
 
+export interface FacetValueNavigationOption {
+  persistCollapsibleState?: boolean;
+}
+
 export interface ToggleFacetEventDetail {
   expanded: boolean;
 }
@@ -10,6 +14,11 @@ export interface SearchFacetValueNavigationComponentAttributes {
    * Name of the facet which should be rendered.
    */
   heading?: string;
+
+  /**
+   * Unique key of the facet, used for storing the UI state of the navigation.
+   */
+  key?: string;
   /**
    * Length of all facet values.
    */

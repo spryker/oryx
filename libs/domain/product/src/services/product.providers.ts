@@ -6,6 +6,7 @@ import {
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
+import { CATEGORY } from '../entity';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -88,7 +89,12 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
-import { ProductDetailsBreadcrumb, ProductListBreadcrumb } from './resolvers';
+import {
+  ProductDetailsBreadcrumb,
+  ProductListBreadcrumb,
+  ProductPageCanonicalUrlResolver,
+  ProductPageRobotMetaResolver,
+} from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productRoutes } from './routes';
@@ -202,6 +208,14 @@ export const productProviders: Provider[] = [
     useClass: ProductPageDescriptionMetaResolver,
   },
   {
+    provide: PageMetaResolver,
+    useClass: ProductPageCanonicalUrlResolver,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageRobotMetaResolver,
+  },
+  {
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
@@ -238,6 +252,9 @@ export const productProviders: Provider[] = [
   provideEntity('product', {
     service: ProductService,
     context: featureVersion >= '1.4' ? ProductContext.SKU : undefined,
+  }),
+  provideEntity(CATEGORY, {
+    service: ProductCategoryService,
   }),
   ...productJsonLdNormalizers,
 ];

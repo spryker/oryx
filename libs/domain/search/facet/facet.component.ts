@@ -46,7 +46,6 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
 
     const valuesLength = facet.filteredValueLength ?? facet.valuesTreeLength;
     const selectedLength = facet.selectedValues?.length;
-
     return html`<oryx-search-facet-value-navigation
       ?open=${this.open}
       ?enableToggle=${this.isFoldable}
@@ -58,6 +57,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       .heading=${this.name}
       .selectedLength=${selectedLength}
       .valuesLength=${valuesLength}
+      .key=${featureVersion >= '1.4' ? facet.parameter : undefined}
     >
       ${when(
         valuesLength,

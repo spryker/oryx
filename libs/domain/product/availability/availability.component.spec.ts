@@ -55,6 +55,68 @@ describe('ProductAvailabilityComponent', () => {
     vi.clearAllMocks();
   });
 
+  describe('when the availability has no quantity', () => {
+    describe('and isNeverOutOfStock = true', () => {
+      describe('and the product is discontinued', () => {
+        beforeEach(async () => {
+          productService.get.mockReturnValue(
+            of({
+              availability: { quantity: 0, isNeverOutOfStock: true },
+              discontinued: true,
+            })
+          );
+          element = await fixture(
+            html`<oryx-product-availability
+              sku="1"
+            ></oryx-product-availability>`
+          );
+        });
+
+        it('should render none available message', () => {
+          expect(element.renderRoot.textContent?.trim()).contain(
+            i18n('product.availability.none')
+          );
+        });
+      });
+
+      describe('and the product is not discontinued', () => {
+        beforeEach(async () => {
+          productService.get.mockReturnValue(
+            of({ availability: { quantity: 0, isNeverOutOfStock: true } })
+          );
+          element = await fixture(
+            html`<oryx-product-availability
+              sku="1"
+            ></oryx-product-availability>`
+          );
+        });
+
+        it('should render available message', () => {
+          expect(element.renderRoot.textContent?.trim()).contain(
+            i18n('product.availability.available')
+          );
+        });
+      });
+    });
+
+    describe('and isNeverOutOfStock = false', () => {
+      beforeEach(async () => {
+        productService.get.mockReturnValue(
+          of({ availability: { quantity: 0, isNeverOutOfStock: false } })
+        );
+        element = await fixture(
+          html`<oryx-product-availability sku="1"></oryx-product-availability>`
+        );
+      });
+
+      it('should render none available message', () => {
+        expect(element.renderRoot.textContent?.trim()).contain(
+          i18n('product.availability.none')
+        );
+      });
+    });
+  });
+
   describe('when the availability has a quantity of 10', () => {
     beforeEach(async () => {
       productService.get.mockReturnValue(
