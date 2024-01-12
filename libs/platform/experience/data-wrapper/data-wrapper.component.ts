@@ -63,7 +63,9 @@ export class DataWrapperComponent extends ContentMixin<DataWrapperComponentOptio
   protected override render(): TemplateResult | void {
     const { link } = this.$options();
     return link
-      ? html`<a href=${this.$link()}><slot></slot></a>`
+      ? html`<oryx-link>
+          <a href=${this.$link()}><slot></slot></a>
+        </oryx-link>`
       : html`<slot></slot>`;
   }
 }

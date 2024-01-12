@@ -54,11 +54,6 @@ export const merchantHeaderNavigation: ExperienceComponent = {
     ],
     main: [
       {
-        type: 'oryx-data-list',
-        options: { entity: 'merchant' },
-        components: [{ type: 'oryx-data-text', options: { field: 'name' } }],
-      },
-      {
         type: 'oryx-content-link',
         options: { url: '/merchant/MER000001' },
         content: { data: { text: 'Spryker' } },

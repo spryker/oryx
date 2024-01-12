@@ -25,27 +25,6 @@ export const homePage: ExperienceComponent = {
   components: [
     featureVersion >= '1.2' ? { ref: 'header' } : {},
     {
-      type: 'oryx-data-list',
-      options: { entity: 'category', rules: [{ layout: { type: 'grid' } }] },
-      components: [
-        { type: 'oryx-data-text', options: { field: 'id' } },
-        { type: 'oryx-data-text', options: { field: 'name' } },
-      ],
-    },
-    {
-      type: 'oryx-data-list',
-      options: {
-        entity: 'merchant',
-        link: true,
-        rules: [{ layout: { type: 'grid' } }],
-      },
-      components: [
-        { type: 'oryx-data-image', options: { field: 'banner' } },
-        { type: 'oryx-data-text', options: { field: 'name' } },
-      ],
-    },
-
-    {
       type: 'oryx-composition',
       id: 'home-hero',
       options: {
@@ -116,6 +95,7 @@ export const homePage: ExperienceComponent = {
         },
       ],
     },
+
     {
       type: 'oryx-product-list',
       options: {
@@ -177,6 +157,7 @@ export const homePage: ExperienceComponent = {
         featureVersion >= '1.4' ? brand('Canon') : {},
       ],
     },
+
     featureVersion >= '1.2' ? { ref: 'footer' } : {},
   ],
 };
