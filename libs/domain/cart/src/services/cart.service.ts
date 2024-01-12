@@ -20,6 +20,7 @@ export interface CartService {
   getEntries(data?: CartQualifier): Observable<CartEntry[]>;
   getCoupons(data?: CartQualifier): Observable<Coupon[]>;
   addCoupon(data?: CouponQualifier): Observable<unknown>;
+  deleteCoupon(data?: CouponQualifier): Observable<unknown>;
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
   deleteEntry(data: CartEntryQualifier): Observable<unknown>;

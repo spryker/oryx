@@ -299,6 +299,36 @@ describe('Cart suite', () => {
           });
         });
       });
+
+      describe('when removing coupon from a cart', () => {
+        beforeEach(() => {
+          user.addProductWithCoupon();
+          user.goToCart();
+
+          cartPage.getCouponInput().type(coupon[0].code);
+          cartPage.getCouponBtn().click();
+          cy.scrollTo('top');
+        });
+
+        it('it should update cart totals', () => {
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€202.48',
+            taxTotal: '€26.11',
+            totalPrice: '€163.52',
+          });
+
+          cartPage.getRemoveCouponBtn().click();
+          cy.scrollTo('top');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€102.48',
+            taxTotal: '€42.07',
+            totalPrice: '€263.52',
+          });
+        });
+      });
     });
   });
 });

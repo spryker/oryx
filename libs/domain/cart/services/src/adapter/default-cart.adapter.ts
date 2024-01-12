@@ -163,6 +163,23 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
+  deleteCoupon(data: CouponQualifier): Observable<unknown> {
+    return this.identity.get().pipe(
+      take(1),
+      switchMap((identity) => {
+        const requestType = identity.isAuthenticated
+          ? ApiCartModel.UrlParts.Carts
+          : ApiCartModel.UrlParts.GuestCarts;
+
+        const url = this.generateUrl(
+          `${requestType}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}/${data.code}`,
+          !identity.isAuthenticated
+        );
+        return this.http.delete(url);
+      })
+    );
+  }
+
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {
     const attributes = {
       sku: data.sku,

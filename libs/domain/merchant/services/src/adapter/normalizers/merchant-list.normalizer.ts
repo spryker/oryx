@@ -1,7 +1,10 @@
 import { TransformerService } from '@spryker-oryx/core';
+import {
+  ApiMerchantModel,
+  Merchant,
+  MerchantNormalizer,
+} from '@spryker-oryx/merchant';
 import { Observable, combineLatest, of } from 'rxjs';
-import { ApiMerchantModel, Merchant } from '../../../models';
-import { MerchantNormalizer } from '../merchant.adapter';
 
 export function merchantListNormalizer(
   data: ApiMerchantModel.Merchant[],
