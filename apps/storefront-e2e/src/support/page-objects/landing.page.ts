@@ -1,3 +1,4 @@
+import { isSSREnabled } from '..';
 import { AbstractSFPage } from './abstract.page';
 
 export class LandingPage extends AbstractSFPage {
@@ -8,7 +9,9 @@ export class LandingPage extends AbstractSFPage {
   }
 
   waitForLoaded(): void {
-    // cy.wait('@searchQuery');
+    if (!isSSREnabled()) {
+      cy.wait('@searchQuery');
+    }
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(250);
   }
