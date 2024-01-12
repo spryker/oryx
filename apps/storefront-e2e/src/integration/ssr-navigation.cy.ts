@@ -89,6 +89,8 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       cartPage.checkNotEmptyCart();
       verifyFooter();
 
+      cartPage.templateIsReady();
+
       cy.takeScreenshot('Cart page');
     });
 
@@ -135,8 +137,7 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       checkoutPage.getPlaceOrderBtn().should('be.visible');
       verifyFooter();
 
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(10000);
+      checkoutPage.templateIsReady();
 
       cy.takeScreenshot('Checkout page');
     });

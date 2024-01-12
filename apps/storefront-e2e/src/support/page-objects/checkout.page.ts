@@ -38,8 +38,9 @@ export class CheckoutPage extends AbstractSFPage {
   getPlaceOrderBtn = () => cy.get('oryx-checkout-place-order');
   getShippingWrapper = () => cy.get('oryx-checkout-shipping-method');
   getShippingMethods = () => this.getShippingWrapper().find('oryx-tile');
-  getBillingWrapper = () => cy.get('oryx-checkout-payment-method');
-  getBillingMethods = () => this.getBillingWrapper().find('oryx-tile');
+  getPaymentWrapper = () => cy.get('oryx-checkout-payment-method');
+  getPaymentMethods = () => this.getPaymentWrapper().find('oryx-tile');
+  getEntries = () => cy.get('oryx-cart-entries');
 
   placeOrder = () => {
     this.order('/checkout');
@@ -56,4 +57,22 @@ export class CheckoutPage extends AbstractSFPage {
       .its('response.body.data.attributes.orderReference')
       .as('createdOrderId');
   };
+
+  templateIsReady = () => {
+    //email input is ready
+    this.checkoutAsGuestForm.getEmailInput().should('be.visible', { timeout: 10000 });
+
+    //shipping address form is ready
+    this.shipping.addAddressForm.getCountrySelect().should('be.visible', { timeout: 10000 });
+    this.shipping.addAddressForm.getSalutationSelect().should('be.visible', { timeout: 10000 });
+    
+    //shipping methods are ready
+    this.getShippingWrapper().find('oryx-tile[selected]').should('be.visible', { timeout: 10000 });
+
+    //payment methods are ready
+    this.getPaymentWrapper().find('oryx-tile[selected]').should('be.visible', { timeout: 10000 });
+
+    //entries are ready
+    this.getEntries().find('oryx-cart-entry').find('oryx-product-title').should('be.visible', { timeout: 10000 });
+  }
 }
