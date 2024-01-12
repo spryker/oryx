@@ -114,6 +114,9 @@
       "@spryker-oryx/experience/data-text": [
         "libs/platform/experience/data-text/index.ts"
       ],
+      "@spryker-oryx/experience/data-wrapper": [
+        "libs/platform/experience/data-wrapper/index.ts"
+      ],
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"
       ],
