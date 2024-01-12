@@ -54,6 +54,36 @@ describe('DefaultPageMetaService', () => {
       expect(charsetMeta).toHaveProperty('content', 'b');
     });
 
+    describe('when a canonical link is added', () => {
+      beforeEach(() => {
+        service.add({
+          name: 'canonical',
+          attrs: { content: 'https://example.com' },
+        });
+      });
+
+      it('should add canonical link to the head of document', () => {
+        expect(document.head).toContainElement(
+          'link[rel="canonical"][href="https://example.com"]'
+        );
+      });
+
+      describe('when the canonical link is removed', () => {
+        beforeEach(() => {
+          service.remove({
+            name: 'canonical',
+            attrs: { content: 'https://example.com' },
+          });
+        });
+
+        it('should no longer have the canonical link in the head of document', () => {
+          expect(document.head).not.toContainElement(
+            'link[rel="canonical"][href="https://example.com"]'
+          );
+        });
+      });
+    });
+
     it('should escape quote symbol', () => {
       service.add([
         {

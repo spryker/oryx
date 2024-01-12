@@ -317,6 +317,15 @@ export class MockProductService implements Partial<ProductService> {
       },
       mediaSet: [],
     },
+    {
+      sku: 'discontinued',
+      discontinued: true,
+    },
+    {
+      sku: 'discontinued-with-note',
+      discontinued: true,
+      discontinuedNote: 'This product is discontinued...',
+    },
   ];
 
   get(qualifier: ProductQualifier): Observable<Product> {
