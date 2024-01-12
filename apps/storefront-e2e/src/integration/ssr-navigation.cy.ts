@@ -161,6 +161,7 @@ function verifyFooter(isPageScrollable = true) {
 }
 
 function verifyHeader() {
+  header.getTopHeaderWrapper().find('oryx-content-link').should('be.visible');
   header.getLocaleSelector().should('be.visible');
   header.getCurrencySelector().should('be.visible');
   header.getUserSummaryHeading().should('be.visible');
