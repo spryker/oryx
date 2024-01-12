@@ -18,8 +18,8 @@ export class DataWrapperComponent extends ContentMixin<DataWrapperComponentOptio
   LitElement
 ) {
   protected entityService = resolve(EntityService);
-  protected linkService = resolve(LinkService);
   protected contextService = resolve(ContextService);
+  protected linkService = resolve(LinkService);
 
   @signalProperty()
   qualifier: unknown;
