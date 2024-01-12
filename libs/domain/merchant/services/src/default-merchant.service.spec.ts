@@ -1,12 +1,14 @@
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { merchantQueries } from '@spryker-oryx/merchant';
+import {
+  MerchantAdapter,
+  MerchantQualifier,
+  MerchantService,
+  merchantQueries,
+} from '@spryker-oryx/merchant';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { MerchantQualifier } from '../models';
-import { MerchantAdapter } from './adapter/merchant.adapter';
 import { DefaultMerchantService } from './default-merchant.service';
-import { MerchantService } from './merchant.service';
 
 class MockMerchantAdapter implements Partial<MerchantAdapter> {
   get = vi

@@ -1,8 +1,13 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import {
+  ApiMerchantModel,
+  Merchant,
+  MerchantAdapter,
+  MerchantNormalizer,
+  MerchantQualifier,
+} from '@spryker-oryx/merchant';
 import { Observable } from 'rxjs';
-import { ApiMerchantModel, Merchant, MerchantQualifier } from '../../models';
-import { MerchantAdapter, MerchantNormalizer } from './merchant.adapter';
 
 export class DefaultMerchantAdapter implements MerchantAdapter {
   protected merchantEndpoint = 'merchants';

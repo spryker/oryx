@@ -2,8 +2,11 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
+import {
+  MerchantAdapter,
+  MerchantNormalizer,
+} from '../../../src/services/adapter/merchant.adapter';
 import { DefaultMerchantAdapter } from './default-merchant.adapter';
-import { MerchantAdapter, MerchantNormalizer } from './merchant.adapter';
 
 const mockApiUrl = 'mockApiUrl';
 const mockMerchant = {
