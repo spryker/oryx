@@ -69,16 +69,23 @@ export class CartPage extends AbstractSFPage {
     this.getCartEntriesHeading().should('be.visible', { timeout: 10000 });
 
     //entries are ready
-    this.getCartEntriesWrapper().find('oryx-cart-entry').find('oryx-product-title').should('be.visible', { timeout: 10000 });
+    this.getCartEntriesWrapper()
+      .find('oryx-cart-entry')
+      .find('oryx-product-title')
+      .should('be.visible', { timeout: 10000 });
 
     //totals are ready
-    this.getCartTotals().getSubtotalPrice().should('be.visible', { timeout: 10000 });
-    this.getCartTotals().getTotalPrice().should('be.visible', { timeout: 10000 });
+    this.getCartTotals()
+      .getSubtotalPrice()
+      .should('be.visible', { timeout: 10000 });
+    this.getCartTotals()
+      .getTotalPrice()
+      .should('be.visible', { timeout: 10000 });
 
     //checkout button is ready
     this.getCheckoutBtn().should('be.visible', { timeout: 10000 });
 
     //coupon input is ready
     this.getCouponInput().should('be.visible', { timeout: 10000 });
-  }
+  };
 }

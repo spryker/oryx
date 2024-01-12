@@ -60,19 +60,32 @@ export class CheckoutPage extends AbstractSFPage {
 
   templateIsReady = () => {
     //email input is ready
-    this.checkoutAsGuestForm.getEmailInput().should('be.visible', { timeout: 10000 });
+    this.checkoutAsGuestForm
+      .getEmailInput()
+      .should('be.visible', { timeout: 10000 });
 
     //shipping address form is ready
-    this.shipping.addAddressForm.getCountrySelect().should('be.visible', { timeout: 10000 });
-    this.shipping.addAddressForm.getSalutationSelect().should('be.visible', { timeout: 10000 });
-    
+    this.shipping.addAddressForm
+      .getCountrySelect()
+      .should('be.visible', { timeout: 10000 });
+    this.shipping.addAddressForm
+      .getSalutationSelect()
+      .should('be.visible', { timeout: 10000 });
+
     //shipping methods are ready
-    this.getShippingWrapper().find('oryx-tile[selected]').should('be.visible', { timeout: 10000 });
+    this.getShippingWrapper()
+      .find('oryx-tile[selected]')
+      .should('be.visible', { timeout: 10000 });
 
     //payment methods are ready
-    this.getPaymentWrapper().find('oryx-tile[selected]').should('be.visible', { timeout: 10000 });
+    this.getPaymentWrapper()
+      .find('oryx-tile[selected]')
+      .should('be.visible', { timeout: 10000 });
 
     //entries are ready
-    this.getEntries().find('oryx-cart-entry').find('oryx-product-title').should('be.visible', { timeout: 10000 });
-  }
+    this.getEntries()
+      .find('oryx-cart-entry')
+      .find('oryx-product-title')
+      .should('be.visible', { timeout: 10000 });
+  };
 }
