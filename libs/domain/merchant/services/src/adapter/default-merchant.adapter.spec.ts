@@ -1,7 +1,7 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { MerchantAdapter } from '@spryker-oryx/merchant';
+import { MerchantAdapter, MerchantNormalizer } from '@spryker-oryx/merchant';
 import { of } from 'rxjs';
 import { DefaultMerchantAdapter } from './default-merchant.adapter';
 
