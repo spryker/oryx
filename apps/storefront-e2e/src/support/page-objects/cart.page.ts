@@ -1,5 +1,6 @@
 import { CartEntryFragment } from '../page-fragments/cart-entry.fragment';
 import { TotalsFragment } from '../page-fragments/totals.fragment';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class CartPage extends AbstractSFPage {
@@ -75,12 +76,8 @@ export class CartPage extends AbstractSFPage {
       .should('be.visible', { timeout: 10000 });
 
     //totals are ready
-    this.getCartTotals()
-      .getSubtotalPrice()
-      .should('be.visible', { timeout: 10000 });
-    this.getCartTotals()
-      .getTotalPrice()
-      .should('be.visible', { timeout: 10000 });
+    visibilityCheck(this.getCartTotals().getSubtotalPrice());
+    visibilityCheck(this.getCartTotals().getTotalPrice());
 
     //checkout button is ready
     this.getCheckoutBtn().should('be.visible', { timeout: 10000 });
