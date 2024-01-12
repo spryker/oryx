@@ -3,6 +3,7 @@ import {
   ContextFallbackHandler,
   ContextSerializer,
   ContextService,
+  FieldContextSerializer,
 } from '@spryker-oryx/core';
 import { Provider, inject } from '@spryker-oryx/di';
 import {
@@ -43,18 +44,6 @@ function merchantContextFallbackFactory(
 
 export const MerchantContextSerializerToken = `${ContextSerializer}${MERCHANT}`;
 
-export class MerchantContextSerializer
-  implements ContextSerializer<MerchantQualifier>
-{
-  serialize(value: MerchantQualifier): Observable<string> {
-    return value?.id ? of(value.id) : of('');
-  }
-
-  deserialize(value: string): Observable<MerchantQualifier | undefined> {
-    return of({ id: value });
-  }
-}
-
 export const merchantContextProviders: Provider[] = [
   {
     provide: `${ContextFallback}${MERCHANT}`,
@@ -62,6 +51,6 @@ export const merchantContextProviders: Provider[] = [
   },
   {
     provide: MerchantContextSerializerToken,
-    useClass: MerchantContextSerializer,
+    useClass: FieldContextSerializer,
   },
 ];
