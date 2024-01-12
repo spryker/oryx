@@ -5,24 +5,30 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      goToCart(): Chainable<void>;
-      goToGuestCart(): Chainable<void>;
+      goToCart(options?: Partial<Cypress.VisitOptions>): Chainable<void>;
+      goToGuestCart(options?: Partial<Cypress.VisitOptions>): Chainable<void>;
     }
   }
 }
 
-Cypress.Commands.add('goToCart', () => {
-  openCartPage('/customers/DE--**/carts?**');
+Cypress.Commands.add('goToCart', (options?: Partial<Cypress.VisitOptions>) => {
+  openCartPage('/customers/DE--**/carts?**', options);
 });
 
-Cypress.Commands.add('goToGuestCart', () => {
-  openCartPage('/guest-carts?**');
-});
+Cypress.Commands.add(
+  'goToGuestCart',
+  (options?: Partial<Cypress.VisitOptions>) => {
+    openCartPage('/guest-carts?**', options);
+  }
+);
 
-function openCartPage(getCartsUrl: string) {
+function openCartPage(
+  getCartsUrl: string,
+  options?: Partial<Cypress.VisitOptions>
+) {
   const cartPage = new CartPage();
 
   cy.intercept(getCartsUrl).as('cartsRequest');
-  cartPage.visit();
+  cartPage.visit(options);
   cy.wait('@cartsRequest');
 }

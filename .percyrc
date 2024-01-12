@@ -1,0 +1,14 @@
+version: 2
+snapshot:
+  enable-javascript: true
+  widths:
+    - 1024
+  disableShadowDOM: false
+discovery:
+  allowed-hostnames:
+    - fonts.googleapis.com
+    - fonts.gstatic.com
+    - glue.de.faas-suite-prod.cloud.spryker.toys
+  launch-options:
+    headless: true
+  network-idle-timeout: 500

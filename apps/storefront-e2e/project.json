@@ -30,6 +30,15 @@
             "grepTags": "-b2b"
           }
         },
+        "headless-ci-visual-regression": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": false,
+          "env": {
+            "grepTags": "visual-regression",
+            "IS_SSR": true
+          }
+        },
         "headless-ci-release": {
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
           "watch": false,
@@ -44,7 +53,7 @@
           "browser": "electron",
           "env": {
             "grepTags": "smoke",
-            "isSSR": true
+            "IS_SSR": true
           }
         },
         "headless-smoke": {
@@ -52,7 +61,7 @@
           "watch": false,
           "env": {
             "grepTags": "smoke",
-            "isSSR": true
+            "IS_SSR": true
           }
         },
         "headless-ci-smoke": {
@@ -64,7 +73,7 @@
           "group": "sf-smoke",
           "env": {
             "grepTags": "smoke",
-            "isSSR": true
+            "IS_SSR": true
           }
         },
         "b2b-open": {

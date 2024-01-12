@@ -1,5 +1,6 @@
 import { CartEntryFragment } from '../page-fragments/cart-entry.fragment';
 import { TotalsFragment } from '../page-fragments/totals.fragment';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class CartPage extends AbstractSFPage {
@@ -62,5 +63,26 @@ export class CartPage extends AbstractSFPage {
     this.getSubmitDeleteBtn().click();
 
     cy.wait('@deleteCartItemRequest');
+  };
+
+  templateIsReady = () => {
+    //heading is ready
+    this.getCartEntriesHeading().should('be.visible', { timeout: 10000 });
+
+    //entries are ready
+    this.getCartEntriesWrapper()
+      .find('oryx-cart-entry')
+      .find('oryx-product-title')
+      .should('be.visible', { timeout: 10000 });
+
+    //totals are ready
+    visibilityCheck(this.getCartTotals().getSubtotalPrice());
+    visibilityCheck(this.getCartTotals().getTotalPrice());
+
+    //checkout button is ready
+    this.getCheckoutBtn().should('be.visible', { timeout: 10000 });
+
+    //coupon input is ready
+    this.getCouponInput().should('be.visible', { timeout: 10000 });
   };
 }
