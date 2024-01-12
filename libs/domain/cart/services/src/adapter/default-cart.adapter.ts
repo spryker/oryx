@@ -167,13 +167,14 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
+        const requestType = identity.isAuthenticated
+          ? ApiCartModel.UrlParts.Carts
+          : ApiCartModel.UrlParts.GuestCarts;
+
         const url = this.generateUrl(
-          identity.isAuthenticated
-            ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}/${data.code}`
-            : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}/${data.code}`,
+          `${requestType}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}/${data.code}`,
           !identity.isAuthenticated
         );
-
         return this.http.delete(url);
       })
     );

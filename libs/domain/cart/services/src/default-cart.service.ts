@@ -107,7 +107,7 @@ export class DefaultCartService implements CartService {
     action: (qualifier: CouponQualifier) => {
       return this.adapter.deleteCoupon(qualifier);
     },
-    onSuccess: [...this.cartCommandBase.onSuccess, CartEntryRemoved],
+    onSuccess: [...this.cartCommandBase.onSuccess, CouponRemoved],
   });
 
   protected removeEntryCommand$ = createCommand({
@@ -115,7 +115,7 @@ export class DefaultCartService implements CartService {
     action: (qualifier: CartEntryQualifier) => {
       return this.adapter.deleteEntry(qualifier);
     },
-    onSuccess: [...this.cartCommandBase.onSuccess, CouponRemoved],
+    onSuccess: [...this.cartCommandBase.onSuccess, CartEntryRemoved],
   });
 
   protected updateEntryCommand$ = createCommand({

@@ -48,6 +48,7 @@ export class CouponComponent extends CartComponentMixin(
           .type="${ButtonType.Solid}"
           .color="${ColorType.Neutral}"
           .size=${ButtonSize.Sm}
+          label=${this.i18n('coupon.apply')}
           @click=${this.onSubmit}
         >
           ${this.i18n('coupon.apply')}
@@ -73,6 +74,7 @@ export class CouponComponent extends CartComponentMixin(
                   .type=${ButtonType.Icon}
                   .size=${ButtonSize.Md}
                   .icon=${IconTypes.Trash}
+                  label=${this.i18n('coupon.delete')}
                   @click=${() => this.onDeleted(coupon.code)}
                 >
                 </oryx-button>
