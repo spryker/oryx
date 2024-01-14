@@ -3,7 +3,7 @@ import { DataWrapperComponentOptions } from './data-wrapper.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-wrapper-text'?: DataWrapperComponentOptions;
+    'oryx-data-wrapper'?: DataWrapperComponentOptions;
   }
 }
 

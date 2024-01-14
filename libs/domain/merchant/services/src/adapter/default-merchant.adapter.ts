@@ -9,6 +9,7 @@ import {
   MerchantNormalizer,
   MerchantQualifier,
 } from '@spryker-oryx/merchant';
+
 import { Observable } from 'rxjs';
 
 export class DefaultMerchantAdapter implements MerchantAdapter {

@@ -95,7 +95,6 @@ export const homePage: ExperienceComponent = {
         },
       ],
     },
-
     {
       type: 'oryx-product-list',
       options: {
@@ -111,7 +110,6 @@ export const homePage: ExperienceComponent = {
         sort: 'rating',
       },
     },
-
     {
       type: 'oryx-composition',
       id: 'brands',
@@ -157,7 +155,6 @@ export const homePage: ExperienceComponent = {
         featureVersion >= '1.4' ? brand('Canon') : {},
       ],
     },
-
     featureVersion >= '1.2' ? { ref: 'footer' } : {},
   ],
 };

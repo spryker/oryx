@@ -8,8 +8,7 @@ import {
   hydrate,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult } from 'lit';
-import { html } from 'lit/static-html.js';
+import { LitElement, TemplateResult, html } from 'lit';
 import { catchError, of, switchMap } from 'rxjs';
 import { DataWrapperComponentOptions } from './data-wrapper.model';
 
