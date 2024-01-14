@@ -202,7 +202,7 @@ Please make sure to not use an existing directory name.`
   protected promptFeatures(
     type: ApplicationType
   ): Promise<Feature[]> | undefined {
-    const features: Feature[] = this.getFeatures(type);
+    const features = this.getFeatures(type);
 
     if (!features.length) {
       log.info(`No features found!`);
@@ -223,7 +223,7 @@ Please make sure to not use an existing directory name.`
   ): Array<{ value: T; label: string }> {
     return options.map((value) => ({
       value,
-      label: (value as string).toString(),
+      label: value as string,
     }));
   }
 
