@@ -4,12 +4,16 @@ import path from 'path';
 import { ApplicationType } from '../models';
 import { NodeUtilService } from './node-util.service';
 
+interface RepoRefs {
+  [key: string]: string;
+}
+
 export class AppTemplateLoaderService {
   protected repoName = 'oryx-starter';
   protected readonly repoUrl =
     'https://github.com/spryker/oryx-starter/archive/{ref}.zip';
 
-  protected readonly repoRefs = {
+  protected readonly repoRefs: RepoRefs = {
     [ApplicationType.Storefront]: 'master',
     [ApplicationType.Fulfillment]: 'fulfillment',
   };
@@ -24,7 +28,10 @@ export class AppTemplateLoaderService {
     protected nodeUtilService = inject(NodeUtilService)
   ) {}
 
-  async copyTemplate(path: string, ref = this.templateRef): Promise<void> {
+  async copyTemplate(
+    path: string,
+    ref = this.templateRef as unknown as string
+  ): Promise<void> {
     console.log('downloadTemplate');
     await this.downloadTemplate(ref);
     console.log('copyTemplate');

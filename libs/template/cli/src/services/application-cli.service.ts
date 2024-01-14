@@ -1,31 +1,37 @@
 import { ApplicationConfig, ApplicationType, Feature, Preset } from '../models';
 
 export class ApplicationCliService {
-  protected readonly applicationConfigs: ApplicationConfig[] = {
-    [ApplicationType.Storefront]: {
-      appType: ApplicationType.Storefront,
+  protected readonly applicationConfigs: ApplicationConfig[] = [
+    {
+      type: ApplicationType.Storefront,
       presets: [Preset.B2C, Preset.B2B],
       features: [Feature.Labs],
     },
-    [ApplicationType.Fulfillment]: {
-      appType: ApplicationType.Fulfillment,
+    {
+      type: ApplicationType.Fulfillment,
       features: [Feature.Labs],
     },
-  };
+  ];
 
-  getApplicationConfig(appType: ApplicationType): ApplicationConfig {
-    return this.applicationConfigs[appType];
+  getApplicationConfig(type: ApplicationType): ApplicationConfig | undefined {
+    return this.applicationConfigs.find((config) => config.type === type);
   }
 
-  getFeatures(appType: ApplicationType): Feature[] {
-    return this.getApplicationConfig(appType).features ?? [];
+  getFeatures(type: ApplicationType): Feature[] {
+    return this.getApplicationConfig(type)?.features ?? [];
   }
 
-  getPresets(appType: ApplicationType): Preset[] {
-    return this.getApplicationConfig(appType)?.presets ?? [];
+  getPresets(type: ApplicationType): Preset[] {
+    return this.getApplicationConfig(type)?.presets ?? [];
   }
 
   getApplicationTypes(): ApplicationType[] {
-    return Object.values(ApplicationType);
+    const uniqueTypes = new Set<ApplicationType>();
+
+    this.applicationConfigs.forEach((config) => {
+      uniqueTypes.add(config.type);
+    });
+
+    return Array.from(uniqueTypes);
   }
 }

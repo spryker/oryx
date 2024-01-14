@@ -71,10 +71,10 @@ Options:
 
   async execute(): Promise<void> {
     const options: CreateAppOptions = {
-      name: this.argsService.get('name') as string,
-      appType: this.argsService.get('type') as string,
-      preset: this.argsService.get('preset') as string,
-      features: this.argsService.get('features') as string,
+      name: this.argsService.get('name') as unknown as string,
+      type: this.argsService.get('type') as ApplicationType,
+      preset: this.argsService.get('preset') as Preset,
+      features: this.argsService.get('features') as Feature[],
     };
 
     await this.createApp(options);
@@ -99,22 +99,22 @@ Please make sure to not use an existing directory name.`
       );
     }
 
-    if (!options.appType) {
-      options.appType = await this.promptType();
+    if (!options.type) {
+      options.type = await this.promptType();
     } else {
-      log.info(`Application type: ${c.bold(options.appType)}`);
+      log.info(`Application type: ${c.bold(options.type)}`);
     }
 
     if (!options.preset) {
-      options.preset = await this.promptPreset(options.appType);
+      options.preset = await this.promptPreset(options.type);
     } else {
-      log.info(`Preset: ${c.bold(options.preset)}`);
+      log.info(`Preset: ${c.bold(options.preset as string)}`);
     }
 
     if (!options.features) {
-      options.features = await this.promptFeatures(options.appType);
+      options.features = await this.promptFeatures(options.type);
     } else {
-      log.info(`Features: ${c.bold(options.features)}`);
+      log.info(`Features: ${c.bold(options.features.join(', ') as string)}`);
     }
 
     const startTime = new Date().getTime();
@@ -122,7 +122,9 @@ Please make sure to not use an existing directory name.`
     const s = spinner();
 
     s.start('Copying template...');
-    await this.appTemplateLoaderService.copyTemplate(appPath, options.appType);
+
+    await this.appTemplateLoaderService.copyTemplate(appPath, options.type);
+
     s.stop('Template copied');
 
     s.start('Configuring application...');
@@ -166,7 +168,7 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected promptType(): Promise<string> {
+  protected promptType(): Promise<ApplicationType> {
     const types = this.getTypes();
 
     if (!types.length) {
@@ -181,10 +183,8 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected promptPreset(
-    appType: ApplicationType
-  ): Promise<string> | undefined {
-    const presets = this.getPresets(appType);
+  protected promptPreset(type: ApplicationType): Promise<Preset> | undefined {
+    const presets = this.getPresets(type);
 
     if (!presets.length) {
       log.info(`No presets found!`);
@@ -199,8 +199,10 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected promptFeatures(appType: ApplicationType): Promise<string> {
-    const features = this.getFeatures(appType);
+  protected promptFeatures(
+    type: ApplicationType
+  ): Promise<Feature[]> | undefined {
+    const features = this.getFeatures(type);
 
     if (!features.length) {
       log.info(`No features found!`);
@@ -216,7 +218,9 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected getPromptOptions(options: string[]): string[] {
+  protected getPromptOptions(
+    options: string[]
+  ): Array<{ value: string; label: string }> {
     return options.map((value) => ({
       value,
       label: value,
@@ -230,25 +234,25 @@ Please make sure to not use an existing directory name.`
       return Promise.reject('Operation cancelled.');
     }
 
-    return value;
+    return value as T;
   }
 
-  protected getTypes(): string[] {
+  protected getTypes(): ApplicationType[] {
     return this.applicationCliService.getApplicationTypes();
   }
 
-  protected getPresets(appType: ApplicationType): string[] {
-    return this.applicationCliService.getPresets(appType);
+  protected getPresets(type: ApplicationType): Preset[] {
+    return this.applicationCliService.getPresets(type);
   }
 
-  protected getFeatures(appType: ApplicationType): string[] {
-    return this.applicationCliService.getFeatures(appType);
+  protected getFeatures(type: ApplicationType): Feature[] {
+    return this.applicationCliService.getFeatures(type);
   }
 }
 
 export interface CreateAppOptions {
   name: string;
-  appType: ApplicationType | string;
-  preset?: Preset | string
-  features?: Feature[] | string;
+  type: ApplicationType;
+  preset?: Preset;
+  features?: Feature[];
 }

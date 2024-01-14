@@ -16,13 +16,17 @@ export class AppTemplateBuilder {
     this.appPath = path.resolve(appPath, 'src/app.ts');
   }
 
-  setPreset(preset: Preset): this {
-    this.preset = preset;
+  setPreset(preset: Preset | undefined): this {
+    if (preset) {
+      this.preset = preset;
+    }
     return this;
   }
 
-  setFeatures(features: Feature[]): this {
-    this.features = features;
+  setFeatures(features: Feature[] | undefined): this {
+    if (features) {
+      this.features = features;
+    }
     return this;
   }
 
