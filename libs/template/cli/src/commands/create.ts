@@ -202,7 +202,7 @@ Please make sure to not use an existing directory name.`
   protected promptFeatures(
     type: ApplicationType
   ): Promise<Feature[]> | undefined {
-    const features = this.getFeatures(type);
+    const features: Feature[] = this.getFeatures(type);
 
     if (!features.length) {
       log.info(`No features found!`);
@@ -218,12 +218,12 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected getPromptOptions(
-    options: string[]
-  ): Array<{ value: string; label: string }> {
+  protected getPromptOptions<T>(
+    options: T[]
+  ): Array<{ value: T; label: string }> {
     return options.map((value) => ({
       value,
-      label: value,
+      label: (value as string).toString(),
     }));
   }
 
