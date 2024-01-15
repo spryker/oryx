@@ -21,7 +21,7 @@ export interface CartAdapter {
   updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
   update: (data: UpdateCartQualifier) => Observable<Cart>;
   create: (data?: CreateCartQualifier) => Observable<Cart>;
-  delete: (data: CartQualifier) => Observable<Cart>;
+  delete: (data: CartQualifier) => Observable<unknown>;
 }
 
 export const CartAdapter = 'oryx.CartAdapter';

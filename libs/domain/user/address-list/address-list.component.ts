@@ -10,8 +10,8 @@ import {
   AddressDefaults,
   EditTarget,
 } from '@spryker-oryx/user/address-list-item';
-import { effect, hydrate, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { Size, effect, hydrate } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { queryAll } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { UserAddressListOptions } from './address-list.model';
@@ -116,6 +116,7 @@ export class UserAddressListComponent extends AddressMixin(
         open
         .heading=${this.i18n('checkout.address.edit-address')}
         @oryx.close=${this.onClose}
+        @oryx.modal.closed=${this.onClose}
       >
         <oryx-user-address-edit></oryx-user-address-edit>
       </oryx-modal>`;
