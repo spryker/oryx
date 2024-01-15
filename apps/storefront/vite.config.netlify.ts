@@ -2,7 +2,7 @@ import { join } from 'path';
 import { defineConfig } from 'vite';
 import { viteConfig } from './vite.config.common.js';
 
-export default defineConfig({
+export default defineConfig((config) => ({
   root: viteConfig.index,
   define: viteConfig.define,
   build: {
@@ -21,5 +21,5 @@ export default defineConfig({
       external: ['fs', 'path', 'url', 'module', 'vm', /^node/, /^@netlify/],
     },
   },
-  plugins: [...viteConfig.plugins()],
-});
+  plugins: [...viteConfig.plugins(config)],
+}));
