@@ -274,6 +274,7 @@ export class CartEntryComponent
       minimal
       heading=${this.i18n('cart.entry.confirm')}
       @oryx.close=${() => this.revert()}
+      @oryx.modal.closed=${() => this.revert()}
     >
       ${this.i18n(`cart.entry.confirm-remove-<sku>`, {
         sku: this.$entry()?.sku ?? this.sku,

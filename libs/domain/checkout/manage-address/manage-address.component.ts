@@ -54,7 +54,9 @@ export class CheckoutManageAddressComponent extends I18nMixin(
           <oryx-modal
             open
             @oryx.back=${this.onBack}
+            @oryx.modal.back=${this.onBack}
             @oryx.close=${this.onClose}
+            @oryx.modal.closed=${this.onClose}
             .heading=${this.getHeading()}
             enableCloseButtonInHeader
             ?enableNavigateBack=${this.$addressState().action !==
