@@ -3,6 +3,7 @@ import { AddressesListFragment } from '../page-fragments/addresses-list.fragment
 import { AddressesModalFragment } from '../page-fragments/addresses-modal.fragment';
 import { CheckoutAsGuestFormFragment } from '../page-fragments/checkout-as-guest-form.fragment';
 import { TotalsFragment } from '../page-fragments/totals.fragment';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class CheckoutPage extends AbstractSFPage {
@@ -60,32 +61,31 @@ export class CheckoutPage extends AbstractSFPage {
 
   templateIsReady = () => {
     //email input is ready
-    this.checkoutAsGuestForm
-      .getEmailInput()
-      .should('be.visible', { timeout: 10000 });
+    this.checkoutAsGuestForm.getEmailInput().should('be.visible');
 
     //shipping address form is ready
-    this.shipping.addAddressForm
-      .getCountrySelect()
-      .should('be.visible', { timeout: 10000 });
-    this.shipping.addAddressForm
-      .getSalutationSelect()
-      .should('be.visible', { timeout: 10000 });
+    this.shipping.addAddressForm.getCountrySelect().should('be.visible');
+    this.shipping.addAddressForm.getSalutationSelect().should('be.visible');
 
     //shipping methods are ready
-    this.getShippingWrapper()
-      .find('oryx-tile[selected]')
-      .should('be.visible', { timeout: 10000 });
+    this.getShippingWrapper().find('oryx-tile[selected]').should('be.visible');
 
     //payment methods are ready
-    this.getPaymentWrapper()
-      .find('oryx-tile[selected]')
-      .should('be.visible', { timeout: 10000 });
+    this.getPaymentWrapper().find('oryx-tile[selected]').should('be.visible');
 
     //entries are ready
     this.getEntries()
       .find('oryx-cart-entry')
       .find('oryx-product-title')
-      .should('be.visible', { timeout: 10000 });
+      .should('be.visible');
+
+    //totals are ready
+    visibilityCheck(this.getCartTotals().getWrapper()).then(() => {
+      this.getCartTotals().getSubtotalPrice().should('be.visible');
+      this.getCartTotals().getDiscountsWrapper().should('be.visible');
+      this.getCartTotals().getTaxTotalPrice().should('be.visible');
+      this.getCartTotals().getDeliveryPrice().should('be.visible');
+      this.getCartTotals().getTotalPrice().should('be.visible');
+    });
   };
 }

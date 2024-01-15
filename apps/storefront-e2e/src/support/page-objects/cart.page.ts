@@ -69,24 +69,26 @@ export class CartPage extends AbstractSFPage {
 
   templateIsReady = () => {
     //heading is ready
-    this.getCartEntriesHeading().should('be.visible', { timeout: 10000 });
+    this.getCartEntriesHeading().should('be.visible');
 
     //entries are ready
     this.getCartEntriesWrapper()
       .find('oryx-cart-entry')
       .find('oryx-product-title')
-      .should('be.visible', { timeout: 10000 });
+      .should('be.visible');
 
     //totals are ready
-    visibilityCheck(this.getCartTotals().getSubtotalPrice());
-    visibilityCheck(this.getCartTotals().getDiscountsTotal());
-    visibilityCheck(this.getCartTotals().getTaxTotalPrice());
-    visibilityCheck(this.getCartTotals().getTotalPrice());
+    visibilityCheck(this.getCartTotals().getWrapper()).then(() => {
+      this.getCartTotals().getSubtotalPrice().should('be.visible');
+      this.getCartTotals().getDiscountsWrapper().should('be.visible');
+      this.getCartTotals().getTaxTotalPrice().should('be.visible');
+      this.getCartTotals().getTotalPrice().should('be.visible');
+    });
 
     //checkout button is ready
-    this.getCheckoutBtn().should('be.visible', { timeout: 10000 });
+    this.getCheckoutBtn().should('be.visible');
 
     //coupon input is ready
-    this.getCouponInput().should('be.visible', { timeout: 10000 });
+    this.getCouponInput().should('be.visible');
   };
 }
