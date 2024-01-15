@@ -51,13 +51,7 @@ export class DefaultRouterService implements RouterService {
     const queryParams =
       extras?.queryParams ?? this.getURLSearchParams(url[1]) ?? {};
 
-    if (
-      this.router$.value === url[0] &&
-      JSON.stringify(this.urlSearchParams$.value) ===
-        JSON.stringify(queryParams)
-    ) {
-      return;
-    }
+    if (this.isSameRoute(route, extras)) return;
 
     this.storageService.set(
       PREVIOUS_PAGE,
@@ -76,6 +70,8 @@ export class DefaultRouterService implements RouterService {
 
       return;
     }
+
+    if (this.isSameRoute(route)) return;
 
     globalThis.history.pushState({}, '', route);
     this.go(route);
@@ -210,6 +206,18 @@ export class DefaultRouterService implements RouterService {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           routes.find((r) => getPattern(r).test({ pathname }))!
       )
+    );
+  }
+
+  protected isSameRoute(route: string, extras?: NavigationExtras): boolean {
+    const url = route.split('?');
+    const queryParams =
+      extras?.queryParams ?? this.getURLSearchParams(url[1]) ?? {};
+
+    return (
+      this.router$.value === url[0] &&
+      JSON.stringify(this.urlSearchParams$.value) ===
+        JSON.stringify(queryParams)
     );
   }
 }
