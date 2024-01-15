@@ -1,5 +1,6 @@
 import { CartEntryFragment } from '../page-fragments/cart-entry.fragment';
 import { TotalsFragment } from '../page-fragments/totals.fragment';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class CartPage extends AbstractSFPage {
@@ -32,8 +33,10 @@ export class CartPage extends AbstractSFPage {
   getCouponInput = () => this.getCouponComponent().find('input');
   getCouponInputError = () =>
     this.getCouponComponent().find('oryx-error-message');
-  getCouponBtn = () => this.getCouponComponent().find('oryx-button');
+  getCouponBtn = () =>
+    this.getCouponComponent().find('oryx-input').find('oryx-button');
   getCouponCode = () => this.getCouponComponent().find('div');
+  getRemoveCouponBtn = () => this.getCouponCode().find('oryx-button');
   getCouponDate = () => this.getCouponComponent().find('oryx-date');
   getCouponNotification = () => cy.get('oryx-notification');
 
@@ -62,5 +65,26 @@ export class CartPage extends AbstractSFPage {
     this.getSubmitDeleteBtn().click();
 
     cy.wait('@deleteCartItemRequest');
+  };
+
+  templateIsReady = () => {
+    //heading is ready
+    this.getCartEntriesHeading().should('be.visible', { timeout: 10000 });
+
+    //entries are ready
+    this.getCartEntriesWrapper()
+      .find('oryx-cart-entry')
+      .find('oryx-product-title')
+      .should('be.visible', { timeout: 10000 });
+
+    //totals are ready
+    visibilityCheck(this.getCartTotals().getSubtotalPrice());
+    visibilityCheck(this.getCartTotals().getTotalPrice());
+
+    //checkout button is ready
+    this.getCheckoutBtn().should('be.visible', { timeout: 10000 });
+
+    //coupon input is ready
+    this.getCouponInput().should('be.visible', { timeout: 10000 });
   };
 }

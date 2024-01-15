@@ -19,6 +19,7 @@ import {
   CartsUpdated,
   Coupon,
   CouponQualifier,
+  CouponRemoved,
   CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
@@ -85,7 +86,7 @@ export class DefaultCartService implements CartService {
   protected cartQuery$ = createQuery({
     id: CartQuery,
     loader: (qualifier: CartQualifier) => this.adapter.get(qualifier),
-    refreshOn: [CartEntryRemoved, LocaleChanged],
+    refreshOn: [CartEntryRemoved, LocaleChanged, CouponRemoved],
   });
 
   protected addEntryCommand$ = createCommand({
@@ -100,6 +101,14 @@ export class DefaultCartService implements CartService {
     action: (qualifier: CouponQualifier) => {
       return this.adapter.addCoupon(qualifier);
     },
+  });
+
+  protected removeCouponCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: CouponQualifier) => {
+      return this.adapter.deleteCoupon(qualifier);
+    },
+    onSuccess: [...this.cartCommandBase.onSuccess, CouponRemoved],
   });
 
   protected removeEntryCommand$ = createCommand({
@@ -287,6 +296,10 @@ export class DefaultCartService implements CartService {
 
   addCoupon(qualifier: CouponQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.addCouponCommand$);
+  }
+
+  deleteCoupon(qualifier: CouponQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(qualifier, this.removeCouponCommand$);
   }
 
   deleteEntry(qualifier: CartEntryQualifier): Observable<unknown> {
