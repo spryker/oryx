@@ -79,6 +79,8 @@ export class CartPage extends AbstractSFPage {
 
     //totals are ready
     visibilityCheck(this.getCartTotals().getSubtotalPrice());
+    visibilityCheck(this.getCartTotals().getDiscountsTotal());
+    visibilityCheck(this.getCartTotals().getTaxTotalPrice());
     visibilityCheck(this.getCartTotals().getTotalPrice());
 
     //checkout button is ready
