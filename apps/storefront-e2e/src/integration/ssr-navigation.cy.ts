@@ -12,6 +12,7 @@ import { LoginPage } from '../support/page-objects/login.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
 import { SearchPage } from '../support/page-objects/search.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
+import { visibilityCheck } from '../support/utils';
 
 let api: GlueAPI;
 
@@ -149,12 +150,11 @@ function verifyFooter(isPageScrollable = true) {
     cy.scrollTo('bottom');
   }
 
-  footer.getLinkByUrl('/contact').should('be.visible');
+  visibilityCheck(footer.getLinkByUrl('/contact'));
 
   const currentYear = new Date().getFullYear();
 
-  footer
-    .getWrapper()
+  visibilityCheck(footer.getWrapper())
     .find('oryx-content-text')
     .shadow()
     .should('contain.text', currentYear);

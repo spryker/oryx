@@ -24,7 +24,8 @@ declare global {
       addProductToCart(
         api: GlueAPI,
         numberOfItems?: number,
-        product?: Product
+        product?: Product,
+        cartId?: string
       ): void;
       addAddress(api: GlueAPI, addressData?): void;
     }
@@ -119,7 +120,17 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'addProductToCart',
-  (api: GlueAPI, numberOfItems = 1, product = ProductStorage.getByEq(1)) => {
+  (
+    api: GlueAPI,
+    numberOfItems = 1,
+    product = ProductStorage.getByEq(1),
+    cartId?: string
+  ) => {
+    if (cartId) {
+      api.cartItems.post(product, numberOfItems, cartId);
+      return;
+    }
+
     cy.fixture<Customer>('test-customer').then((customer) => {
       api.carts.customersGet(customer.id).then((cartData) => {
         const cartId = cartData.body.data[0].id;

@@ -189,8 +189,7 @@ describe('CartListItemComponent', () => {
     });
   });
 
-  // TODO: add tests when buttons's logic is implemented
-  // it('should render action buttons', () => {
-  //   //
-  // });
+  it('should render action buttons', () => {
+    expect(element).toContainElement('.meta oryx-cart-remove');
+  });
 });

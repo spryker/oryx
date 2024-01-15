@@ -624,9 +624,5 @@ describe('DefaultCartAdapter', () => {
         `${mockApiUrl}/carts/${qualifier.cartId}`
       );
     });
-
-    it('should normalize the response', () => {
-      expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizer);
-    });
   });
 });

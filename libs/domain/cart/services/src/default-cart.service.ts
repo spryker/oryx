@@ -5,6 +5,7 @@ import {
   Cart,
   CartAdapter,
   CartCreated,
+  CartDeleted,
   CartEntry,
   CartEntryQualifier,
   CartEntryRemoved,
@@ -79,7 +80,7 @@ export class DefaultCartService implements CartService {
       },
     ],
     resetOn: [this.identity.get().pipe(skip(1))],
-    refreshOn: [CartsUpdated, CartCreated],
+    refreshOn: [CartsUpdated, CartCreated, CartDeleted],
   });
 
   protected cartQuery$ = createQuery({
@@ -144,6 +145,7 @@ export class DefaultCartService implements CartService {
     action: (qualifier: UpdateCartQualifier) => {
       return this.adapter.delete(qualifier);
     },
+    onSuccess: [CartDeleted],
   });
 
   protected updateAfterModification$ = createEffect<Cart>([

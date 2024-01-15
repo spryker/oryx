@@ -56,6 +56,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
         open
         .heading=${this.i18n('checkout.address.create-address')}
         @oryx.close=${this.onClose}
+        @oryx.modal.closed=${this.onClose}
       >
         <oryx-user-address-edit></oryx-user-address-edit>
       </oryx-modal>`;
