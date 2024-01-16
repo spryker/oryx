@@ -1,4 +1,5 @@
-import { JSONLD, JsonLdNormalizer } from '@spryker-oryx/site';
+import { ClassTransformer } from '@spryker-oryx/core';
+import { JSONLD } from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
 import {
   Product,
@@ -8,21 +9,23 @@ import {
 } from '../../models';
 import { OfferJSONLD } from './';
 
-export class OfferJsonLdNormalizer implements JsonLdNormalizer<Product> {
-  normalize(product: Product): Observable<JSONLD | undefined> {
+export class OfferJsonLdNormalizer
+  implements ClassTransformer<JSONLD, Product>
+{
+  transform(product: Product): Observable<Partial<JSONLD> | undefined> {
     if (!product.price) return of(undefined);
-    return of(
-      this.mapOffer(
+    return of({
+      offers: this.mapOffer(
         product.price,
         this.resolveAvailability(product.availability)
-      )
-    );
+      ),
+    } as Partial<JSONLD>);
   }
 
   protected mapOffer(
     prices: ProductPrices,
     availability?: string | number | boolean
-  ): OfferJSONLD | undefined {
+  ): Partial<OfferJSONLD> | undefined {
     const defaultPrice = prices?.defaultPrice;
     const originalPrice = prices?.originalPrice;
 
@@ -36,15 +39,14 @@ export class OfferJsonLdNormalizer implements JsonLdNormalizer<Product> {
     return {
       ...this.mapPrice(fromPrice, availability),
       ...discountPrice,
-    };
+    } as Partial<OfferJSONLD>;
   }
 
   protected mapPrice(
     price: ProductPrice,
     availability?: string | number | boolean
-  ): OfferJSONLD {
+  ): Partial<OfferJSONLD> {
     return {
-      '@context': 'http://schema.org',
       '@type': 'Offer',
       price: price.value / 100,
       priceCurrency: price.currency,
