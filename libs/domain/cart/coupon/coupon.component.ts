@@ -40,7 +40,7 @@ export class CouponComponent extends CartComponentMixin(
           : ''}"
       >
         <input
-          placeholder=${this.i18n('coupon.have-a-coupon')}
+          placeholder=${this.i18n('coupon.coupon-code')}
           @keyup=${this.onKeyup}
         />
         <oryx-button
