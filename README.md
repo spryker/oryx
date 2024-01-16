@@ -38,8 +38,8 @@ Oryx is a framework for building composable storefronts, providing a rich librar
 
 ## Installation
 
-TODO
+Please refer to [Set up Oryx guide](https://docs.spryker.com/docs/scos/dev/front-end-development/{{page.version}}/oryx/getting-started/set-up-oryx.html).
 
 ## Further Documentation
 
-TODO
+[Oryx Documentation](https://docs.spryker.com/docs/scos/dev/front-end-development/{{page.version}}/oryx/oryx.html)
