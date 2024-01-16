@@ -131,8 +131,7 @@ export class CompositionPreviewComponent extends CompositionComponent {
         );
       }
       return component;
-    }),
-    tap(console.log)
+    })
   );
 
   /**

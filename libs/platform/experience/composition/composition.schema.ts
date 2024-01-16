@@ -21,6 +21,15 @@ export const compositionSchema: ContentComponentSchema<
       width: 100,
       label: 'Composition Bucket',
     },
+    bucketType: {
+      type: FormFieldType.Select,
+      width: 100,
+      label: 'Show Bucket Type',
+      options: [
+        { value: 'label', text: 'Label' },
+        { value: 'main', text: 'Main' },
+      ],
+    },
     context: {
       type: ContentSuggestionFieldType,
       width: 100,

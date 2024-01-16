@@ -38,7 +38,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const components = Array.isArray(c) ? [...c] : [c];
 
     for (const component of components) {
-      if (component.ref) continue;
+      if (component.ref && !component.id) continue;
 
       component.id ??= this.getAutoId();
       cb?.(component);
