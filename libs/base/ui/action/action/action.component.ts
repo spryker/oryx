@@ -3,11 +3,10 @@ import { hydrate, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { when } from 'lit/directives/when.js';
-import { ColorType } from '../link';
 import {
   ActionComponentAttributes,
   ActionSize,
+  ActionState,
   ActionType,
 } from './action.model';
 import { actionStyles } from './action.styles';
@@ -28,20 +27,29 @@ export class ActionComponent
     delegatesFocus: true,
   };
 
+  @property({ reflect: true }) type?: ActionType;
+  /**
+   * @default `undefined`
+   */
+  @property({ type: Boolean, reflect: true }) cta?: boolean;
+
   @property() text?: string;
   @property() label?: string;
   @property() icon?: Icons | string;
+  @property() iconAfter?: Icons | string;
+  // @property({ reflect: true }) iconPosition?: 'before' | 'after';
   @property() href?: string;
   @property() mark?: string;
 
-  @property({ reflect: true }) type?: ActionType;
+  @property({ reflect: true }) state?: ActionState;
   @property({ reflect: true }) size?: ActionSize;
-  @property({ reflect: true }) color?: ColorType;
 
-  @property({ type: Boolean, reflect: true }) active?: boolean;
-  @property({ type: Boolean, reflect: true }) disabled?: boolean;
-  @property({ type: Boolean, reflect: true }) loading?: boolean;
-  @property({ type: Boolean, reflect: true }) confirmed?: boolean;
+  @property({ type: Boolean }) alert?: boolean;
+  @property({ type: Boolean }) block?: boolean;
+  // @property({ type: Boolean }) disabled?: boolean;
+  // @property({ type: Boolean, reflect: true }) active?: boolean;
+  // @property({ type: Boolean, reflect: true }) loading?: boolean;
+  // @property({ type: Boolean, reflect: true }) confirmed?: boolean;
 
   protected willUpdate(props: PropertyValues): void {
     super.willUpdate(props);
@@ -52,11 +60,11 @@ export class ActionComponent
   protected override render(): TemplateResult {
     // const templates = [this.renderLoader(), this.renderConfirmed()];
 
-    const button = this.href ? this.renderLink() : this.renderButton();
+    const action = this.href ? this.renderLink() : this.renderButton();
     if (this.text || this.icon) {
-      return button;
+      return action;
     } else {
-      return html`<slot name="custom">${button}</slot>`;
+      return html`${action}`;
     }
 
     // return html` ${templates} `;
@@ -67,10 +75,11 @@ export class ActionComponent
   protected renderButton(): TemplateResult {
     return html`
       <button
-        part="button"
         type="button"
-        ?disabled=${this.disabled}
+        ?disabled=${this.state === ActionState.Disabled}
+        ?inert=${this.state === ActionState.Disabled}
         aria-label=${ifDefined(this.label ?? this.text)}
+        ?iconOnly=${this.icon && !this.text}
       >
         ${this.renderContent()}
       </button>
@@ -80,9 +89,10 @@ export class ActionComponent
   protected renderLink(): TemplateResult {
     return html`
       <a
-        part="button"
         href=${this.href}
         aria-label=${ifDefined(this.label ?? this.text)}
+        ?inert=${this.state === ActionState.Disabled}
+        ?iconOnly=${this.icon && !this.text}
       >
         ${this.renderContent()}
       </a>
@@ -90,15 +100,23 @@ export class ActionComponent
   }
 
   protected renderContent(): TemplateResult {
-    return html`${[
-        this.renderIcon(),
-        this.renderLoader(),
-        this.renderConfirmed(),
+    const result: TemplateResult[] = [];
+    result.push(html`${this.renderIcon(this.icon)}`);
+    result.push(
+      html`${[
+        this.renderState(),
+        // this.renderLoader(),
+        // this.renderConfirmed(),
         this.renderMarker(),
-      ]}
-      <slot @slotchange=${() => this.onSlotChange()}>
-        ${when(this.type !== ActionType.Icon, () => html`${this.text}`)}
-      </slot>`;
+      ]}`
+    );
+    if (this.type !== ActionType.Icon) {
+      result.push(html`<slot @slotchange=${() => this.onSlotChange()}>
+        ${this.text}
+      </slot>`);
+    }
+    result.push(html`${this.renderIcon(this.iconAfter)}`);
+    return html`${result}`;
   }
 
   protected onSlotChange(): void {
@@ -117,32 +135,39 @@ export class ActionComponent
         !!(this.text || this.textContent?.trim())
       );
     }
-    this.toggleAttribute(
-      'inert',
-      !!(this.loading || this.confirmed || this.disabled)
-    );
+    this.toggleAttribute('inert', !!this.state);
   }
 
-  protected renderIcon(): TemplateResult | void {
-    if (!this.icon) return;
-    return html`<oryx-icon .type=${this.icon}></oryx-icon>`;
+  protected renderIcon(icon?: IconTypes | string): TemplateResult | void {
+    if (!icon) return;
+    return html`<oryx-icon .type=${icon}></oryx-icon>`;
+  }
+
+  protected renderState(): TemplateResult | void {
+    if (this.state === ActionState.Loading) {
+      return html`<oryx-icon state .type=${IconTypes.Loader}></oryx-icon>`;
+    }
+
+    if (this.state === ActionState.Confirmed) {
+      return html`<oryx-icon state .type=${IconTypes.Check}></oryx-icon>`;
+    }
   }
 
   /**
    * The loader icon will be rendered when the component is not disabled.
    */
-  protected renderLoader(): TemplateResult | void {
-    if (!this.loading || this.disabled) return;
-    return html`<oryx-icon loader .type=${IconTypes.Loader}></oryx-icon>`;
-  }
+  // protected renderLoader(): TemplateResult | void {
+  //   if (!this.loading || !this.confirmed || this.disabled) return;
+  //   return html`<oryx-icon loader .type=${IconTypes.Loader}></oryx-icon>`;
+  // }
 
-  /**
-   * The loader icon will be rendered when the component state is not disabled nor loading
-   */
-  protected renderConfirmed(): TemplateResult | void {
-    if (!this.confirmed || this.disabled || this.loading) return;
-    return html`<oryx-icon confirmed .type=${IconTypes.Check}></oryx-icon>`;
-  }
+  // /**
+  //  * The loader icon will be rendered when the component state is not disabled nor loading
+  //  */
+  // protected renderConfirmed(): TemplateResult | void {
+  //   if (!this.confirmed || this.disabled || this.loading) return;
+  //   return html`<oryx-icon confirmed .type=${IconTypes.Check}></oryx-icon>`;
+  // }
 
   protected renderMarker(): TemplateResult | void {
     if (this.mark) return html`<mark>${this.mark}</mark>`;

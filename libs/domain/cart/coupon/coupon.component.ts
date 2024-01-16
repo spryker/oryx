@@ -5,7 +5,6 @@ import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { ColorType } from '@spryker-oryx/ui/link';
 import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
@@ -43,16 +42,13 @@ export class CouponComponent extends CartComponentMixin(
           placeholder=${this.i18n('coupon.have-a-coupon')}
           @keyup=${this.onKeyup}
         />
-        <oryx-button
+        <oryx-action
           slot="suffix"
-          .type="${ButtonType.Solid}"
-          .color="${ColorType.Neutral}"
+          cta
           .size=${ButtonSize.Sm}
-          label=${this.i18n('coupon.apply')}
+          .text=${this.i18n('coupon.apply')}
           @click=${this.onSubmit}
-        >
-          ${this.i18n('coupon.apply')}
-        </oryx-button>
+        ></oryx-action>
       </oryx-input>
 
       ${this.renderCoupons()}

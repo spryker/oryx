@@ -2,6 +2,7 @@ import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/router';
+import { ActionType } from '@spryker-oryx/ui/action';
 import { TextMixin } from '@spryker-oryx/ui/text';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -68,7 +69,11 @@ export class DataTextComponent extends TextMixin(
 
     if (!link) return text;
 
-    return html` <oryx-link><a href=${this.$link()}>${text}</a> </oryx-link> `;
+    return html`
+      <oryx-action .type=${ActionType.Text} .href=${this.$link()}>
+        ${text}
+      </oryx-action>
+    `;
   }
 
   protected renderPrefix(): TemplateResult | void {

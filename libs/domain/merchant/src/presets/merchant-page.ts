@@ -44,7 +44,13 @@ export const merchantHeaderNavigation: ExperienceComponent = {
     type: ExperienceDataMergeType.Append,
   },
   type: 'oryx-composition',
-  options: { rules: [{ layout: { type: 'dropdown' } }] },
+  options: {
+    rules: [
+      {
+        layout: { type: 'dropdown' },
+      },
+    ],
+  },
   components: {
     label: [
       {
@@ -54,23 +60,76 @@ export const merchantHeaderNavigation: ExperienceComponent = {
     ],
     main: [
       {
+        type: 'oryx-data-list',
+        options: {
+          entity: 'merchant',
+          link: true,
+          rules: [
+            {
+              style: `
+              --oryx-action-padding: 8px 12px;
+              --oryx-action-shadow: none;
+              --oryx-action-shadow-hover: none;
+              --oryx-action-color-hover: var(--oryx-color-primary-9);
+              `,
+            },
+          ],
+        },
+        components: [
+          {
+            type: 'oryx-data-text',
+            options: {
+              field: 'name',
+            },
+          },
+        ],
+      },
+      {
         type: 'oryx-content-link',
-        options: { url: '/merchant/MER000001' },
+        options: {
+          url: '/merchant/MER000001',
+          rules: [
+            {
+              style: `--oryx-action-padding: 12px;--oryx-action-shadow-hover: none;--oryx-action-outline-offset:-2px;`,
+            },
+          ],
+        },
         content: { data: { text: 'Spryker' } },
       },
       {
         type: 'oryx-content-link',
-        options: { url: '/merchant/MER000002' },
+        options: {
+          url: '/merchant/MER000002',
+          rules: [
+            {
+              style: `--oryx-action-padding: 12px;--oryx-action-shadow-hover: none;--oryx-action-outline-offset:-2px;`,
+            },
+          ],
+        },
         content: { data: { text: 'Video King' } },
       },
       {
         type: 'oryx-content-link',
-        options: { url: '/merchant/MER000005' },
+        options: {
+          url: '/merchant/MER000005',
+          rules: [
+            {
+              style: `--oryx-action-padding: 12px;--oryx-action-shadow-hover: none;--oryx-action-outline-offset:-2px;`,
+            },
+          ],
+        },
         content: { data: { text: 'Budget Cameras' } },
       },
       {
         type: 'oryx-content-link',
-        options: { url: '/merchant/MER000006' },
+        options: {
+          url: '/merchant/MER000006',
+          rules: [
+            {
+              style: `--oryx-action-padding: 12px;--oryx-action-shadow-hover: none;--oryx-action-outline-offset:-2px;`,
+            },
+          ],
+        },
         content: { data: { text: 'Sony Experts' } },
       },
     ],

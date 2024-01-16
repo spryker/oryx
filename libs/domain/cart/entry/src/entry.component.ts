@@ -17,6 +17,7 @@ import {
   PricingService,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
+import { ActionType } from '@spryker-oryx/ui/action';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
@@ -170,14 +171,22 @@ export class CartEntryComponent
 
     return html`
       <div class="actions">
-        <oryx-button
+        <!-- <oryx-button
           .type=${ButtonType.Icon}
           .size=${ButtonSize.Md}
           .icon=${IconTypes.Trash}
           .label=${this.i18n('remove')}
           ?disabled=${this.$isBusy()}
           @click=${this.removeEntry}
-        ></oryx-button>
+        ></oryx-button> -->
+
+        <oryx-action
+          .type=${ActionType.Icon}
+          .icon=${IconTypes.Trash}
+          .label=${this.i18n('remove')}
+          ?disabled=${this.$isBusy()}
+          @click=${this.removeEntry}
+        ></oryx-action>
       </div>
     `;
   }
@@ -291,6 +300,15 @@ export class CartEntryComponent
           ${this.i18n(`cart.entry.remove`)}
         </button>
       </oryx-button>
+
+      <oryx-action
+        slot="footer-more"
+        alert
+        cta
+        .text=${this.i18n(`cart.entry.remove`)}
+        ?loading=${this.$isBusy()}
+        @click=${(ev: Event) => this.removeEntry(ev, true)}
+      ></oryx-action>
     </oryx-modal>`;
   }
 

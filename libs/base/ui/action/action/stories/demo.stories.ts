@@ -26,13 +26,7 @@ export default {
   },
   argTypes: {
     type: {
-      options: [
-        ActionType.Text,
-        ActionType.Solid,
-        ActionType.Outline,
-        ActionType.Icon,
-        ActionType.Tile,
-      ],
+      options: [ActionType.Text, ActionType.Icon, ActionType.Tile],
       control: { type: 'select' },
     },
     color: {

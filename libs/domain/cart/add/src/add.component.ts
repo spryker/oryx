@@ -6,7 +6,8 @@ import {
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
+import { ActionType } from '@spryker-oryx/ui/action';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   Size,
@@ -16,7 +17,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
@@ -32,7 +32,7 @@ export class CartAddComponent extends ProductMixin(
   protected cartService = resolve(CartService);
 
   @state() protected isInvalid = false;
-  @query('oryx-button') protected button?: ButtonComponent;
+  @query('oryx-action') protected button?: ButtonComponent;
   @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
   protected override render(): TemplateResult | void {
@@ -53,20 +53,23 @@ export class CartAddComponent extends ProductMixin(
 
   protected renderButton(): TemplateResult | void {
     const { outlined, enableLabel } = this.$options();
-    const type = outlined ? ButtonType.Outline : ButtonType.Solid;
+    // const type = outlined ? ButtonType.Outline : ButtonType.Solid;
     const text = this.i18n('cart.add-to-cart') as string;
 
-    return html`<oryx-button
-      size=${Size.Md}
-      type=${type}
-      text=${ifDefined(enableLabel ? text : undefined)}
-      label=${ifDefined(enableLabel ? undefined : text)}
-      icon=${IconTypes.CartAdd}
-      ?disabled=${this.isInvalid || !this.$availableQuantity()}
-      @click=${this.onSubmit}
-      @mouseup=${this.onMouseUp}
-      hydration-events="click"
-    ></oryx-button>`;
+    return html`
+      <oryx-action
+        .type=${ActionType.Button}
+        .size=${Size.Lg}
+        ?cta=${!outlined}
+        block
+        .text=${enableLabel ? text : undefined}
+        .icon=${IconTypes.CartAdd}
+        ?disabled=${this.isInvalid || !this.$availableQuantity()}
+        @click=${this.onSubmit}
+        @mouseup=${this.onMouseUp}
+        hydration-events="click"
+      ></oryx-action>
+    `;
   }
 
   protected onMouseUp(e: Event): void {

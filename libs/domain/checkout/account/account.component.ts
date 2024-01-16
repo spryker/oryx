@@ -5,6 +5,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ActionType } from '@spryker-oryx/ui/action';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { UserService } from '@spryker-oryx/user';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
@@ -82,9 +83,15 @@ export class CheckoutAccountComponent
         <p class="have-an-account">
           ${this.i18n('checkout.guest.have-an-account')}
         </p>
-        <oryx-button .type=${ButtonType.Text} .href=${this.loginRoute()}>
+        <oryx-action
+          cta
+          .type=${ActionType.Text}
+          .href=${this.loginRoute()}
+          .text=${this.i18n('checkout.guest.login')}
+        ></oryx-action>
+        <!-- <oryx-button .type=${ButtonType.Text} .href=${this.loginRoute()}>
           ${this.i18n('checkout.guest.login')}
-        </oryx-button>
+        </oryx-button> -->
       </oryx-checkout-header>
       <form @change=${this.onChange}>
         <oryx-layout layout="grid" style="--column-gap: 20px">

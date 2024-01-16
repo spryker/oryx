@@ -2,6 +2,7 @@ import { ThemeToken } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 export const layoutTokens: ThemeToken = {
+  space: '4px',
   container: { width: '1340px', bleed: '50px' },
 
   modal: {

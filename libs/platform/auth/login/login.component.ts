@@ -6,6 +6,7 @@ import {
   FormRenderer,
 } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
+import { ActionSize, ActionType } from '@spryker-oryx/ui/action';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
@@ -98,20 +99,33 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
       <form @submit=${this.onSubmit}>
         ${this.fieldRenderer.buildForm(this.getFields())}
 
-        <oryx-button .size=${ButtonSize.Md} ?loading=${this.isLoading}>
+        <!-- <oryx-button .size=${ButtonSize.Md} ?loading=${this.isLoading}>
           <button slot="custom" ?disabled=${this.isLoading}>
             ${this.i18n('user.log-in')}
           </button>
-        </oryx-button>
+        </oryx-button> -->
+
+        <oryx-action cta .size=${ActionSize.Lg} ?loading=${this.isLoading}>
+          <button ?disabled=${this.isLoading}>
+            ${this.i18n('user.log-in')}
+          </button>
+        </oryx-action>
 
         ${when(
           this.$options()?.forgotPasswordLink,
           () => html`
-            <oryx-link color=${ColorType.Primary}>
+            <!-- <oryx-link color=${ColorType.Primary}>
               <a href=${this.$options()?.forgotPasswordLink}>
                 ${this.i18n('user.login.forgot-password')}
               </a>
-            </oryx-link>
+            </oryx-link> -->
+
+            <oryx-action
+              .type=${ActionType.Text}
+              .text=${this.i18n('user.log-in')}
+              ?loading=${this.isLoading}
+              ?disabled=${this.isLoading}
+            ></oryx-action>
           `
         )}
       </form>

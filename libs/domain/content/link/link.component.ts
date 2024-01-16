@@ -4,6 +4,7 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ActionType } from '@spryker-oryx/ui/action';
 import {
   computed,
   elementEffect,
@@ -67,13 +68,21 @@ export class ContentLinkComponent extends ContentMixin<
       >`;
     }
 
-    return html`<oryx-link
-      part="link"
-      .color=${color}
-      ?singleLine=${singleLine}
+    return html`<oryx-action
+      type=${ActionType.Text}
       .icon=${icon}
-      >${this.renderLink()}
-    </oryx-link>`;
+      .href=${this.$link()}
+      .text=${this.$text()}
+      ?active=${this.$isCurrent()}
+    ></oryx-action>`;
+
+    // return html`<oryx-link
+    //   part="link"
+    //   .color=${color}
+    //   ?singleLine=${singleLine}
+    //   .icon=${icon}
+    //   >${this.renderLink()}
+    // </oryx-link>`;
   }
 
   protected $text = computed(() => {

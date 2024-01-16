@@ -69,11 +69,11 @@ export const topHeader = (options?: {
                 : featureVersion >= '1.2'
                 ? { type: 'flex', bleed: true }
                 : 'flex',
-            background: 'hsl(0, 0%, 9.0%)',
+            // background: 'hsl(0, 0%, 9.0%)',
             padding: '10px 0',
             gap: '10px',
             align: 'center',
-            style: 'color: white',
+            // style: 'color: white',
             zIndex: 3,
             ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
@@ -241,6 +241,16 @@ export const categoryNavigation = (
             gap: '40px',
             background: 'var(--oryx-color-neutral-1)',
             align: 'center',
+            margin: '10px auto 0',
+            style: '--oryx-action-shadow: 0 -4px 0 0 transparent inset;',
+          },
+          {
+            query: { childs: true },
+            style: `
+                --oryx-action-padding: 10px 0;
+                --oryx-action-underline: none;
+                --oryx-action-shadow-hover: 0 -4px 0 0 var(--oryx-color-primary-9) inset;
+                `,
           },
         ],
       },

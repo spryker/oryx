@@ -10,10 +10,11 @@ export const styles = css`
     align-items: center;
     justify-content: center;
     user-select: none;
-    height: var(--oryx-icon-size, var(--_size, 24px));
-    width: var(--oryx-icon-size, var(--_size, 24px));
+    height: var(--oryx-icon-size, 1em);
+    width: var(--oryx-icon-size, 1em);
     color: var(--oryx-icon-color, inherit);
-    font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, var(--_size, 24px))
+    font: var(--oryx-icon-weight, 500)
+      var(--oryx-icon-size, calc((1em - 4px) * 2))
       var(--oryx-icon-font, ${font});
     font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
       'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
@@ -28,7 +29,7 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: var(--oryx-icon-color, currentColor);
-    width: var(--oryx-icon-size, var(--_size, 24px));
+    width: var(--oryx-icon-size, 1em);
     aspect-ratio: 1 / 1;
     margin: var(--_margin, 0);
   }

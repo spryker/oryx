@@ -2,6 +2,7 @@ import { ContextService, EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/router';
+import { ActionType } from '@spryker-oryx/ui/action';
 import {
   computed,
   elementEffect,
@@ -59,12 +60,22 @@ export class DataWrapperComponent extends ContentMixin<DataWrapperComponentOptio
     return qualifier ? this.linkService.get(qualifier) : undefined;
   });
 
+  protected $isCurrent = computed(() => {
+    const link = this.$link();
+    if (link) return this.linkService.isCurrent(link as any as string);
+    return of(false);
+  });
+
   protected override render(): TemplateResult | void {
     const { link } = this.$options();
     return link
-      ? html`<oryx-link>
-          <a href=${this.$link()}><slot></slot></a>
-        </oryx-link>`
+      ? html`<oryx-action
+          href=${this.$link()}
+          .type=${ActionType.Text}
+          ?active=${this.$isCurrent()}
+        >
+          <slot></slot>
+        </oryx-action>`
       : html`<slot></slot>`;
   }
 }

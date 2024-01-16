@@ -49,7 +49,10 @@ export class DataListComponent extends LayoutMixin(
             .options=${{ link: this.$options().link }}
             .qualifier=${item}
           >
-            <oryx-composition .uid=${this.uid}></oryx-composition>
+            <oryx-composition
+              .uid=${this.uid}
+              style="display: contents;"
+            ></oryx-composition>
           </oryx-data-wrapper>`
       )}`,
     });

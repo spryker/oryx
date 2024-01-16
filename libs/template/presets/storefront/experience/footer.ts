@@ -78,7 +78,7 @@ const customerSupport = {
 const promises: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'corporate-promises',
-  options: { rules: [{ layout: 'list', gap: '0' }] },
+  options: { rules: [{ layout: 'list', gap: '5px' }] },
   components: [
     heading('Our promises'),
     link('Free delivery', '/', IconTypes.Carrier),
@@ -292,7 +292,7 @@ export const FooterTemplate: ExperienceComponent = {
         background: 'var(--oryx-color-neutral-3)',
         padding: '30px 0',
         typography: 'small',
-        style: 'line-height: 24px;',
+        // style: 'line-height: 24px;',
         ...(featureVersion >= '1.2'
           ? {}
           : { divider: true, bleed: true, sticky: true }),

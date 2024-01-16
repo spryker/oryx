@@ -6,6 +6,7 @@ export interface Props {
   text?: string;
   slotted?: 'link' | 'button' | 'content';
   block?: boolean;
+  width?: string;
 }
 
 export const renderAction = (
@@ -15,6 +16,7 @@ export const renderAction = (
   const text = props.slotted ? undefined : props.text;
   const mark = props.slotted ? undefined : props.mark;
   const icon = props.slotted ? undefined : props.icon;
+  const iconAfter = props.slotted ? undefined : props.iconAfter;
   const href = props.slotted === 'link' ? undefined : props.href;
 
   if (props.slotted === 'content') {
@@ -54,16 +56,20 @@ export const renderAction = (
   return html`
     <oryx-action
       .type=${props.type}
-      .color=${props.color}
       .size=${props.size}
+      ?cta=${props.cta}
+      ?alert=${props.alert}
       .text=${text}
       .mark=${mark}
       .icon=${icon}
+      .iconAfter=${iconAfter}
       .href=${href}
       ?block=${props.block}
+      .state=${props.state}
       ?disabled=${props.disabled}
       ?loading=${props.loading}
       ?confirmed=${props.confirmed}
+      style="width:${props.width}"
       >${template}</oryx-action
     >
   `;

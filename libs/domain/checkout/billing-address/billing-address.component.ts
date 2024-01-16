@@ -1,5 +1,6 @@
 import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
+import { ActionType } from '@spryker-oryx/ui/action';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import {
   Address,
@@ -75,16 +76,26 @@ export class CheckoutBillingAddressComponent
           @change=${this.onChange}
           .selected=${this.$selected()}
         ></oryx-checkout-manage-address>`,
-        () => html`<oryx-button
-          .type=${ButtonType.Text}
-          @click=${this.reuseShippingAddress}
-        >
-          ${this.i18n(
+        () => html` <!-- <oryx-button
+            .type=${ButtonType.Text}
+            @click=${this.reuseShippingAddress}
+          >
+            ${this.i18n(
             this.$isSameAsShippingAddress()
               ? 'checkout.billing-address.change'
               : 'checkout.billing-address.same-as-shipping-address'
           )}
-        </oryx-button>`
+          </oryx-button> -->
+          <oryx-action
+            .type=${ActionType.Text}
+            cta
+            @click=${this.reuseShippingAddress}
+            .text=${this.i18n(
+              this.$isSameAsShippingAddress()
+                ? 'checkout.billing-address.change'
+                : 'checkout.billing-address.same-as-shipping-address'
+            )}
+          ></oryx-action>`
       )}
     </oryx-checkout-header>`;
   }

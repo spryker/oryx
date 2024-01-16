@@ -19,7 +19,8 @@ export const styles = css`
     justify-content: center;
   }
 
-  oryx-button {
+  oryx-button,
+  oryx-action {
     grid-column: var(--oryx-button-span, auto);
   }
 `;

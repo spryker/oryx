@@ -2,10 +2,12 @@ import { css } from 'lit';
 
 export const contentLinkStyles = css`
   :host {
-    padding: var(--oryx-content-link-padding);
+    display: grid;
+    /* display: contents; */
+    /* padding: var(--oryx-content-link-padding); */
   }
 
-  :host(:hover) {
+  /* :host(:hover) {
     background-color: var(--oryx-link-hover-background);
     box-shadow: var(--oryx-link-hover-shadow);
   }
@@ -19,5 +21,5 @@ export const contentLinkStyles = css`
   :host([current]) {
     color: var(--oryx-link-current-color);
     box-shadow: var(--oryx-link-current-shadow);
-  }
+  } */
 `;

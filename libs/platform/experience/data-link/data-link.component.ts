@@ -1,6 +1,7 @@
 import { EntityService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { ActionType } from '@spryker-oryx/ui/action';
 import {
   computed,
   emailRegex,
@@ -32,9 +33,12 @@ export class DataLinkComponent extends ContentMixin<DataLinkComponentOptions>(
     const { label, icon } = this.$options();
 
     return html`
-      <oryx-link .icon=${icon}>
-        <a .href=${this.resolveProtocol(link)}>${label ?? link}</a>
-      </oryx-link>
+      <oryx-action
+        .icon=${icon}
+        .type=${ActionType.Text}
+        .text=${label ?? link}
+        .href=${this.resolveProtocol(link)}
+      ></oryx-action>
     `;
   }
 

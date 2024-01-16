@@ -70,7 +70,7 @@ export const myAccountNavigation: ExperienceComponent = {
           type: 'navigation',
           vertical: true,
         },
-        gap: '0px',
+        gap: '4px',
       },
     ],
   },

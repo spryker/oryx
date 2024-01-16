@@ -2,8 +2,8 @@
  * Converts all links in the given string to oryx-link design system components.
  */
 export const convertLinks = (raw: string): string => {
-  return raw.replace(/<a(.*?)>(.*?)<\/a>/gis, (link) => {
-    return `<oryx-link>${link}</oryx-link>`;
+  return raw.replace(/<a(.*?)>(.*?)<\/a>/gis, (_, attr, text) => {
+    return `<oryx-action type="text" ${attr} text=${text}></oryx-action>`;
   });
 };
 

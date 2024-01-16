@@ -7,7 +7,7 @@ export const styles = css`
     gap: 12px 17px;
   }
 
-  oryx-button {
+  /* oryx-button {
     display: flex;
-  }
+  } */
 `;

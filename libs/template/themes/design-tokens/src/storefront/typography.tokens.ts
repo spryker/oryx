@@ -16,7 +16,11 @@ export const typographyTokens: ThemeToken = {
       line: '1.3333333333em',
       weight: '600',
     },
-    small: { size: '0.8571428571rem', line: '1.3333333333em', weight: '500' },
+    small: {
+      size: '0.8571428571rem',
+      // line: '1.3333333333em',
+      weight: '500',
+    },
     caption: { size: '0.8571428571rem', line: '1.3333333333em', weight: '600' },
   },
 };
