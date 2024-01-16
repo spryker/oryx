@@ -2,7 +2,7 @@ import { join } from 'path';
 import { defineConfig, UserConfig } from 'vite';
 import { viteConfig } from './vite.config.common.js';
 
-export default defineConfig(() => {
+export default defineConfig((config) => {
   return {
     root: viteConfig.index,
     envDir: viteConfig.root,
@@ -36,6 +36,6 @@ export default defineConfig(() => {
       noExternal: true,
     },
     define: viteConfig.define,
-    plugins: [...viteConfig.plugins()],
+    plugins: [...viteConfig.plugins(config)],
   } as UserConfig;
 });

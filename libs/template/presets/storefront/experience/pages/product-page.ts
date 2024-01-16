@@ -13,11 +13,7 @@ export const productPage: ExperienceComponent = {
     description: 'Default Product Page Description',
   },
   components: [
-    featureVersion >= '1.2'
-      ? {
-          ref: 'header',
-        }
-      : {},
+    featureVersion >= '1.2' ? { ref: 'header' } : {},
     {
       type: 'oryx-composition',
       components: [
@@ -107,6 +103,9 @@ export const productPage: ExperienceComponent = {
                 },
                 { type: 'oryx-cart-add' },
                 { type: 'oryx-product-availability' },
+                featureVersion >= '1.4'
+                  ? { type: 'oryx-product-discontinued' }
+                  : {},
               ],
             },
           ],
@@ -140,10 +139,6 @@ export const productPage: ExperienceComponent = {
         },
       ],
     },
-    featureVersion >= '1.2'
-      ? {
-          ref: 'footer',
-        }
-      : {},
+    featureVersion >= '1.2' ? { ref: 'footer' } : {},
   ],
 };

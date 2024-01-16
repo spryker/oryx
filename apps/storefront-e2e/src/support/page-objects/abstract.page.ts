@@ -14,7 +14,7 @@ export type E2EPage = {
 export abstract class AbstractSFPage implements E2EPage {
   abstract url: string;
 
-  visit(): void {
+  visit(options?: Partial<Cypress.VisitOptions>): void {
     if (!this.url) {
       throw new Error(
         'It is not possibe to visit this page bacause `url` is not set.'
@@ -22,7 +22,7 @@ export abstract class AbstractSFPage implements E2EPage {
     }
 
     this.beforeVisit();
-    cy.visit(this.url);
+    cy.visit(this.url, options);
     this.waitForLoaded();
   }
 

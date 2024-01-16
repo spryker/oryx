@@ -5,7 +5,7 @@ import {
   MerchantLegal,
   MerchantSchedule,
   MerchantWeekdaySlot,
-} from '../../../models';
+} from '@spryker-oryx/merchant';
 
 function normalizeSchedule(
   hours: ApiMerchantModel.Schedule

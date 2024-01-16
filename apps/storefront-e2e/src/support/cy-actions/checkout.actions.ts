@@ -39,7 +39,7 @@ Cypress.Commands.add('goToGuestCheckout', () => {
 
 function waitForShippingAndBillingMethods() {
   checkoutPage.getShippingMethods().should('be.visible');
-  checkoutPage.getBillingMethods().should('be.visible');
+  checkoutPage.getPaymentMethods().should('be.visible');
 }
 
 // just open a cart page is not enought to be sure

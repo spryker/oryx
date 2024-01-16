@@ -48,6 +48,7 @@ export class CouponComponent extends CartComponentMixin(
           .type="${ButtonType.Solid}"
           .color="${ColorType.Neutral}"
           .size=${ButtonSize.Sm}
+          label=${this.i18n('coupon.apply')}
           @click=${this.onSubmit}
         >
           ${this.i18n('coupon.apply')}
@@ -67,7 +68,18 @@ export class CouponComponent extends CartComponentMixin(
           return html`
             <div>
               <oryx-icon .type="${IconTypes.Check}"></oryx-icon>
-              <span class="code">${coupon.code} </span>
+              <span class="code">
+                ${coupon.code}
+                <oryx-button
+                  .type=${ButtonType.Icon}
+                  .size=${ButtonSize.Md}
+                  .icon=${IconTypes.Trash}
+                  label=${this.i18n('coupon.delete')}
+                  @click=${() => this.onDeleted(coupon.code)}
+                >
+                </oryx-button>
+              </span>
+
               <span class="name">
                 ${coupon.displayName}
                 <oryx-date
@@ -110,6 +122,20 @@ export class CouponComponent extends CartComponentMixin(
         this.coupon!.value = '';
       },
       error: () => (this.hasError = true),
+    });
+  }
+
+  protected onDeleted(couponCode: string): void {
+    this.cartService.deleteCoupon({ code: couponCode }).subscribe({
+      next: () => {
+        this.notificationService.push({
+          type: AlertType.Success,
+          content: {
+            token: 'coupon.<coupon>-successfully-deleted',
+            values: { coupon: couponCode },
+          },
+        });
+      },
     });
   }
 }

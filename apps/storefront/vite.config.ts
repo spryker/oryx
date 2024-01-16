@@ -17,6 +17,6 @@ export default defineConfig((config) => {
       emptyOutDir: true,
     },
     publicDir: '../../../libs/template/presets/public',
-    plugins: [...viteConfig.plugins(), splitVendorChunkPlugin()],
+    plugins: [...viteConfig.plugins(config), splitVendorChunkPlugin()],
   };
 });

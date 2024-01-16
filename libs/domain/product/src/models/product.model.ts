@@ -41,6 +41,8 @@ export interface Product {
   mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
+  discontinued?: boolean;
+  discontinuedNote?: string;
 }
 
 export interface ProductLabel {

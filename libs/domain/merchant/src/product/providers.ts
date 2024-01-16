@@ -1,22 +1,28 @@
+import { FieldsContextSerializer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   ProductContextSerializerToken,
   ProductNormalizer,
+  ProductTokenResourceResolverToken,
 } from '@spryker-oryx/product';
-import { offerResolvers } from '../resolvers/offer.resolver';
-import { ProductWithOfferContextSerializer } from './product-context';
-import { productOfferNormalizer } from './product.normalizer';
 import { productOfferQueries } from './query';
 
 export const merchantProductProviders: Provider[] = [
   {
     provide: ProductNormalizer,
-    useValue: productOfferNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.productOfferNormalizer
+      ),
   },
   {
     provide: ProductContextSerializerToken,
-    useClass: ProductWithOfferContextSerializer,
+    useFactory: () => new FieldsContextSerializer(['sku', 'offer']),
   },
   ...productOfferQueries,
-  ...offerResolvers,
+  {
+    provide: ProductTokenResourceResolverToken,
+    asyncClass: () =>
+      import('@spryker-oryx/merchant/services').then((m) => m.OfferResolver),
+  },
 ];

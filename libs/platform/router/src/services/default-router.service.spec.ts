@@ -3,6 +3,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouteConfig } from '@spryker-oryx/router/lit';
 import { of } from 'rxjs';
 import 'urlpattern-polyfill';
+import { SpyInstance } from 'vitest';
 import { DefaultRouterService } from './default-router.service';
 import { RouterEventType, RouterService } from './router.service';
 
@@ -202,6 +203,20 @@ describe('DefaultRouterService', () => {
   it('should return undefined for uncorrected pathId', () => {
     service.navigate('/id/id2/id3');
     expect(service.getPathId('mock')).toBe(undefined);
+  });
+
+  describe('when navigate multiple times to the same route', () => {
+    let spy: SpyInstance;
+    beforeEach(() => {
+      spy = vi.spyOn(service, 'go');
+      service.navigate('/mock');
+      service.navigate('/mock');
+      service.navigate('/mock');
+    });
+
+    it('should call go method only once', () => {
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('should return proper url', () => {
