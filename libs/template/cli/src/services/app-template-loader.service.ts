@@ -32,9 +32,7 @@ export class AppTemplateLoaderService {
     path: string,
     ref = this.templateRef as unknown as string
   ): Promise<void> {
-    console.log('downloadTemplate');
     await this.downloadTemplate(ref);
-    console.log('copyTemplate');
 
     const templatePath = this.getTemplateRepoPath(ref);
 

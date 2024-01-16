@@ -62,10 +62,10 @@ Usage: ${c.bold('oryx create')} ${c.dim('[options]')}
 Aliases: ${c.bold('c')}
 
 Options:
-  ${c.dim('-n, --name')}    The name of the app and the directory to create.
-  ${c.dim('-p, --preset')}  A preset to use.
-  ${c.dim('-t, --theme')}   A theme to use.
-  ${c.dim('-t, --features')}   A list of features to use.
+  ${c.dim('-n, --name')}       The name of the app and the directory to create.
+  ${c.dim('-t, --type')}       A type of the application.
+  ${c.dim('-p, --preset')}     A preset to use.
+  ${c.dim('-f, --features')}   A list of features to use.
 `;
   }
 
@@ -80,9 +80,11 @@ Options:
     await this.createApp(options);
   }
 
-  async createApp(options: CreateAppOptions): Promise<void> {
+  async createApp(options: CreateAppOptions = {}): Promise<void> {
     console.log(``);
     intro(`Create Oryx App`);
+
+    console.log(options);
 
     if (!options.name) {
       options.name = await this.promptName();
@@ -127,7 +129,9 @@ Please make sure to not use an existing directory name.`
 
     s.stop('Template copied');
 
-    s.start('Configuring application...');
+    const s1 = spinner();
+
+    s1.start('Configuring application...');
 
     const appTemplate = this.appTemplateBuilderService.create(appPath);
 
@@ -136,7 +140,7 @@ Please make sure to not use an existing directory name.`
       .setFeatures(options.features)
       .update();
 
-    s.stop('Application configured!');
+    s1.stop('Application configured!');
 
     await this.npmInstall(appPath);
 
@@ -251,8 +255,8 @@ Please make sure to not use an existing directory name.`
 }
 
 export interface CreateAppOptions {
-  name: string;
-  type: ApplicationType;
+  name?: string;
+  type?: ApplicationType;
   preset?: Preset;
   features?: Feature[];
 }
