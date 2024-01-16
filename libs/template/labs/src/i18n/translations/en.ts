@@ -37,7 +37,6 @@ const cart = {
 };
 
 const coupon = {
-  'coupon.have-a-coupon': 'Have a coupon?',
   'coupon.insert': 'Please insert a coupon code',
   'coupon.invalid': 'Coupon code can not be added',
   'coupon.(valid-till-<date>)': '(valid till {date})',
