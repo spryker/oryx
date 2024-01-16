@@ -5,43 +5,6 @@ import { ProductCategoryService } from '..';
 import { Product } from '../../models';
 import { ProductJSONLD } from './model';
 
-export const productJsonLdNormalizerFactory = (
-  productCategoryService = inject(ProductCategoryService)
-) => {
-  function productJsonLdNormalizer(
-    product: Product
-  ): Observable<ProductJSONLD | undefined> | undefined {
-    if (!product) return;
-
-    const categoryId = product?.categoryIds?.[0];
-
-    if (!categoryId) return of(mapProduct(product));
-
-    return productCategoryService.get({ id: categoryId }).pipe(
-      take(1),
-      map((category) => mapProduct(product, category.name))
-    );
-  }
-
-  return productJsonLdNormalizer;
-};
-
-function mapProduct(product: Product, category?: string): ProductJSONLD {
-  const { sku: identifier, name, description, attributes } = product;
-  const { color, brand } = attributes ?? {};
-
-  return {
-    '@context': 'http://schema.org',
-    '@type': 'Product',
-    identifier,
-    name,
-    description,
-    color,
-    brand,
-    category,
-  };
-}
-
 export class ProductJsonLdNormalizer
   implements ClassTransformer<ProductJSONLD, Product>
 {
