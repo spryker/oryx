@@ -39,10 +39,12 @@ export interface TransformerService {
     data: unknown,
     token: keyof InjectionTokensContractMap
   ): InheritTransformerResult<T>;
+  transform<T>(data: unknown, token: string): T;
 
   do<T extends keyof InjectionTokensContractMap>(
     token: T
   ): (source$: Observable<unknown>) => InheritTransformerResult<T>;
+  do<T>(token: string): (source$: Observable<unknown>) => Observable<T>;
 }
 
 export type SimpleTransformer<O = unknown, I = unknown> = (
@@ -52,10 +54,15 @@ export type SimpleTransformer<O = unknown, I = unknown> = (
 export type LazyTransformer<O = unknown, I = unknown> = () => Promise<
   SimpleTransformer<O, I>
 >;
+export type ClassTransformer<O = unknown, I = unknown> = {
+  transform(data: I): Observable<Partial<O> | undefined>;
+};
 
 export type Transformer<O = unknown, I = unknown> =
   | SimpleTransformer<O, I>
   | LazyTransformer<O, I>;
+/** TODO: Fix, blocked by "union type that is too complex to represent" on DefaultJsonAPITransformerService */
+// | ClassTransformer<O, I>;
 
 export type Serializer<I = unknown, O = unknown> = Transformer<O, I>;
 

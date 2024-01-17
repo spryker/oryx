@@ -1,11 +1,8 @@
 import { TransformerService } from '@spryker-oryx/core';
-import {
-  ApiMerchantModel,
-  DeserializedMerchantProduct,
-  OfferNormalizer,
-} from '@spryker-oryx/merchant';
+import { ApiMerchantModel, OfferNormalizer } from '@spryker-oryx/merchant';
 import { Product } from '@spryker-oryx/product';
 import { Observable, combineLatest, map, of } from 'rxjs';
+import { DeserializedMerchantProduct } from '../adapter';
 
 export function productOfferNormalizer(
   data: DeserializedMerchantProduct, // source

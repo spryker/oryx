@@ -6,7 +6,7 @@ import { MerchantQuery } from './queries';
 function setMerchant(query: QueryService, offer: ProductOffer) {
   query.getQuery<MerchantQuery>(MerchantQuery)?.set({
     data: offer.merchant,
-    qualifier: { id: offer.merchant.id, scope: 'minimal' },
+    qualifier: { id: offer.merchant.id },
   });
 }
 

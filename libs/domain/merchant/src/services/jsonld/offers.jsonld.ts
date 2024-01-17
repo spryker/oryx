@@ -9,8 +9,8 @@ import { ProductOffer } from '../../models';
 import { AggregateOfferJSONLD } from './';
 
 export class MerchantOffersJsonLdNormalizer extends OfferJsonLdNormalizer {
-  normalize(product: Product): Observable<JSONLD | undefined> {
-    if (!product.offers) return super.normalize(product);
+  transform(product: Product): Observable<Partial<JSONLD> | undefined> {
+    if (!product?.offers) return super.transform(product);
 
     const offerPrices = product.offers.map((offer) =>
       offer.price.defaultPrice
@@ -20,18 +20,19 @@ export class MerchantOffersJsonLdNormalizer extends OfferJsonLdNormalizer {
 
     const availability = this.resolveAvailability(product.availability);
     return of({
-      '@context': 'http://schema.org',
-      '@type': 'AggregateOffer',
-      offerCount: product.offers.length,
-      lowPrice: Math.min(...offerPrices) / 100,
-      highPrice: Math.max(...offerPrices) / 100,
-      priceCurrency: product.offers[0].price.defaultPrice?.currency,
-      availability,
-      offers: this.resolveOffers(product.offers),
-    } as AggregateOfferJSONLD);
+      offers: {
+        '@type': 'AggregateOffer',
+        offerCount: product.offers.length,
+        lowPrice: Math.min(...offerPrices) / 100,
+        highPrice: Math.max(...offerPrices) / 100,
+        priceCurrency: product.offers[0].price.defaultPrice?.currency,
+        availability,
+        offers: this.resolveOffers(product.offers),
+      } as AggregateOfferJSONLD,
+    });
   }
 
-  protected resolveOffers(offers: ProductOffer[]): OfferJSONLD[] {
+  protected resolveOffers(offers: ProductOffer[]): Partial<OfferJSONLD>[] {
     return offers.map((offer) => super.mapOffer(offer.price)!);
   }
 }

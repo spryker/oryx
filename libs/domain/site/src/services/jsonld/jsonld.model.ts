@@ -1,5 +1,5 @@
 export interface JSONLD {
-  '@context': string;
+  '@context'?: string;
   '@type': string;
   [key: string]:
     | string

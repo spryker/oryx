@@ -125,14 +125,12 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  delete(data: CartQualifier): Observable<Cart> {
+  delete(data: CartQualifier): Observable<unknown> {
     if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
 
-    return this.http
-      .delete<ApiCartModel.Response>(
-        `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}/${data.cartId}`
-      )
-      .pipe(this.transformer.do(CartNormalizer));
+    return this.http.delete<ApiCartModel.Response>(
+      `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}/${data.cartId}`
+    );
   }
 
   addCoupon(data: CouponQualifier): Observable<Cart> {
@@ -159,6 +157,23 @@ export class DefaultCartAdapter implements CartAdapter {
         return this.http
           .post<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizer));
+      })
+    );
+  }
+
+  deleteCoupon(data: CouponQualifier): Observable<unknown> {
+    return this.identity.get().pipe(
+      take(1),
+      switchMap((identity) => {
+        const requestType = identity.isAuthenticated
+          ? ApiCartModel.UrlParts.Carts
+          : ApiCartModel.UrlParts.GuestCarts;
+
+        const url = this.generateUrl(
+          `${requestType}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}/${data.code}`,
+          !identity.isAuthenticated
+        );
+        return this.http.delete(url);
       })
     );
   }

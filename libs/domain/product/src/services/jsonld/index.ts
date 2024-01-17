@@ -1,9 +1,9 @@
 import { Provider } from '@spryker-oryx/di';
-import { ProductJsonLdNormalizer } from './product.jsonld';
 
 import { jsonLdTokenFactory } from '@spryker-oryx/site';
 import { PRODUCT } from '../../entity';
 import { OfferJsonLdNormalizer } from './offer.jsonld';
+import { ProductJsonLdNormalizer } from './product.jsonld';
 
 export * from './model';
 export * from './offer.jsonld';

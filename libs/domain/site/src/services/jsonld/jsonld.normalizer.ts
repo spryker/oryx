@@ -16,6 +16,6 @@ export const jsonLdTokenFactory = (entity: string, normalizer = ''): string => {
 
 declare global {
   interface InjectionTokensContractMap {
-    [JsonLdNormalizer]: JsonLdNormalizer;
+    [JsonLdNormalizer]: Transformer<unknown, JSONLD>;
   }
 }

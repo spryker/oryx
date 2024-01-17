@@ -1,4 +1,8 @@
-import { ContextService, EntityService } from '@spryker-oryx/core';
+import {
+  ContextService,
+  EntityService,
+  TransformerService,
+} from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { DefaultJsonLdService } from './default-jsonld.service';
@@ -9,10 +13,11 @@ class MockContextService implements Partial<ContextService> {
   get = vi.fn().mockReturnValue(of());
 }
 const mockEntityWithNormalizers = 'mockEntityWithNormalizers';
-const mockEntityWithoutNormalizers = 'mockEntityWithoutNormalizers';
-
 class MockEntityService implements Partial<EntityService> {
   get = vi.fn().mockReturnValue(of());
+}
+class MockTransformerService implements Partial<TransformerService> {
+  do = vi.fn().mockReturnValue(of());
 }
 
 class MockJsonLdNormalizer implements Partial<JsonLdNormalizer> {
@@ -44,6 +49,10 @@ describe('DefaultJsonLdService', () => {
           useClass: MockEntityService,
         },
         {
+          provide: TransformerService,
+          useClass: MockTransformerService,
+        },
+        {
           provide: token,
           useClass: MockJsonLdNormalizer,
         },
@@ -63,17 +72,4 @@ describe('DefaultJsonLdService', () => {
   it('should be provided', () => {
     expect(service).toBeInstanceOf(DefaultJsonLdService);
   });
-
-  //   describe('when an entity is available', () => {
-  //     beforeEach(() => {
-  //       entityService.get.mockReturnValue(of(mockEntityWithNormalizers));
-  //       service.getSchemas();
-  //     });
-
-  //     describe('and there are normalizers available for the entity', () => {
-  //       it('should normalize the value', () => {
-  //         expect(jsonLdNormalizer.normalize).toHaveBeenCalled();
-  //       });
-  //     });
-  //   });
 });

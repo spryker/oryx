@@ -1,6 +1,7 @@
 import { provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
+import { merchantListNormalizer } from '@spryker-oryx/merchant/services';
 import { MERCHANT } from '../entity';
 import {
   merchantHeaderNavigation,
@@ -9,20 +10,12 @@ import {
   merchantSoldToOnPDP,
 } from '../presets';
 import {
-  DefaultMerchantAdapter,
   MerchantAdapter,
+  MerchantListNormalizer,
   MerchantNormalizer,
   OfferNormalizer,
   merchantIncludes,
 } from './adapter';
-import { merchantNormalizer } from './adapter/normalizers';
-import {
-  offerAvailabilityNormalizer,
-  offerMerchantNormalizer,
-  offerNormalizer,
-  offerPriceNormalizer,
-} from './adapter/normalizers/offer.normalizer';
-import { DefaultMerchantService } from './default-merchant.service';
 import { merchantJsonLdNormalizers } from './jsonld';
 import { merchantContextProviders } from './merchant.context';
 import { MerchantService } from './merchant.service';
@@ -31,31 +24,55 @@ import { merchantQueries, merchantsEffects } from './state';
 export const merchantProviders: Provider[] = [
   {
     provide: OfferNormalizer,
-    useValue: offerNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/merchant/services').then((m) => m.offerNormalizer),
   },
   {
     provide: OfferNormalizer,
-    useValue: offerPriceNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.offerPriceNormalizer
+      ),
   },
   {
     provide: OfferNormalizer,
-    useValue: offerAvailabilityNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.offerAvailabilityNormalizer
+      ),
   },
   {
     provide: OfferNormalizer,
-    useValue: offerMerchantNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.offerMerchantNormalizer
+      ),
   },
   {
     provide: MerchantAdapter,
-    useClass: DefaultMerchantAdapter,
+    asyncClass: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.DefaultMerchantAdapter
+      ),
   },
   {
     provide: MerchantService,
-    useClass: DefaultMerchantService,
+    asyncClass: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.DefaultMerchantService
+      ),
   },
   {
     provide: MerchantNormalizer,
-    useValue: merchantNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/merchant/services').then(
+        (m) => m.merchantNormalizer
+      ),
+  },
+
+  {
+    provide: MerchantListNormalizer,
+    useValue: merchantListNormalizer,
   },
   ...merchantQueries,
   ...merchantsEffects,

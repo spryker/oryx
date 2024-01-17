@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { JSONLD } from './jsonld.model';
 
 export interface JsonLdService {
-  getSchemas(): Observable<JSONLD[]>;
+  getSchemas(): Observable<JSONLD[] | undefined>;
 }
 
 export const JsonLdService = 'oryx.JsonLdService';

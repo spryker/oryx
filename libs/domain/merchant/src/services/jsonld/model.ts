@@ -2,7 +2,7 @@ import { OfferJSONLD } from '@spryker-oryx/product';
 import { JSONLD } from '@spryker-oryx/site';
 
 export interface AggregateOfferJSONLD extends JSONLD {
-  '@context': 'http://schema.org';
+  '@context'?: 'http://schema.org';
   '@type': 'AggregateOffer';
   lowPrice: number | string; // Represents the lowest price among the offers
   highPrice: number | string; // Represents the highest price among the offers

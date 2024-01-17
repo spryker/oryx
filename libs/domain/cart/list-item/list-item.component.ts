@@ -75,6 +75,7 @@ export class CartListItemComponent extends CartComponentMixin(
 
   protected renderControls(): TemplateResult {
     const disabled = !this.$totalQuantity();
+    const cartId = this.$cart()?.id;
 
     return html`
       <div class="meta">
@@ -122,6 +123,7 @@ export class CartListItemComponent extends CartComponentMixin(
             ?disabled=${!disabled}
           ></oryx-button>
           <oryx-button icon="delete" type="icon" .size=${size}></oryx-button> -->
+          <oryx-cart-remove .cartId=${cartId}></oryx-cart-remove>
         </div>
       </div>
     `;
