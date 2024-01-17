@@ -16,11 +16,12 @@ export interface CartAdapter {
   get: (data: CartQualifier) => Observable<Cart>;
   addEntry: (data: AddCartEntryQualifier) => Observable<Cart>;
   addCoupon: (data: CouponQualifier) => Observable<Cart>;
+  deleteCoupon: (data: CouponQualifier) => Observable<unknown>;
   deleteEntry: (data: CartEntryQualifier) => Observable<unknown>;
   updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
   update: (data: UpdateCartQualifier) => Observable<Cart>;
   create: (data?: CreateCartQualifier) => Observable<Cart>;
-  delete: (data: CartQualifier) => Observable<Cart>;
+  delete: (data: CartQualifier) => Observable<unknown>;
 }
 
 export const CartAdapter = 'oryx.CartAdapter';

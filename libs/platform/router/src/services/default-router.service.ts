@@ -47,17 +47,11 @@ export class DefaultRouterService implements RouterService {
   protected storageService = inject(StorageService);
 
   go(route: string, extras?: NavigationExtras): void {
+    if (this.isSameRoute(route, extras)) return;
+
     const url = route.split('?');
     const queryParams =
       extras?.queryParams ?? this.getURLSearchParams(url[1]) ?? {};
-
-    if (
-      this.router$.value === url[0] &&
-      JSON.stringify(this.urlSearchParams$.value) ===
-        JSON.stringify(queryParams)
-    ) {
-      return;
-    }
 
     this.storageService.set(
       PREVIOUS_PAGE,
@@ -71,6 +65,8 @@ export class DefaultRouterService implements RouterService {
   }
 
   navigate(route: string): void {
+    if (this.isSameRoute(route)) return;
+
     if (route === RouteType.NotFound) {
       this.router$.next(RouteType.NotFound);
 
@@ -210,6 +206,18 @@ export class DefaultRouterService implements RouterService {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           routes.find((r) => getPattern(r).test({ pathname }))!
       )
+    );
+  }
+
+  protected isSameRoute(route: string, extras?: NavigationExtras): boolean {
+    const [url, search = ''] = route.split('?');
+    const queryParams =
+      extras?.queryParams ?? this.getURLSearchParams(search) ?? {};
+
+    return (
+      this.router$.value === url &&
+      JSON.stringify(this.urlSearchParams$.value) ===
+        JSON.stringify(queryParams)
     );
   }
 }

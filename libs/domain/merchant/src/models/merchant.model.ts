@@ -1,7 +1,8 @@
 export interface MerchantQualifier {
   id?: string;
-  scope?: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface MerchantListQualifier {}
 
 export interface Merchant {
   id: string;

@@ -14,9 +14,8 @@ export const cartListItemStyles = css`
     align-items: center;
     border-block-start: 1px solid var(--oryx-color-neutral-7);
     padding: 10px 20px;
-    margin-inline-start: -20px;
-    width: 100%;
-    height: 40px;
+    margin-inline: -12px;
+    min-height: 40px;
     margin-block-end: -12px;
     border-end-end-radius: var(
       --oryx-collapsible-border-radius,

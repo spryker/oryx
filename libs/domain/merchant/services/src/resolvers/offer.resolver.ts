@@ -5,12 +5,11 @@ import {
   Resolver,
   TokenResolverOptions,
 } from '@spryker-oryx/core';
-import { Provider, inject } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import {
-  ProductContext,
+  PRODUCT,
   ProductQualifier,
   ProductService,
-  ProductTokenResourceResolverToken,
 } from '@spryker-oryx/product';
 import { Observable, map, switchMap } from 'rxjs';
 
@@ -25,10 +24,7 @@ export class OfferResolver extends BaseResolver<OfferResolvers> {
   protected resolvers = {
     OFFERS: (options?: TokenResolverOptions): Observable<ResolvedResult> => {
       return this.contextService
-        .get<ProductQualifier>(
-          options?.contextElement ?? null,
-          ProductContext.SKU
-        )
+        .get<ProductQualifier>(options?.contextElement ?? null, PRODUCT)
         .pipe(
           switchMap((qualifier) => this.productService.get(qualifier!)),
           map((product) => (product?.offers ?? []).length > 1)
@@ -36,10 +32,3 @@ export class OfferResolver extends BaseResolver<OfferResolvers> {
     },
   };
 }
-
-export const offerResolvers: Provider[] = [
-  {
-    provide: ProductTokenResourceResolverToken,
-    useClass: OfferResolver,
-  },
-];

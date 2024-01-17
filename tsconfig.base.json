@@ -30,6 +30,9 @@
       ],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
+      "@spryker-oryx/cart/cart-remove": [
+        "libs/domain/cart/cart-remove/index.ts"
+      ],
       "@spryker-oryx/cart/coupon": ["libs/domain/cart/coupon/index.ts"],
       "@spryker-oryx/cart/edit": ["libs/domain/cart/edit/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
@@ -108,8 +111,14 @@
       "@spryker-oryx/experience/data-link": [
         "libs/platform/experience/data-link/index.ts"
       ],
+      "@spryker-oryx/experience/data-list": [
+        "libs/platform/experience/data-list/index.ts"
+      ],
       "@spryker-oryx/experience/data-text": [
         "libs/platform/experience/data-text/index.ts"
+      ],
+      "@spryker-oryx/experience/data-wrapper": [
+        "libs/platform/experience/data-wrapper/index.ts"
       ],
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"
@@ -134,6 +143,9 @@
       ],
       "@spryker-oryx/merchant/schedule": [
         "libs/domain/merchant/schedule/index.ts"
+      ],
+      "@spryker-oryx/merchant/services": [
+        "libs/domain/merchant/services/index.ts"
       ],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/offline/mocks": [
