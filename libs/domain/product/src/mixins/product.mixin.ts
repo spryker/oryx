@@ -52,7 +52,7 @@ export const ProductMixin = <
 
     protected $product = computed(() => {
       const qualifier = this.$productQualifier();
-      return qualifier ? this.productService?.get(qualifier) : of(null);
+      return qualifier?.sku ? this.productService?.get(qualifier) : of(null);
     });
   }
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;

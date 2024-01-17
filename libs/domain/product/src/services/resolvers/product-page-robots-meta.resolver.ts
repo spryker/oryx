@@ -35,9 +35,8 @@ export class ProductPageRobotMetaResolver implements PageMetaResolver {
   resolve(): Observable<ElementResolver> {
     return this.context.get(null, PRODUCT).pipe(
       switchMap((qualifier) => {
-        if (!qualifier) {
-          return of({});
-        }
+        if (!qualifier?.sku && !qualifier?.offer) return of({});
+
         return this.productService.get(qualifier).pipe(
           map((product) => ({
             robots: this.isDiscontinued(product)
