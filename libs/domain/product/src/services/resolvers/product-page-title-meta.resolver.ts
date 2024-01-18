@@ -35,8 +35,6 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
       .get(null, featureVersion >= '1.4' ? PRODUCT : ProductContext.SKU)
       .pipe(
         switchMap((qualifier) => {
-          console.log(qualifier);
-
           if (!qualifier) return of({});
 
           return this.productService
