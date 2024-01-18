@@ -286,11 +286,26 @@ export class PickingPickerComponent extends I18nMixin(
   }
 
   protected renderFallback(): TemplateResult {
-    if (!this.items?.length || !this.allItemsPicked) {
-      return this.renderNoItemsFallback();
-    } else {
-      return this.renderFinishPickingFallback();
-    }
+    // temporary/workaround implementation to have image resource on offline mode
+    return html`
+      <section
+        class="
+        ${!this.items?.length || !this.allItemsPicked
+          ? ''
+          : 'hide-image-content'} "
+      >
+        ${this.__renderNoItemsHeading()}
+        <oryx-image resource="no-orders"></oryx-image>
+      </section>
+
+
+      <section class="${this.allItemsPicked ? '' : 'hide-image-content'} ">
+        <oryx-image resource="picking-items-processed"></oryx-image>
+        ${this.__renderFinishPickingHeading()}
+        <span>${this.i18n(`picking.processed.all`)}</span>
+      </section>
+      ${this.renderFinishButton()}
+    `;
   }
 
   protected get allItemsPicked(): boolean {
