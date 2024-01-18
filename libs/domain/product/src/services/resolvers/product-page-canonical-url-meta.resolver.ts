@@ -25,7 +25,7 @@ export class ProductPageCanonicalUrlResolver implements PageMetaResolver {
   resolve(): Observable<ElementResolver> {
     return this.context.get(null, PRODUCT).pipe(
       switchMap((qualifier) => {
-        if (!qualifier?.sku && !qualifier?.offer) return of({});
+        if (!qualifier) return of({});
 
         return this.linkService
           .get({ type: PRODUCT, qualifier: { sku: qualifier.sku } })
