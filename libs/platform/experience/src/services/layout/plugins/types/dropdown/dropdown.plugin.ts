@@ -59,6 +59,7 @@ export class DropdownLayoutPlugin implements LayoutPlugin {
   getDefaultProperties(): Observable<LayoutStylesOptions> {
     return of({
       dropdownPosition: Position.End,
+      bucket: true,
     });
   }
 }

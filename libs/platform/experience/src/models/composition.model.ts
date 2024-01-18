@@ -4,6 +4,8 @@ import { Breakpoint } from '@spryker-oryx/utilities';
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
   context?: ContextValue & Record<string, unknown>;
+  bucket?: boolean;
+  bucketType?: string;
   [key: string]: unknown;
 }
 

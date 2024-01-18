@@ -7,4 +7,5 @@ export const cartTotalsComponentSchema: ContentComponentSchema<CartTotalsCompone
     name: 'Cart totals',
     group: 'Cart',
     icon: IconTypes.BulletList,
+    composition: true,
   };

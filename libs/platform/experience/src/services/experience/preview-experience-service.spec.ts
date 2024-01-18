@@ -166,7 +166,10 @@ describe('ExperiencePreviewService', () => {
       );
       service.getComponent({ uid: structure.id }).subscribe(callback);
       await nextFrame();
-      expect(callback).toHaveBeenCalledWith(structure);
+      expect(mockExperienceDataService.registerComponent).toHaveBeenCalledWith(
+        structure,
+        expect.anything()
+      );
     });
 
     it('should get content data', async () => {

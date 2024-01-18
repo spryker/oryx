@@ -5,7 +5,7 @@ import {
 } from '@spryker-oryx/ui/collapsible';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { LayoutStyles } from '../../../layout.model';
+import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
@@ -44,6 +44,10 @@ export class AccordionLayoutPlugin implements LayoutPlugin {
         >${renderLabelSlot(data, 'heading')} ${data.template}</oryx-collapsible
       >`,
     });
+  }
+
+  getDefaultProperties(): Observable<LayoutStylesOptions> {
+    return of({ bucket: true });
   }
 
   protected _pauseEventHandling = false;

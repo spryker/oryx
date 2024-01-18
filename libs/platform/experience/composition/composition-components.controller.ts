@@ -85,7 +85,7 @@ export class CompositionComponentsController implements ReactiveController {
                 return !refs.length
                   ? of(components)
                   : combineLatest(refs).pipe(
-                      map((refs) => {
+                      map((refs: Record<string, Component>[]) => {
                         const stack = refs.reduce(
                           (acc, value) => ({ ...acc, ...value }),
                           {}
