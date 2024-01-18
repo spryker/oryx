@@ -21,6 +21,7 @@ export type ComponentSchema<Options, Content> = {
     [P in keyof Options]: Omit<FieldDefinition, 'id'>;
   };
   icon?: string;
+  composition?: boolean;
 };
 
 export type ContentComponentSchema<
