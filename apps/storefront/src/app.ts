@@ -15,7 +15,7 @@ const features = [
         ...storefrontFeatures,
         ...(env.ORYX_MULTI_CART ? [multiCartFeature] : []),
       ]),
-  ...(env.ORYX_MERCHANT ? [merchantFeature] : []),
+  merchantFeature,
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 

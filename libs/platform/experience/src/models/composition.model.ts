@@ -5,7 +5,7 @@ export interface CompositionProperties {
   rules?: StyleRuleSet[];
   context?: ContextValue & Record<string, unknown>;
   bucket?: boolean;
-  bucketType?: 'main' | 'label';
+  bucketType?: string;
   [key: string]: unknown;
 }
 
