@@ -7,7 +7,7 @@ import {
 import { Provider, inject } from '@spryker-oryx/di';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, take } from 'rxjs';
 import { PRODUCT } from '../entity';
 import { ProductQualifier } from '../models';
 
@@ -35,13 +35,12 @@ export function productContextFallbackFactory(
   router = inject(RouterService),
   context = inject(ContextService)
 ): Observable<unknown> {
-  return router
-    .current()
-    .pipe(
-      map((route) =>
-        route.type === RouteType.Product ? route.params : undefined
-      )
-    );
+  return router.current().pipe(
+    take(1),
+    map((route) =>
+      route.type === RouteType.Product ? route.params : undefined
+    )
+  );
 }
 
 export const ProductContextSerializerToken = `${ContextSerializer}${
