@@ -15,6 +15,8 @@ export class TotalsFragment {
   getTotalPrice = () =>
     this.getWrapper().find('oryx-cart-totals-total').find('oryx-site-price');
   getTaxMessage = () => this.getWrapper().get('.tax-message');
+  getDelivery = () => this.getWrapper().find('oryx-cart-totals-delivery');
+  getDeliveryPrice = () => this.getSubtotalText().find('oryx-site-price');
 
   checkTotals(totals: {
     subTotal?: string;

@@ -4,9 +4,12 @@ import {
   ApiMerchantModel,
   Merchant,
   MerchantAdapter,
+  MerchantListNormalizer,
+  MerchantListQualifier,
   MerchantNormalizer,
   MerchantQualifier,
 } from '@spryker-oryx/merchant';
+
 import { Observable } from 'rxjs';
 
 export class DefaultMerchantAdapter implements MerchantAdapter {
@@ -19,13 +22,22 @@ export class DefaultMerchantAdapter implements MerchantAdapter {
   ) {}
 
   get({ id }: MerchantQualifier): Observable<Merchant> {
-    const include = ['merchant-opening-hours', 'merchant-addresses'];
+    const includes = ['merchant-opening-hours', 'merchant-addresses'];
     return this.http
       .get<ApiMerchantModel.Merchant>(
         `${this.SCOS_BASE_URL}/${this.merchantEndpoint}/${id}${
-          include?.length ? '?include=' : ''
-        }${include?.join(',') || ''}`
+          includes?.length ? '?include=' : ''
+        }${includes?.join(',') || ''}`
       )
       .pipe(this.transformer.do(MerchantNormalizer));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getList(qualifier?: MerchantListQualifier): Observable<Merchant[]> {
+    return this.http
+      .get<ApiMerchantModel.Merchant[]>(
+        `${this.SCOS_BASE_URL}/${this.merchantEndpoint}`
+      )
+      .pipe(this.transformer.do(MerchantListNormalizer));
   }
 }

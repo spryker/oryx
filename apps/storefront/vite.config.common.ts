@@ -22,12 +22,15 @@ export const viteConfig = {
     index: './client',
     ssr: './server',
   },
-  plugins: (): Plugin[] => [
-    checker({
-      typescript: {
-        tsconfigPath: 'tsconfig.app.json',
-      },
-    }),
+  plugins: (config?): Plugin[] => [
+    config?.mode === 'production'
+      ? ({} as unknown as Plugin)
+      : checker({
+          typescript: {
+            tsconfigPath: 'tsconfig.app.json',
+          },
+        }),
+
     tsconfigPaths({ root: viteConfig.monorepoRoot }) as unknown as Plugin,
   ],
 };

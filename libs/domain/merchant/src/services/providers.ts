@@ -1,6 +1,7 @@
 import { provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
+import { merchantListNormalizer } from '@spryker-oryx/merchant/services';
 import { MERCHANT } from '../entity';
 import {
   merchantHeaderNavigation,
@@ -10,6 +11,7 @@ import {
 } from '../presets';
 import {
   MerchantAdapter,
+  MerchantListNormalizer,
   MerchantNormalizer,
   OfferNormalizer,
   merchantIncludes,
@@ -65,6 +67,11 @@ export const merchantProviders: Provider[] = [
       import('@spryker-oryx/merchant/services').then(
         (m) => m.merchantNormalizer
       ),
+  },
+
+  {
+    provide: MerchantListNormalizer,
+    useValue: merchantListNormalizer,
   },
   ...merchantQueries,
   ...merchantsEffects,

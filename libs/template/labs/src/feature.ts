@@ -4,10 +4,11 @@ import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
 import { i18nLabsProviders, labsI18nFeature } from './i18n';
+import { merchantBanners } from './merchants';
 import { myAccountFeature } from './my-account';
+
 export * from './components';
 export { labsI18nFeature } from './i18n';
-
 export const labsComponents = Object.values(components);
 
 /**
@@ -26,6 +27,7 @@ export const labsFeatures: AppFeature[] = [
       bazaarVoiceComponentMapping,
       ...articleProviders,
       ...i18nLabsProviders,
+      merchantBanners,
     ],
   },
 ];

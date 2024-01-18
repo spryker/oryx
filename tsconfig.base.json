@@ -111,8 +111,14 @@
       "@spryker-oryx/experience/data-link": [
         "libs/platform/experience/data-link/index.ts"
       ],
+      "@spryker-oryx/experience/data-list": [
+        "libs/platform/experience/data-list/index.ts"
+      ],
       "@spryker-oryx/experience/data-text": [
         "libs/platform/experience/data-text/index.ts"
+      ],
+      "@spryker-oryx/experience/data-wrapper": [
+        "libs/platform/experience/data-wrapper/index.ts"
       ],
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"

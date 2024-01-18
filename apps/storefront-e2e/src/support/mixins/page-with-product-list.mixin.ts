@@ -33,7 +33,7 @@ export function WithProductList<TPage extends Constructor<E2EPage>>(
     waitForTemplateRebuild(): void {
       // wait till product cards and facets are re-renreded after search
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
+      cy.wait(1000);
     }
 
     waitForLoaded(): void {
