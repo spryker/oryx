@@ -16,6 +16,7 @@ import {
   OfferNormalizer,
   merchantIncludes,
 } from './adapter';
+import { merchantJsonLdNormalizers } from './jsonld';
 import { merchantContextProviders } from './merchant.context';
 import { MerchantService } from './merchant.service';
 import { merchantQueries, merchantsEffects } from './state';
@@ -86,4 +87,5 @@ export const merchantProviders: Provider[] = [
     merchantOffersOnPDP,
     merchantSoldToOnPDP,
   ]),
+  ...merchantJsonLdNormalizers,
 ];

@@ -2,6 +2,7 @@ export * from './adapter';
 export * from './category';
 export * from './default-product.service';
 export * from './images';
+export * from './jsonld';
 export * from './list';
 export * from './product-context';
 export * from './product.providers';

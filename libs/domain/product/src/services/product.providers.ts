@@ -67,6 +67,7 @@ import {
   ProductMediaConfig,
   productMediaConfig,
 } from './images/product-media.config';
+import { productJsonLdNormalizers } from './jsonld';
 import {
   DefaultProductListAdapter,
   DefaultProductListPageService,
@@ -255,4 +256,5 @@ export const productProviders: Provider[] = [
   provideEntity(CATEGORY, {
     service: ProductCategoryService,
   }),
+  ...productJsonLdNormalizers,
 ];

@@ -10,6 +10,7 @@ import {
   switchMap,
 } from 'rxjs';
 import {
+  ClassTransformer,
   InheritTransformerResult,
   SimpleTransformer,
   Transformer,
@@ -48,7 +49,10 @@ export class DefaultTransformerService implements TransformerService {
     const asyncData: Observable<unknown>[] = [];
     const syncData = this.getTransformers(token).reduce(
       (currentData: unknown, cb: Transformer<unknown>) => {
-        let cbData = cb(data, this);
+        let cbData =
+          typeof cb === 'function'
+            ? cb(data, this)
+            : (cb as ClassTransformer).transform(data);
 
         // we assume that transformer returning a promise is a lazy-loaded transformer
         // so we need to resolve the callback and call it again
