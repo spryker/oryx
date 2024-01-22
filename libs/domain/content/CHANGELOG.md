@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* **content:** productize cms integrations ([#1001](https://github.com/spryker/oryx/issues/1001)) ([bbee310](https://github.com/spryker/oryx/commit/bbee310657fa9959eb4a61ef6baff0fef235da84))
+
+
+### Bug Fixes
+
+* **content:** cms freezing  ([#1002](https://github.com/spryker/oryx/issues/1002)) ([6cb511c](https://github.com/spryker/oryx/commit/6cb511c13f1d4a889e5f82f3daa96d23f6421a79))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 

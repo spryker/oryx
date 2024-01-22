@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* picking lists filter by ready-for-picking status ([#1056](https://github.com/spryker/oryx/issues/1056)) ([333f52d](https://github.com/spryker/oryx/commit/333f52dde6dcc9534a0fa321af52649ce5c22925))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 

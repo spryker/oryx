@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* add main experience for all layout renders ([#1033](https://github.com/spryker/oryx/issues/1033)) ([3ed4046](https://github.com/spryker/oryx/commit/3ed404660bc97c49ecff977e302096f85b84a7cd))
+* Added dropdown behaviour on hover ([#1055](https://github.com/spryker/oryx/issues/1055)) ([e70773b](https://github.com/spryker/oryx/commit/e70773b1f7576b2c5c0dfb58d92a430c6442c078))
+* adds context to composition ([#1012](https://github.com/spryker/oryx/issues/1012)) ([fb1747b](https://github.com/spryker/oryx/commit/fb1747bee1f15e2c27670f811f494195df95f5cd))
+* add image to contentful cms ([#1013](https://github.com/spryker/oryx/issues/1013)) ([e20e22b](https://github.com/spryker/oryx/commit/e20e22b4bc51600f02787d2171015e64601d673a))
+* context and entity improvements ([#1062](https://github.com/spryker/oryx/issues/1062)) ([80feadb](https://github.com/spryker/oryx/commit/80feadb757e17fda62b3d568eefbfb0803493fe7))
+* content link qualifier & router improvements ([#999](https://github.com/spryker/oryx/issues/999)) ([6082c93](https://github.com/spryker/oryx/commit/6082c934754a691cb6934ea1cfa79898453df86f))
+* content list component/ adjust content adapters with tags ([#992](https://github.com/spryker/oryx/issues/992)) ([ae83a69](https://github.com/spryker/oryx/commit/ae83a6964c8d557ceaec29105fa0a519969706f3))
+* **cart:** remove cart ([#1064](https://github.com/spryker/oryx/issues/1064)) ([5c6a2b1](https://github.com/spryker/oryx/commit/5c6a2b1d2a38e308b4d6749db8b182f52b19352e))
+* **cart:** remove coupon ([#1065](https://github.com/spryker/oryx/issues/1065)) ([98f3c64](https://github.com/spryker/oryx/commit/98f3c6486767c1eff063618f3bd5afea139454d6))
+* **cart:** create cart page ([#1038](https://github.com/spryker/oryx/issues/1038)) ([d47b693](https://github.com/spryker/oryx/commit/d47b693b90b2c88a8f0a7d0d8977780167c565d7))
+* **cart:** carts list page ([#1006](https://github.com/spryker/oryx/issues/1006)) ([ae93103](https://github.com/spryker/oryx/commit/ae93103709c31d53d51d7462bce6094fa187c9bd))
+* **cart:** coupon component ([#950](https://github.com/spryker/oryx/issues/950)) ([fa17c0b](https://github.com/spryker/oryx/commit/fa17c0b4feddcca92cc9e249298834e666a47155))
+* configurable adapter includes ([#967](https://github.com/spryker/oryx/issues/967)) ([9efa1c6](https://github.com/spryker/oryx/commit/9efa1c672d45a093c16b520d7b75153ae9f36c0f))
+* **content:** productize cms integrations ([#1001](https://github.com/spryker/oryx/issues/1001)) ([bbee310](https://github.com/spryker/oryx/commit/bbee310657fa9959eb4a61ef6baff0fef235da84))
+* **core:** local context fallback ([#1026](https://github.com/spryker/oryx/issues/1026)) ([3b26f93](https://github.com/spryker/oryx/commit/3b26f9326609ccf5bc77ce97230631cc10989f20))
+* default entity type context ([#1009](https://github.com/spryker/oryx/issues/1009)) ([f5c2f8e](https://github.com/spryker/oryx/commit/f5c2f8e71071ddc4b839cbb1816c9f48e3566540))
+* entity service implementation ([#986](https://github.com/spryker/oryx/issues/986)) ([5d319fe](https://github.com/spryker/oryx/commit/5d319fec37e4bd96ee3c4a1c4b0a9e4619e0cf8e))
+* **experience:** Added data list component ([#1050](https://github.com/spryker/oryx/issues/1050)) ([1464fc9](https://github.com/spryker/oryx/commit/1464fc931b3b5d915c144aaa9805781e652b141a))
+* **experience:** Added dropdown layout plugin ([#1047](https://github.com/spryker/oryx/issues/1047)) ([3237033](https://github.com/spryker/oryx/commit/32370335756a2050629d7b659a90aba185889173))
+* **experience:** Added collapsible layout plugin ([#1034](https://github.com/spryker/oryx/issues/1034)) ([40e7c3c](https://github.com/spryker/oryx/commit/40e7c3c5314cb84e26000218cc711278c7e70f35))
+* **experience:** Added new radix colors ([#1029](https://github.com/spryker/oryx/issues/1029)) ([ed8ebb8](https://github.com/spryker/oryx/commit/ed8ebb8ab44d6897afdae1ffef36fdca5bdb5031))
+* **experience:** link support for entity text ([#1024](https://github.com/spryker/oryx/issues/1024)) ([8e8a12d](https://github.com/spryker/oryx/commit/8e8a12dfc3c4aa2fd35f373922c77366640e5600))
+* **experience:** Added entity link component ([#1022](https://github.com/spryker/oryx/issues/1022)) ([116775f](https://github.com/spryker/oryx/commit/116775f4d60ad34fb0c8025bec2cd5835e3fb473))
+* **experience:** Added image style plugin ([#995](https://github.com/spryker/oryx/issues/995)) ([fafe34d](https://github.com/spryker/oryx/commit/fafe34d5dae378b65c58f82828444107613f5525))
+* **experience:** Added entity text component ([#1010](https://github.com/spryker/oryx/issues/1010)) ([8dc9c31](https://github.com/spryker/oryx/commit/8dc9c315ad028304db76541dbaa6bc7386a23725))
+* **experience:** entity image component ([#1008](https://github.com/spryker/oryx/issues/1008)) ([ea043a2](https://github.com/spryker/oryx/commit/ea043a2683a913650310e54e1ece01700358cdc3))
+* **experience:** left refs identifier for experience data \ update layout wrappers ([#958](https://github.com/spryker/oryx/issues/958)) ([0ef0d94](https://github.com/spryker/oryx/commit/0ef0d948194e7077835e4e9270eed72fa3fb81a0))
+* **experience:** added before and after divider ([#964](https://github.com/spryker/oryx/issues/964)) ([ed6792c](https://github.com/spryker/oryx/commit/ed6792cb75cb84fe71162273498e9a65f715b0d3))
+* **experience:** Layout Transition Property Plugin ([#962](https://github.com/spryker/oryx/issues/962)) ([21c42a6](https://github.com/spryker/oryx/commit/21c42a6f29f0afed9b7d76567c4b5f3eb5e5da5d))
+* guest cart loading improvement ([#931](https://github.com/spryker/oryx/issues/931)) ([b9ea6a8](https://github.com/spryker/oryx/commit/b9ea6a860ec2b0c58c608cd790a749c1058fed80))
+* **merchant:** Added product offers component ([#1025](https://github.com/spryker/oryx/issues/1025)) ([0c074ea](https://github.com/spryker/oryx/commit/0c074ea0bbd95e2357d94a9991511a21e3d36d1a))
+* **merchant:** Added merchant schedule component ([#979](https://github.com/spryker/oryx/issues/979)) ([d41a8e4](https://github.com/spryker/oryx/commit/d41a8e49d0293073516d1607dd582d01d5e3d3c2))
+* **merchant:** Added merchant package. ([#1004](https://github.com/spryker/oryx/issues/1004)) ([aed0610](https://github.com/spryker/oryx/commit/aed0610d2b1d4f2664209e867914bd906f1b8ee7))
+* Open dropdown component on click by default. ([#991](https://github.com/spryker/oryx/issues/991)) ([51826c9](https://github.com/spryker/oryx/commit/51826c9abe7f6442790b7e09a757348c114a393e))
+* **product:** Added canonical url for product pages. ([#1063](https://github.com/spryker/oryx/issues/1063)) ([2f6e994](https://github.com/spryker/oryx/commit/2f6e994ecc6322653fbe3284d54b781534b92a7f))
+* **product:** Added product discontinued component ([#1060](https://github.com/spryker/oryx/issues/1060)) ([29fd9b7](https://github.com/spryker/oryx/commit/29fd9b7ebafd48e58175c358b7b31265cb3b1010))
+* **picking:** picking lists filter by ready-for-picking status ([#1056](https://github.com/spryker/oryx/issues/1056)) ([333f52d](https://github.com/spryker/oryx/commit/333f52dde6dcc9534a0fa321af52649ce5c22925))
+* **product:** product category list component ([#944](https://github.com/spryker/oryx/issues/944)) ([51cd14f](https://github.com/spryker/oryx/commit/51cd14fa1d09303875b95122ef88dcf7ecfbcc76))
+* **ui:** persisted collapsible open state ([#1049](https://github.com/spryker/oryx/issues/1049)) ([e56a778](https://github.com/spryker/oryx/commit/e56a778e694bebbe65bc8c7d787c50ed8f89c3ed))
+* **ui:** accessible collapsible component ([#1043](https://github.com/spryker/oryx/issues/1043)) ([2113bda](https://github.com/spryker/oryx/commit/2113bdaf819d1cf59769788db887e221174b5df0))
+* **site:** Added time component ([#981](https://github.com/spryker/oryx/issues/981)) ([a43ab4d](https://github.com/spryker/oryx/commit/a43ab4d5fe582e5ee38118b478ac3abed72fe2b5))
+* **site:** Added day component ([#980](https://github.com/spryker/oryx/issues/980)) ([eeea7b6](https://github.com/spryker/oryx/commit/eeea7b6240738438fdeebf8af0f8d6ac3cde1490))
+
+
+### Bug Fixes
+
+* **cart:** cart entries context ([#1032](https://github.com/spryker/oryx/issues/1032)) ([d21bf63](https://github.com/spryker/oryx/commit/d21bf63f68c48755f844a1fc2eb94b6c93e07c3d))
+* **content:** cms freezing  ([#1002](https://github.com/spryker/oryx/issues/1002)) ([6cb511c](https://github.com/spryker/oryx/commit/6cb511c13f1d4a889e5f82f3daa96d23f6421a79))
+* **core:** context emissions for objects ([#1045](https://github.com/spryker/oryx/issues/1045)) ([e97ff02](https://github.com/spryker/oryx/commit/e97ff025b65d275edf00ea8c025307b30d341c4a))
+* custom colors in dark mode for logo's ([#997](https://github.com/spryker/oryx/issues/997)) ([f4cd31f](https://github.com/spryker/oryx/commit/f4cd31feb66af6beaccf7e3660bb6c17986f8f5d))
+* **experience:** route.split error in pre 1.4 compatibility mode ([#1042](https://github.com/spryker/oryx/issues/1042)) ([a4e1531](https://github.com/spryker/oryx/commit/a4e153191903759e90649fe875c94350b4a321b9))
+* **experience:** routing with pluggable layout ([#1052](https://github.com/spryker/oryx/issues/1052)) ([aba9313](https://github.com/spryker/oryx/commit/aba93137c7d96c7f618ea7e07b05a14372eb4dc1))
+* **experience:** Fixed preview outline during component editing ([#1000](https://github.com/spryker/oryx/issues/1000)) ([240bf63](https://github.com/spryker/oryx/commit/240bf63bf8eca78bf4e5ef6cb71b60c9280692a6))
+* **experience:** avoid runtime errors when entity or field is not found ([#1016](https://github.com/spryker/oryx/issues/1016)) ([3e38d0d](https://github.com/spryker/oryx/commit/3e38d0da5b9eb920fc8ab23bde0af7ab8be0fb5a))
+* layout on ssr ([#1018](https://github.com/spryker/oryx/issues/1018)) ([b862620](https://github.com/spryker/oryx/commit/b8626209ffec5ab0b8a485910a9214952089e284))
+* search suggestion duplication ([#1019](https://github.com/spryker/oryx/issues/1019)) ([9abb3cf](https://github.com/spryker/oryx/commit/9abb3cfbd89fd255fa60b1178cb055e8f289905e))
+* composition context provide ([#1020](https://github.com/spryker/oryx/issues/1020)) ([69fa0b2](https://github.com/spryker/oryx/commit/69fa0b2fdef59bd5d72a10af16d401fa247cc852))
+* layout confidtion, and contentful asset serialization ([#1017](https://github.com/spryker/oryx/issues/1017)) ([f372192](https://github.com/spryker/oryx/commit/f372192f14c7ea3d21b19fe7738950444f0e92d0))
+* showing all parallel cms results ([#1015](https://github.com/spryker/oryx/issues/1015)) ([305a5d9](https://github.com/spryker/oryx/commit/305a5d9b30c7c44e7371a63e054d2aa4c8137b09))
+* blinking layout on composition change ([#1014](https://github.com/spryker/oryx/issues/1014)) ([f1ad718](https://github.com/spryker/oryx/commit/f1ad7185001569d3b51c7c7bad2a3d508b9be257))
+* fixed missing fill color for footer logo's in darkmode ([#988](https://github.com/spryker/oryx/issues/988)) ([75a70a2](https://github.com/spryker/oryx/commit/75a70a2ad5fee6aab05c2ca89dbd2657dc3e9c1a))
+* fulfillment ui fixes ([#976](https://github.com/spryker/oryx/issues/976)) ([bb44f58](https://github.com/spryker/oryx/commit/bb44f583318c961c2864de3a5987e39f6131ed33))
+* fix broken carousel navigation on Safari ([#968](https://github.com/spryker/oryx/issues/968)) ([0aa6eb2](https://github.com/spryker/oryx/commit/0aa6eb23dfc8a4fb725b76a010dc8a01c97ef473))
+* **ui:** notifications's i18n content support ([#1044](https://github.com/spryker/oryx/issues/1044)) ([1759550](https://github.com/spryker/oryx/commit/1759550ad76b7feb77905589dcb08108a025d1ba))
+* **router:** same routes duplication ([#1069](https://github.com/spryker/oryx/issues/1069)) ([dab4da1](https://github.com/spryker/oryx/commit/dab4da100de8257bb5cc1c16b4db157f4af6a56f))
+* **resources:** PWA manifest icons for dark mode ([#947](https://github.com/spryker/oryx/issues/947)) ([fadb7b9](https://github.com/spryker/oryx/commit/fadb7b9ee62d60ba06437865fb3129c0a0c501de))
+* product title ellipses ([#629](https://github.com/spryker/oryx/issues/629)) ([e719bda](https://github.com/spryker/oryx/commit/e719bdabcd22caf52be1f429472549a3827076df))
+* fixed partial matching of routes ([#963](https://github.com/spryker/oryx/issues/963)) ([d0796a2](https://github.com/spryker/oryx/commit/d0796a268e9bc7edd3d073ef33ba9804dcd9f4a0))
+* ssrStyleShim leaks ([#957](https://github.com/spryker/oryx/issues/957)) ([2503ce5](https://github.com/spryker/oryx/commit/2503ce57212491a26163f3dc33463de26ab197b6))
+* product not found error on dev SSR ([#954](https://github.com/spryker/oryx/issues/954)) ([c521c0d](https://github.com/spryker/oryx/commit/c521c0d6dd7dafb9f6730420abaf48599753c9a4))
+
+
+
+
+
 ## 1.3.1 (2023-11-24)
 
 

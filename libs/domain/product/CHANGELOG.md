@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* Added canonical url for product pages. ([#1063](https://github.com/spryker/oryx/issues/1063)) ([2f6e994](https://github.com/spryker/oryx/commit/2f6e994ecc6322653fbe3284d54b781534b92a7f))
+* Added product discontinued component ([#1060](https://github.com/spryker/oryx/issues/1060)) ([29fd9b7](https://github.com/spryker/oryx/commit/29fd9b7ebafd48e58175c358b7b31265cb3b1010))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 
