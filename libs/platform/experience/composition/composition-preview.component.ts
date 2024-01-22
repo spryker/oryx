@@ -71,16 +71,26 @@ export class CompositionPreviewComponent extends CompositionComponent {
     }
   });
 
-  // TODO: temporary solution, hiding header and footer for header or footer editing
-  // The whole override may be dropped when we will have proper template extensibility mechanism
+  /**
+   * @deprecated since 1.2, will be removed.
+   */
   @observe()
   protected uid$ = new BehaviorSubject<string | undefined>(this.uid);
 
+  /**
+   * @deprecated since 1.2, will be removed.
+   */
   @observe()
   protected route$ = new BehaviorSubject<string | undefined>(this.route);
 
+  /**
+   * @deprecated since 1.2, will be removed.
+   */
   protected routeDriven = false;
 
+  /**
+   * @deprecated since 1.2, will be removed.
+   */
   @subscribe()
   protected $uidFromRoute2 = this.route$.pipe(
     filter((route) => !!route),
@@ -101,6 +111,9 @@ export class CompositionPreviewComponent extends CompositionComponent {
     })
   );
 
+  /**
+   * @deprecated since 1.2, will be removed.
+   */
   protected components$ = this.uid$.pipe(
     switchMap((uid) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
@@ -192,5 +205,8 @@ export class CompositionPreviewComponent extends CompositionComponent {
     }
   }
 
+  /**
+   * @deprecated since 1.2, will be removed.
+   */
   protected override $components = signal(this.components$);
 }

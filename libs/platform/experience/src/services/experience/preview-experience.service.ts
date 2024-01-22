@@ -81,7 +81,9 @@ export class PreviewExperienceService extends DefaultExperienceService {
       ([] as string[])
         .concat(structure.meta?.route ?? [])
         .forEach((route) => this.storeData('dataRoutes', route, structure.id));
-      this.processComponent(structure);
+      this.experienceDataService.registerComponent(structure, (c) =>
+        this.processData(c)
+      );
     })
   );
 
@@ -181,7 +183,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   }
 
   /**
-   * Temporary flag for storing the information about header/footer editing
+   * @deprecated since 1.2, will be removed.
    */
   headerEdit$ = new BehaviorSubject(false);
 

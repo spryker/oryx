@@ -4,6 +4,7 @@ import { LayoutPluginType, LayoutTypes } from './plugins';
 
 export interface LayoutStylesOptions extends LayoutProperty {
   type?: LayoutTypes;
+  bucket?: boolean;
 }
 
 export type LayoutStyles = {
