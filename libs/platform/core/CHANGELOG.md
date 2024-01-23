@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* local context fallback ([#1026](https://github.com/spryker/oryx/issues/1026)) ([3b26f93](https://github.com/spryker/oryx/commit/3b26f9326609ccf5bc77ce97230631cc10989f20))
+
+
+### Bug Fixes
+
+* **core:** context emissions for objects ([#1045](https://github.com/spryker/oryx/issues/1045)) ([e97ff02](https://github.com/spryker/oryx/commit/e97ff025b65d275edf00ea8c025307b30d341c4a))
+
+
+
+
+
 # 1.2.0 (2023-11-09)
 
 

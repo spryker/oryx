@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* persisted collapsible open state ([#1049](https://github.com/spryker/oryx/issues/1049)) ([e56a778](https://github.com/spryker/oryx/commit/e56a778e694bebbe65bc8c7d787c50ed8f89c3ed))
+* accessible collapsible component ([#1043](https://github.com/spryker/oryx/issues/1043)) ([2113bda](https://github.com/spryker/oryx/commit/2113bdaf819d1cf59769788db887e221174b5df0))
+
+### Bug Fixes
+
+* notifications's i18n content support ([#1044](https://github.com/spryker/oryx/issues/1044)) ([1759550](https://github.com/spryker/oryx/commit/1759550ad76b7feb77905589dcb08108a025d1ba))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* remove cart ([#1064](https://github.com/spryker/oryx/issues/1064)) ([5c6a2b1](https://github.com/spryker/oryx/commit/5c6a2b1d2a38e308b4d6749db8b182f52b19352e))
+* remove coupon ([#1065](https://github.com/spryker/oryx/issues/1065)) ([98f3c64](https://github.com/spryker/oryx/commit/98f3c6486767c1eff063618f3bd5afea139454d6))
+* create cart page ([#1038](https://github.com/spryker/oryx/issues/1038)) ([d47b693](https://github.com/spryker/oryx/commit/d47b693b90b2c88a8f0a7d0d8977780167c565d7))
+* carts list page ([#1006](https://github.com/spryker/oryx/issues/1006)) ([ae93103](https://github.com/spryker/oryx/commit/ae93103709c31d53d51d7462bce6094fa187c9bd))
+* coupon component ([#950](https://github.com/spryker/oryx/issues/950)) ([fa17c0b](https://github.com/spryker/oryx/commit/fa17c0b4feddcca92cc9e249298834e666a47155))
+
+
+### Bug Fixes
+
+* cart entries context ([#1032](https://github.com/spryker/oryx/issues/1032)) ([d21bf63](https://github.com/spryker/oryx/commit/d21bf63f68c48755f844a1fc2eb94b6c93e07c3d))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 

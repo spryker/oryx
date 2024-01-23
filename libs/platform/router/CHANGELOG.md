@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Bug Fixes
+
+* same routes duplication ([#1069](https://github.com/spryker/oryx/issues/1069)) ([dab4da1](https://github.com/spryker/oryx/commit/dab4da100de8257bb5cc1c16b4db157f4af6a56f))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 

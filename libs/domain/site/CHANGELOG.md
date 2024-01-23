@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* **site:** Added time component ([#981](https://github.com/spryker/oryx/issues/981)) ([a43ab4d](https://github.com/spryker/oryx/commit/a43ab4d5fe582e5ee38118b478ac3abed72fe2b5))
+* **site:** Added day component ([#980](https://github.com/spryker/oryx/issues/980)) ([eeea7b6](https://github.com/spryker/oryx/commit/eeea7b6240738438fdeebf8af0f8d6ac3cde1490))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 

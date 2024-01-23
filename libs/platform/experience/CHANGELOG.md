@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Features
+
+* Added data list component ([#1050](https://github.com/spryker/oryx/issues/1050)) ([1464fc9](https://github.com/spryker/oryx/commit/1464fc931b3b5d915c144aaa9805781e652b141a))
+* Added dropdown layout plugin ([#1047](https://github.com/spryker/oryx/issues/1047)) ([3237033](https://github.com/spryker/oryx/commit/32370335756a2050629d7b659a90aba185889173))
+* Added collapsible layout plugin ([#1034](https://github.com/spryker/oryx/issues/1034)) ([40e7c3c](https://github.com/spryker/oryx/commit/40e7c3c5314cb84e26000218cc711278c7e70f35))
+* Added new radix colors ([#1029](https://github.com/spryker/oryx/issues/1029)) ([ed8ebb8](https://github.com/spryker/oryx/commit/ed8ebb8ab44d6897afdae1ffef36fdca5bdb5031))
+* link support for entity text ([#1024](https://github.com/spryker/oryx/issues/1024)) ([8e8a12d](https://github.com/spryker/oryx/commit/8e8a12dfc3c4aa2fd35f373922c77366640e5600))
+* Added entity link component ([#1022](https://github.com/spryker/oryx/issues/1022)) ([116775f](https://github.com/spryker/oryx/commit/116775f4d60ad34fb0c8025bec2cd5835e3fb473))
+* Added image style plugin ([#995](https://github.com/spryker/oryx/issues/995)) ([fafe34d](https://github.com/spryker/oryx/commit/fafe34d5dae378b65c58f82828444107613f5525))
+* Added entity text component ([#1010](https://github.com/spryker/oryx/issues/1010)) ([8dc9c31](https://github.com/spryker/oryx/commit/8dc9c315ad028304db76541dbaa6bc7386a23725))
+* entity image component ([#1008](https://github.com/spryker/oryx/issues/1008)) ([ea043a2](https://github.com/spryker/oryx/commit/ea043a2683a913650310e54e1ece01700358cdc3))
+* left refs identifier for experience data \ update layout wrappers ([#958](https://github.com/spryker/oryx/issues/958)) ([0ef0d94](https://github.com/spryker/oryx/commit/0ef0d948194e7077835e4e9270eed72fa3fb81a0))
+* added before and after divider ([#964](https://github.com/spryker/oryx/issues/964)) ([ed6792c](https://github.com/spryker/oryx/commit/ed6792cb75cb84fe71162273498e9a65f715b0d3))
+* Layout Transition Property Plugin ([#962](https://github.com/spryker/oryx/issues/962)) ([21c42a6](https://github.com/spryker/oryx/commit/21c42a6f29f0afed9b7d76567c4b5f3eb5e5da5d))
+
+
+### Bug Fixes
+
+* route.split error in pre 1.4 compatibility mode ([#1042](https://github.com/spryker/oryx/issues/1042)) ([a4e1531](https://github.com/spryker/oryx/commit/a4e153191903759e90649fe875c94350b4a321b9))
+* routing with pluggable layout ([#1052](https://github.com/spryker/oryx/issues/1052)) ([aba9313](https://github.com/spryker/oryx/commit/aba93137c7d96c7f618ea7e07b05a14372eb4dc1))
+* Fixed preview outline during component editing ([#1000](https://github.com/spryker/oryx/issues/1000)) ([240bf63](https://github.com/spryker/oryx/commit/240bf63bf8eca78bf4e5ef6cb71b60c9280692a6))
+* avoid runtime errors when entity or field is not found ([#1016](https://github.com/spryker/oryx/issues/1016)) ([3e38d0d](https://github.com/spryker/oryx/commit/3e38d0da5b9eb920fc8ab23bde0af7ab8be0fb5a))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 

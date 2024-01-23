@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2024-01-16)
+
+
+### Bug Fixes
+
+* PWA manifest icons for dark mode ([#947](https://github.com/spryker/oryx/issues/947)) ([fadb7b9](https://github.com/spryker/oryx/commit/fadb7b9ee62d60ba06437865fb3129c0a0c501de))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 
