@@ -1,0 +1,34 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/domain/glue",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/domain/glue/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/domain/glue/**/*.css",
+          "libs/domain/glue/**/*.styles.ts"
+        ]
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths"
+    }
+  },
+  "tags": ["layer:domain"]
+}
