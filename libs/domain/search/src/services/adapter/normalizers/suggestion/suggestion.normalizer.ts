@@ -1,8 +1,8 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
+import { ApiProductModel } from '@spryker-oryx/glue';
 import {
-  ApiProductModel,
   ConcreteProductsNormalizer,
   PRODUCTS,
   Product,

@@ -1,4 +1,4 @@
-import { ApiProductModel } from '@spryker-oryx/product';
+import { ApiProductModel } from '@spryker-oryx/glue';
 import { Price } from '@spryker-oryx/site';
 
 export module ApiMerchantModel {

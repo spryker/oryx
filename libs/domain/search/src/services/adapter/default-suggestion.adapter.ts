@@ -4,7 +4,8 @@ import {
   JsonAPITransformerService,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { ApiProductModel, PRODUCTS } from '@spryker-oryx/product';
+import { ApiProductModel } from '@spryker-oryx/glue';
+import { PRODUCTS } from '@spryker-oryx/product';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, of, switchMap } from 'rxjs';
 import {

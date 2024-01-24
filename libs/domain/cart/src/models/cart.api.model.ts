@@ -1,4 +1,4 @@
-import { ApiProductModel } from '@spryker-oryx/product';
+import { ApiProductModel } from '@spryker-oryx/glue';
 import { Include, JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiCartModel {

@@ -1,4 +1,4 @@
-import { ApiProductModel } from '@spryker-oryx/product';
+import { ApiProductModel } from '@spryker-oryx/glue';
 import { ApiAddressModel } from '@spryker-oryx/user';
 import { JsonApiModel } from '@spryker-oryx/utilities';
 
