@@ -1,12 +1,10 @@
 import { provideEntity } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
-  DefaultProductAdapter,
   DefaultProductImageService,
   DefaultProductListPageService,
   DefaultProductListService,
   PRODUCT,
-  ProductAdapter,
   ProductCategoryService,
   ProductImageService,
   ProductListAdapter,
@@ -23,10 +21,6 @@ import { MockProductListAdapter } from './product-list';
 import { MockProductRelationsListService } from './product-relations/mock-product-relations-list.service';
 
 export const mockProductProviders: Provider[] = [
-  {
-    provide: ProductAdapter,
-    useClass: DefaultProductAdapter,
-  },
   {
     provide: ProductService,
     useClass: MockProductService,

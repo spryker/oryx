@@ -1,3 +1,4 @@
+import { Transformer } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { ProductCategory, ProductCategoryQualifier } from '../../../models';
 
@@ -12,8 +13,17 @@ export interface ProductCategoryAdapter {
 
 export const ProductCategoryAdapter = 'oryx.ProductCategoryAdapter';
 
+export const CategoryNormalizer = 'oryx.CategoryNormalizer';
+export const CategoryListNormalizer = 'oryx.CategoryListNormalizer';
+export const CategoryNodeNormalizer = 'oryx.CategoryNodeNormalizer';
+export const CategoryTreeNormalizer = 'oryx.CategoryTreeNormalizer';
+
 declare global {
   interface InjectionTokensContractMap {
     [ProductCategoryAdapter]: ProductCategoryAdapter;
+    [CategoryNormalizer]: Transformer<object>[];
+    [CategoryListNormalizer]: Transformer<object>[];
+    [CategoryNodeNormalizer]: Transformer<ProductCategory>[];
+    [CategoryTreeNormalizer]: Transformer<ProductCategory[]>[];
   }
 }

@@ -5,3 +5,5 @@ export interface ProductCategoryQualifier {
   /** Exclude category or categories IDs from the result */
   exclude?: string | string[];
 }
+
+export type DeserializeCategoryIds = Record<'categoryIds', string[]>;

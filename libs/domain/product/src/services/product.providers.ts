@@ -8,57 +8,10 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { CATEGORY } from '../entity';
 import {
-  AvailabilityNormalizer,
-  CategoryIdNormalizer,
-  ConcreteProductsNormalizer,
-  DefaultProductAdapter,
-  DefaultProductMediaNormalizer,
-  FacetCategoryNormalizer,
-  FacetNormalizer,
-  FacetRangeNormalizer,
-  FacetRatingNormalizer,
-  PriceNormalizer,
-  ProductAdapter,
-  ProductMediaSetNormalizer,
-  availabilityNormalizer,
-  categoryIdNormalizer,
-  concreteProductsNormalizer,
-  facetCategoryNormalizer,
-  facetRatingNormalizer,
-  facetsNormalizer,
-  facetsRangeNormalizer,
-  mediaNormalizer,
-  mediaSetNormalizer,
-  priceNormalizer,
-  productIncludes,
-  productListNormalizer,
-  productNormalizer,
-} from './adapter';
-import {
-  ProductLabelsNormalizer,
-  productLabelNormalizer,
-} from './adapter/normalizers/labels/labels.normalizer';
-import {
-  PaginationNormalizer,
-  paginationNormalizer,
-} from './adapter/normalizers/pagination';
-import { relationsListNormalizer } from './adapter/normalizers/relations-list';
-import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
-import {
-  CategoryListNormalizer,
-  CategoryNodeNormalizer,
-  CategoryNormalizer,
-  CategoryTreeNormalizer,
-  DefaultProductCategoryAdapter,
   DefaultProductCategoryService,
-  ProductCategoryAdapter,
   ProductCategoryService,
   categoryEffects,
-  categoryListNormalizerFactory,
-  categoryNodeNormalizer,
-  categoryNormalizerFactory,
   categoryQueries,
-  categoryTreeNormalizer,
 } from './category';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
@@ -69,14 +22,11 @@ import {
 } from './images/product-media.config';
 import { productJsonLdNormalizers } from './jsonld';
 import {
-  DefaultProductListAdapter,
   DefaultProductListPageService,
   DefaultProductListService,
-  ProductListAdapter,
   ProductListPageService,
   ProductListService,
 } from './list';
-import { productListIncludes } from './list/adapter/product-list-includes';
 import {
   ProductContext,
   ProductContextFallback,
@@ -84,9 +34,7 @@ import {
 } from './product-context';
 import { ProductService } from './product.service';
 import {
-  DefaultProductRelationsListAdapter,
   DefaultProductRelationsListService,
-  ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
 import {
@@ -105,16 +53,8 @@ export const ProductTokenResourceResolverToken = `${TokenResourceResolvers}PRODU
 
 export const productProviders: Provider[] = [
   {
-    provide: ProductAdapter,
-    useClass: DefaultProductAdapter,
-  },
-  {
     provide: ProductService,
     useClass: DefaultProductService,
-  },
-  {
-    provide: ProductListAdapter,
-    useClass: DefaultProductListAdapter,
   },
   {
     provide: ProductListService,
@@ -125,61 +65,8 @@ export const productProviders: Provider[] = [
     useClass: DefaultProductRelationsListService,
   },
   {
-    provide: ProductRelationsListAdapter,
-    useClass: DefaultProductRelationsListAdapter,
-  },
-  {
     provide: ProductListPageService,
     useClass: DefaultProductListPageService,
-  },
-  {
-    provide: PriceNormalizer,
-    useValue: priceNormalizer,
-  },
-  {
-    provide: FacetNormalizer,
-    useValue: facetsNormalizer,
-  },
-  {
-    provide: FacetRangeNormalizer,
-    useValue: facetsRangeNormalizer,
-  },
-  {
-    provide: SortNormalizer,
-    useValue: sortNormalizer,
-  },
-  {
-    provide: PaginationNormalizer,
-    useValue: paginationNormalizer,
-  },
-  {
-    provide: FacetCategoryNormalizer,
-    useValue: facetCategoryNormalizer,
-  },
-  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
-  {
-    provide: FacetRatingNormalizer,
-    useValue: facetRatingNormalizer,
-  },
-  {
-    provide: AvailabilityNormalizer,
-    useValue: availabilityNormalizer,
-  },
-  {
-    provide: ProductLabelsNormalizer,
-    useValue: productLabelNormalizer,
-  },
-  {
-    provide: ProductMediaSetNormalizer,
-    useValue: mediaSetNormalizer,
-  },
-  {
-    provide: DefaultProductMediaNormalizer,
-    useValue: mediaNormalizer,
-  },
-  {
-    provide: ConcreteProductsNormalizer,
-    useValue: concreteProductsNormalizer,
   },
   {
     provide: ProductImageService,
@@ -189,14 +76,9 @@ export const productProviders: Provider[] = [
     provide: ProductMediaConfig,
     useValue: productMediaConfig,
   },
-  ...productNormalizer,
-  ...productListNormalizer,
-  ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
-  ...productIncludes,
-  ...productListIncludes,
   ProductContextFallback,
   ...productContextProviders,
   {
@@ -214,30 +96,6 @@ export const productProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: ProductPageRobotMetaResolver,
-  },
-  {
-    provide: CategoryIdNormalizer,
-    useValue: categoryIdNormalizer,
-  },
-  {
-    provide: CategoryNormalizer,
-    useFactory: categoryNormalizerFactory,
-  },
-  {
-    provide: CategoryListNormalizer,
-    useFactory: categoryListNormalizerFactory,
-  },
-  {
-    provide: CategoryNodeNormalizer,
-    useValue: categoryNodeNormalizer,
-  },
-  {
-    provide: CategoryTreeNormalizer,
-    useValue: categoryTreeNormalizer,
-  },
-  {
-    provide: ProductCategoryAdapter,
-    useClass: DefaultProductCategoryAdapter,
   },
   {
     provide: ProductCategoryService,
