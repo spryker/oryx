@@ -130,6 +130,7 @@
         "libs/platform/experience/src/static.ts"
       ],
       "@spryker-oryx/form": ["libs/platform/form/src/index.ts"],
+      "@spryker-oryx/glue": ["libs/domain/glue/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],

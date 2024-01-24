@@ -14,6 +14,7 @@
     "form": "libs/platform/form",
     "fulfillment": "apps/fulfillment",
     "fulfillment-e2e": "apps/fulfillment-e2e",
+    "glue": "libs/domain/glue",
     "i18n": "libs/platform/i18n",
     "indexed-db": "libs/platform/indexed-db",
     "labs": "libs/template/labs",
