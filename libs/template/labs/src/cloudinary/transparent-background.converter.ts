@@ -2,7 +2,7 @@ import { Provider } from '@spryker-oryx/di';
 import {
   ApiProductModel,
   DefaultProductMediaNormalizer,
-} from '@spryker-oryx/product';
+} from '@spryker-oryx/glue';
 import { Size } from '@spryker-oryx/utilities';
 
 /**
