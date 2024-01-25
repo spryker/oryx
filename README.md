@@ -40,14 +40,13 @@ Oryx is a framework for building composable storefronts, providing a rich librar
 
 1. Install dependencies:
 
-```npm i```
+`npm i`
 
 2. Run the application in development mode:
 
-```npm run dev```
+`npm run dev`
 
 The application gets available at localhost:3000, or the next available port on your machine.
-
 
 ## Further Documentation
 
