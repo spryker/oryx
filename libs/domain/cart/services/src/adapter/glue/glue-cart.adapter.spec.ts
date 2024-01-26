@@ -20,7 +20,7 @@ import {
   StoreService,
 } from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
-import { DefaultCartAdapter } from './default-cart.adapter';
+import { GlueCartAdapter } from './glue-cart.adapter';
 
 const mockApiUrl = 'mockApiUrl';
 
@@ -88,7 +88,7 @@ describe('DefaultCartAdapter', () => {
         },
         {
           provide: CartAdapter,
-          useClass: DefaultCartAdapter,
+          useClass: GlueCartAdapter,
         },
         {
           provide: 'SCOS_BASE_URL',
@@ -140,7 +140,7 @@ describe('DefaultCartAdapter', () => {
   });
 
   it('should be provided', () => {
-    expect(adapter).toBeInstanceOf(DefaultCartAdapter);
+    expect(adapter).toBeInstanceOf(GlueCartAdapter);
   });
 
   describe('getAll should send `get` request', () => {

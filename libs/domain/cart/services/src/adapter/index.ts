@@ -1,2 +1,1 @@
-export * from './default-cart.adapter';
-export * from './normalizers';
+export * from './glue';
