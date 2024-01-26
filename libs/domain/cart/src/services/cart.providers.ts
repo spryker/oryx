@@ -6,9 +6,6 @@ import { cartCreatePage, cartsPage } from '../presets';
 import {
   CartResolver,
   CartTotalsResolver,
-  DefaultCartAdapter,
-  DefaultCartService,
-  DefaultTotalsService,
   cartAttributesNormalizer,
   cartsItemsNormalizer,
 } from '../services-reexports';
@@ -68,62 +65,42 @@ export const CartTotalsProvider: Provider = {
   useClass: CartTotalsResolver,
 };
 
-export const cartProviders: Provider[] =
-  featureVersion < '1.2'
-    ? [
-        {
-          provide: CartAdapter,
-          useClass: DefaultCartAdapter,
-        },
-        {
-          provide: CartService,
-          useClass: DefaultCartService,
-        },
-        {
-          provide: TotalsService,
-          useClass: DefaultTotalsService,
-        },
-        CartResourceResolver,
-        CartTotalsProvider,
-        ...cartNormalizer,
-        ...cartsNormalizer,
-      ]
-    : [
-        {
-          provide: CartAdapter,
-          asyncClass: () =>
-            import('@spryker-oryx/cart/services').then(
-              (m) => m.DefaultCartAdapter
-            ),
-        },
-        {
-          provide: CartService,
-          asyncClass: () =>
-            import('@spryker-oryx/cart/services').then(
-              (m) => m.DefaultCartService
-            ),
-        },
-        ...cartNormalizer,
-        ...cartsNormalizer,
-        {
-          provide: TotalsService,
-          asyncClass: () =>
-            import('@spryker-oryx/cart/services').then(
-              (m) => m.DefaultTotalsService
-            ),
-        },
-        {
-          provide: CartTokenResourceResolverToken,
-          asyncClass: () =>
-            import('@spryker-oryx/cart/services').then((m) => m.CartResolver),
-        },
-        {
-          provide: TotalsResolverCartToken,
-          asyncClass: () =>
-            import('@spryker-oryx/cart/services').then(
-              (m) => m.CartTotalsResolver
-            ),
-        },
-        ...cartContextProviders,
-        provideExperienceData([cartsPage, cartCreatePage]),
-      ];
+export const glueCartConnectors: Provider[] = [
+  {
+    provide: CartAdapter,
+    asyncClass: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.GlueCartAdapter),
+  },
+  ...cartNormalizer,
+  ...cartsNormalizer,
+];
+
+export const cartProviders: Provider[] = [
+  {
+    provide: CartService,
+    asyncClass: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.DefaultCartService),
+  },
+  {
+    provide: TotalsService,
+    asyncClass: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.DefaultTotalsService),
+  },
+  {
+    provide: CartTokenResourceResolverToken,
+    asyncClass: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.CartResolver),
+  },
+  {
+    provide: TotalsResolverCartToken,
+    asyncClass: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.CartTotalsResolver),
+  },
+  ...cartContextProviders,
+  provideExperienceData([cartsPage, cartCreatePage]),
+];
+
+export const glueCartProviders: Provider[] = [
+  ...glueCartConnectors,
+  ...cartProviders,
+];

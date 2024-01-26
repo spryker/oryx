@@ -1,11 +1,11 @@
 import { AppFeature } from '@spryker-oryx/core';
 import * as components from './components';
-import { cartProviders } from './services';
+import { glueCartProviders } from './services';
 export * from './components';
 
 export const cartComponents = Object.values(components);
 
 export const cartFeature: AppFeature = {
-  providers: cartProviders,
+  providers: glueCartProviders,
   components: cartComponents,
 };
