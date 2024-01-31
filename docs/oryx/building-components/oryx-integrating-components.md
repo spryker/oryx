@@ -18,7 +18,7 @@ You can also integrate Oryx components inside frontend meta frameworks, like [Ne
 {% info_block infoBox %}
 While the integration of Oryx components is relatively straightforward, Oryx does not provide production-ready integration boilerplate code.
 
-The integration of the [server-side rendering](/docs/oryx/architecture/oryx-server-side-rendering.html) part might be quite complex.
+The integration of the [server-side rendering](/docs/oryx/architecture/oryx-server-side-rendering.md) part might be quite complex.
 {% endinfo_block %}
 
 ## Integrating Oryx components with content management systems

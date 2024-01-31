@@ -24,4 +24,4 @@ In a typical Oryx application, the application orchestrator automatically handle
 
 ## Next steps
 
-[Using services](/docs/oryx/architecture/dependency-injection/dependency-injection-using-services.html)
+[Using services](/docs/oryx/architecture/dependency-injection/dependency-injection-using-services.md)

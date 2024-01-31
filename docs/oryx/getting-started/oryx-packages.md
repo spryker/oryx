@@ -11,15 +11,15 @@ redirect_from:
 
 The Oryx code base is [available on Github](https://github.com/spryker/oryx/), and the code is published and distributed as npm packages. [npmjs.com](https://www.npmjs.com/) is a widely used registry of packages. Package managers, like npm, yarn, deno, or bun, are used to install dependencies in a project. The dependencies are typically configured in the [package.json](https://docs.npmjs.com/cli/v9/configuring-npm/package-json) file of an application.
 
-Oryx packages are distributed under the [spryker-oryx](https://www.npmjs.com/org/spryker-oryx) organization. Each time a new version is published, the version number is bumped. For more information on the versioning strategy, see [Versioning](/docs/oryx/getting-started/oryx-versioning.html).
+Oryx packages are distributed under the [spryker-oryx](https://www.npmjs.com/org/spryker-oryx) organization. Each time a new version is published, the version number is bumped. For more information on the versioning strategy, see [Versioning](/docs/oryx/getting-started/oryx-versioning.md).
 
-We recommend [installing](/docs/oryx/getting-started/set-up-oryx.html) the packages instead of cloning the Oryx repository. By depending on packages, you can easily upgrade to later versions of the packages.
+We recommend [installing](/docs/oryx/getting-started/set-up-oryx.md) the packages instead of cloning the Oryx repository. By depending on packages, you can easily upgrade to later versions of the packages.
 
 ## Layers
 
 While packages are distributed as a flat list, there is an architectural hierarchy. The hierarchy protects from cyclic dependencies. Packages inside a layer can depend on sibling packages inside the layer without any issues. Packages can never depend on a layer above.
 
-While the package layering might be irrelevant during your development, it might help you to better understand the package dependencies. The following diagram shows four package layers. The top layer is the [boilerplate application](/docs/oryx/getting-started/oryx-boilerplate.html), which is set up using a [preset](/docs/oryx/building-applications/oryx-presets.html).
+While the package layering might be irrelevant during your development, it might help you to better understand the package dependencies. The following diagram shows four package layers. The top layer is the [boilerplate application](/docs/oryx/getting-started/oryx-boilerplate.md), which is set up using a [preset](/docs/oryx/building-applications/oryx-presets.md).
 
 {% include diagrams/oryx/packages.md %}
 

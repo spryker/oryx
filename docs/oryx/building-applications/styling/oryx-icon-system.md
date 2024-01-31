@@ -65,7 +65,7 @@ Oryx does not provide support for using images as icons. Images lack scalability
 
 ## Icon colors
 
-In Oryx, icons are seamlessly integrated into the main Document Object Model (DOM), which means they can inherit colors from ancestor HTML elements. To customize an icon's color, you can use standard CSS or leverage the [color system](/docs/oryx/building-applications/styling/oryx-color-system.html). If no explicit color is provided, the icon inherits its color from the parent element.
+In Oryx, icons are seamlessly integrated into the main Document Object Model (DOM), which means they can inherit colors from ancestor HTML elements. To customize an icon's color, you can use standard CSS or leverage the [color system](/docs/oryx/building-applications/styling/oryx-color-system.md). If no explicit color is provided, the icon inherits its color from the parent element.
 
 Here's an example of how to apply colors using standard CSS or the `--oryx-icon-color` variable:
 
@@ -90,7 +90,7 @@ When using Material Symbols, you can configure the adjustable variable font styl
 
 ### Global configuration
 
-You can provide the variable font styles globally using [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.html):
+You can provide the variable font styles globally using [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.md):
 
 ```ts
 import { appBuilder } from "@spryker-oryx/application";

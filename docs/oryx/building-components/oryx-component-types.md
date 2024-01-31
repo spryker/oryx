@@ -39,7 +39,7 @@ Oryx functionality is organized in domains. Domain packages contain functional c
 
 Domain components leverage the design system components to ensure a consistent UI/UX. The design system components are integrated with inputs (properties), and all of their events are handled by domain components.
 
-Domain components integrate with domain services to obtain and update the application state. The services handle the integration with backend APIs and application state management. In a single page application experience, domain components need to support [reactivity](/docs/oryx/reactivity/reactivity.html) to ensure the application state is reflected immediately after it is changed. The complexity of reactivity is avoided as much as possible in components by using [signals](/docs/oryx/reactivity/signals.html). To avoid repeating the boilerplate code that is required for each domain component, domains often provide a mixin. The mixin provides the required properties and signals that can be used by the components.
+Domain components integrate with domain services to obtain and update the application state. The services handle the integration with backend APIs and application state management. In a single page application experience, domain components need to support [reactivity](/docs/oryx/reactivity/reactivity.md) to ensure the application state is reflected immediately after it is changed. The complexity of reactivity is avoided as much as possible in components by using [signals](/docs/oryx/reactivity/signals.md). To avoid repeating the boilerplate code that is required for each domain component, domains often provide a mixin. The mixin provides the required properties and signals that can be used by the components.
 
 Each domain package contains associated domain components. Product components, for example, are part of the `@spryker-oryx/ui` package. The components use a consistent naming convention for class and element names. For example, the Product Title component, is named `ProductTitleComponent` and can be used with the `<oryx-product-title>` element. To avoid clashes with other frameworks, the elements are prefixed with `oryx-`.
 
@@ -49,6 +49,6 @@ Compositions are simple containers of components that are used to organize compo
 
 Because of this generic approach, all pages and their compositions are rendered as a single component only: `CompositionComponent` (`<oryx-composition>`). The composition component iterates over a list of components and applies layout and options to it.
 
-To better understand the concepts of pages and compositions, see [Pages](/docs/oryx/building-pages/oryx-pages.html) and [Compositions](/docs/oryx/building-pages/oryx-compositions.html).
+To better understand the concepts of pages and compositions, see [Pages](/docs/oryx/building-pages/oryx-pages.md) and [Compositions](/docs/oryx/building-pages/oryx-compositions.md).
 
 If you want to customize the application with your own pages, there's no need to follow the concept of compositions. You can create page-specific components, like `ProductDetailPageComponent`, and use them instead of using experience data.

@@ -12,7 +12,7 @@ redirect_from:
 
 An important part of the application user interface is the colors. Colors are used everywhere throughout components and are important for a good user experience. To ensure that you can adjust the colors to your needs throughout the application, a configurable color system is provided.
 
-The color system lets you set up the color values globally as well as override them per component. Components do not define _values_ for colors directly in their CSS but use [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.html). Design tokens are (CSS) variables that are provided by themes, which you can customize in your project.
+The color system lets you set up the color values globally as well as override them per component. Components do not define _values_ for colors directly in their CSS but use [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.md). Design tokens are (CSS) variables that are provided by themes, which you can customize in your project.
 
 The color system comes with semantic color types and a consistent number of color steps. This results in a consistent naming system throughout all the components. The actual colors for those groups are not relevant to the color system and are part of the theme configuration. This lets you configure the colors in a global theme.
 
@@ -115,7 +115,7 @@ Even though it's optional, we recommend providing both the light and dark mode c
 ## Color design tokens
 
 
-Each color type and its values are provided as a _design token_. [Design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.html) are provided as CSS variables to the root of the application. The color design tokens follow a consistent naming pattern to improve the integration into your components:
+Each color type and its values are provided as a _design token_. [Design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.md) are provided as CSS variables to the root of the application. The color design tokens follow a consistent naming pattern to improve the integration into your components:
 
 
 `--oryx-color-[type]-[step]`

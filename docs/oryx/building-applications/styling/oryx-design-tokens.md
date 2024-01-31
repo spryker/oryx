@@ -9,7 +9,7 @@ redirect_from:
 
 
 
-Design tokens provide a powerful system for achieving consistent and customizable styles throughout an Oryx application. They are extensively used inside the [color system](/docs/oryx/building-applications/styling/oryx-color-system.html), typography, icons, and many more. Ensuring a clean separation between styles and components, design tokens make it easier to manage and maintain the application's design system. This document focuses on the structure and usage of design tokens in Oryx.
+Design tokens provide a powerful system for achieving consistent and customizable styles throughout an Oryx application. They are extensively used inside the [color system](/docs/oryx/building-applications/styling/oryx-color-system.md), typography, icons, and many more. Ensuring a clean separation between styles and components, design tokens make it easier to manage and maintain the application's design system. This document focuses on the structure and usage of design tokens in Oryx.
 
 ## CSS variables
 
@@ -48,6 +48,6 @@ The CSS variables are inherited throughout all descendants, but you can override
 
 ## Themes
 
-Design tokens are organized in themes. The Oryx [preset package](/docs/oryx/building-applications/oryx-presets.html) provides standard themes to get you started. You can use a standard theme, customize a standard theme, or create your own.
+Design tokens are organized in themes. The Oryx [preset package](/docs/oryx/building-applications/oryx-presets.md) provides standard themes to get you started. You can use a standard theme, customize a standard theme, or create your own.
 
 <!-- TODO: add a note link to the theme docs once its ready -->

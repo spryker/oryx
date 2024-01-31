@@ -13,7 +13,7 @@ redirect_from:
 - Components
 <!-- TODO: Link to providers -->
 - Providers
-- [Plugins](/docs/oryx/building-applications/oryx-application-orchestration/oryx-application-plugins.html)
+- [Plugins](/docs/oryx/building-applications/oryx-application-orchestration/oryx-application-plugins.md)
 <!-- TODO: Link to resources -->
 - Resources
 - [Feature options](#feature-options)

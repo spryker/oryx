@@ -17,11 +17,11 @@ The Oryx boilerplate is provided in the [Composable Frontend repository](https:/
 In Oryx, we use the following tactics to prevent boilerplate code:
 
 1. Bootstrap the application from [npm packages](https://www.npmjs.com/org/spryker-oryx) instead of source.
-2. Expose a function to set up the [app orchestrator](/docs/oryx/building-applications/oryx-application-orchestration/oryx-application-orchestration.html) conveniently.
-3. Provide [presets](/docs/oryx/building-applications/oryx-presets.html) for the standard application setup, including the feature sets and UI themes.
+2. Expose a function to set up the [app orchestrator](/docs/oryx/building-applications/oryx-application-orchestration/oryx-application-orchestration.md) conveniently.
+3. Provide [presets](/docs/oryx/building-applications/oryx-presets.md) for the standard application setup, including the feature sets and UI themes.
 4. Provide the source code in a [public repository](https://github.com/spryker/oryx) to enable developers to read the source code.
 5. Provide configurable components and business logic.
-6. Allow for customizations with [dependency injection](/docs/oryx/architecture/dependency-injection/dependency-injection.html).
+6. Allow for customizations with [dependency injection](/docs/oryx/architecture/dependency-injection/dependency-injection.md).
 
 By using these tactics, we greatly reduced the amount of boilerplate code required in Oryx projects. This simplifies maintaining and upgrading code over time, and lets you focus on building features instead of maintaining the underlying framework.
 
@@ -87,7 +87,7 @@ We recommend fronting the dependencies with a caret notation (`^`), so that the 
 {% endinfo_block %}
 
 
-Vite is the recommended build system, but you can use alternative build systems. For more details, see [Set up Oryx](/docs/oryx/getting-started/set-up-oryx.html).
+Vite is the recommended build system, but you can use alternative build systems. For more details, see [Set up Oryx](/docs/oryx/getting-started/set-up-oryx.md).
 
 ### `index.html`
 

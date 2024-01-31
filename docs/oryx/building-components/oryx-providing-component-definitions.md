@@ -5,11 +5,11 @@ last_updated: Sept 19, 2023
 template: concept-topic-template
 ---
 
-Oryx components can be used in different ways. They can be configured in [pages](/docs/oryx/building-pages/oryx-pages.html) and [compositions](/docs/oryx/building-pages/oryx-compositions.html), used in components, or integrated in CMS content.
+Oryx components can be used in different ways. They can be configured in [pages](/docs/oryx/building-pages/oryx-pages.md) and [compositions](/docs/oryx/building-pages/oryx-compositions.md), used in components, or integrated in CMS content.
 
 When a component is rendered for the first time, Oryx resolves the component definition from the registry and loads the associated implementation. With this, components are lazily loaded.
 
-To register a [component implementation](/docs/oryx/building-components/oryx-implementing-components.html), you need to provide a component definition. The component definition requires a name and an implementation. The name is used as the web component element name and consists of two or more words separated by a dash. We recommend prefixing component names with a project, brand, or company name. For example, Oryx components are prefixed with `oryx-`.
+To register a [component implementation](/docs/oryx/building-components/oryx-implementing-components.md), you need to provide a component definition. The component definition requires a name and an implementation. The name is used as the web component element name and consists of two or more words separated by a dash. We recommend prefixing component names with a project, brand, or company name. For example, Oryx components are prefixed with `oryx-`.
 
 {% info_block infoBox "Update definitions" %}
 You can also update an existing component definition. To match an existing definition, you still need to provide a name.
@@ -38,7 +38,7 @@ To prevent breaking the lazy loading principals, do not import component files _
 
 ## Dynamic stylesheets
 
-To build a [responsive design](/docs/oryx/building-applications/styling/oryx-responsive-design.html), a common practice is to specify different CSS rules per screen size. CSS supports [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) which can take a minimum and/or maximum width to determine the target screen size.
+To build a [responsive design](/docs/oryx/building-applications/styling/oryx-responsive-design.md), a common practice is to specify different CSS rules per screen size. CSS supports [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) which can take a minimum and/or maximum width to determine the target screen size.
 
 ```css
 @media (min-width: 768px) and (max-width: 1023px) {

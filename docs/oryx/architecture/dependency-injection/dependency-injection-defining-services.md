@@ -58,4 +58,4 @@ export class DefaultCartService implements CartService {
 
 ## Next step
 
-[Providing services](/docs/oryx/architecture/dependency-injection/dependency-injection-providing-services.html)
+[Providing services](/docs/oryx/architecture/dependency-injection/dependency-injection-providing-services.md)

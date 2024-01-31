@@ -15,7 +15,7 @@ It lets you do the following:
 - Wait for application ready state when all plugins have been initialized: `whenReady`.
 - Destroy and cleanup the application: `destroy`.
 
-The `App` instance is available in the [Dependency Injection](/docs/oryx/architecture/dependency-injection/dependency-injection.html) under the `AppRef` token, which you can inject:
+The `App` instance is available in the [Dependency Injection](/docs/oryx/architecture/dependency-injection/dependency-injection.md) under the `AppRef` token, which you can inject:
 
 ```ts
 import { AppRef } from '@spryker-oryx/core';

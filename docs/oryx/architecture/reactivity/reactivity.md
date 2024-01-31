@@ -41,4 +41,4 @@ The following steps are identified in the diagram:
 
 ## Next steps
 
-[Key concepts of reactivity](/docs/oryx/architecture/reactivity/key-concepts-of-reactivity.html)
+[Key concepts of reactivity](/docs/oryx/architecture/reactivity/key-concepts-of-reactivity.md)

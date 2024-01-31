@@ -22,7 +22,7 @@ export interface ProductPriceOptions {
 }
 ```
 
-To resolve component options in new components, you can use `ContentMixin`. `ContentMixin` provides a type-safe `$option` [signal](/docs/oryx/architecture/reactivity/signals.html) that guarantees efficient usage of the options.
+To resolve component options in new components, you can use `ContentMixin`. `ContentMixin` provides a type-safe `$option` [signal](/docs/oryx/architecture/reactivity/signals.md) that guarantees efficient usage of the options.
 
 Oryx provides the `ContentMixin` mixin to work with component options. You can use the mixin to hand in the option interface. The following example shows how mixin is used to define the options.
 
@@ -36,7 +36,7 @@ export class ProductPriceComponent extends ContentMixin<ProductPriceOptions>(
 
 ## Configuring component options
 
-There are different ways to configure component options. Components can have default option values that are used as a fallback in case no values are provided. [Feature sets](/docs/oryx/building-applications/oryx-feature-sets.html) can provide values for a specific business context. As an application developer, you can provide customized values, either for all component instances in the application configuration or by providing options per instance in the experience data. You can also override the options when using components in your code.
+There are different ways to configure component options. Components can have default option values that are used as a fallback in case no values are provided. [Feature sets](/docs/oryx/building-applications/oryx-feature-sets.md) can provide values for a specific business context. As an application developer, you can provide customized values, either for all component instances in the application configuration or by providing options per instance in the experience data. You can also override the options when using components in your code.
 
 The approaches to set up the values are detailed in the following sections.
 
@@ -59,7 +59,7 @@ export class ProductPriceComponent extends ContentMixin<ProductPriceOptions>(
 
 ### Configuring feature set component options
 
-Default component options can be overridden in feature sets. [Feature sets](/docs/oryx/building-applications/oryx-feature-sets.html) simplify the setup of a specific business model, such as B2B or B2C. Besides providing page structures with components, feature sets can also add component configurations. The feature set configurations override default component values.
+Default component options can be overridden in feature sets. [Feature sets](/docs/oryx/building-applications/oryx-feature-sets.md) simplify the setup of a specific business model, such as B2B or B2C. Besides providing page structures with components, feature sets can also add component configurations. The feature set configurations override default component values.
 
 ### Configuring application-driven component options
 
@@ -78,7 +78,7 @@ export const app = appBuilder()
   .create();
 ```
 
-For more information, see [Application orchestration](/docs/oryx/oryx-application-orchestration/oryx-application-orchestration.html).
+For more information, see [Application orchestration](/docs/oryx/oryx-application-orchestration/oryx-application-orchestration.md).
 
 ### Configuring component option values in experience data
 
@@ -98,7 +98,7 @@ In the following configuration, you see a part of the experience data that sets 
 }
 ```
 
-For more information about creating and customizing experience data, see [Oryx: Pages](/docs/oryx/building-pages/oryx-pages.html).
+For more information about creating and customizing experience data, see [Oryx: Pages](/docs/oryx/building-pages/oryx-pages.md).
 
 ### Configuring hardcoded component options
 
@@ -118,7 +118,7 @@ protected override render(): TemplateResult {
 
 ## Using component options
 
-To use component options asynchronously, it is important to observe the options and react to updates in the component UI. Oryx provides a [reactive](/docs/oryx/architecture/reactivity/reactivity.html) framework with observable data streams that can update the UI using [signals](/docs/oryx/reactivity/signals.html). To simplify the integration in the component logic, `ContentMixin` provides the `$options` signal that can be called in the render logic or other signals.
+To use component options asynchronously, it is important to observe the options and react to updates in the component UI. Oryx provides a [reactive](/docs/oryx/architecture/reactivity/reactivity.md) framework with observable data streams that can update the UI using [signals](/docs/oryx/reactivity/signals.md). To simplify the integration in the component logic, `ContentMixin` provides the `$options` signal that can be called in the render logic or other signals.
 
 The following code shows how to use the `$options` signal. Due to the component option interface, the usage of the signal is type safe.
 

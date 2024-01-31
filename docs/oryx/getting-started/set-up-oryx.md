@@ -32,7 +32,7 @@ npm run dev
 
 The application gets available at `localhost:3000`.
 
-For more information about the boilerplate project, see the [boilerplate guide](/docs/oryx/getting-started/oryx-boilerplate.html).
+For more information about the boilerplate project, see the [boilerplate guide](/docs/oryx/getting-started/oryx-boilerplate.md).
 
 ## Builders and bundlers for Oryx
 
@@ -40,4 +40,4 @@ The recommended build tool for Oryx is [Vite](https://vitejs.dev/). However, Ory
 
 ## Packages
 
-Oryx [packages](/docs/oryx/getting-started/oryx-packages.html) are distributed on [npmjs.com](https://www.npmjs.com/org/spryker-oryx).
+Oryx [packages](/docs/oryx/getting-started/oryx-packages.md) are distributed on [npmjs.com](https://www.npmjs.com/org/spryker-oryx).

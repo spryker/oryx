@@ -7,7 +7,7 @@ template: concept-topic-template
 
 Oryx's responsive design system empowers developers to implement designs for a variety of screen sizes and layouts in a convenient way. The design system provides various screen sizes, which you can redefine when needed. The CSS styles that are linked to the screen sizes adapt automatically to the provided configuration. This makes the design system useful for different types of applications. For example, if you need to build a business application for users with large screens, you can optimize the layout of your application to benefit from the available space.
 
-The design system works closely with other styling techniques in Oryx, such as layouts, [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.html), themes, and [typography](/docs/oryx/building-applications/styling/oryx-typography.html). Responsive design is not only a styling technique, but also plays a role in some specific design system components, like image components. These components add images for specific screens to optimize the experience per screen.
+The design system works closely with other styling techniques in Oryx, such as layouts, [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.md), themes, and [typography](/docs/oryx/building-applications/styling/oryx-typography.md). Responsive design is not only a styling technique, but also plays a role in some specific design system components, like image components. These components add images for specific screens to optimize the experience per screen.
 
 <!-- TODO: Add link to layout docs when they're published -->
 <!-- TODO: Add link to themes docs when they're published -->
@@ -29,7 +29,7 @@ Oryx provides five t-shirt size values that are given by a generic `size` enumer
 
 While the `xs` and `xl` sizes are available in the TypeScript enumeration, they are not used in most Oryx components and layouts. However, you can use the definitions to create an optimized user experience (UX) for these screen sizes. Moreover, you can introduce additional screen sizes when needed.
 
-The actual definition per screen is provided by a breakpoint configuration. The breakpoint values are not used inside the component styles, as this doesn't let you  change the breakpoints. Instead, you can create stylesheets per screen for a component. For more details, see [Providing component definitions](/docs/oryx/building-components/oryx-providing-component-definitions.html).
+The actual definition per screen is provided by a breakpoint configuration. The breakpoint values are not used inside the component styles, as this doesn't let you  change the breakpoints. Instead, you can create stylesheets per screen for a component. For more details, see [Providing component definitions](/docs/oryx/building-components/oryx-providing-component-definitions.md).
 
 If you need to use the screen definitions in your custom code, you can use `ScreenService` provided by the [layout package](https://www.npmjs.com/package/@spryker-oryx/layout).
 
@@ -121,7 +121,7 @@ There are different techniques used to apply responsive designs in your pages an
 
 CSS allows to differentiate style rules per screen size using media queries. Media queries can handle different rules to associate CSS rules to a screen. In the context of responsive design, we're solely concerned with the width of the viewport. The media query rules are unfortunately not configurable, for example, by CSS variables. That's why, instead of providing hardcoded media query rules inside the styles, Oryx provides a mechanism to configure styles per screen size.
 
-In order to associate styles to a specific screen size, you can link the styles in the [component definition](/docs/oryx/building-components/oryx-providing-component-definitions.html). The styles can be lazily loaded to avoid loading irrelevant styles.
+In order to associate styles to a specific screen size, you can link the styles in the [component definition](/docs/oryx/building-components/oryx-providing-component-definitions.md). The styles can be lazily loaded to avoid loading irrelevant styles.
 
 ```ts
 export const selectComponent = componentDef({
@@ -160,7 +160,7 @@ If your breakpoints are not likely to change, you might not need to align custom
 
 ## Responsive layouts
 
-The layout system has a built-in support for responsive layouts, which are driven by [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.html). Layouts, like a grid or carousel, are designed to render different number of items per row or column, depending on the screen size. The number of items is configurable as a design token.
+The layout system has a built-in support for responsive layouts, which are driven by [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.md). Layouts, like a grid or carousel, are designed to render different number of items per row or column, depending on the screen size. The number of items is configurable as a design token.
 
 Other important responsive design concepts are the layout container and the page bleed. The layout container has a maximum width to avoid very wide layouts on large screen. The container size and minimum bleed are configurable as design tokens.
 
@@ -190,7 +190,7 @@ Adaptive Design is a technique used in web development to create user interfaces
 
 Adaptive design offers more control and customization for specific devices, but Oryx does not fully support it. For example, Oryx does not have native knowledge about specific device characteristics like device type or browser capabilities. Responsive design is considered a very mature technique that does not need much in addition. However, in order to dictate the visibility of certain elements on various screen sizes, Oryx supports visibility rules for compositions and components.
 
-You can use visibility rules in the experience data to selectively hide elements on specific screen sizes, providing a level of adaptability within the responsive design framework. The visibility rules can be applied to the experience data you create for [pages](/docs/oryx/building-pages/oryx-pages.html) and [compositions](/docs/oryx/building-pages/oryx-compositions.html). The rules can be configured to hide a composition or component for a specific screen size, next to other more advanced visibility rules.
+You can use visibility rules in the experience data to selectively hide elements on specific screen sizes, providing a level of adaptability within the responsive design framework. The visibility rules can be applied to the experience data you create for [pages](/docs/oryx/building-pages/oryx-pages.md) and [compositions](/docs/oryx/building-pages/oryx-compositions.md). The rules can be configured to hide a composition or component for a specific screen size, next to other more advanced visibility rules.
 
 The following example shows how to create a simple visibility rule for a specific screen.
 

@@ -8,7 +8,7 @@ redirect_from:
 ---
 
 
-This document describes advanced strategies of using [dependency injection (DI)](/docs/oryx/architecture/dependency-injection/dependency-injection.html).
+This document describes advanced strategies of using [dependency injection (DI)](/docs/oryx/architecture/dependency-injection/dependency-injection.md).
 
 
 ## The INJECTOR token

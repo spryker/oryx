@@ -69,4 +69,4 @@ Oryx offers the `@asyncState` decorator for Lit components, which simplifies the
 
 ## Next steps
 
-[Reactive components](/docs/oryx/architecture/reactivity/reactive-components.html)
+[Reactive components](/docs/oryx/architecture/reactivity/reactive-components.md)

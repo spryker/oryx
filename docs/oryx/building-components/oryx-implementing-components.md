@@ -5,7 +5,7 @@ last_updated: Sept 20, 2023
 template: concept-topic-template
 ---
 
-Oryx components are web components built with [Lit](https://lit.dev). Lit is a lightweight open-source framework from Google that's used to build highly efficient web components. Web components can be created with any framework or even with vanilla HTML, CSS, and JavaScript. You can use any other framework instead of Lit. However, some Oryx utilities, like [signals](/docs/oryx/architecture/reactivity/signals.html) and component mixins, are available only with Lit.
+Oryx components are web components built with [Lit](https://lit.dev). Lit is a lightweight open-source framework from Google that's used to build highly efficient web components. Web components can be created with any framework or even with vanilla HTML, CSS, and JavaScript. You can use any other framework instead of Lit. However, some Oryx utilities, like [signals](/docs/oryx/architecture/reactivity/signals.md) and component mixins, are available only with Lit.
 
 ## Implementing a component
 
@@ -39,7 +39,7 @@ Oryx is built in TypeScript with strict typing configuration. This ensures high-
 
 ### 2. Integrating backend data
 
-In this step, you're going to resolve the product data and render the `id` field of the data. The product data comes from the backend API and is loaded asynchronously. Once the data is loaded, it's part of the _application state_. The state might change over time—for example, when a user navigates from one product page to another. To be able to render the state efficiently, the component must support [reactivity](/docs/oryx/architecture/reactivity/reactivity.html).
+In this step, you're going to resolve the product data and render the `id` field of the data. The product data comes from the backend API and is loaded asynchronously. Once the data is loaded, it's part of the _application state_. The state might change over time—for example, when a user navigates from one product page to another. To be able to render the state efficiently, the component must support [reactivity](/docs/oryx/architecture/reactivity/reactivity.md).
 
 Oryx provides standard [application layers](/docs/oryx/architecture/reactivity/key-concepts-of-reactivity.html#application-layers) to load and resolve the backend data. The service layer is intended to be used by components, and product components interact with `ProductService`. The integration with the product service and reactivity is simplified by using `ProductMixin`. Mixins provide component properties and methods, which you can use in components.
 
@@ -66,13 +66,13 @@ This code shows the ease of use, but there's a lot going on in the background:
 
 1. The product _context_ (sku) is resolved from the URL or any of the component's ancestor DOM elements, depending on where the component is used. When the component is used inside a product card or cart entry, the `sku` is added as an attribute. When the component is used on the Product Details Page, the `sku` is resolved from the URL. The current locale and currency are used as additional context. When the context is changing, the product data is reloaded automatically.
 2. `ProductService` is used to resolve the product data from the application state. When the product is not yet loaded from the backend, the service uses the `ProductAdapter` adapter to fetch the data. The HTTP response is converted to meet the client-side product model. _Command and Query_, Oryx's state management solution, prevents data reloading unless explicitly requested.
-3. The `$product` signal subscribes to the application state using `ProductService`. Whenever the product state is changed, the [signal](/docs/oryx/architecture/reactivity/signals.html) updates the associated DOM elements that are affected by the data.
+3. The `$product` signal subscribes to the application state using `ProductService`. Whenever the product state is changed, the [signal](/docs/oryx/architecture/reactivity/signals.md) updates the associated DOM elements that are affected by the data.
 
 The preceding steps are a commonly used pattern across all Oryx domain components. It ensures efficient consumption of backend APIs and rendering of DOM elements.
 
 ### 3. Configuring a component
 
-Oryx components can be made configurable with options. [Component options](/docs/oryx/building-components/oryx-managing-component-options.html) can be provided statically to the application or load from a backend API. Component options enable components to be reusable across different business models. For example, a component can render different results based on the provided option: `true` for a B2C application, but `false` for a B2B application.
+Oryx components can be made configurable with options. [Component options](/docs/oryx/building-components/oryx-managing-component-options.md) can be provided statically to the application or load from a backend API. Component options enable components to be reusable across different business models. For example, a component can render different results based on the provided option: `true` for a B2C application, but `false` for a B2B application.
 
 Component options are resolved by `ContentMixin`, similar to how `ProductService` resolves the product data. You can combine multiple mixins in a component implementation—for example:
 
@@ -98,7 +98,7 @@ export class ProductIdComponent extends ProductMixin(
 }
 ```
 
-You can provide default options in the component, in feature sets, or in the application. For more details, see [Component options](/docs/oryx/building-components/oryx-managing-component-options.html).
+You can provide default options in the component, in feature sets, or in the application. For more details, see [Component options](/docs/oryx/building-components/oryx-managing-component-options.md).
 
 ### 4. Styling the component DOM
 
@@ -107,7 +107,7 @@ Oryx components are styled with standard CSS. The components have a separate DOM
 Styling components in the shadow DOM is a big topic we recommend studying separately. However, there are a few things to know when it comes to Oryx and styling components:
 
 - Design system components are provided in the UI package. Components like `<oryx-button>` or `<oryx-link>` are used to ensure a common visual language. They can be customized. If your components use the design system as much as possible, you have a consistent design language throughout your application.
-- While web components styles do not leak in other components, the font style rules like `font-face` or `font-size` do cascade into web components, no matter how deep they are nested. Standard font rules are provided therefor in the `<oryx-app>` component. The [typography](/docs/oryx/building-applications/styling/oryx-typography.html) design tokens are used to ensure consistent styling.
+- While web components styles do not leak in other components, the font style rules like `font-face` or `font-size` do cascade into web components, no matter how deep they are nested. Standard font rules are provided therefor in the `<oryx-app>` component. The [typography](/docs/oryx/building-applications/styling/oryx-typography.md) design tokens are used to ensure consistent styling.
 - Custom properties, also known as CSS variables, cascade into web components, which is why the application theme is based on CSS variables. See [Design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.html) for more information.
 - Oryx uses configurable breakpoints to set up the screen size for responsive designs. To avoid hardcoded breakpoints in the component styles, you can configure screen-specific styles in the component definition as described in the following sections.
 - You can use Oryx themes and provide component styles for a specific theme. Similarly to breakpoint-specific styles, you can configure styles for a theme.
