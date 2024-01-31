@@ -1,3 +1,4 @@
+import { MockCartAdapter } from '@spryker-oryx/cart/services';
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
@@ -75,6 +76,15 @@ export const glueCartConnectors: Provider[] = [
   ...cartsNormalizer,
 ];
 
+export const mockCartConnectors: Provider[] = [
+  {
+    provide: CartAdapter,
+    useClass: MockCartAdapter,
+    // asyncClass: () =>
+    //   import('@spryker-oryx/cart/services').then((m) => m.MockCartAdapter),
+  },
+];
+
 export const cartProviders: Provider[] = [
   {
     provide: CartService,
@@ -102,5 +112,10 @@ export const cartProviders: Provider[] = [
 
 export const glueCartProviders: Provider[] = [
   ...glueCartConnectors,
+  ...cartProviders,
+];
+
+export const mockCartProviders: Provider[] = [
+  ...mockCartConnectors,
   ...cartProviders,
 ];

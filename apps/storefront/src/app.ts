@@ -1,5 +1,5 @@
 import { appBuilder } from '@spryker-oryx/application';
-import { multiCartFeature } from '@spryker-oryx/cart';
+import { glueCartFeature, multiCartFeature } from '@spryker-oryx/cart';
 import { labsFeatures } from '@spryker-oryx/labs';
 import { merchantFeature } from '@spryker-oryx/merchant';
 import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';
@@ -17,6 +17,8 @@ const features = [
       ]),
   ...(env.ORYX_MERCHANT ? [merchantFeature] : []),
   ...(env.ORYX_LABS ? labsFeatures : []),
+  glueCartFeature,
+  // mockCartFeature
 ];
 
 export const app = appBuilder()
