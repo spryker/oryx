@@ -1,15 +1,7 @@
-import { MockCartAdapter } from '@spryker-oryx/cart/services';
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { featureVersion } from '@spryker-oryx/utilities';
 import { cartCreatePage, cartsPage } from '../presets';
-import {
-  CartResolver,
-  CartTotalsResolver,
-  cartAttributesNormalizer,
-  cartsItemsNormalizer,
-} from '../services-reexports';
 import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
 import { cartContextProviders } from './cart-context';
 import { CartService } from './cart.service';
@@ -18,53 +10,23 @@ import { TotalsResolver, TotalsService } from './totals';
 export const TotalsResolverCartToken = `${TotalsResolver}CART`;
 export const CartTokenResourceResolverToken = `${TokenResourceResolvers}CART`;
 
-export const cartNormalizer: Provider[] =
-  featureVersion < '1.2'
-    ? [
-        {
-          provide: CartNormalizer,
-          useValue: cartAttributesNormalizer,
-        },
-      ]
-    : [
-        {
-          provide: CartNormalizer,
-          useValue: () =>
-            import('@spryker-oryx/cart/services').then(
-              (m) => m.cartAttributesNormalizer
-            ),
-        },
-      ];
+export const cartNormalizer: Provider[] = [
+  {
+    provide: CartNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/cart/services').then(
+        (m) => m.cartAttributesNormalizer
+      ),
+  },
+];
 
-export const cartsNormalizer: Provider[] =
-  featureVersion < '1.2'
-    ? [
-        {
-          provide: CartsNormalizer,
-          useValue: cartsItemsNormalizer,
-        },
-      ]
-    : [
-        {
-          provide: CartsNormalizer,
-          useValue: () =>
-            import('@spryker-oryx/cart/services').then(
-              (m) => m.cartsItemsNormalizer
-            ),
-        },
-      ];
-
-/** @deprecated since 1.2 */
-export const CartResourceResolver: Provider = {
-  provide: CartTokenResourceResolverToken,
-  useClass: CartResolver,
-};
-
-/** @deprecated since 1.2 */
-export const CartTotalsProvider: Provider = {
-  provide: TotalsResolverCartToken,
-  useClass: CartTotalsResolver,
-};
+export const cartsNormalizer: Provider[] = [
+  {
+    provide: CartsNormalizer,
+    useValue: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.cartsItemsNormalizer),
+  },
+];
 
 export const glueCartConnectors: Provider[] = [
   {
@@ -79,9 +41,8 @@ export const glueCartConnectors: Provider[] = [
 export const mockCartConnectors: Provider[] = [
   {
     provide: CartAdapter,
-    useClass: MockCartAdapter,
-    // asyncClass: () =>
-    //   import('@spryker-oryx/cart/services').then((m) => m.MockCartAdapter),
+    asyncClass: () =>
+      import('@spryker-oryx/cart/services').then((m) => m.MockCartAdapter),
   },
 ];
 
