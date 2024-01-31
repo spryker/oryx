@@ -13,6 +13,8 @@ To use and inject services, they must be provided in the DI container. Oryx offe
 - `ValueProvider<T>`: binds a token to a value.
 - `FactoryProvider<T>`: binds a token to a factory function.
 - `ExistingProvider<T>`: binds a token to an existing token.
+- `AsyncClassProvider<T>`: binds a token to a asynchronously resolved class constructor.
+
 
 You can pass a list of providers as an argument to the `Injector` constructor or to the Injector's `provide` method.
 
