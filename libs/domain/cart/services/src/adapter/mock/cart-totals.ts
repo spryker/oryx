@@ -1,5 +1,4 @@
 import { NormalizedTotals, TotalsResolver } from '@spryker-oryx/cart';
-import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { Observable, of } from 'rxjs';
 
 const types = [
@@ -14,26 +13,23 @@ const types = [
   components: [{ type: `oryx-cart-totals-${type}` }],
 }));
 
-const discountVariations = [
-  DiscountRowsAppearance.Expanded,
-  DiscountRowsAppearance.Collapsed,
-  DiscountRowsAppearance.Inline,
-  DiscountRowsAppearance.None,
-].map((type) => ({
-  id: `discount (${type})`,
-  components: [
-    { type: 'oryx-cart-totals-subtotal' },
-    {
-      type: `oryx-cart-totals-discount`,
-      options: {
-        data: { discountRowsAppearance: type },
+const discountVariations = ['expanded', 'collapsed', 'inline', 'none'].map(
+  (type) => ({
+    id: `discount (${type})`,
+    components: [
+      { type: 'oryx-cart-totals-subtotal' },
+      {
+        type: `oryx-cart-totals-discount`,
+        options: {
+          data: { discountRowsAppearance: type },
+        },
       },
-    },
-    { type: 'oryx-cart-totals-total' },
-  ],
-}));
+      { type: 'oryx-cart-totals-total' },
+    ],
+  })
+);
 
-export const mockedTotals = (totals: NormalizedTotals) => {
+export const mockedTotals = (totals: NormalizedTotals): any => {
   return class implements TotalsResolver {
     getTotals(): Observable<NormalizedTotals | null> {
       return of(totals);
