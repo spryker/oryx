@@ -5,7 +5,7 @@ template: concept-topic-template
 last_updated: Apr 4, 2023
 ---
 
-Oryx is a framework that empowers developers to build composable frontends with ease. It provides a rich library of components, including a design system, which lets developers create modern and visually appealing user interfaces. The components integrate with Spryker APIs by default, providing a seamless experience for developers.
+Oryx is a framework that empowers developers to build composable frontends with ease. It provides a rich library of components, including a design system, which lets developers create modern and visually appealing user interfaces.
 
 There are different ways to learn Oryx. To start developing with Oryx right away, see the [setup guide](/docs/oryx/getting-started/set-up-oryx.md). If you want to first learn more about Oryx, continue reading this document.
 

@@ -16,7 +16,7 @@ Thanks to the web-component-based architecture, Oryx components integrate with a
 You can also integrate Oryx components inside frontend meta frameworks, like [Next.js](https://nextjs.org/), [Nuxt.js](https://nuxt.com/), or [Astro](https://astro.build/).
 
 {% info_block infoBox %}
-While the integration of Oryx components is relatively straightforward, Spryker does not provide production-ready integration boilerplate code.
+While the integration of Oryx components is relatively straightforward, Oryx does not provide production-ready integration boilerplate code.
 
 The integration of the [server-side rendering](/docs/oryx/architecture/oryx-server-side-rendering.html) part might be quite complex.
 {% endinfo_block %}

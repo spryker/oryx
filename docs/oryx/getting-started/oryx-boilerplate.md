@@ -27,7 +27,7 @@ By using these tactics, we greatly reduced the amount of boilerplate code requir
 
 ### NPM Packages
 
-One of the biggest sources of boilerplate code in a project is the application logic. In Oryx, we separated out all the application logic into individual packages that are [distributed on npm](https://www.npmjs.com/org/spryker-oryx). These packages include components, business logic, and integrations to the Spryker APIs.
+One of the biggest sources of boilerplate code in a project is the application logic. In Oryx, we separated out all the application logic into individual packages that are [distributed on npm](https://www.npmjs.com/org/spryker-oryx). These packages include components, business logic, and integrations to the backend APIs.
 
 By separating out the application logic, we eliminated the boilerplate code from your projects. Instead of writing code to handle basic functionality, you can install the needed packages and use it in your code. And because the packages are distributed on npm and published with [Semantic Versioning](https://semver.org/), you can be confident that upgrading to a new version of the framework won't break your code.
 

@@ -43,7 +43,7 @@ The Labs package is an exception. It consists of experimental or demo functional
 
 ## Domain packages
 
-Domain packages provide components and service logic for certain domains. Organizing packages in domains improves the developer experience by making it easy to understand where to find a certain component or service. For example, the `product` domain package contains all product-related components, as well as product services and adapters that integrate with Spryker APIs.
+Domain packages provide components and service logic for certain domains. Organizing packages in domains improves the developer experience by making it easy to understand where to find a certain component or service. For example, the `product` domain package contains all product-related components, as well as product services and adapters that integrate with backend APIs.
 
 | PACKAGES                                                         | LOCATION                 |
 | ---------------------------------------------------------------- | ------------------------ |
