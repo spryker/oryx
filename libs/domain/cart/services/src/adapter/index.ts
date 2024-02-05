@@ -1,2 +1,2 @@
-export * from './default-cart.adapter';
-export * from './normalizers';
+export * from './mock';
+export * from './spryker-glue';

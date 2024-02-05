@@ -37,7 +37,7 @@ import {
   throwError,
 } from 'rxjs';
 
-export class DefaultCartAdapter implements CartAdapter {
+export class GlueCartAdapter implements CartAdapter {
   constructor(
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
