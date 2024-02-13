@@ -1,0 +1,42 @@
+#!/bin/bash
+
+generate_package_summary() {
+    (find "$1" -name package.json -not -path '*/node_modules/*' -exec jq -r '.dependencies,.devDependencies | keys[] as $k | "\($k):\(.[$k])"' {} \; 2>/dev/null) | sort | uniq
+}
+
+generate_package_summary_to_file() {
+   (generate_package_summary "$1") > "$1/package-aggregated.txt"
+}
+
+check_for_changes() {
+    diff -q "$1/package-aggregated.txt" <(generate_package_summary "$1")
+    return $?
+}
+
+main() {
+    if [ "$#" -eq 1 ]; then
+        generate_package_summary_to_file "$1"
+        echo "Package summary generated in package-aggregated.txt ."
+    elif [ "$2" = "--compare" ]; then
+        if check_for_changes "$1"; then
+            echo "No changes detected."
+        else
+            echo "Error: Package summary has changed. Run 'vendor/bin/package-aggregator .' locally to fix the error."
+            exit 1
+        fi
+    else
+        echo ""
+        echo "Usage: $0 <path> [--compare]"
+        echo
+        echo "The script traverses through the <path> directory structure, collecting dependencies and devDependencies"
+        echo "from all package.json files, excluding those within node_modules directories."
+        echo "The gathered dependencies are stored in the <path>/package-aggregated.txt file."
+        echo
+        echo "--compare This mode conducts a comparison between the generated dependency list (without saving)"
+        echo "          and the existing <path>/package-aggregated.txt file. Any difference between the lists result in an error."
+        echo ""
+        exit 1
+    fi
+}
+
+main "$@"
