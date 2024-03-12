@@ -1,5 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { map, Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { Mock } from 'vitest';
 import { DefaultHttpHandler } from './default-http-handler';

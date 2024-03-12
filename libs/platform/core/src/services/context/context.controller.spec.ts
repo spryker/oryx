@@ -1,7 +1,7 @@
 import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { html, LitElement, ReactiveControllerHost, TemplateResult } from 'lit';
+import { LitElement, ReactiveControllerHost, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { ContextController } from './context.controller';
 import { ContextService } from './context.service';

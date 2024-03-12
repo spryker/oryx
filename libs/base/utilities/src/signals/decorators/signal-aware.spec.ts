@@ -1,5 +1,5 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { signal } from '../signal';
 import { signalAware } from './signal-aware';

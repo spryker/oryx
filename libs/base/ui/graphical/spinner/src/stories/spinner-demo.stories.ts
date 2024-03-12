@@ -2,7 +2,7 @@ import { getAppIcons } from '@/tools/storybook';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { SpinnerProperties, SpinnerRotation } from '../spinner.model';
 

@@ -6,7 +6,7 @@ import {
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 

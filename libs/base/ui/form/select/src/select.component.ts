@@ -4,8 +4,8 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchboxController,
   SearchIconPosition,
+  SearchboxController,
 } from '@spryker-oryx/ui/searchbox';
 import {
   FilterStrategyType,
@@ -14,7 +14,7 @@ import {
 } from '@spryker-oryx/ui/typeahead';
 import { getControl } from '@spryker-oryx/ui/utilities';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { SelectController, SelectFilterController } from './controllers';
 import { baseStyles } from './styles';

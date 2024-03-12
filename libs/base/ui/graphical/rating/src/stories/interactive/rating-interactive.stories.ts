@@ -1,7 +1,7 @@
 import { wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { RatingComponent, RatingProperties } from '../../index';

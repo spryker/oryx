@@ -2,7 +2,7 @@ import { ProductComponentProperties } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { ProductTitleOptions } from '@spryker-oryx/product/title';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle', 'caption'];

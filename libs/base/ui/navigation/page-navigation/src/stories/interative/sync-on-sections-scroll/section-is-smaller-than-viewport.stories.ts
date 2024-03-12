@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../../.constants';
-import { getTemplate, TemplateProps } from '../common';
+import { TemplateProps, getTemplate } from '../common';
 import { playStory } from './common';
 
 export default {

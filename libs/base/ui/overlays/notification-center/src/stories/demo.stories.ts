@@ -1,6 +1,6 @@
 import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Scheme } from '../../../notification/src';

@@ -8,7 +8,7 @@ import {
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ProductMediaOptions } from './media.model';
 
 @defaultOptions({

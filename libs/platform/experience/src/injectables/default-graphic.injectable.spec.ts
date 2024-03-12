@@ -2,7 +2,7 @@ import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { computed, signalAware, signalProperty } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { DefaultGraphicInjectable } from './default-graphic.injectable';
 

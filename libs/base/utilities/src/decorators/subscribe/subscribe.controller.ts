@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { isObservable, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, isObservable } from 'rxjs';
 
 interface ObservablesData {
   observable$: Observable<unknown>;

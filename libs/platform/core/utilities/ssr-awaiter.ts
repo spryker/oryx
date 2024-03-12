@@ -2,7 +2,7 @@
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/di';
 import { isPromise } from '@spryker-oryx/utilities';
-import { defer, finalize, from, Observable, tap } from 'rxjs';
+import { Observable, defer, finalize, from, tap } from 'rxjs';
 
 export const ssrAwaiter = <T>(
   object: Observable<T> | Promise<T>
