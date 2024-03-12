@@ -38,8 +38,16 @@ Oryx is a framework for building composable storefronts, providing a rich librar
 
 ## Installation
 
-TODO
+1. Install dependencies:
+
+`npm i`
+
+2. Run the application in development mode:
+
+`npm run dev`
+
+The application gets available at localhost:3000, or the next available port on your machine.
 
 ## Further Documentation
 
-TODO
+[Oryx Documentation](https://docs.spryker.com/docs/scos/dev/front-end-development/202311.0/oryx/oryx.html)
