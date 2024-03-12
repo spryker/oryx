@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Localization"
+title: 'Oryx: Localization'
 description: Localizations are decoupled from component implementations
 template: concept-topic-template
 last_updated: July 23, 2023
@@ -50,15 +50,13 @@ The [Oryx labs package](https://www.npmjs.com/package/@spryker-oryx/labs) provid
 
 {% endinfo_block %}
 
-
-
 ## Installing the i18n package
 
 To use the i18n package, add `I18nFeature` to the app and configure translation resources using the loader function:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
-import { I18nFeature } from "@spryker-oryx/i18n";
+import { appBuilder } from '@spryker-oryx/application';
+import { I18nFeature } from '@spryker-oryx/i18n';
 
 export const app = appBuilder()
   .withFeature(
@@ -107,13 +105,13 @@ To support such fine-grained reactivity, a framework-specific implementation is 
 The following is an example of using i18n in a Lit component. The tokens are used both as attributes and plain text, and the example shows the usage with and without a token context.
 
 ```ts
-import { I18nMixin } from "@spryker-oryx/utilities";
+import { I18nMixin } from '@spryker-oryx/utilities';
 
 export class MyComponent extends I18nMixin(LitElement) {
   protected override render(): TemplateResult {
     return html`
-      <button aria-label=${this.i18n("site.my-token")}>
-        ${this.i18n("site.my-token-<count>", { count: 12 })}
+      <button aria-label=${this.i18n('site.my-token')}>
+        ${this.i18n('site.my-token-<count>', { count: 12 })}
       </button>
     `;
   }
@@ -125,13 +123,13 @@ export class MyComponent extends I18nMixin(LitElement) {
 The i18n directive uses `I18nService`. You can inject `I18nService` in JS or TS using [dependency injection](/docs/oryx/architecture/dependency-injection/dependency-injection.md). The service provides an observable that you can subscribe to.
 
 ```ts
-import { inject } from "@spryker-oryx/injector";
-import { I18nService } from "@spryker-oryx/i18n";
+import { inject } from '@spryker-oryx/injector';
+import { I18nService } from '@spryker-oryx/i18n';
 
 class Example {
   constructor(i18nService = inject(I18nService)) {
     i18nService
-      .translate("domain.hello")
+      .translate('domain.hello')
       .subscribe((text) => console.log(text));
   }
 }

@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Providing component definitions"
+title: 'Oryx: Providing component definitions'
 description: Components are registered in an Oryx application by a definition file
 last_updated: Sept 19, 2023
 template: concept-topic-template
@@ -18,11 +18,11 @@ You can also update an existing component definition. To match an existing defin
 The following example shows where a component is registered, providing both the name and implementation.
 
 ```ts
-import { componentDef } from "@spryker-oryx/utilities";
+import { componentDef } from '@spryker-oryx/utilities';
 
 export const productIdComponent = componentDef({
-  name: "oryx-product-id",
-  impl: () => import("./id.component").then((m) => m.ProductIdComponent),
+  name: 'oryx-product-id',
+  impl: () => import('./id.component').then((m) => m.ProductIdComponent),
 });
 ```
 
@@ -56,8 +56,8 @@ In the following example, the responsive styles are added in component definitio
 
 ```ts
 export const cartEntriesComponent = componentDef({
-  name: "oryx-cart-entries",
-  impl: () => import("./entries.component").then((m) => m.CartEntriesComponent),
+  name: 'oryx-cart-entries',
+  impl: () => import('./entries.component').then((m) => m.CartEntriesComponent),
   stylesheets: [
     {
       rules: [
@@ -103,11 +103,11 @@ In the following example, the stylesheets are lazily loaded. The component defin
 
 ```ts
 export const linkComponent = componentDef({
-  name: "oryx-link",
-  impl: () => import("./link.component").then((m) => m.LinkComponent),
+  name: 'oryx-link',
+  impl: () => import('./link.component').then((m) => m.LinkComponent),
   stylesheets: [
     {
-      rules: () => import("./styles/link.styles").then((m) => m.linkStyles),
+      rules: () => import('./styles/link.styles').then((m) => m.linkStyles),
     },
   ],
 });
@@ -116,8 +116,8 @@ export const linkComponent = componentDef({
 The imported file could contain the following rules. Oryx provides a small helper function to set up the rules per screen size, which returns an array of the `CssStylesWithMedia` type.
 
 ```ts
-import { screenCss } from "@spryker-oryx/utilities";
-import { css } from "lit";
+import { screenCss } from '@spryker-oryx/utilities';
+import { css } from 'lit';
 
 const smallScreen = css`
   :host {

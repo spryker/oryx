@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Responsive design system"
+title: 'Oryx: Responsive design system'
 description: Learn how to leverage Oryx's Responsive Design system to create stunning and user-friendly websites and applications that seamlessly adapt to different screen sizes and devices.
 last_updated: October 3rd, 2023
 template: concept-topic-template
@@ -29,7 +29,7 @@ Oryx provides five t-shirt size values that are given by a generic `size` enumer
 
 While the `xs` and `xl` sizes are available in the TypeScript enumeration, they are not used in most Oryx components and layouts. However, you can use the definitions to create an optimized user experience (UX) for these screen sizes. Moreover, you can introduce additional screen sizes when needed.
 
-The actual definition per screen is provided by a breakpoint configuration. The breakpoint values are not used inside the component styles, as this doesn't let you  change the breakpoints. Instead, you can create stylesheets per screen for a component. For more details, see [Providing component definitions](/docs/oryx/building-components/oryx-providing-component-definitions.md).
+The actual definition per screen is provided by a breakpoint configuration. The breakpoint values are not used inside the component styles, as this doesn't let you change the breakpoints. Instead, you can create stylesheets per screen for a component. For more details, see [Providing component definitions](/docs/oryx/building-components/oryx-providing-component-definitions.md).
 
 If you need to use the screen definitions in your custom code, you can use `ScreenService` provided by the [layout package](https://www.npmjs.com/package/@spryker-oryx/layout).
 
@@ -64,7 +64,7 @@ Oryx provides the following default breakpoints for three screen sizes.
 The default breakpoints are given by the `defaultBreakpoints` object, which is available in the [themes](https://www.npmjs.com/package/@spryker-oryx/themes) package. The breakpoint values are configured in pixels.
 
 ```ts
-import { Breakpoints, Size } from "@spryker-oryx/utilities";
+import { Breakpoints, Size } from '@spryker-oryx/utilities';
 
 export const defaultBreakpoints: Breakpoints = {
   [Size.Sm]: {
@@ -89,7 +89,7 @@ By using custom breakpoints, you can create a responsive design that is tailored
 Breakpoints are part of Oryx themes. All Oryx themes use the default configuration for breakpoints. You can provide a custom theme or an additional theme to be used on top of the standard themes. A custom theme can add a single breakpoint or redefine all breakpoints. In the following example, custom breakpoints are defined for extra small and small screen sizes. The small screen gets a minimum value, and the extra small only requires a maximum value because it starts with `0` by default.
 
 ```ts
-import { Size } from "@spryker-oryx/utilities";
+import { Size } from '@spryker-oryx/utilities';
 
 export const app = appBuilder()
   // ...
@@ -125,11 +125,11 @@ In order to associate styles to a specific screen size, you can link the styles 
 
 ```ts
 export const selectComponent = componentDef({
-  name: "oryx-select",
+  name: 'oryx-select',
   // ...
   stylesheets: [
     {
-      rules: () => import("./styles").then((m) => m.screenStyles),
+      rules: () => import('./styles').then((m) => m.screenStyles),
     },
   ],
 });

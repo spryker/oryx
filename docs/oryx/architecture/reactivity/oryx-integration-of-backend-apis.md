@@ -1,12 +1,11 @@
 ---
-title: "Oryx: Integration of backend APIs"
+title: 'Oryx: Integration of backend APIs'
 description: Compose a frontend application from backend APIs
 template: concept-topic-template
 last_updated: Apr 3, 2023
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/reactivity/oryx-integration-of-backend-apis.html
 ---
-
 
 To compose a frontend application from different backend APIs, Oryx provides a flexible architecture. This architecture lets you adapt third-party APIs without changing business logic and components. For example, when an alternative search system is used, the existing application layers and components can remain unchanged.
 

@@ -1,5 +1,5 @@
 ---
-title: "Dependency Injection: Advanced strategies"
+title: 'Dependency Injection: Advanced strategies'
 description: Strategies for using DI that cover advanced use cases
 template: concept-topic-template
 last_updated: Apr 13, 2023
@@ -7,9 +7,7 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/dependency-injection/dependency-injection-advanced-strategies.html
 ---
 
-
 This document describes advanced strategies of using [dependency injection (DI)](/docs/oryx/architecture/dependency-injection/dependency-injection.md).
-
 
 ## The INJECTOR token
 
@@ -34,7 +32,7 @@ In this example, the `inject` method is used to resolve a dependency based on a 
 
 Most dependencies in an application correspond to only one value, like a class. In some cases, it is useful to have dependencies with multiple values, like HTTP interceptors or normalizers. However, it's not very practical to configure these dependencies separately, because the application needs to access them all together at once. Therefore, you can use a special type of dependency that accepts multiple values and is linked to the same dependency injection token. These are called multi-providers.
 
-There are different types of multi-providers based on location an number of asterisks(`*`) in  the name of their tokens. They are described in the following sections.
+There are different types of multi-providers based on location an number of asterisks(`*`) in the name of their tokens. They are described in the following sections.
 
 ### Providers with an asterisk in the end of token name
 

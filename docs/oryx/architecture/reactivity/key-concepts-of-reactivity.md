@@ -7,8 +7,6 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/reactivity/key-concepts-of-reactivity.html
 ---
 
-
-
 ## Reactive data streams
 
 Reactive data streams are a fundamental concept in Oryx. They play a crucial role in managing and manipulating data in real time. Oryx prefers [Observables](https://rxjs.dev/guide/observable) over [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) as they are more powerful and allow for continuous streams of data over time. This is particularly helpful in experiences that remain active for some time-for example, in a Single Page Application (SPA).

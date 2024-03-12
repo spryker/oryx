@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Building components"
+title: 'Oryx: Building components'
 description: Components are the building blocks of Oryx applications
 last_updated: Sep 19, 2023
 template: concept-topic-template
@@ -29,4 +29,4 @@ You can customize the components with a custom theme, style rules, [component op
 
 The components are built as web components, which makes them highly reusable in other web frameworks and systems. For more details, see [Integration of components](/docs/oryx/building-components/oryx-integrating-components.html).
 
-Oryx provides a reactive framework and is designed to work efficiently in a single page application architecture. To ensure _reactivity_ throughout the application, Oryx rerenders only  fragments of the components that are affected by the changing application state. For more details, see [key concepts of reactivity](/docs/oryx/architecture/reactivity/key-concepts-of-reactivity.html).
+Oryx provides a reactive framework and is designed to work efficiently in a single page application architecture. To ensure _reactivity_ throughout the application, Oryx rerenders only fragments of the components that are affected by the changing application state. For more details, see [key concepts of reactivity](/docs/oryx/architecture/reactivity/key-concepts-of-reactivity.html).

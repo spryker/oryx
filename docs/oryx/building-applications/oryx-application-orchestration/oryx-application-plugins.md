@@ -6,8 +6,6 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-application-orchestration/oryx-application-plugins.html
 ---
 
-
-
 When you create an Oryx Application with the `appBuilder()` function, it creates an instance of `App`. `App` is a a shell that can be enhanced with custom plugins: `AppPlugin`. Plugins let you extend Oryx core behavior without modifying the core code of the framework.
 
 The following built-in plugins are provided by the Oryx framework:
@@ -53,8 +51,8 @@ app.requirePlugin(InjectionPlugin).inject(...)
 The plugin exposes the `App` instance as an `AppRef` token to make the main application reference available throughout the application:
 
 ```ts
-import { AppRef } from "@spryker-oryx/core";
-import { inject } from "@spryker-oryx/di";
+import { AppRef } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
 
 class MyService {
   constructor(private app = inject(AppRef)) {
@@ -77,7 +75,7 @@ The plugin exposes the following APIs:
 For example, get all resources:
 
 ```ts
-import { ResourcePlugin } from "@spryker-oryx/core";
+import { ResourcePlugin } from '@spryker-oryx/core';
 
 app.requirePlugin(ResourcePlugin).getResources();
 ```
@@ -98,7 +96,7 @@ The plugin exposes the following APIs:
 For example, get all configured icons:
 
 ```ts
-import { ThemePlugin } from "@spryker-oryx/core";
+import { ThemePlugin } from '@spryker-oryx/core';
 
 app.requirePlugin(ThemePlugin).getIcons();
 ```
@@ -123,7 +121,6 @@ The following additional plugin life-cycle methods are invoked around the main l
 Instead of relying on the order of registration of the plugins to the Oryx application builder, always use extra plugin life-cycle methods to establish the order if necessary.
 
 {% endinfo_block %}
-
 
 For more information on how to access registered plugins, see [interacting with plugins](/docs/oryx/building-applications/oryx-application-orchestration/oryx-application.html#interact-with-plugins).
 

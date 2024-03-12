@@ -6,7 +6,6 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-application-orchestration/oryx-application.html
 ---
 
-
 `App` represents a running Oryx application instance.
 
 It lets you do the following:

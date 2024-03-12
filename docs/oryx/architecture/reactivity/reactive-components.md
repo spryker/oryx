@@ -53,9 +53,9 @@ The following example shows the usage of the `computed` signal. `Computed` wraps
 
 ```ts
 export class ProductPriceComponent {
-    protected $prices = computed(() => {
-        return this.formatPrices(this.$product()?.price);
-    });
+  protected $prices = computed(() => {
+    return this.formatPrices(this.$product()?.price);
+  });
 
   protected override render(): TemplateResult | void {
     return html`${this.$prices().defaultPrice}`;
@@ -67,13 +67,11 @@ export class ProductPriceComponent {
 
 Components often use multiple data streams. For example, the product price component renders a product price in a certain currency and a _local_ price format. The currency and locale are part of the application context and may change during the application's lifecycle. The product price changes from product to product. For managing these streams, you can leverage signals, which have the ability to combine multiple observables and operate on the combined results.
 
-
 {% info_block infoBox "RxJS operators instead of signals" %}
 
 If you want to manage more complex data stream operations, you can apply RxJS operators instead of signals.
 
 {% endinfo_block %}
-
 
 In the following example, `ProductPriceComponent` observes the product data from `ProductService` and _combines_ it with the formatted price given by `PriceService`.
 
@@ -87,10 +85,10 @@ export class ProductPriceComponent {
   protected $prices = computed(() => this.formatPrices(this.$product()?.price));
 
   protected formatPrices(price?: ProductPrices): Observable<Prices> {
-      return combineLatest({
-          sales: this.pricingService.format(price?.defaultPrice),
-          original: this.pricingService.format(price?.originalPrice),
-      });
+    return combineLatest({
+      sales: this.pricingService.format(price?.defaultPrice),
+      original: this.pricingService.format(price?.originalPrice),
+    });
   }
 }
 ```

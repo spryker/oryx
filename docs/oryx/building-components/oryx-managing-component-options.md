@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Managing components options"
+title: 'Oryx: Managing components options'
 description: Components Options provide reusable components cross business models
 last_updated: Sept 19, 2023
 template: concept-topic-template
@@ -71,7 +71,7 @@ The following example shows how to configure an application using `appBuilder`.
 export const app = appBuilder()
   // ...
   .withOptions({
-    "oryx-product-price": {
+    'oryx-product-price': {
       enableTaxMessage: false,
     },
   })

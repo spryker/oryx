@@ -1,13 +1,11 @@
 ---
-title: "Oryx: Typography"
+title: 'Oryx: Typography'
 description: Typography design tokens are used for a consistent design system through the components in Oryx applications
 last_updated: July 9, 2023
 template: concept-topic-template
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/styling/oryx-typography.html
 ---
-
-
 
 Typography is an important part of the look and feel of a web page. It contributes to the readability of text but also defines how page structure is perceived. Big headers typically go first and are perceived as more important, whereas smaller text seems less important.
 

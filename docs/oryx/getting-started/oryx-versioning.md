@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Versioning"
+title: 'Oryx: Versioning'
 description: Oryx framework uses semantic versioning to ensure stability
 template: concept-topic-template
 last_updated: Mar 3, 2023
@@ -14,6 +14,7 @@ The following sections describe how the Oryx framework achieves versioning and r
 ## Semantic versioning
 
 Oryx follows the principles of [semantic versioning](https://semver.org/). This means that, for version `x.y.z`, the following applies:
+
 - If critical bug fixes are released, a patch release is made by changing the `z` number. For example, `1.5.2` to `1.5.3`.
 - If new features or non-critical fixes are released, a minor release is made by changing the `y` number. For example, `1.5.2` to `15.6.0`.
 - If significant changes that may break compatibility are released, a major release is made by changing the `x` number. For example, `1.5.2` to `2.0.0`.
@@ -25,6 +26,7 @@ For every major and minor release, we offer prerelease versions called Release C
 ## Release process
 
 The Oryx framework consists of two components that are released separately:
+
 - Libraries
 - Labs
 
@@ -47,6 +49,7 @@ For example, if the current libraries version is `1.5.2`, the version of the lab
 ## Upgrading Oryx
 
 To perform a minor or patch update of the Oryx framework, you need to update every Oryx-related package you are using to the latest version of the same major version. For example, if you want to update Oryx from version `1.2` to `1.3`, you should update all Oryx-related packages to version `1.3` using a command similar to the following:
+
 ```
 npm i @spryker-oryx/{package-name}@1.3
 ```
@@ -89,5 +92,7 @@ You can also use the `featureVersion` utility in your code or third-party librar
 
 ```typescript
 import { featureVersion } from '@spryker-oryx/utilities';
-if (featureVersion >= '1.1') { /* New feature code */ }
+if (featureVersion >= '1.1') {
+  /* New feature code */
+}
 ```

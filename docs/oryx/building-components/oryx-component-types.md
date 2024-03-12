@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Component types"
+title: 'Oryx: Component types'
 description: Oryx components compared to Atomic Design
 last_updated: Sept 23, 2023
 template: concept-topic-template

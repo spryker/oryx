@@ -28,7 +28,7 @@ export interface MyService {
 }
 ```
 
-Note: it's recommended to either always return an `Observable` or `void` from service methods as then you can easily can make a service lazy-loaded.  
+Note: it's recommended to either always return an `Observable` or `void` from service methods as then you can easily can make a service lazy-loaded.
 
 To couple the string token with the service interface and achieve type safety use `InjectionTokensContractMap` augmentation:
 
@@ -56,7 +56,7 @@ export class DefaultMyService implements MyService {
 }
 ```
 
-We use `Default` prefix for default service implementation, but it's optional. When you are creating completely new service, you can use default also, if you are creating custom implementation for existing service, usually it's better to prefix it with a custom, more specific name.  
+We use `Default` prefix for default service implementation, but it's optional. When you are creating completely new service, you can use default also, if you are creating custom implementation for existing service, usually it's better to prefix it with a custom, more specific name.
 
 ## Providing Service
 
@@ -71,9 +71,9 @@ export const app = appBuilder()
     providers: [
       {
         provide: MyServiceToken,
-        useClass: DefaultMyService
-      }
-    ]
+        useClass: DefaultMyService,
+      },
+    ],
   })
   // ...
   .create();
@@ -82,20 +82,19 @@ export const app = appBuilder()
 ## Connecting the Backend
 
 When creating services, often, you'll need to communicate with a backend server to fetch or send data. Direct HTTP requests are possible but not advised. Instead we recommend:
- 
+
 - using `adapters` as they provide both abstraction for separating services from the direct intricacies of API endpoints and consistency in data communication.
-- using `HttpService` to make HTTP requests in `adapters`, as it provides a consistent way of making HTTP requests and handling responses, including interceptors. 
+- using `HttpService` to make HTTP requests in `adapters`, as it provides a consistent way of making HTTP requests and handling responses, including interceptors.
 - using `Transfomers` (`Normalizers` and `Serializers`) to transform data from API models to client models in a generic, and customizable way.
 
 Typical implementation from the service perspective could look like:
 
 ```ts
 export class DefaultMyService implements MyService {
-
   constructor(protected adapter: MyAdapter) {}
-    
+
   get(qualifier: DataQualifier): Observable<Data> {
-      return this.adapter.get(qualifier);
+    return this.adapter.get(qualifier);
   }
 
   update(data: Data): Observable<Result> {
@@ -106,7 +105,6 @@ export class DefaultMyService implements MyService {
 
 For a deeper understanding role of adapters in Oryx's reactivity layers, refer to the [Integration of backend APIs](/docs/oryx/architecture/reactivity/oryx-integration-of-backend-apis.md).
 
-
 ## State Management with Queries
 
 Efficient state management in services can be achieved by using Oryx Queries and Commands, which are mechanisms for maintaining and modifying application state.
@@ -115,22 +113,20 @@ In a service context, queries and commands work in tandem to handle the data flo
 
 ```ts
 export class DefaultMyService implements MyService {
-
   constructor(private adapter: MyAdapter) {}
-    
-  protected query$ =  createQuery({
-      loader: (qualifier: DataQualifier) => this.adapter.getAll(qualifier),
-      refreshOn: [MyDataChanged],
+
+  protected query$ = createQuery({
+    loader: (qualifier: DataQualifier) => this.adapter.getAll(qualifier),
+    refreshOn: [MyDataChanged],
   });
 
-  protected command$ =  createQuery({
-      action: (data: Data) => this.adapter.post(data),
-      onSuccess: [MyDataChanged],
+  protected command$ = createQuery({
+    action: (data: Data) => this.adapter.post(data),
+    onSuccess: [MyDataChanged],
   });
-
 
   get(qualifier: DataQualifier): Observable<Data> {
-      return this.query$.get(qualifier);
+    return this.query$.get(qualifier);
   }
 
   process(data: Data): Observable<Result> {

@@ -1,13 +1,11 @@
 ---
-title: "Oryx: Design tokens"
+title: 'Oryx: Design tokens'
 description: Design tokens provide a centralized and consistent approach for styling components in Oryx applications.
 last_updated: July 24, 2023
 template: concept-topic-template
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/styling/oryx-design-tokens.html
 ---
-
-
 
 Design tokens provide a powerful system for achieving consistent and customizable styles throughout an Oryx application. They are extensively used inside the [color system](/docs/oryx/building-applications/styling/oryx-color-system.md), typography, icons, and many more. Ensuring a clean separation between styles and components, design tokens make it easier to manage and maintain the application's design system. This document focuses on the structure and usage of design tokens in Oryx.
 
@@ -20,9 +18,9 @@ The variables are written in the root element of the application, the `oryx-app`
 If you like to reuse the variables outside the root element of the application, or if you are not using the `oryx-app` as the root, you can bootstrap the application using an alternative root:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/core";
+import { appBuilder } from '@spryker-oryx/core';
 
-appBuilder().withAppOptions({ components: { root: "body" } });
+appBuilder().withAppOptions({ components: { root: 'body' } });
 ```
 
 ## Usage of design tokens

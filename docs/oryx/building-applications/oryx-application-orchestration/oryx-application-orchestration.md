@@ -6,7 +6,6 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-application-orchestration/oryx-application-orchestration.html
 ---
 
-
 An Oryx application starts with the application orchestration. It lets you bootstrap and configure your application from reusable bits and pieces, such as the following:
 
 - [Features](/docs/oryx/building-applications/oryx-application-orchestration/oryx-application-feature.md)

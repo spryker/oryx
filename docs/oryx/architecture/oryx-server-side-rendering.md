@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Server-side rendering"
+title: 'Oryx: Server-side rendering'
 description: Get a general idea of server-side rendering
 template: concept-topic-template
 last_updated: June 3, 2023
@@ -7,31 +7,28 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-server-side-rendering.html
 ---
 
-
-
-Server-side rendering (SSR), including Static Site Generation (SSG) as a variant, has grown in popularity due to its ability to boost web application performance, facilitate effective Search Engine Optimization (SEO), social sharing, and improve Core Web Vitals (CWV). By delivering pre-rendered HTML from the server or even a  content delivery network (CDN) to the client, SSR and SSG lead to quicker initial page load times, improve user experience (UX), and can significantly improve CWV scores. SSG, in particular, pre-renders HTML at build time, resulting in static HTML, CSS, and JavaScript files that can be served directly from a CDN. It is a useful strategy for sites with content that does not change frequently, and can improve performance, scalability, and security.
+Server-side rendering (SSR), including Static Site Generation (SSG) as a variant, has grown in popularity due to its ability to boost web application performance, facilitate effective Search Engine Optimization (SEO), social sharing, and improve Core Web Vitals (CWV). By delivering pre-rendered HTML from the server or even a content delivery network (CDN) to the client, SSR and SSG lead to quicker initial page load times, improve user experience (UX), and can significantly improve CWV scores. SSG, in particular, pre-renders HTML at build time, resulting in static HTML, CSS, and JavaScript files that can be served directly from a CDN. It is a useful strategy for sites with content that does not change frequently, and can improve performance, scalability, and security.
 
 ## Differences between server-side and client-side rendering
 
-* Speed and performance: With server-side rendering (SSR), the browser receives pre-rendered HTML, reducing the time taken to display meaningful content.
+- Speed and performance: With server-side rendering (SSR), the browser receives pre-rendered HTML, reducing the time taken to display meaningful content.
 
-* SEO: SSR is typically more favorable for SEO because search engine crawlers find it easier to index pre-rendered HTML content.
+- SEO: SSR is typically more favorable for SEO because search engine crawlers find it easier to index pre-rendered HTML content.
 
-* Social media integration: SSR significantly improves integration with social providers like Facebook and Twitter and bots like Slack. It enables the generation of link previews, rich snippets, and thumbnails, enhancing the visibility and appeal of shared content on these platforms.
+- Social media integration: SSR significantly improves integration with social providers like Facebook and Twitter and bots like Slack. It enables the generation of link previews, rich snippets, and thumbnails, enhancing the visibility and appeal of shared content on these platforms.
 
-* User experience (UX): By delivering pre-rendered content faster, SSR minimizes user waiting time, providing a superior user experience compared to client-side rendering (CSR).
+- User experience (UX): By delivering pre-rendered content faster, SSR minimizes user waiting time, providing a superior user experience compared to client-side rendering (CSR).
 
-* Resource allocation: While SSR enhances performance and user experience, it requires more server resources and processing power. CSR lightens the server load by offloading rendering to the client but at the cost of potentially increased load times and less effective SEO.
-
+- Resource allocation: While SSR enhances performance and user experience, it requires more server resources and processing power. CSR lightens the server load by offloading rendering to the client but at the cost of potentially increased load times and less effective SEO.
 
 ## Advantages and disadvantages of SSR
 
-| ADVANTAGES OF SSR                        | DISADVANTAGES of SSR    |
-|-------------------------------------------------------------------|---------------------|
-| Quicker initial page load time.                                  | Higher server resource usage. |
-| Enhanced SEO.                                                     | Higher development and deployment complexity. |
-| Improved UX.                                                      | Infrastructure concerns. |
-| Better social media integration.                                  | Potential for stale content. |
+| ADVANTAGES OF SSR                | DISADVANTAGES of SSR                          |
+| -------------------------------- | --------------------------------------------- |
+| Quicker initial page load time.  | Higher server resource usage.                 |
+| Enhanced SEO.                    | Higher development and deployment complexity. |
+| Improved UX.                     | Infrastructure concerns.                      |
+| Better social media integration. | Potential for stale content.                  |
 
 ## Applicability of SSR
 
@@ -40,7 +37,6 @@ While SSR offers numerous benefits, it's not the best fit for every type of appl
 - B2B shops with restricted access: public-facing SEO and quicker initial page load times offered by SSR may not significantly benefit these types of applications.
 - Business apps: applications heavily focused on functionality, like a fulfillment app, might not require the SEO or user experience enhancements provided by SSR.
 - Instore apps: used in a controlled environment and designed for specific functions, these types of applications might not necessitate the benefits of SSR.
-
 
 ## SSR implementation approaches
 
@@ -70,15 +66,13 @@ In the context of serverless platforms like Netlify, you can leverage Netlify's 
 
 {% include diagrams/oryx/caching-and-cdns.md %}
 
-
 ## Hydration
 
 In the context of SSR, hydration refers to the process where the client-side JavaScript runtime takes over the static HTML sent by the server and turns it into a dynamic Document Object Model (DOM).
 
-In most applications, hydration happens all at once. But Oryx follows a more strategic approach known as the *islands architecture*. It enables selective hydration of components or *islands* on a need basis, thereby reducing the amount of JavaScript parsed and executed during initial page interaction.
+In most applications, hydration happens all at once. But Oryx follows a more strategic approach known as the _islands architecture_. It enables selective hydration of components or _islands_ on a need basis, thereby reducing the amount of JavaScript parsed and executed during initial page interaction.
 
-Moreover, Oryx employs a *late hydration* strategy, delaying the hydration process until the user interacts with a component. This ensures that client-side resources are only utilized when absolutely necessary, fostering an efficient and highly responsive UX.
-
+Moreover, Oryx employs a _late hydration_ strategy, delaying the hydration process until the user interacts with a component. This ensures that client-side resources are only utilized when absolutely necessary, fostering an efficient and highly responsive UX.
 
 ## Developing with SSR
 
@@ -104,7 +98,6 @@ Designed with SSR at its core, Oryx ensures that all components correctly render
 
 Also, Oryx features mechanisms that further improve performance by managing the hydration process intelligently.
 
-
 ### SSR-aware components
 
 Oryx components are built with SSR in mind. They're designed to render correctly on the server and work with late and partial hydration. However, when building custom components, be aware of the components' limited lifecycles coverage, which can lead to unexpected behavior during the SSR process.
@@ -113,7 +106,7 @@ Oryx components are built with SSR in mind. They're designed to render correctly
 
 Oryx provides special decorators to address some SSR-related challenges:
 
-- The `@hydratable` decorator marks a component for late hydration. This allows the component to render on the server but delays its hydration until it's interacted with on the client. Hydration can be triggered programmatically, or automatically with events.   
+- The `@hydratable` decorator marks a component for late hydration. This allows the component to render on the server but delays its hydration until it's interacted with on the client. Hydration can be triggered programmatically, or automatically with events.
 
 - The `@ssrShim` decorator shims certain parts of the component API to make it work on the server. Specifically, it adjusts how the `toggleAttribute()` function and style property work.
 

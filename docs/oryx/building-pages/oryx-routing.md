@@ -1,13 +1,11 @@
 ---
-title: "Oryx: Routing"
+title: 'Oryx: Routing'
 description:
 template: concept-topic-template
 last_updated: May 25, 2023
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-routing.html
 ---
-
-
 
 Routing lets users navigate between different pages and components within an application. This document describes how to set up routing: add `RouterFeature`, render router outlets, and provide routes using [Dependency Injection (DI)](/docs/oryx/architecture/dependency-injection/dependency-injection.md).
 
@@ -53,17 +51,19 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 
 const routes = [
   { path: '/', render: () => html`<my-page></my-page>` },
-  { path: '/example/:id', render: ({ id }) => html`<my-example-page id=${id}></my-example-page>` },
+  {
+    path: '/example/:id',
+    render: ({ id }) => html`<my-example-page id=${id}></my-example-page>`,
+  },
 ];
 
 appBuilder().withProviders(provideLitRoutes({ routes }));
 ```
+
 {% info_block infoBox %}
 
 This is a basic example, and you may need to adjust the routing config to fit your specific use case.
 
 {% endinfo_block %}
-
-
 
 Lit routes using the standard lit router library. For more information about configuring routes, see the [router documentation](https://github.com/lit/lit/tree/main/packages/labs/router#readme).

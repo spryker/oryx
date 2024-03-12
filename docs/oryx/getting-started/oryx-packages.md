@@ -1,13 +1,11 @@
 ---
-title: "Oryx: Packages"
+title: 'Oryx: Packages'
 description: Use Oryx packages from npm to ensure you can easily upgrade to newer versions.
 last_updated: Apr 19, 2023
 template: concept-topic-template
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-packages.html
 ---
-
-
 
 The Oryx code base is [available on Github](https://github.com/spryker/oryx/), and the code is published and distributed as npm packages. [npmjs.com](https://www.npmjs.com/) is a widely used registry of packages. Package managers, like npm, yarn, deno, or bun, are used to install dependencies in a project. The dependencies are typically configured in the [package.json](https://docs.npmjs.com/cli/v9/configuring-npm/package-json) file of an application.
 

@@ -1,5 +1,5 @@
 ---
-title: "Dependency Injection: Providing services"
+title: 'Dependency Injection: Providing services'
 description: Recommended conventions for providing services
 template: concept-topic-template
 last_updated: Apr 13, 2023
@@ -14,7 +14,6 @@ To use and inject services, they must be provided in the DI container. Oryx offe
 - `FactoryProvider<T>`: binds a token to a factory function.
 - `ExistingProvider<T>`: binds a token to an existing token.
 - `AsyncClassProvider<T>`: binds a token to a asynchronously resolved class constructor.
-
 
 You can pass a list of providers as an argument to the `Injector` constructor or to the Injector's `provide` method.
 

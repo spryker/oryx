@@ -80,7 +80,7 @@ Here's an example:
 
 ```ts
 const counter = effect(() => {
-  console.log("counter changed", counter());
+  console.log('counter changed', counter());
 });
 ```
 
@@ -94,7 +94,7 @@ Example:
 ```ts
 const counter = effect(
   () => {
-    console.log("counter changed", counter());
+    console.log('counter changed', counter());
   },
   { defer: true, async: true }
 );
@@ -125,7 +125,7 @@ The `@elementEffect` directive integrates effects with component lifecycles for 
 class MyComponent extends LitElement {
   /* ... */
   @elementEffect()
-  logProductCode = () => console.log("Product code ", this.$product().code);
+  logProductCode = () => console.log('Product code ', this.$product().code);
 }
 ```
 

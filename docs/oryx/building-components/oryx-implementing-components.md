@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Implementing components"
+title: 'Oryx: Implementing components'
 description: Learn how to create an Oryx component
 last_updated: Sept 20, 2023
 template: concept-topic-template
@@ -20,7 +20,7 @@ In Oryx, components are organized in folders, like `src/product/id`, with some c
 Oryx components are based on the Web Components standard. One of the features of web components are custom elements. Custom elements are class-based elements that extend from `HTMLElement`. Lit provides `LitElement` as a base class to extend from when you create a custom element.
 
 ```ts
-import { LitElement, TemplateResult } from "lit";
+import { LitElement, TemplateResult } from 'lit';
 
 export class ProductIdComponent extends LitElement {
   protected override render(): TemplateResult {
@@ -52,8 +52,8 @@ While component classes extend from a base class, Oryx mostly avoids inheritance
 The following example shows how to extend from `ProductMixin` and consume the product data.
 
 ```ts
-import { LitElement, TemplateResult } from "lit";
-import { ProductMixin } from "@spryker-oryx/product";
+import { LitElement, TemplateResult } from 'lit';
+import { ProductMixin } from '@spryker-oryx/product';
 
 export class ProductIdComponent extends ProductMixin(LitElement) {
   protected override render(): TemplateResult {
@@ -77,9 +77,9 @@ Oryx components can be made configurable with options. [Component options](/docs
 Component options are resolved by `ContentMixin`, similar to how `ProductService` resolves the product data. You can combine multiple mixins in a component implementation—for example:
 
 ```ts
-import { resolve } from "@spryker-oryx/di";
-import { ContentMixin } from "@spryker-oryx/experience";
-import { ProductMixin } from "@spryker-oryx/product";
+import { resolve } from '@spryker-oryx/di';
+import { ContentMixin } from '@spryker-oryx/experience';
+import { ProductMixin } from '@spryker-oryx/product';
 
 interface ProductIdOptions {
   myOption?: boolean;
@@ -134,10 +134,10 @@ You've seen how `ProductMixin` resolves the product data and hides the integrati
 The Oryx DI container is used to register and resolve services using a token. You can read more about resolving services in [Dependency Injection: Using services](/docs/oryx/architecture/dependency-injection/dependency-injection-using-services.html). The following example shows how the pricing service is resolved.
 
 ```ts
-import { resolve } from "@spryker-oryx/di";
-import { ProductMixin } from "@spryker-oryx/product";
-import { PricingService } from "@spryker-oryx/site";
-import { LitElement } from "lit";
+import { resolve } from '@spryker-oryx/di';
+import { ProductMixin } from '@spryker-oryx/product';
+import { PricingService } from '@spryker-oryx/site';
+import { LitElement } from 'lit';
 
 export class ProductIdComponent extends ProductMixin(LitElement) {
   protected pricingService = resolve(PricingService);
@@ -157,9 +157,9 @@ Oryx renders pages on the server and returns the minimum amount of JavaScript ne
 When developing a component, you need to configure the hydration trigger using the `@hydrate` decorator that can take an event or context. The following example shows how to set up the component to be hydrated when the context is changed:
 
 ```ts
-import { resolve } from "@spryker-oryx/di";
-import { ProductMixin } from "@spryker-oryx/product";
-import { hydrate } from "@spryker-oryx/utilities";
+import { resolve } from '@spryker-oryx/di';
+import { ProductMixin } from '@spryker-oryx/product';
+import { hydrate } from '@spryker-oryx/utilities';
 
 @hydrate({ context: ProductContext.SKU })
 export class ProductIdComponent extends ProductMixin(LitElement) {
@@ -170,7 +170,7 @@ export class ProductIdComponent extends ProductMixin(LitElement) {
 Alternatively, you can configure hydration to be triggered by a specific event:
 
 ```ts
-@hydrate({ event: ["mouseover", "focus"] })
+@hydrate({ event: ['mouseover', 'focus'] })
 export class ProductIdComponent extends ProductMixin(LitElement) {
   // ...
 }
@@ -183,12 +183,12 @@ The component implementation you've started building in the previous section is 
 In the example below, you see how the component is registered inline in the appBuilder. However, we recommend creating a component definition in a separate file and maintain it in the component folder.
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
+import { appBuilder } from '@spryker-oryx/application';
 
 export const app = appBuilder().withComponents([
   {
-    name: "oryx-product-id",
-    impl: () => import("./components/product/id.component"),
+    name: 'oryx-product-id',
+    impl: () => import('./components/product/id.component'),
   },
 ]);
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Integrating components"
+title: 'Oryx: Integrating components'
 description: Oryx Components are build as web components
 last_updated: Sept 20, 2023
 template: concept-topic-template

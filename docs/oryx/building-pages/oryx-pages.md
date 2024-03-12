@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Creating pages"
+title: 'Oryx: Creating pages'
 description: Pages can be created from a data set or custom components
 last_updated: Aug 1, 2023
 template: concept-topic-template
@@ -27,11 +27,11 @@ The `Page` component type is used to create pages. A page is defined as a compos
 
 ```ts
 export const cartPage: ExperienceComponent = {
-  id: "cart-page",
-  type: "Page",
+  id: 'cart-page',
+  type: 'Page',
   meta: {
-    title: "Cart Page",
-    description: "Cart Page Description",
+    title: 'Cart Page',
+    description: 'Cart Page Description',
   },
   options: {
     // add component options here
@@ -50,10 +50,10 @@ Here's an example of how to configure the route of a page:
 
 ```ts
 export const cartPage: ExperienceComponent = {
-  id: "cart-page",
-  type: "Page",
+  id: 'cart-page',
+  type: 'Page',
   meta: {
-    route: "/cart",
+    route: '/cart',
   },
 };
 ```
@@ -77,9 +77,9 @@ You can provide custom experience data using Oryx's [dependency injection system
 A small utility function is available from the experience package to add custom data:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
-import { provideExperienceData } from "@spryker-oryx/experience";
-import { customPage } from "./custom/page";
+import { appBuilder } from '@spryker-oryx/application';
+import { provideExperienceData } from '@spryker-oryx/experience';
+import { customPage } from './custom/page';
 
 export const app = appBuilder()
   .withProviders(provideExperienceData(customData))
@@ -94,8 +94,8 @@ The following example shows how a single text component is added to the structur
 
 ```ts
 const customHomePage: ExperienceComponent = {
-  type: "oryx-content-text",
-  content: { data: { text: "<h1>Home page</h1>" } },
+  type: 'oryx-content-text',
+  content: { data: { text: '<h1>Home page</h1>' } },
 };
 ```
 
@@ -103,19 +103,19 @@ The following example shows a more complex variation, where the text component i
 
 ```ts
 const customHomePage: ExperienceComponent = {
-  type: "oryx-composition",
-  id: "home-hero",
+  type: 'oryx-composition',
+  id: 'home-hero',
   options: {
     rules: [
       {
-        layout: "grid",
+        layout: 'grid',
       },
     ],
   },
   components: [
     {
-      type: "oryx-content-text",
-      content: { data: { text: "<h1>Home page</h1>" } },
+      type: 'oryx-content-text',
+      content: { data: { text: '<h1>Home page</h1>' } },
     },
   ],
 };
@@ -128,17 +128,17 @@ To replace existing content provided by [presets](/docs/oryx/building-applicatio
 The selected content is defined by the `merge.selector` field. The following example shows how the provided data replaces the home page.
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
-import { provideExperienceData } from "@spryker-oryx/experience";
+import { appBuilder } from '@spryker-oryx/application';
+import { provideExperienceData } from '@spryker-oryx/experience';
 
 export const app = appBuilder()
   .withProviders(
     provideExperienceData({
       merge: {
-        selector: "#home-page",
+        selector: '#home-page',
       },
-      type: "oryx-content-text",
-      content: { data: { text: "<h1>Home page</h1>" } },
+      type: 'oryx-content-text',
+      content: { data: { text: '<h1>Home page</h1>' } },
     })
   )
   .create();
@@ -161,21 +161,21 @@ When you do not provide a merge `type`, by default, the selected component is re
 The following example shows how to _merge_ content in an existing component.
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
-import { provideExperienceData } from "@spryker-oryx/experience";
+import { appBuilder } from '@spryker-oryx/application';
+import { provideExperienceData } from '@spryker-oryx/experience';
 
 export const app = appBuilder()
   .withProviders(
     provideExperienceData({
       merge: {
-        selector: "site-logo",
-        type: "patch",
+        selector: 'site-logo',
+        type: 'patch',
       },
       content: {
         data: {
           graphic: null,
           image:
-            "https://www.coca-colacompany.com/content/dam/company/us/en/the-coca-cola-company-logo.svg",
+            'https://www.coca-colacompany.com/content/dam/company/us/en/the-coca-cola-company-logo.svg',
         },
       },
     })

@@ -1,12 +1,11 @@
 ---
-title: "Oryx: Presets"
+title: 'Oryx: Presets'
 description: Presets are used to install predefined applications
 template: concept-topic-template
 last_updated: Apr 4, 2023
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-presets.html
 ---
-
 
 The [presets package](https://www.npmjs.com/package/@spryker-oryx/presets) contains standard feature sets and resources that are used to create sample applications without writing [boilerplate](/docs/oryx/getting-started/oryx-boilerplate.md). Presets might be too opinionated to use for a production application, but they let you get started quickly.
 
@@ -23,8 +22,8 @@ The standard boilerplate uses the presets as the single package to install Oryx 
 A feature set contains a group of features that can be added with a single reference. A good example of using a feature set is provided in the boilerplate code:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/core";
-import { b2cFeatures } from "@spryker-oryx/oryx-presets";
+import { appBuilder } from '@spryker-oryx/core';
+import { b2cFeatures } from '@spryker-oryx/oryx-presets';
 
 export const app = appBuilder().withFeature(b2cFeatures).create();
 ```
@@ -51,8 +50,8 @@ A _theme_ represents the global visual appearance of an application, including t
 To apply a theme to your Oryx application, you can import it from the preset package and use it during the application setup:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/core";
-import { b2cFeatures, b2cTheme } from "@spryker-oryx/oryx-presets";
+import { appBuilder } from '@spryker-oryx/core';
+import { b2cFeatures, b2cTheme } from '@spryker-oryx/oryx-presets';
 
 export const app = appBuilder()
   .withFeature(b2cFeatures)
@@ -84,21 +83,15 @@ const app = appBuilder()
 As an application developer, you might want to create your own resources.
 
 ```ts
-import { Resources } from "@spryker-oryx/core";
+import { Resources } from '@spryker-oryx/core';
 
 const myResources: Resources = {
   graphics: {
     logo: {
-      source: () =>
-        import(
-          "/docs/oryx/my-logo"
-        ).then((m) => m.default),
+      source: () => import('/docs/oryx/my-logo').then((m) => m.default),
     },
     otherImg: {
-      source: () =>
-        import(
-          "/docs/oryx/my-other-img"
-        ).then((m) => m.default),
+      source: () => import('/docs/oryx/my-other-img').then((m) => m.default),
     },
   },
 };

@@ -1,5 +1,5 @@
 ---
-title: "Oryx: Icon system"
+title: 'Oryx: Icon system'
 description: Icons are used for a consistent design system throughout components in Oryx applications
 last_updated: July 29, 2023
 template: concept-topic-template
@@ -7,7 +7,7 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/styling/oryx-icon-system.html
 ---
 
-Icons provide clear visual cues, enhance user interactions, and save screen space. Oryx offers a sophisticated icon system that ensures a consistent design across all components of an  application.
+Icons provide clear visual cues, enhance user interactions, and save screen space. Oryx offers a sophisticated icon system that ensures a consistent design across all components of an application.
 
 ## Icon component
 
@@ -23,11 +23,11 @@ Icons are rendered using `IconComponent`, a design system component designed for
 
 The icon system is standardized around the 24x24 pixels format. Icons can be scaled to fit alternative sizes with three pre-defined sizes available:
 
-| SIZE NAME | PIXELS |
-|-|-|
-| `xs`: extra small | 16x16 |
-| `md`: medium | 20x20 |
-| `lg`: large | 24x24 |
+| SIZE NAME         | PIXELS |
+| ----------------- | ------ |
+| `xs`: extra small | 16x16  |
+| `md`: medium      | 20x20  |
+| `lg`: large       | 24x24  |
 
 To maintain consistency, `IconComponent` provides the `--oryx-icon-size` CSS variable, which applies to both font-based and SVG-based icons. This feature enables you to control icon sizes throughout UI effortlessly, ensuring icons remain clear and sharp across different contexts and devices.
 
@@ -83,26 +83,27 @@ Here's an example of how to apply colors using standard CSS or the `--oryx-icon-
 ## Variable font styles
 
 When using Material Symbols, you can configure the adjustable variable font styles of the icons:
-* fill
-* weight
-* grade
-* optical size
+
+- fill
+- weight
+- grade
+- optical size
 
 ### Global configuration
 
 You can provide the variable font styles globally using [design tokens](/docs/oryx/building-applications/styling/oryx-design-tokens.md):
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
+import { appBuilder } from '@spryker-oryx/application';
 
 export const app = appBuilder().withTheme({
   designTokens: [
     {
       icon: {
-        weight: "100",
-        fill: "1",
-        grade: "0",
-        optical: "48",
+        weight: '100',
+        fill: '1',
+        grade: '0',
+        optical: '48',
       },
     },
   ],
@@ -127,8 +128,8 @@ Alternatively, you can configure the variable font styles for parts of the DOM b
 You can also style the variable font for an individual icon by specifying style rules for a single icon type:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
-import { materialDesignIcons } from "@spryker-oryx/resources";
+import { appBuilder } from '@spryker-oryx/application';
+import { materialDesignIcons } from '@spryker-oryx/resources';
 
 export const app = appBuilder().withTheme({
   icons: {
@@ -139,7 +140,7 @@ export const app = appBuilder().withTheme({
           id: materialDesignIcons.id,
           styles: { fill: 1 },
         },
-        types: ["person"],
+        types: ['person'],
       },
     ],
   },
@@ -160,7 +161,7 @@ export const customTheme: Theme = {
       {
         svg: true,
         mapping: {
-          [IconTypes.Cart]: () => import("./icons/cart").then((s) => s.default),
+          [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
         },
       },
     ],
@@ -171,8 +172,8 @@ export const customTheme: Theme = {
 You can use the theme in the `appBuilder` configuration, on top of an existing theme, or as the main theme:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/application";
-import { materialDesignIcons, storefrontIcons } from "@spryker-oryx/resources";
+import { appBuilder } from '@spryker-oryx/application';
+import { materialDesignIcons, storefrontIcons } from '@spryker-oryx/resources';
 
 export const app = appBuilder().withTheme(customTheme).create();
 ```

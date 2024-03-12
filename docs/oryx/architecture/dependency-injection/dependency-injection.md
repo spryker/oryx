@@ -7,7 +7,6 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/dependency-injection/dependency-injection.html
 ---
 
-
 Dependency injection (DI) is a design pattern that provides loosely-coupled, maintainable, and testable code. It improves modularity, maintainability, testability, and is easily customizable and extensible.
 
 In the context of Oryx, DI enables you to customize logic deep inside the framework, which is particularly useful for projects with complex or rapidly-evolving requirements. Without DI, you need to override large portions of the logic or create a lot of boilerplate code. By leveraging DI, you can override logic while still being able to upgrade to new versions of Oryx.

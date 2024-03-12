@@ -1,13 +1,11 @@
 ---
-title: "Oryx: Feature sets"
+title: 'Oryx: Feature sets'
 description: Feature sets are collections of standard features
 last_updated: May 24, 2023
 template: concept-topic-template
 redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-feature-sets.html
 ---
-
-
 
 A _feature set_ is a group of related features that can be added to an Oryx application with a single reference. Feature sets simplify the process of setting up an application by reducing the amount of [boilerplate code](/docs/oryx/getting-started/oryx-boilerplate.md) required to configure and initialize the application.
 
@@ -63,23 +61,23 @@ Here's an example of static experience data for the Login page:
 
 ```ts
 export const loginPage = {
-  type: "Page",
+  type: 'Page',
   meta: {
-    title: "Login Page",
-    route: "/login",
-    description: "Login Page Description",
+    title: 'Login Page',
+    route: '/login',
+    description: 'Login Page Description',
   },
   options: {
     data: {
-      rules: [{ layout: "flex", padding: "30px 0" }],
+      rules: [{ layout: 'flex', padding: '30px 0' }],
     },
   },
   components: [
     {
-      type: "oryx-auth-login",
+      type: 'oryx-auth-login',
       options: {
         data: {
-          rules: [{ width: "50%", margin: "auto" }],
+          rules: [{ width: '50%', margin: 'auto' }],
         },
       },
     },
@@ -100,11 +98,8 @@ The labs package provides experimental features that are not designed for produc
 In addition to the provided feature sets, you can create custom sets tailored to your business requirements. To create a custom set, create an array of feature objects that implement the `AppFeature` interface and pass it to the `withFeature()` method of the `appBuilder()` object. For example:
 
 ```ts
-import { appBuilder } from "@spryker-oryx/core";
-import {
-  customFeature1,
-  customFeature2,
-} from "/docs/oryx/my-features";
+import { appBuilder } from '@spryker-oryx/core';
+import { customFeature1, customFeature2 } from '/docs/oryx/my-features';
 
 const customFeatures = [customFeature1, customFeature2];
 

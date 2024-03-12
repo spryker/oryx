@@ -6,10 +6,10 @@ redirect_from:
   - /docs/scos/dev/front-end-development/202311.0/oryx/oryx-application-orchestration/oryx-application-feature.html
 ---
 
-
 `AppFeature` is a higher level collection of lower-level primitives, such as the following:
 
 <!-- TODO: Link to components -->
+
 - Components
 <!-- TODO: Link to providers -->
 - Providers
