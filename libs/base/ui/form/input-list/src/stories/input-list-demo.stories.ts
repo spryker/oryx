@@ -1,11 +1,11 @@
 import { CheckboxComponent } from '@spryker-oryx/ui/checkbox';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Direction } from '../../../../src/utilities/model';
 import { InputListComponent } from '../input-list.component';
-import { inputs, text, UxType } from './util';
+import { UxType, inputs, text } from './util';
 
 interface Props {
   title: string;

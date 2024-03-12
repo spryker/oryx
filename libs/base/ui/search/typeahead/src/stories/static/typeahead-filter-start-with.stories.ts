@@ -1,6 +1,6 @@
 import { sideBySide, states } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { FilterStrategyType } from '../../index';

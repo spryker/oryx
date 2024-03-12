@@ -1,7 +1,7 @@
 import { states } from '@/tools/storybook';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { SelectComponent } from '../../index';

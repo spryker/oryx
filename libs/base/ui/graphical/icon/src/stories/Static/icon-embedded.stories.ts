@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, svg, TemplateResult } from 'lit';
+import { TemplateResult, html, svg } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { icon } from '../../icon.factory';
 import { Icon } from '../../icon.model';

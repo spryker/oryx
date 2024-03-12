@@ -1,10 +1,10 @@
-import { getWindow, installWindowOnGlobal } from './dom-shim';
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { createContext, Script } from 'vm';
+import { Script, createContext } from 'vm';
+import { getWindow, installWindowOnGlobal } from './dom-shim';
 
 installWindowOnGlobal();
 

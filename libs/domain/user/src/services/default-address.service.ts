@@ -1,7 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { createCommand, createQuery } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, skip } from 'rxjs';
+import { Observable, map, skip } from 'rxjs';
 import { Address } from '../models';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';

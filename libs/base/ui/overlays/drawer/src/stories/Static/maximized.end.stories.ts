@@ -1,7 +1,7 @@
 import { OverlaysDecorator } from '@/tools/storybook';
 import { Position } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 export default {

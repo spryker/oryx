@@ -1,6 +1,6 @@
 import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;

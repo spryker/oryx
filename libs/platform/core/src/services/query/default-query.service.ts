@@ -6,8 +6,8 @@ import { Command, EffectDefinition, Query } from './models';
 import {
   COMMAND_TOKEN,
   EFFECT_TOKEN,
-  QueryService,
   QUERY_TOKEN,
+  QueryService,
 } from './query.service';
 
 export class DefaultQueryService

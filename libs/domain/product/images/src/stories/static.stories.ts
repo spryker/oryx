@@ -1,14 +1,14 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import {
-  ProductImagesComponentOptions,
-  ProductImagesMainLayout,
   ProductImagesNavigationAlignment as PINA,
   ProductImagesNavigationDisplay as PIND,
-  ProductImagesNavigationDisplay,
   ProductImagesNavigationLayout as PINL,
   ProductImagesNavigationPosition as PINP,
+  ProductImagesComponentOptions,
+  ProductImagesMainLayout,
+  ProductImagesNavigationDisplay,
   ProductImagesNavigationPosition,
 } from '../images.model';
 

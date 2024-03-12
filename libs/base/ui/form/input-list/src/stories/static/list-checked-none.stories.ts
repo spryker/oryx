@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { input, InputListDecorator, inputs, text, UxType } from '../util';
+import { InputListDecorator, UxType, input, inputs, text } from '../util';
 
 export default {
   title: `${storybookPrefix}/Form/Input List/Static`,

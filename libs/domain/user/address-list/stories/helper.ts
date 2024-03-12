@@ -5,7 +5,7 @@ import {
   UserAddressListItemOptions,
 } from '@spryker-oryx/user/address-list-item';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 
 export const renderSelector = (
   type: MockAddressType,

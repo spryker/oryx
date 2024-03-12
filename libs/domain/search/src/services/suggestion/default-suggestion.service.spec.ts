@@ -1,5 +1,6 @@
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouteType } from '@spryker-oryx/router';
 import { createSuggestionMock } from '@spryker-oryx/search/mocks';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -10,7 +11,6 @@ import {
 } from '../adapter/suggestion.adapter';
 import { DefaultSuggestionService } from './default-suggestion.service';
 import { SuggestionService } from './suggestion.service';
-import { RouteType } from '@spryker-oryx/router';
 
 const completion = ['test', 'test 1', 'test 2', 'any', 'any test'];
 

@@ -5,7 +5,7 @@ import {
   ProductListQualifier,
 } from '@spryker-oryx/product';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 import { TemplateResult } from 'lit/development';
 import urlJoin from 'url-join';
 import { SearchPaginationOptions } from './pagination.model';
