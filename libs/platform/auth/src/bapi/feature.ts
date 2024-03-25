@@ -45,6 +45,7 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
             '/oauth/cb/spryker',
             globalThis.location.origin
           ).toString(),
+          scope: 'user',
         },
       ],
       defaultProvider: 'spryker',
