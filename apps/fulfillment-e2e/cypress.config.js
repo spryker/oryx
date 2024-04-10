@@ -24,7 +24,6 @@ module.exports = defineConfig({
   env: {
     glueApiUrl: 'https://glue.de.spryker-b2c.cloud.spryker.toys',
     backofficeUrl: 'http://backoffice.de.spryker-b2c.cloud.spryker.toys',
-    backofficeApiUrl:
-      'https://glue-backend.de.spryker-b2c.cloud.spryker.toys',
+    backofficeApiUrl: 'https://glue-backend.de.spryker-b2c.cloud.spryker.toys',
   },
 });
