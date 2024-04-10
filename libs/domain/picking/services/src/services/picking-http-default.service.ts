@@ -56,7 +56,7 @@ export class PickingHttpDefaultService implements PickingHttpService {
     return `${this.baseUrl}${url}`;
   }
 
-  protected expandContentType<T = unknown>(options?): RequestOptions<T> {
+  protected expandContentType<T = unknown>(options?: any): RequestOptions<T> {
     const headers = new Headers(options?.headers);
 
     if (!options) {
