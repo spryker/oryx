@@ -33,8 +33,8 @@ declare global {
 const indexedDBName = 'fulfillment-app-db';
 const indexedDBStorageName = 'oryx-local-db-storage';
 export const defaultUser = {
-  email: 'harald@spryker.com',
-  password: 'change123',
+  email: 'sonia+control93245@spryker.com',
+  password: 'evho9ba7bErkN1QE78J4X',
   warehouseName: 'Warehouse1',
 };
 
