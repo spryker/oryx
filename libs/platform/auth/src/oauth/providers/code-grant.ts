@@ -125,9 +125,9 @@ export class OauthCodeGrantProvider implements OauthProvider {
 
     const scope = this.getScopeFor(request);
 
-    if (scope) {
-      authUrl.searchParams.set('scope', scope);
-    }
+    // if (scope) {
+    //   authUrl.searchParams.set('scope', scope);
+    // }
 
     if (pkce) {
       authUrl.searchParams.set('code_challenge', pkce.codeChallenge);
