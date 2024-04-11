@@ -113,9 +113,6 @@ Cypress.Commands.add('glueApiCreateOrder', (numberOfItems = 1) => {
 Cypress.Commands.add('waitForPickingToAppear', (orderId: string) => {
   const list = new ListsFragment();
 
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(10000);
-
   list.getPickingListsItems().should('have.length', 1);
   list.getPickingListItemByOrderId(orderId).should('be.visible');
 
