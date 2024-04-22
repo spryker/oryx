@@ -1,7 +1,0 @@
-[build]
-  ignore = "cd ../../ && bash ./should-ignore-build.sh ${PROJECT_NAME}"
-
-[[redirects]]
-  from = "/*"
-  to = "index.html"
-  status = 200

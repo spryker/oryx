@@ -133,20 +133,6 @@
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
-      "@spryker-oryx/merchant": ["libs/domain/merchant/src/index.ts"],
-      "@spryker-oryx/merchant/mocks": [
-        "libs/domain/merchant/src/mocks/index.ts"
-      ],
-      "@spryker-oryx/merchant/offer": ["libs/domain/merchant/offer/index.ts"],
-      "@spryker-oryx/merchant/offer-list": [
-        "libs/domain/merchant/offer-list/index.ts"
-      ],
-      "@spryker-oryx/merchant/schedule": [
-        "libs/domain/merchant/schedule/index.ts"
-      ],
-      "@spryker-oryx/merchant/services": [
-        "libs/domain/merchant/services/index.ts"
-      ],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"
@@ -208,22 +194,7 @@
         "libs/domain/picking/warehouse-assignment/index.ts"
       ],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
-      "@spryker-oryx/presets/b2b-storefront": [
-        "libs/template/presets/b2b-storefront/index.ts"
-      ],
-      "@spryker-oryx/presets/backoffice": [
-        "libs/template/presets/backoffice/index.ts"
-      ],
-      "@spryker-oryx/presets/backoffice-ng": [
-        "libs/template/presets/backoffice-ng/index.ts"
-      ],
       "@spryker-oryx/presets/fes": ["libs/template/presets/fes/index.ts"],
-      "@spryker-oryx/presets/fulfillment": [
-        "libs/template/presets/fulfillment/index.ts"
-      ],
-      "@spryker-oryx/presets/fulfillment-sw": [
-        "libs/template/presets/fulfillment-sw/index.ts"
-      ],
       "@spryker-oryx/presets/storefront": [
         "libs/template/presets/storefront/index.ts"
       ],
