@@ -1,7 +1,5 @@
 import { storefrontResources } from '@spryker-oryx/presets/storefront';
-import {
-  storefrontTheme,
-} from '@spryker-oryx/themes';
+import { storefrontTheme } from '@spryker-oryx/themes';
 
 export const theme = {
   default: 'storefront',
