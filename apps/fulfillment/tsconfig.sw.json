@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "types": ["vite/client", "vite-plugin-pwa/client", "node", "web"],
-    "sourceMap": true
-  },
-  "exclude": ["src/**/*.ts", "**/*.spec.ts"],
-  "include": ["sw/**/*.ts"]
-}
