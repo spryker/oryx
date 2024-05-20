@@ -24,6 +24,10 @@ import { generateID } from '../services/utils';
 import { parseToken } from './utils';
 
 export class SapiIdentityService implements IdentityService {
+  protected readonly authService = inject(AuthService);
+  protected readonly authTokenService = inject(AuthTokenService);
+  protected readonly storage = inject(StorageService);
+
   protected ANONYMOUS_USER_IDENTIFIER = 'oryx.anonymous-user';
 
   protected generateGuest$ = new BehaviorSubject<boolean>(false);
@@ -57,12 +61,6 @@ export class SapiIdentityService implements IdentityService {
       }),
       map((userId) => ({ isAuthenticated: false, userId }))
     );
-
-  constructor(
-    protected readonly authService = inject(AuthService),
-    protected readonly authTokenService = inject(AuthTokenService),
-    protected readonly storage = inject(StorageService)
-  ) {}
 
   get(options?: IdentityOptions): Observable<AuthIdentity> {
     if (options?.requireGuest) {

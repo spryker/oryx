@@ -50,9 +50,15 @@ export const ProductMixin = <
               )
       );
 
+    protected $contextProduct = computed(() => {
+      return this.contextController.get('full');
+    });
+
     protected $product = computed(() => {
       const qualifier = this.$productQualifier();
-      return qualifier ? this.productService?.get(qualifier) : of(null);
+      const product = this.$contextProduct();
+
+      return product ?? (qualifier ? this.productService?.get(qualifier) : of(null));
     });
   }
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;
