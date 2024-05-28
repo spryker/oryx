@@ -14,7 +14,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Observable, of } from 'rxjs';
-import { DefaultCheckoutAdapter } from './default-checkout.adapter';
+import { GlueCheckoutAdapter } from './glue-checkout.adapter';
 
 const mockApiUrl = 'mockApiUrl';
 const cartId = 'mockid';
@@ -36,7 +36,7 @@ class MockIdentityService implements Partial<IdentityService> {
     .mockReturnValue(of(mockAnonymousUser));
 }
 
-describe('DefaultCheckoutService', () => {
+describe('GlueCheckoutService', () => {
   let service: CheckoutAdapter;
   let identity: MockIdentityService;
   let http: HttpTestService;
@@ -52,7 +52,7 @@ describe('DefaultCheckoutService', () => {
         },
         {
           provide: CheckoutAdapter,
-          useClass: DefaultCheckoutAdapter,
+          useClass: GlueCheckoutAdapter,
         },
         {
           provide: 'SCOS_BASE_URL',
@@ -81,7 +81,7 @@ describe('DefaultCheckoutService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultCheckoutAdapter);
+    expect(service).toBeInstanceOf(GlueCheckoutAdapter);
   });
 
   describe('get should send `post` request', () => {

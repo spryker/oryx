@@ -14,7 +14,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable, combineLatest, map, switchMap, take } from 'rxjs';
 
-export class DefaultCheckoutAdapter implements CheckoutAdapter {
+export class GlueCheckoutAdapter implements CheckoutAdapter {
   constructor(
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
