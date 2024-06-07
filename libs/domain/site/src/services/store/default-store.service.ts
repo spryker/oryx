@@ -8,7 +8,7 @@ import {
   shareReplay,
 } from 'rxjs';
 import { Store } from '../../models';
-import { StoreAdapter } from '../adapter';
+import { StoreAdapter } from '../adapter/spryker-glue';
 import { StoreService } from './store.service';
 
 export class DefaultStoreService implements StoreService {

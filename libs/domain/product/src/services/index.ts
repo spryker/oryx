@@ -1,4 +1,5 @@
-export * from './adapter';
+export * from './adapter/mock';
+export * from './adapter/spryker-glue';
 export * from './category';
 export * from './default-product.service';
 export * from './images';

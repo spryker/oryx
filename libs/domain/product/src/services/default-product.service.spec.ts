@@ -4,7 +4,7 @@ import { productQueries } from '@spryker-oryx/product';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductQualifier } from '../models';
-import { ProductAdapter } from './adapter/product.adapter';
+import { ProductAdapter } from './adapter/spryker-glue/product.adapter';
 import { DefaultProductService } from './default-product.service';
 import { ProductService } from './product.service';
 

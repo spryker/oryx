@@ -3,7 +3,7 @@ import {
   applicationFeature,
 } from '@spryker-oryx/application';
 import { SapiAuthComponentsFeature, SapiAuthFeature } from '@spryker-oryx/auth';
-import { cartFeature } from '@spryker-oryx/cart';
+import {cartFeature, glueCartFeature, mockCartFeature} from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
@@ -17,7 +17,7 @@ import {
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
-import { productFeature } from '@spryker-oryx/product';
+import {glueProductFeature, glueProductProviders, productFeature} from '@spryker-oryx/product';
 import {
   brandGraphics,
   commonGraphics,
@@ -25,7 +25,7 @@ import {
 } from '@spryker-oryx/resources';
 import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature, searchPreviewProviders } from '@spryker-oryx/search';
-import { siteFeature } from '@spryker-oryx/site';
+import {glueSiteFeature, mockSiteFeature, siteFeature} from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { featureVersion } from '@spryker-oryx/utilities';
@@ -33,6 +33,7 @@ import { isServer } from 'lit';
 import 'urlpattern-polyfill';
 import { StaticExperienceFeature } from './experience';
 import { StorefrontMetaInitializer } from './meta.initializer';
+import {mockProductFeature} from "@spryker-oryx/product";
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
@@ -80,3 +81,17 @@ export const storefrontFeatures: AppFeature[] = [
   },
   StaticExperienceFeature,
 ];
+
+export const storefrontMockFeatures = [
+  ...storefrontFeatures,
+  mockCartFeature,
+  mockSiteFeature,
+  mockProductFeature
+]
+
+export const storefrontGlueFeatures = [
+  ...storefrontFeatures,
+  glueCartFeature,
+  glueSiteFeature,
+  glueProductFeature
+]

@@ -3,7 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { PriceModes } from '../models';
-import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
+import { GlueStoreAdapter, StoreAdapter, storeNormalizer } from './adapter/spryker-glue';
 import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
 import { CountryService, DefaultCountryService } from './country';
 import {
@@ -39,6 +39,7 @@ import {
 } from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
+import {MockStoreAdapter} from "./adapter";
 
 declare global {
   interface AppEnvironment {
@@ -47,6 +48,21 @@ declare global {
     readonly STORE?: string;
   }
 }
+
+export const glueSiteConnectors: Provider[] = [
+  {
+    provide: StoreAdapter,
+    useClass: GlueStoreAdapter,
+  },
+  ...storeNormalizer,
+];
+
+export const mockSiteConnectors: Provider[] = [
+  {
+    provide: StoreAdapter,
+    useClass: MockStoreAdapter
+  }
+]
 
 export const siteProviders: Provider[] = [
   {
@@ -72,10 +88,6 @@ export const siteProviders: Provider[] = [
     useClass: DefaultStoreService,
   },
 
-  {
-    provide: StoreAdapter,
-    useClass: DefaultStoreAdapter,
-  },
   {
     provide: CountryService,
     useClass: DefaultCountryService,
@@ -112,7 +124,6 @@ export const siteProviders: Provider[] = [
     provide: GenderService,
     useClass: DefaultGenderService,
   },
-  ...storeNormalizer,
   {
     provide: HttpInterceptor,
     useClass: AcceptLanguageInterceptor,
@@ -145,4 +156,14 @@ export const siteProviders: Provider[] = [
   //   provide: HttpInterceptor,
   //   useClass: StoreInterceptor,
   // },
+];
+
+export const glueSiteProviders: Provider[] = [
+  ...glueSiteConnectors,
+  ...siteProviders
+];
+
+export const mockSiteProviders: Provider[] = [
+  ...mockSiteConnectors,
+  ...siteProviders
 ];
