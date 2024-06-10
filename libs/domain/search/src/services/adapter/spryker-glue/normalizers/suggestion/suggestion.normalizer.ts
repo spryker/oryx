@@ -10,7 +10,7 @@ import {
 import { RouteType } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, map } from 'rxjs';
-import { Suggestion } from '../../../../models';
+import { Suggestion } from '../../../../../models';
 import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
 

@@ -1,6 +1,10 @@
 import { AppFeature } from '@spryker-oryx/core';
 import * as components from './components';
-import {glueProductProviders, productProviders, mockProductProviders} from './services';
+import {
+  glueProductProviders,
+  mockProductProviders,
+  productProviders,
+} from './services';
 export * from './components';
 
 export const productComponents = Object.values(components);

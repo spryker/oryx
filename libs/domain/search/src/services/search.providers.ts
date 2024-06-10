@@ -4,13 +4,14 @@ import { ExperienceDataRevealer } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { facetProviders } from '../renderers';
+import { MockSuggestionAdapter } from './adapter';
 import {
   ContentSuggestionAdapter,
-  DefaultSuggestionAdapter,
+  GlueSuggestionAdapter,
   SuggestionAdapter,
   SuggestionField,
   suggestionNormalizer,
-} from './adapter';
+} from './adapter/spryker-glue';
 import { DefaultFacetListService } from './default-facet-list.service';
 import { DefaultSortingService } from './default-sorting.service';
 import { FacetListService } from './facet-list.service';
@@ -35,11 +36,21 @@ import {
   productSuggestionRenderer,
 } from './suggestion';
 
-export const searchProviders: Provider[] = [
+export const glueSearchConnectors: Provider[] = [
   {
     provide: SuggestionAdapter,
-    useClass: DefaultSuggestionAdapter,
+    useClass: GlueSuggestionAdapter,
   },
+];
+
+export const mockSearchConnectors: Provider[] = [
+  {
+    provide: SuggestionAdapter,
+    useClass: MockSuggestionAdapter,
+  },
+];
+
+export const searchProviders: Provider[] = [
   featureVersion >= '1.4'
     ? {
         provide: SuggestionAdapter,
@@ -83,6 +94,16 @@ export const searchProviders: Provider[] = [
   ...(featureVersion >= '1.4'
     ? []
     : provideLitRoutes({ routes: categoryRoutes })),
+];
+
+export const glueSearchProviders: Provider[] = [
+  ...glueSearchConnectors,
+  ...searchProviders,
+];
+
+export const mockSearchProviders: Provider[] = [
+  ...mockSearchConnectors,
+  ...searchProviders,
 ];
 
 export const searchPreviewProviders: Provider[] = [

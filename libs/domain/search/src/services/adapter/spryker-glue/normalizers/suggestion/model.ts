@@ -3,7 +3,7 @@ import {
   ApiProductModel,
   DeserializedProductIncludes,
 } from '@spryker-oryx/product';
-import { ApiSuggestionModel } from '../../../../models';
+import { ApiSuggestionModel } from '../../../../../models';
 
 export type DeserializedSuggestion = ApiSuggestionModel.Attributes &
   Pick<

@@ -6,8 +6,8 @@ import {
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { SuggestionQualifier } from '../../models';
-import { DefaultSuggestionAdapter } from './default-suggestion.adapter';
+import { SuggestionQualifier } from '../../../models';
+import { GlueSuggestionAdapter } from './glue-suggestion.adapter';
 import { SuggestionNormalizer } from './normalizers';
 import { SuggestionAdapter } from './suggestion.adapter';
 
@@ -33,7 +33,7 @@ class MockJsonApiIncludeService implements Partial<JsonApiIncludeService> {
   }
 }
 
-describe('DefaultSuggestionAdapter', () => {
+describe('GlueSuggestionAdapter', () => {
   let service: SuggestionAdapter;
   let http: HttpTestService;
 
@@ -46,7 +46,7 @@ describe('DefaultSuggestionAdapter', () => {
         },
         {
           provide: SuggestionAdapter,
-          useClass: DefaultSuggestionAdapter,
+          useClass: GlueSuggestionAdapter,
         },
         {
           provide: 'SCOS_BASE_URL',
@@ -73,7 +73,7 @@ describe('DefaultSuggestionAdapter', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultSuggestionAdapter);
+    expect(service).toBeInstanceOf(GlueSuggestionAdapter);
   });
 
   describe('get method', () => {

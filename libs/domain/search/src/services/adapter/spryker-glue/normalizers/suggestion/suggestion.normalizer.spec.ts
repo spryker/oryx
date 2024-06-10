@@ -1,4 +1,5 @@
 import { ConcreteProductsNormalizer } from '@spryker-oryx/product';
+import { RouteType } from '@spryker-oryx/router';
 import { of, take } from 'rxjs';
 import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
@@ -6,7 +7,6 @@ import {
   suggestionAttributesNormalizer,
   suggestionProductNormalizer,
 } from './suggestion.normalizer';
-import { RouteType } from '@spryker-oryx/router';
 
 const mockDeserializedSuggestion = {
   completion: ['A'],

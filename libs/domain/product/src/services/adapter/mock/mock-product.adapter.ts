@@ -1,25 +1,18 @@
-import {ProductAdapter} from "../../index";
-import {Product, ProductQualifier} from "@spryker-oryx/product";
-import {Observable, of} from "rxjs";
+import { Product, ProductQualifier } from '@spryker-oryx/product';
+import { Observable, of } from 'rxjs';
+import { ProductAdapter } from '../../index';
+import { mockProducts } from './mock-product';
 
 export class MockProductAdapter implements ProductAdapter {
   getKey(qualifier: ProductQualifier): string {
     return (qualifier.sku ?? '') + qualifier.include?.sort()?.join('');
   }
 
-  get({sku, include}: ProductQualifier): Observable<Product> {
-    return of({
-      sku: 'sku',
-      name: 'name',
-      price: 100,
-      currency: 'USD',
-      images: [],
-      categories: [],
-      attributes: [],
-      labels: [],
-      abstractProducts: [],
-      availabilities: [],
-      prices: [],
-    });
+  get(qualifier: ProductQualifier): Observable<Product> {
+    const product = mockProducts.find(
+      (p) => p.sku === qualifier.sku
+    ) as Product;
+
+    return of(product);
   }
 }

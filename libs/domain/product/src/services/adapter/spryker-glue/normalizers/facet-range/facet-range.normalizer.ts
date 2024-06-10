@@ -1,5 +1,9 @@
 import { Transformer } from '@spryker-oryx/core';
-import { ApiProductListModel, FacetType, RangeFacet } from '../../../../../models';
+import {
+  ApiProductListModel,
+  FacetType,
+  RangeFacet,
+} from '../../../../../models';
 
 export const FacetRangeNormalizer = 'oryx.FacetRangeNormalizer*';
 

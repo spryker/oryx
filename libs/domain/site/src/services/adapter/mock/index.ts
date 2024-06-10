@@ -1,2 +1,2 @@
-export * from './mock-store.adapter';
 export * from './mock-store';
+export * from './mock-store.adapter';

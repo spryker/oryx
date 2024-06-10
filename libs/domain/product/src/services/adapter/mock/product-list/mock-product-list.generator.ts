@@ -3,16 +3,16 @@ import {
   ProductList,
   ProductListQualifier,
 } from '@spryker-oryx/product';
-import { MockProductService } from '../mock-product.service';
+import { mockProducts } from '../mock-product';
 
 const createProducts = (qualifier: ProductListQualifier): Product[] => {
   const listLength = qualifier?.ipp || 12;
 
-  if (listLength > MockProductService.mockProducts.length) {
-    return MockProductService.mockProducts;
+  if (listLength > mockProducts.length) {
+    return mockProducts;
   }
 
-  return [...MockProductService.mockProducts].splice(0, listLength);
+  return [...mockProducts].splice(0, listLength);
 };
 
 export const createProductListMock = (

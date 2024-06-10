@@ -2,7 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import { html, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionField } from '../../adapter';
+import { SuggestionField } from '../../adapter/spryker-glue';
 import { SuggestionService } from '../suggestion.service';
 import {
   SuggestionRenderer,

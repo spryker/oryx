@@ -8,7 +8,6 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 import { ApiProductModel } from '../../../models';
-import { GlueProductAdapter } from './glue-product.adapter';
 import { ProductNormalizer } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 

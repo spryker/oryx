@@ -1,2 +1,2 @@
-export * from './spryker-glue';
 export * from './mock';
+export * from './spryker-glue';

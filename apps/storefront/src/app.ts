@@ -1,12 +1,14 @@
 import { appBuilder } from '@spryker-oryx/application';
-import {glueCartFeature, mockCartFeature, multiCartFeature} from '@spryker-oryx/cart';
+import { multiCartFeature } from '@spryker-oryx/cart';
 import { labsFeatures } from '@spryker-oryx/labs';
 import { merchantFeature } from '@spryker-oryx/merchant';
 import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';
-import {storefrontFeatures, storefrontGlueFeatures, storefrontMockFeatures} from '@spryker-oryx/presets/storefront';
+import {
+  storefrontFeatures,
+  storefrontGlueFeatures,
+  storefrontMockFeatures,
+} from '@spryker-oryx/presets/storefront';
 import { storefrontTheme } from '@spryker-oryx/themes';
-import {glueSiteFeature, mockSiteFeature} from "@spryker-oryx/site";
-import {glueProductFeature} from "@spryker-oryx/product";
 
 const env = import.meta.env;
 
@@ -19,26 +21,14 @@ const features = [
       ]),
   ...(env.ORYX_MERCHANT ? [merchantFeature] : []),
   ...(env.ORYX_LABS ? labsFeatures : []),
-  // mockCartFeature,
-  // glueCartFeature,
-  // glueSiteFeature,
-  // mockSiteFeature,
-  // glueProductFeature,
-  // mockProductFeature
 ];
 
-const mockFeatures = [
-  ...storefrontMockFeatures,
-  glueProductFeature
-]
+const mockFeatures = [...storefrontMockFeatures];
 
-const glueFeatures = [
-  ...storefrontGlueFeatures,
-]
-
+const glueFeatures = [...storefrontGlueFeatures];
 
 export const app = appBuilder()
-  .withFeature(glueFeatures)
+  .withFeature(mockFeatures)
   .withTheme([storefrontTheme])
   .withEnvironment(env)
   .create();

@@ -11,14 +11,15 @@ import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
   ConcreteProductsNormalizer,
-  GlueProductAdapter,
   DefaultProductMediaNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
   FacetRatingNormalizer,
+  GlueProductAdapter,
   PriceNormalizer,
   ProductAdapter,
+  ProductLabelsNormalizer,
   ProductMediaSetNormalizer,
   availabilityNormalizer,
   categoryIdNormalizer,
@@ -31,26 +32,30 @@ import {
   mediaSetNormalizer,
   priceNormalizer,
   productIncludes,
+  productLabelNormalizer,
   productListNormalizer,
   productNormalizer,
 } from './adapter';
-import {
-  ProductLabelsNormalizer,
-  productLabelNormalizer,
-} from './adapter';
+import { MockProductListAdapter } from './adapter/mock';
+import { MockProductCategoryAdapter } from './adapter/mock/mock-category.adapter';
+import { MockProductAdapter } from './adapter/mock/mock-product.adapter';
+import { MockProductRelationsListAdapter } from './adapter/mock/product-relations/mock-product-relations-list.adapter';
 import {
   PaginationNormalizer,
   paginationNormalizer,
 } from './adapter/spryker-glue/normalizers/pagination';
 import { relationsListNormalizer } from './adapter/spryker-glue/normalizers/relations-list';
-import { SortNormalizer, sortNormalizer } from './adapter/spryker-glue/normalizers/sort';
+import {
+  SortNormalizer,
+  sortNormalizer,
+} from './adapter/spryker-glue/normalizers/sort';
 import {
   CategoryListNormalizer,
   CategoryNodeNormalizer,
   CategoryNormalizer,
   CategoryTreeNormalizer,
-  GlueProductCategoryAdapter,
   DefaultProductCategoryService,
+  GlueProductCategoryAdapter,
   ProductCategoryAdapter,
   ProductCategoryService,
   categoryEffects,
@@ -69,7 +74,6 @@ import {
 } from './images/product-media.config';
 import { productJsonLdNormalizers } from './jsonld';
 import {
-  GlueProductListAdapter,
   DefaultProductListPageService,
   DefaultProductListService,
   ProductListAdapter,
@@ -84,7 +88,6 @@ import {
 } from './product-context';
 import { ProductService } from './product.service';
 import {
-  GlueProductRelationsListAdapter,
   DefaultProductRelationsListService,
   ProductRelationsListAdapter,
   ProductRelationsListService,
@@ -110,11 +113,11 @@ export const glueProductConnectors = [
   },
   {
     provide: ProductListAdapter,
-    useClass: GlueProductListAdapter,
+    useClass: MockProductListAdapter,
   },
   {
     provide: ProductRelationsListAdapter,
-    useClass: GlueProductRelationsListAdapter,
+    useClass: MockProductRelationsListAdapter,
   },
   {
     provide: PriceNormalizer,
@@ -191,7 +194,26 @@ export const glueProductConnectors = [
     provide: ProductCategoryAdapter,
     useClass: GlueProductCategoryAdapter,
   },
-]
+];
+
+export const mockProductConnectors = [
+  {
+    provide: ProductAdapter,
+    useClass: MockProductAdapter,
+  },
+  {
+    provide: ProductListAdapter,
+    useClass: MockProductListAdapter,
+  },
+  {
+    provide: ProductRelationsListAdapter,
+    useClass: MockProductRelationsListAdapter,
+  },
+  {
+    provide: ProductCategoryAdapter,
+    useClass: MockProductCategoryAdapter,
+  },
+];
 
 export const productProviders: Provider[] = [
   {
@@ -263,5 +285,10 @@ export const productProviders: Provider[] = [
 
 export const glueProductProviders = [
   ...productProviders,
-  ...glueProductConnectors
-]
+  ...glueProductConnectors,
+];
+
+export const mockProductProviders = [
+  ...productProviders,
+  ...mockProductConnectors,
+];

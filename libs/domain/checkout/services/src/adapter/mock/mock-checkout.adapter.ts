@@ -1,14 +1,11 @@
+import { mockDefaultCart } from '@spryker-oryx/cart/mocks';
 import {
-  Address,
-  ApiCheckoutModel, Carrier,
   CheckoutAdapter,
   CheckoutData,
-  CheckoutResponse, ContactDetails, PaymentMethod,
-  PlaceOrderData, Shipment
-} from "@spryker-oryx/checkout";
-import {Observable, of} from "rxjs";
-import {Cart} from "@spryker-oryx/cart";
-import { mockDefaultCart } from "@spryker-oryx/cart/mocks";
+  CheckoutResponse,
+  PlaceOrderData,
+} from '@spryker-oryx/checkout';
+import { Observable, of } from 'rxjs';
 
 export class MockCheckoutAdapter implements CheckoutAdapter {
   get(props: PlaceOrderData): Observable<CheckoutData> {
@@ -23,11 +20,11 @@ export class MockCheckoutAdapter implements CheckoutAdapter {
       shipment: props.shipment,
       carts: {
         id: props.cartId,
-        ...mockDefaultCart
-      }
-    }
+        ...mockDefaultCart,
+      },
+    };
 
-    return of(checkoutData)
+    return of(checkoutData);
   }
 
   placeOrder(data: PlaceOrderData): Observable<CheckoutResponse> {

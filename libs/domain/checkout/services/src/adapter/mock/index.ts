@@ -1,2 +1,2 @@
-export * from './mock-checkout.adapter';
 export * from './mock-checkout';
+export * from './mock-checkout.adapter';

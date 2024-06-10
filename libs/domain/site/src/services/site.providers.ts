@@ -3,7 +3,12 @@ import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { PriceModes } from '../models';
-import { GlueStoreAdapter, StoreAdapter, storeNormalizer } from './adapter/spryker-glue';
+import { MockStoreAdapter } from './adapter';
+import {
+  GlueStoreAdapter,
+  StoreAdapter,
+  storeNormalizer,
+} from './adapter/spryker-glue';
 import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
 import { CountryService, DefaultCountryService } from './country';
 import {
@@ -39,7 +44,6 @@ import {
 } from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
-import {MockStoreAdapter} from "./adapter";
 
 declare global {
   interface AppEnvironment {
@@ -60,9 +64,9 @@ export const glueSiteConnectors: Provider[] = [
 export const mockSiteConnectors: Provider[] = [
   {
     provide: StoreAdapter,
-    useClass: MockStoreAdapter
-  }
-]
+    useClass: MockStoreAdapter,
+  },
+];
 
 export const siteProviders: Provider[] = [
   {
@@ -160,10 +164,10 @@ export const siteProviders: Provider[] = [
 
 export const glueSiteProviders: Provider[] = [
   ...glueSiteConnectors,
-  ...siteProviders
+  ...siteProviders,
 ];
 
 export const mockSiteProviders: Provider[] = [
   ...mockSiteConnectors,
-  ...siteProviders
+  ...siteProviders,
 ];

@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/experience';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { Suggestion } from '../../models';
-import { SuggestionField } from '../adapter';
+import { SuggestionField } from '../adapter/spryker-glue';
 import { SuggestionService } from '../suggestion';
 
 /**

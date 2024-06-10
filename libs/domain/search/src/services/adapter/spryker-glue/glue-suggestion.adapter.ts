@@ -11,11 +11,11 @@ import {
   ApiSuggestionModel,
   Suggestion,
   SuggestionQualifier,
-} from '../../models';
+} from '../../../models';
 import { SuggestionNormalizer } from './normalizers';
 import { SuggestionAdapter, SuggestionField } from './suggestion.adapter';
 
-export class DefaultSuggestionAdapter implements SuggestionAdapter {
+export class GlueSuggestionAdapter implements SuggestionAdapter {
   protected queryEndpoint = 'catalog-search-suggestions';
 
   constructor(
