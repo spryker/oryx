@@ -53,8 +53,12 @@ export class CheckoutApi extends GlueApi {
                   'dummyPaymentInvoice.dateOfBirth',
                 ],
                 id: '1',
-                paymentMethodName: 'Invoice',
-                paymentProviderName: 'DummyPayment',
+                paymentMethodName: Cypress.env('isMarketplace')
+                  ? 'Invoice (Marketplace)'
+                  : 'Invoice',
+                paymentProviderName: Cypress.env('isMarketplace')
+                  ? 'DummyMarketplacePayment'
+                  : 'DummyPayment',
               },
             ],
           },

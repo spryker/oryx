@@ -35,7 +35,9 @@ const indexedDBStorageName = 'oryx-local-db-storage';
 export const defaultUser = {
   email: 'harald@spryker.com',
   password: 'change123',
-  warehouseName: 'Warehouse1',
+  warehouseName: Cypress.env('isMarketplace')
+    ? 'Spryker MER000001 Warehouse 1'
+    : 'Warehouse1',
 };
 
 Cypress.Commands.add('login', (user = defaultUser) => {
