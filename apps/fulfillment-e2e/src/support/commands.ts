@@ -11,7 +11,7 @@ import { UserProfileModal } from './page_fragments/user-profile-modal.fragment';
 import { LoginPage } from './page_objects/login.page';
 import { PickingListPage } from './page_objects/picking-list.page';
 import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
-export { };
+export {};
 
 declare global {
   namespace Cypress {
@@ -35,7 +35,9 @@ const indexedDBStorageName = 'oryx-local-db-storage';
 export const defaultUser = {
   email: 'harald@spryker.com',
   password: 'change123',
-  warehouseName: Cypress.env('isMarketplace') ? 'Spryker MER000001 Warehouse 1' : 'Warehouse1',
+  warehouseName: Cypress.env('isMarketplace')
+    ? 'Spryker MER000001 Warehouse 1'
+    : 'Warehouse1',
 };
 
 Cypress.Commands.add('login', (user = defaultUser) => {

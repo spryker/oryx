@@ -70,22 +70,22 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
         routes: configFactory().skipRoutes
           ? []
           : defaultBapiRoutes(
-            configFactory().loginRoute,
-            '/oauth/cb/spryker',
-            configFactory().providers[0].id
-          ),
+              configFactory().loginRoute,
+              '/oauth/cb/spryker',
+              configFactory().providers[0].id
+            ),
       })),
       { provide: IdentityService, useClass: BapiIdentityService },
       { provide: AuthLoginStrategy, useClass: CodeGrantAuthLoginStrategy },
       {
         provide: CodeGrantAuthLoginStrategyConfig,
         useFactory: () =>
-        ({
-          loginUrl: urlJoin(
-            injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
-            '/authorize'
-          ),
-        } as CodeGrantAuthLoginStrategyConfig),
+          ({
+            loginUrl: urlJoin(
+              injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
+              '/authorize'
+            ),
+          } as CodeGrantAuthLoginStrategyConfig),
       },
     ];
   }

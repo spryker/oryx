@@ -12,7 +12,9 @@ export class GuestCartsItemsApi extends GlueApi {
           attributes: {
             sku,
             quantity,
-            ...(Cypress.env('isMarketplace') ? { merchantReference: "MER000006" } : {})
+            ...(Cypress.env('isMarketplace')
+              ? { merchantReference: 'MER000006' }
+              : {}),
           },
         },
       },
