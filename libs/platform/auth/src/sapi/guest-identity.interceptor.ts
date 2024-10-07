@@ -5,13 +5,10 @@ import { AuthIdentity } from '../models';
 import { IdentityService } from '../services/identity.service';
 
 export class GuestIdentityInterceptor implements HttpInterceptor {
+  protected readonly config = inject(GuestIdentityInterceptorConfig);
+  protected readonly identityService = inject(IdentityService);
   protected headerName = this.config.headerName;
-
-  constructor(
-    protected readonly config = inject(GuestIdentityInterceptorConfig),
-    protected readonly identityService = inject(IdentityService)
-  ) {}
-
+  
   intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
     return this.identityService.get().pipe(
       take(1),
