@@ -31,6 +31,19 @@ export class NodeUtilService {
     });
   }
 
+  createFolder(path: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this._fs.mkdir(path, { recursive: true }, (error) => {
+        if (error) {
+          console.error(`Error creating folder: ${error}`);
+          return reject(error);
+        }
+
+        resolve();
+      });
+    });
+  }
+
   copyFolder(source: string, destination: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       // Create the destination directory if it doesn't exist
