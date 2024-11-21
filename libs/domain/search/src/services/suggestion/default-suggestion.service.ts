@@ -5,7 +5,7 @@ import { ProductsLoaded } from '@spryker-oryx/product';
 import { CurrencyChanged, PriceModeChanged } from '@spryker-oryx/site';
 import { merge, Observable, scan } from 'rxjs';
 import { Suggestion, SuggestionQualifier } from '../../models';
-import { SuggestionAdapter } from '../adapter';
+import { SuggestionAdapter } from '../adapter/spryker-glue';
 import { SuggestionService } from './suggestion.service';
 
 export class DefaultSuggestionService implements SuggestionService {

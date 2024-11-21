@@ -3,7 +3,7 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { CurrencyChanged, PriceModeChanged } from '@spryker-oryx/site';
 import { Product, ProductQualifier } from '../../models';
-import { ProductAdapter } from '../adapter';
+import { ProductAdapter } from '../adapter/spryker-glue';
 import { ProductLoaded } from './events';
 
 export const ProductQuery = 'oryx.productQuery';

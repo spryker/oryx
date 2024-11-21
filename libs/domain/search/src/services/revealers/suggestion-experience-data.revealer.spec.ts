@@ -3,7 +3,7 @@ import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { MessageType, postMessage } from '@spryker-oryx/experience';
 import { RouteType } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import { SuggestionField } from '../adapter';
+import { SuggestionField } from '../adapter/spryker-glue';
 import { SuggestionService } from '../suggestion';
 import { SuggestionExperienceDataRevealer } from './suggestion-experience-data.revealer';
 

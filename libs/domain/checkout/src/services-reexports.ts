@@ -7,7 +7,7 @@ const reexports: typeof services =
 /** @deprecated since 1.2, use DefaultCheckoutService from @spryker-oryx/checkout/services */
 export const DefaultCheckoutService = reexports?.DefaultCheckoutService;
 /** @deprecated since 1.2, use DefaultCheckoutAdapter from @spryker-oryx/checkout/services */
-export const DefaultCheckoutAdapter = reexports?.DefaultCheckoutAdapter;
+export const DefaultCheckoutAdapter = reexports?.GlueCheckoutAdapter;
 /** @deprecated since 1.2, use DefaultCheckoutDataService from @spryker-oryx/checkout/services */
 export const DefaultCheckoutDataService = reexports?.DefaultCheckoutDataService;
 /** @deprecated since 1.2, use DefaultCheckoutStateService from @spryker-oryx/checkout/services */

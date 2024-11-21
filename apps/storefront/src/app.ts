@@ -3,7 +3,11 @@ import { multiCartFeature } from '@spryker-oryx/cart';
 import { labsFeatures } from '@spryker-oryx/labs';
 import { merchantFeature } from '@spryker-oryx/merchant';
 import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';
-import { storefrontFeatures } from '@spryker-oryx/presets/storefront';
+import {
+  storefrontFeatures,
+  storefrontGlueFeatures,
+  storefrontMockFeatures,
+} from '@spryker-oryx/presets/storefront';
 import { storefrontTheme } from '@spryker-oryx/themes';
 
 const env = import.meta.env;
@@ -19,8 +23,12 @@ const features = [
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 
+const mockFeatures = [...storefrontMockFeatures];
+
+const glueFeatures = [...storefrontGlueFeatures];
+
 export const app = appBuilder()
-  .withFeature(features)
+  .withFeature(mockFeatures)
   .withTheme([storefrontTheme])
   .withEnvironment(env)
   .create();

@@ -1,7 +1,7 @@
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionField } from '../../adapter';
+import { SuggestionField } from '../../adapter/spryker-glue';
 
 export const SuggestionRendererService = 'oryx.SuggestionRendererService';
 export const SuggestionRenderer = 'oryx.SuggestionRenderer*';

@@ -11,14 +11,15 @@ import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
   ConcreteProductsNormalizer,
-  DefaultProductAdapter,
   DefaultProductMediaNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
   FacetRatingNormalizer,
+  GlueProductAdapter,
   PriceNormalizer,
   ProductAdapter,
+  ProductLabelsNormalizer,
   ProductMediaSetNormalizer,
   availabilityNormalizer,
   categoryIdNormalizer,
@@ -31,26 +32,30 @@ import {
   mediaSetNormalizer,
   priceNormalizer,
   productIncludes,
+  productLabelNormalizer,
   productListNormalizer,
   productNormalizer,
 } from './adapter';
-import {
-  ProductLabelsNormalizer,
-  productLabelNormalizer,
-} from './adapter/normalizers/labels/labels.normalizer';
+import { MockProductListAdapter } from './adapter/mock';
+import { MockProductCategoryAdapter } from './adapter/mock/mock-category.adapter';
+import { MockProductAdapter } from './adapter/mock/mock-product.adapter';
+import { MockProductRelationsListAdapter } from './adapter/mock/product-relations/mock-product-relations-list.adapter';
 import {
   PaginationNormalizer,
   paginationNormalizer,
-} from './adapter/normalizers/pagination';
-import { relationsListNormalizer } from './adapter/normalizers/relations-list';
-import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
+} from './adapter/spryker-glue/normalizers/pagination';
+import { relationsListNormalizer } from './adapter/spryker-glue/normalizers/relations-list';
+import {
+  SortNormalizer,
+  sortNormalizer,
+} from './adapter/spryker-glue/normalizers/sort';
 import {
   CategoryListNormalizer,
   CategoryNodeNormalizer,
   CategoryNormalizer,
   CategoryTreeNormalizer,
-  DefaultProductCategoryAdapter,
   DefaultProductCategoryService,
+  GlueProductCategoryAdapter,
   ProductCategoryAdapter,
   ProductCategoryService,
   categoryEffects,
@@ -69,7 +74,6 @@ import {
 } from './images/product-media.config';
 import { productJsonLdNormalizers } from './jsonld';
 import {
-  DefaultProductListAdapter,
   DefaultProductListPageService,
   DefaultProductListService,
   ProductListAdapter,
@@ -84,7 +88,6 @@ import {
 } from './product-context';
 import { ProductService } from './product.service';
 import {
-  DefaultProductRelationsListAdapter,
   DefaultProductRelationsListService,
   ProductRelationsListAdapter,
   ProductRelationsListService,
@@ -103,34 +106,18 @@ import { productQueries } from './state/queries';
 
 export const ProductTokenResourceResolverToken = `${TokenResourceResolvers}PRODUCT`;
 
-export const productProviders: Provider[] = [
+export const glueProductConnectors = [
   {
     provide: ProductAdapter,
-    useClass: DefaultProductAdapter,
-  },
-  {
-    provide: ProductService,
-    useClass: DefaultProductService,
+    useClass: GlueProductAdapter,
   },
   {
     provide: ProductListAdapter,
-    useClass: DefaultProductListAdapter,
-  },
-  {
-    provide: ProductListService,
-    useClass: DefaultProductListService,
-  },
-  {
-    provide: ProductRelationsListService,
-    useClass: DefaultProductRelationsListService,
+    useClass: MockProductListAdapter,
   },
   {
     provide: ProductRelationsListAdapter,
-    useClass: DefaultProductRelationsListAdapter,
-  },
-  {
-    provide: ProductListPageService,
-    useClass: DefaultProductListPageService,
+    useClass: MockProductRelationsListAdapter,
   },
   {
     provide: PriceNormalizer,
@@ -156,7 +143,6 @@ export const productProviders: Provider[] = [
     provide: FacetCategoryNormalizer,
     useValue: facetCategoryNormalizer,
   },
-  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
   {
     provide: FacetRatingNormalizer,
     useValue: facetRatingNormalizer,
@@ -181,6 +167,71 @@ export const productProviders: Provider[] = [
     provide: ConcreteProductsNormalizer,
     useValue: concreteProductsNormalizer,
   },
+  ...productNormalizer,
+  ...productListNormalizer,
+  ...relationsListNormalizer,
+  {
+    provide: CategoryIdNormalizer,
+    useValue: categoryIdNormalizer,
+  },
+  {
+    provide: CategoryNormalizer,
+    useFactory: categoryNormalizerFactory,
+  },
+  {
+    provide: CategoryListNormalizer,
+    useFactory: categoryListNormalizerFactory,
+  },
+  {
+    provide: CategoryNodeNormalizer,
+    useValue: categoryNodeNormalizer,
+  },
+  {
+    provide: CategoryTreeNormalizer,
+    useValue: categoryTreeNormalizer,
+  },
+  {
+    provide: ProductCategoryAdapter,
+    useClass: GlueProductCategoryAdapter,
+  },
+];
+
+export const mockProductConnectors = [
+  {
+    provide: ProductAdapter,
+    useClass: MockProductAdapter,
+  },
+  {
+    provide: ProductListAdapter,
+    useClass: MockProductListAdapter,
+  },
+  {
+    provide: ProductRelationsListAdapter,
+    useClass: MockProductRelationsListAdapter,
+  },
+  {
+    provide: ProductCategoryAdapter,
+    useClass: MockProductCategoryAdapter,
+  },
+];
+
+export const productProviders: Provider[] = [
+  {
+    provide: ProductListService,
+    useClass: DefaultProductListService,
+  },
+  {
+    provide: ProductService,
+    useClass: DefaultProductService,
+  },
+  {
+    provide: ProductListPageService,
+    useClass: DefaultProductListPageService,
+  },
+  {
+    provide: ProductRelationsListService,
+    useClass: DefaultProductRelationsListService,
+  },
   {
     provide: ProductImageService,
     useClass: DefaultProductImageService,
@@ -189,9 +240,6 @@ export const productProviders: Provider[] = [
     provide: ProductMediaConfig,
     useValue: productMediaConfig,
   },
-  ...productNormalizer,
-  ...productListNormalizer,
-  ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
@@ -216,30 +264,6 @@ export const productProviders: Provider[] = [
     useClass: ProductPageRobotMetaResolver,
   },
   {
-    provide: CategoryIdNormalizer,
-    useValue: categoryIdNormalizer,
-  },
-  {
-    provide: CategoryNormalizer,
-    useFactory: categoryNormalizerFactory,
-  },
-  {
-    provide: CategoryListNormalizer,
-    useFactory: categoryListNormalizerFactory,
-  },
-  {
-    provide: CategoryNodeNormalizer,
-    useValue: categoryNodeNormalizer,
-  },
-  {
-    provide: CategoryTreeNormalizer,
-    useValue: categoryTreeNormalizer,
-  },
-  {
-    provide: ProductCategoryAdapter,
-    useClass: DefaultProductCategoryAdapter,
-  },
-  {
     provide: ProductCategoryService,
     useClass: DefaultProductCategoryService,
   },
@@ -257,4 +281,14 @@ export const productProviders: Provider[] = [
     service: ProductCategoryService,
   }),
   ...productJsonLdNormalizers,
+];
+
+export const glueProductProviders = [
+  ...productProviders,
+  ...glueProductConnectors,
+];
+
+export const mockProductProviders = [
+  ...productProviders,
+  ...mockProductConnectors,
 ];

@@ -191,7 +191,7 @@ export const checkoutProviders =
           provide: CheckoutAdapter,
           asyncClass: () =>
             import('@spryker-oryx/checkout/services').then(
-              (m) => m.DefaultCheckoutAdapter
+              (m) => m.GlueCheckoutAdapter
             ),
         },
         {

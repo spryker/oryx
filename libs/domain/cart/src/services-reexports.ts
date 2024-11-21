@@ -7,7 +7,7 @@ const reexports: typeof services =
 /** @deprecated since 1.2, use DefaultCartService from @spryker-oryx/cart/services */
 export const DefaultCartService = reexports?.DefaultCartService;
 /** @deprecated since 1.2, use DefaultCartAdapter from @spryker-oryx/cart/services */
-export const DefaultCartAdapter = reexports?.DefaultCartAdapter;
+export const DefaultCartAdapter = reexports?.GlueCartAdapter;
 /** @deprecated since 1.2, use DefaultTotalsService from @spryker-oryx/cart/services */
 export const DefaultTotalsService = reexports?.DefaultTotalsService;
 /** @deprecated since 1.2, use cartAttributesNormalizer from @spryker-oryx/cart/services */

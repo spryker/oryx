@@ -1,3 +1,2 @@
-export * from './default-store.adapter';
-export * from './normalizers';
-export * from './store.adapter';
+export * from './mock';
+export * from './spryker-glue';
