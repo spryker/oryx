@@ -6,8 +6,6 @@ import {
   Size,
   throttle,
 } from '@spryker-oryx/utilities';
-import { ThemePlugin } from '../../plugins';
-import { ScreenService } from './screen.service';
 import {
   Observable,
   ReplaySubject,
@@ -15,6 +13,8 @@ import {
   map,
   startWith,
 } from 'rxjs';
+import { ThemePlugin } from '../../plugins';
+import { ScreenService } from './screen.service';
 
 export class DefaultScreenService implements ScreenService, OnDestroy {
   protected themePlugin: ThemePlugin;

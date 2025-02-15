@@ -10,7 +10,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { AddressAdapter } from './address.adapter';
 import { DefaultAddressAdapter } from './default-address.adapter';
-import { AddressesNormalizer, AddressNormalizer } from './normalizers';
+import { AddressNormalizer, AddressesNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 

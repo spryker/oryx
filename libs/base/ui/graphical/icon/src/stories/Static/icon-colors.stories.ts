@@ -1,6 +1,6 @@
 import { getAppIcons } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 

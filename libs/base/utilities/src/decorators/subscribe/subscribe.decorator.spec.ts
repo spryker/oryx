@@ -1,5 +1,5 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { finalize, interval, tap } from 'rxjs';
 import { subscribe } from './subscribe.decorator';

@@ -1,5 +1,5 @@
 import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { VideoAspectRatio, VideoAttributes, VideoPreload } from './video.model';

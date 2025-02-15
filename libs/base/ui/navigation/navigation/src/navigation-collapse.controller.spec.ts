@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { navigationComponent } from './component';
 import { CollapseToggleController } from './navigation-collapse.controller';

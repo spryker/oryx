@@ -1,16 +1,16 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
+import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  HydratableLitElement,
   HYDRATE_ON_DEMAND,
+  HydratableLitElement,
 } from '@spryker-oryx/utilities';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { DefaultHydrationService } from './default-hydration.service';
 import { HydrationService, HydrationTrigger } from './hydration.service';
-import { ContextService } from '@spryker-oryx/core';
 
 @customElement('mock-a')
 class MockA extends LitElement {

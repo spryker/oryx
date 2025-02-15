@@ -1,8 +1,8 @@
-import { OauthService, OauthServiceConfig } from '../oauth';
 import { App, AppPlugin } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, Subscription, tap } from 'rxjs';
+import { Subscription, combineLatest, tap } from 'rxjs';
+import { OauthService, OauthServiceConfig } from '../oauth';
 
 export class BapiPlugin implements AppPlugin {
   protected subscription?: Subscription;

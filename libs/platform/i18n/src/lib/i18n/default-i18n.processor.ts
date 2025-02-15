@@ -1,9 +1,9 @@
 import { inject } from '@spryker-oryx/di';
 import { DefaultI18nInjectable, I18nContext } from '@spryker-oryx/utilities';
 import {
+  Observable,
   combineLatest,
   distinctUntilChanged,
-  Observable,
   shareReplay,
   switchMap,
 } from 'rxjs';

@@ -9,7 +9,7 @@ import runCommands from '@nrwl/workspace/src/executors/run-commands/run-commands
 import { AssetGlob } from '@nrwl/workspace/src/utilities/assets';
 import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
-import { DirData, libDirsNormalizer, LibOptions } from './utils';
+import { DirData, LibOptions, libDirsNormalizer } from './utils';
 
 export interface ComponentsLibraryBuildExecutorOptions extends LibOptions {
   tsConfig: string;

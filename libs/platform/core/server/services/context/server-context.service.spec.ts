@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextFallback, ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { finalize, of } from 'rxjs';
 import { SSRStreamParserService } from './default-ssr-stream-parser';

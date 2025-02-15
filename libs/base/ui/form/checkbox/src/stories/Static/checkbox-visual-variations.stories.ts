@@ -1,11 +1,11 @@
 import {
   CategoryX as RadioCategoryX,
+  Variant,
   generateGroupItemVariants,
   generateVariantsMatrix,
-  Variant,
 } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
 import { RadioVariantOptions } from '../../../../radio/src/stories/states.stories';

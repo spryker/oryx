@@ -3,7 +3,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { format, resolveConfig } from 'prettier';
 import { sortObjectByKeys } from '../../utils';
-import { DirData, libDirsNormalizer, LibOptions } from './utils';
+import { DirData, LibOptions, libDirsNormalizer } from './utils';
 
 export interface ComponentsLibraryPathsExecutorOptions extends LibOptions {
   name: string;

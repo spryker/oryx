@@ -1,7 +1,7 @@
 import { queryFirstAssigned, wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { PageNavigationItemComponent } from '../../../../../../navigation/page-navigation-item';
-import { getNavItems, PageNavigationItem } from '../../common';
+import { PageNavigationItem, getNavItems } from '../../common';
 import { TemplateProps } from '../common';
 
 export const assertSync = (

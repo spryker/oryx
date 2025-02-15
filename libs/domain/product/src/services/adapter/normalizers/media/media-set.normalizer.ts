@@ -1,5 +1,5 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
-import { combineLatest, map, Observable } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { ApiProductModel, ProductMediaSet } from '../../../../models';
 import { ProductMediaNormalizer } from './media.normalizer';
 

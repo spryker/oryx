@@ -6,5 +6,5 @@ export * from './injectables';
 export * from './mixins';
 export * from './models';
 export * from './plugins';
-export * from './services';
 export * from './routes';
+export * from './services';

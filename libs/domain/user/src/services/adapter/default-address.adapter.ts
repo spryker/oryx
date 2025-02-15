@@ -4,7 +4,7 @@ import { inject } from '@spryker-oryx/di';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { Address } from '../../models';
 import { AddressAdapter, AddressRequestProps } from './address.adapter';
-import { AddressesNormalizer, AddressNormalizer } from './normalizers';
+import { AddressNormalizer, AddressesNormalizer } from './normalizers';
 import { AddressSerializer } from './serializers';
 
 export class DefaultAddressAdapter implements AddressAdapter {

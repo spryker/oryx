@@ -1,5 +1,5 @@
 import { Carrier, Shipment, ShipmentMethod } from '@spryker-oryx/checkout';
-import { map, Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import {
   mockFilteredShipmentMethods,
   mockShipmentAttributes,

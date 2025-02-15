@@ -1,9 +1,9 @@
 import { getAppIcons } from '@/tools/storybook';
+import { RouteType } from '@spryker-oryx/router';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { ContentLinkContent, ContentLinkOptions } from '../link.model';
-import { RouteType } from '@spryker-oryx/router';
 
 export default {
   title: `${storybookPrefix}/Link`,

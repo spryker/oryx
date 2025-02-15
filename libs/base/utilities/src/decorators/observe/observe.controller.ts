@@ -1,5 +1,5 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { BehaviorSubject, defer, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, defer } from 'rxjs';
 
 export class ObserveController<T extends ReactiveControllerHost>
   implements ReactiveController
